@@ -1,0 +1,4 @@
+#  gmt  Tue Jun 29 09:37:33 MST 1999
+0 sr -T noslice.sr
+0 run
+0 rm -rf Interfaces core *.out

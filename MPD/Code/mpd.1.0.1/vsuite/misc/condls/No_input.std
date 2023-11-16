@@ -1,0 +1,13 @@
+testif(2,5): abcdefghij.
+testif(4,4): abcdefghij.
+testif(6,3): .
+testelse(2,5): abcdefghijkklmmn.
+testelse(4,4): abcdefghijkklmmn.
+testelse(6,3): ABCDEFGHIJKLLMNN.
+testfor(0): a b c d e f g h i .
+testfor(1): a b c d1 e1 f1 g1 h1 i1 .
+testfor(3): a b c d123 e123 f123 g123 h123 i123 .
+testwhile(1):  X Y Z 1 2 3 4 5 6 7 8 9 .
+testwhile(2):  X Y Z 1G 2I 3K 4M 5O 6Q 7S 8U 9W .
+testwhile(3):  X Y Z 1IJ 2LM 3OP 4RS 5UV 6XY 7[\ 8^_ 9ab .
+testwhile(4):  X Y Z 1IJK 2MNO 3QRS 4UVW 5YZ[ 6]^_ 7abc 8efg 9ijk .

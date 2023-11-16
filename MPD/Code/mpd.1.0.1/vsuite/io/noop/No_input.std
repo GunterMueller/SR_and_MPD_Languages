@@ -1,0 +1,10 @@
+flush done
+close done
+read returned -1
+read returned -1
+get returned -1
+get returned -1
+seek returned 0
+seek returned 0
+where returned 0
+where returned 0

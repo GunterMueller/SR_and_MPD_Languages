@@ -1,0 +1,35 @@
+# testing asynchronous message passing.  A send is followed by a
+# receive.  The messages never block.
+
+resource asynch
+
+  op dummy()
+
+body asynch()
+
+  var limit, factor, base, trials : int
+
+  getarg(1,factor)			# supplied by Script file
+  getarg(2,base)			# common factor in all tests
+  getarg(3,trials)			# number of runs
+  limit := factor * base
+
+  process test
+    var start, finish : int
+    
+    in dummy() -> skip			# this prevents implementation
+    [] else -> skip			# as a semaphore
+    ni
+
+    fa t := 1 to trials ->
+        start := age()
+        fa i := 1 to limit -> send dummy() 
+            receive dummy()
+	af
+        finish := age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    af
+
+  end
+
+end

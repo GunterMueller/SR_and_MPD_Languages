@@ -1,0 +1,18 @@
+# test receive statement; use same name variables as in op declaration.
+resource rcv6()
+	op p()
+	op q(a,b:int;c:char)
+	op r(x:int)
+	op s(x,y:int)
+
+	var a,b,x,y:int; var c:char
+	send p()
+	send q(4,5,'d')
+	send r(77)
+	send s(-1,-2)
+	receive r(x); write(x)
+	receive s(y,x); write(y,x)
+	receive p(); write("p");
+	receive q(a,b,c); write(a,b,c)
+
+end

@@ -1,0 +1,9 @@
+# clone expr passed to predefined function
+
+resource xx()
+    file f = stdout
+    put(([32]'w'))
+    put(f, ([32]'x'))
+    write(([32]'y'))
+    write(f,([32]'z'))
+end

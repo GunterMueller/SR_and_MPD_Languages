@@ -1,0 +1,115 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE> MPD Release Notes </TITLE>
+</HEAD>
+<BODY BGCOLOR="#F7FFFF">
+
+<IMG SRC="cairn.jpg" ALT="" ALIGN=right WIDTH=120 HEIGHT=120>
+<H1> Release Notes for Version 1 of MPD </H1>
+
+<P> <A HREF="http://www.cs.arizona.edu/mpd/">
+http://www.cs.arizona.edu/mpd</A>
+<P> Gregg Townsend
+<BR> Department of Computer Science
+<BR> The University of Arizona
+<BR> January 20, 2004
+<H2> Version 1.0.1 of MPD </H2>
+<P>
+Version 1.0.1 is a maintenance release of MPD.
+It contains a small number of changes necessary to accommodate
+incompatibilities introduced by recent versions of the GNU
+compiler, library, and toolset.
+<P>
+Because MPD is closely based on SR, it shares most of the same limitations.
+Some of these could reasonably be considered bugs.
+The rest of this list comes from the original MPD release,
+and it has not changed significantly since version 2.1 of SR.
+<H2> The Programming Environment </H2>
+<UL>
+<LI>
+Source files are generally expected to reside in the current directory;
+explicit paths elsewhere don't always work.
+</UL>
+<H2> Problems Seen at Compilation Time </H2>
+<UL>
+<LI>
+Slices cannot be used with the swap (<B>:=:</B>) operator.
+<LI>
+Builtin procedures having string result parameters (<B>read</B>, <B>get</B>,
+<B>scanf</B>, <B>getarg</B>, <B>sprintf</B>) cannot accept slice expressions
+for those parameters.
+<LI>
+Unions are really implemented as records; no storage is shared.
+<LI>
+MPD uses a multipass compiler. If it finds an error on one pass,
+it skips the later passes, with the consequence that not all errors
+are reported at once. Errors in <B>spec</B> sections may be reported
+once for each import.
+</UL>
+<H2> Problems Seen at Execution Time </H2>
+<UL>
+<LI>
+The bounds of an array passed by <B>ref</B> are those of the underlying
+array, not those declared for the parameter.
+<LI>
+Null and noop capabilities cannot be created for resources that
+export arrays of operations if any of those arrays has more than
+three dimensions.
+<LI>
+Synchronization expressions are not recomputed when their values
+are changed by the actions of other processes (e.g. by altering
+global variables or sending to operations referenced by a <B>?</B>
+operator).
+<LI>
+Destroying a resource is not an atomic operation. If processes
+in two resources each simultaneously try to destroy the other
+resource, one or both of the processes can be killed, leaving
+one or both resources incompletely destroyed.
+<LI>
+In most situations, the process with the highest priority is executed.
+However, processes that are blocked waiting for messages become
+unblocked without regard to priority.
+</UL>
+<H2> Problems Involving Distributed Programs </H2>
+<UL>
+<LI>
+If a distributed MPD program is found using the shell's search
+path, but is not in the current directory, then <I>mpdx</I> generates
+an incorrect network file path and virtual machines cannot be
+created.
+<LI>
+Because of network pipeline delays, output from different virtual
+machines may be misordered, even if it is explicitly synchronized.
+<LI>
+Error messages can sometimes occur, due to race conditions, during
+normal termination of distributed programs. For example, these
+can be caused if X exits while Y is sending to it.
+<LI>
+Virtual machines don't always shut down cleanly if an MPD program
+is run in the background under the Bourne shell. This is noticed
+when running <I>mpdv</I> under <I>sh</I> or <I>at</I>.
+</UL>
+<H2> Undetected Programming Errors </H2>
+<P>
+Not all errors are detected by the MPD compiler or runtime system.
+These errors can manifest themselves in various ways including
+segmentation faults, other runtime errors, or even misleading
+diagnostics. Some of the more common such errors are these:
+<UL>
+<LI>
+Arithmetic overflow is not detected by either the compiler or
+runtime system.
+<LI>
+The use of an uninitialized variable is not detected, nor is the
+use of a <B>ptr</B> or <B>ref</B> parameter on a different virtual machine.
+<LI>
+Values of enumeration types are not checked at execution time.
+<LI>
+Unreachable code is not diagnosed.
+<LI>
+No warning is given if an invocation is still pending when an
+operation ceases to exist.
+</UL>
+</BODY>
+</HTML>

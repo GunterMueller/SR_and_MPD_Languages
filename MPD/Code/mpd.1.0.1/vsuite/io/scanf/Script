@@ -1,0 +1,6 @@
+# vin Mon Apr 15 1991
+0 mpd -o scan  scan.mpd
+0 mpd -o sscan sscan.mpd
+0 sh run.sh > run.out 2>&1
+0 cmp -s run.std run.out
+0 rm -rf MPDinter core *.out *.sout scan sscan

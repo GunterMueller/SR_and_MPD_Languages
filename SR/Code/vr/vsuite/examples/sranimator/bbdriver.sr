@@ -1,0 +1,93 @@
+resource user()
+   import SRanimator
+   import bounded_buffer
+   var bb : cap bounded_buffer
+   var slots := 15, pnum := 7, cnum := 5, pnap := 3, cnap := 2, runtime := 60
+   getarg(1, slots); getarg(2, pnum); getarg(3, cnum)
+   getarg(4, pnap); getarg(5, cnap); getarg(6, runtime)
+
+   write("main user resource alive, slots=", slots, "pnum=", pnum,
+      "cnum=", cnum, "pnap=", pnap, "cnap=", cnap, "runtime=", runtime)
+   bb := create bounded_buffer(slots)
+
+# Change coordinates so 0,0 is the center, then create a big black outline
+# circle to be the bounded buffer.
+   call A_coords(-1.7, -1.7, 1.5, 1.5)
+   call A_circle(1001, 0.0, 0.0, 1.0, "black", "outline")
+# Put some annotated symbols on the screen.
+   call A_circle(1002, -1.6, -1.6, 0.05, "blue", "solid")
+   call A_text(1003, -1.5, -1.625, 0, "black", "consumer wants to fetch")
+   call A_circle(1004, -1.6, -1.4, 0.05, "green", "solid")
+   call A_text(1005, -1.5, -1.425, 0, "black", "producer wants to deposit")
+   call A_circle(1006, -1.6, -1.1, 0.1, "black", "outline")
+   call A_text(1007, -1.4, -1.125, 0, "black", "empty buffer slot")
+   call A_circle(1008, -1.6, -0.8, 0.1, "black", "solid")
+   call A_text(1009, -1.4, -0.825, 0, "black", "full buffer slot")
+# Put some producers, small black outline circles, near the buffer.
+# Also put a point for each producer to move back to after depositing.
+   call A_text(1016, -0.5+0.12*(pnum+1), -1.61, 0, "black", "producers")
+   fa i := 1 to pnum ->
+      call A_circle(2000+i, -0.5+0.12*i, -1.6, 0.05, "black", "outline")
+      call A_circle(4000+i, -0.5+0.12*i, -1.6, 0.001, "black", "outline")
+   af
+# Put some consumers, small black outline circles, near the buffer.
+# Also put a point for each consumer to move back to after fetching.
+   call A_text(1017, -0.5+0.12*(cnum+1), -1.41, 0, "black", "consumers")
+   fa i := 1 to cnum ->
+      call A_circle(3000+i, -0.5+0.12*i, -1.4, 0.05, "black", "outline")
+      call A_circle(5000+i, -0.5+0.12*i, -1.4, 0.001, "black", "outline")
+   af
+# Put the buffer slots, black outline circles, around the buffer.
+   const TWO_PI := 2.0*acos(-1.0)
+   fa i := 0 to slots-1 ->
+      call A_circle(i, sin(i*(TWO_PI/slots)), cos(i*(TWO_PI/slots)),
+         0.1, "black", "outline")
+# Number the buffer slots.
+      call A_text(6000+i, 0.85*sin(i*(TWO_PI/slots)),
+         0.85*cos(i*(TWO_PI/slots)), 1, "black", string(i))
+# Put nearly invisible circles (points) near each buffer slot to be places
+# the producers and consumers can be moved to when they to deposit into or
+# fetch from the buffer.
+      call A_circle(7000+i, 1.15*sin(i*(TWO_PI/slots)),
+         1.15*cos(i*(TWO_PI/slots)), 0.001, "black", "outline")
+   af
+
+   process producer(pid := 1 to pnum)
+      var it : real, napping : int
+
+      do true ->
+         napping := int(random(1000*pnap))
+         write("age=", age(), "PRODUCER", pid, "napping for", napping, "ms")
+         nap(napping)
+         it := random()
+         write("age=", age(), "PRODUCER", pid, "produced item", it)
+
+# Change a wants-to-deposit producers's symbol to be solid green.
+         call A_color(2000+pid, "green")
+         call A_fill(2000+pid, "solid")
+
+         bb.deposit(pid, it)
+         write("age=", age(), "PRODUCER", pid, "deposited item", it)
+      od
+   end producer
+
+   process consumer(cid := 1 to cnum)
+      var it : real, napping : int
+
+      do true ->
+         napping := int(random(1000*cnap))
+         write("age=", age(), "consumer", cid, "napping for", napping, "ms")
+         nap(napping)
+         write("age=", age(), "consumer", cid, "wants to consume ...")
+
+# Change a wants-to-fetch consumer's symbol to be solid blue.
+         call A_color(3000+cid, "blue")
+         call A_fill(3000+cid, "solid")
+
+         it := bb.fetch(cid)
+         write("age=", age(), "consumer", cid, "fetched item ", it)
+      od
+   end consumer
+
+   nap(1000*runtime); write("must stop now"); call A_end(); stop
+end user

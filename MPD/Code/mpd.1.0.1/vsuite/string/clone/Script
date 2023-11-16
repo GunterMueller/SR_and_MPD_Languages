@@ -1,0 +1,4 @@
+# gmt 19-jul-91
+0 mpd clone.mpd
+0 run
+0 rm -rf MPDinter core *.out

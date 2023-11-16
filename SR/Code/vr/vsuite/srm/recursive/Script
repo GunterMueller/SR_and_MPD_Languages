@@ -1,0 +1,5 @@
+# recursive imports, spread over multiple files
+0 srm -f Makefile *.sr -llibrary archive.a object.o source.c
+0 sed 's/srm -w -c [^ ]* /srm /' Makefile >Makefile.out
+0 cmp -s Makefile.std Makefile.out
+0 rm -rf Interfaces core *.out Makefile

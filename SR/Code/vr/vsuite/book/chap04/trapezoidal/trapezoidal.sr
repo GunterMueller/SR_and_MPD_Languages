@@ -1,0 +1,29 @@
+# return area under the curve f(x) for a <=x <= b
+# using trapezoidal rule with n intervals
+resource main()
+
+  optype realfun = (x: real) returns fx: real {call}
+
+  procedure trapezoidal(a, b: real; n: int;
+          f: cap realfun ) returns area: real
+      var x := a
+      var h := (b-a)/n
+      area := (f(a)+f(b))/2
+      fa i := 1 to n-1 ->
+        x +:= h; area +:= f(x)
+      af
+      area *:= h
+  end
+
+  procedure fun1 (x : real) returns fx : real
+     fx := x*x + 2*x + 4
+  end
+
+  procedure fun2 (x : real) returns fx : real
+    fx := sin(2*x)
+  end
+
+  write(trapezoidal(0.0,1.0,200,fun1) )
+  write(trapezoidal(0.0,3.1415927/2,1000,fun2) )
+
+end

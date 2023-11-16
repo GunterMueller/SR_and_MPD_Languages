@@ -1,0 +1,5 @@
+#  gmt  Fri Mar 11 12:10:25 MST 1988
+0 mpd -c inithung.mpd
+0 mpdl b
+0 run
+0 rm -rf MPDinter core *.out

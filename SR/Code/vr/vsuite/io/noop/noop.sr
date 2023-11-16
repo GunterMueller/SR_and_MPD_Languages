@@ -1,0 +1,48 @@
+#  check out I/O on a noop file
+
+resource none ()
+
+	var f : file := noop
+	var i, n : int
+	var s : string(100)
+
+	flush(f)
+	flush(noop)
+	write("flush done")
+
+	close(f)
+	close(noop)
+	write("close done")
+
+	n := read(f,i,s)
+	write("read returned", n)
+	if n ~= EOF -> write ("   [WRONG!]") fi
+
+	n := read(noop,s,i)
+	write("read returned", n)
+	if n ~= EOF -> write ("   [WRONG!]") fi
+
+	n := get(f,s)
+	write("get returned", n)
+	if n ~= EOF -> write ("   [WRONG!]") fi
+
+	n := get(noop,s)
+	write("get returned", n)
+	if n ~= EOF -> write ("   [WRONG!]") fi
+
+	n := seek(f,ABSOLUTE,837)
+	write("seek returned", n)
+	if n ~= 0 -> write ("   [WRONG!]") fi
+
+	n := seek(noop,RELATIVE,1234)
+	write("seek returned", n)
+	if n ~= 0 -> write ("   [WRONG!]") fi
+
+	n := where(f)
+	write("where returned", n)
+	if n ~= 0 -> write ("   [WRONG!]") fi
+
+	n := where(noop)
+	write("where returned", n)
+	if n ~= 0 -> write ("   [WRONG!]") fi
+end

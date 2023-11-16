@@ -1,0 +1,51 @@
+#  Create and destroy virtual machines.
+#
+#  manyvm [ m [ n ]] -- create m virtual machines, n at a time
+#
+#  If this works for large m and n, then we must at least be recycling
+#  file descriptors correctly.
+
+
+resource r (int n )
+	write("\t\thello from",n)
+	flush(stdout)
+end r
+
+
+resource manyvm
+	import r
+body manyvm ()
+	cap r  rcap 
+	int m = 10
+	int n = 1
+
+	getarg(1,m)
+	getarg(2,n)
+	cap vm  vmcap[m] 
+
+	write("(we are vm 1)")
+	for [ i = 2 to m ] {
+	    write("creating vm",i)
+	    flush(stdout)
+	    vmcap[i] = create vm()
+	    if (vmcap[i] == null) {
+		write ("==== VM CREATION FAILED ====")
+		stop(1)
+	    }
+	    rcap = create r(i) on vmcap[i]
+	    if ((i - n + 1) > 1) {
+		write ("\t\t\t\tkilling",i-n+1)
+		flush(stdout)
+		destroy vmcap[i-n+1]
+	    }
+	}
+
+	for [ i = m-n+2 to m ] {
+	    if (i > 1) {
+		write ("\t\t\t\tkilling",i)
+		destroy vmcap[i]
+	    }
+	}
+
+	write("done")
+end manyvm

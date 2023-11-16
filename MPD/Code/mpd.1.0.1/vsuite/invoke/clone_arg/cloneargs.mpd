@@ -1,0 +1,13 @@
+#  variable cloning expression as an argument
+
+resource clone()
+    op p (int a[1:*])
+
+    int  n
+    n = 5
+    p(([n] 0))
+
+    proc p (a)  {
+    write(ub(a))
+    }
+end

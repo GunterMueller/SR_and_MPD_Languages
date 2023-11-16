@@ -1,0 +1,28 @@
+.\" troff macros for use with -me papers
+.\"
+.de SZ 		\" set size to $1 on $2
+.nr pp \\$1
+.nr tp \\$1
+.nr sp \\$1
+.nr qp \\$1-1
+.nr fp \\$1-2
+.nr $r \\$2p/\\$1u
+.nr $R \\$2p/\\$1u
+.sz \\$1
+.nr ps 0.35v
+.nr bs 0.35v
+.nr ss 1v
+..
+.de HD		\" standard document heading
+.po 1.25i
+.ll 6i
+.nh
+.fo ''- % -''
+.nr tf 1
+..
+.de SP		\" single page document
+.lp
+.nh
+.po 1.25i
+.ll 6i
+..

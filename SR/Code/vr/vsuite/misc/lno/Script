@@ -1,0 +1,8 @@
+#  gmt Tue Sep 10 10:54:13 MST 1991
+12 sr -C id.sr
+0 cmp id.std Compiler.out
+0 sr nl.sr
+0 cmp Compiler.std Compiler.out
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out

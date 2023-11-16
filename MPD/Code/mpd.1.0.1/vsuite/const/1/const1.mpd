@@ -1,0 +1,18 @@
+resource const1()
+	const int N = 10
+	write(N)
+	const int M = N*8-333/4-85/N
+	write(M)
+	int  a 
+	a = N - 1
+	write(a)
+	write(N)
+	write(M)
+	const bool t = true
+	const bool f = false
+	bool  b 
+	b = t
+	write (b, t)
+	b = f
+	write (b, f)
+end

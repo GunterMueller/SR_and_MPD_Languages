@@ -1,0 +1,6 @@
+# gmt Wed Jun 26 14:37:09 MST 1991
+0 sh ../makelong.sh part1.mpd "" "            " part2.mpd >temp.mpd
+0 mpd -c temp.mpd
+0 mpdl white
+0 run
+0 rm -rf MPDinter core *.out temp.mpd

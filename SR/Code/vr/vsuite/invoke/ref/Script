@@ -1,0 +1,5 @@
+#  gmt  Tue Sep 17 10:41:31 MST 1991
+0 sr -c reffer.sr
+0 srl reffer
+0 run
+0 rm -rf Interfaces core *.out

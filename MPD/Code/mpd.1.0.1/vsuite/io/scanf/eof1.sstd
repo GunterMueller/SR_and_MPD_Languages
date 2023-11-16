@@ -1,0 +1,4 @@
+argtype: 1
+format: '%i%6i'
+  1 < 1>: 123 -1
+end

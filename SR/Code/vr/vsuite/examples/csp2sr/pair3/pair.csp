@@ -1,0 +1,35 @@
+/* pairing problem
+ */
+_program(pair)
+  const N := 10
+  _specs
+    _process_spec1(node,1,N)
+      _port(node,pairup, ())
+  _specs_end
+
+  const t := true, f := false
+/* init for N=10
+ * do one row at a time to avoid "too complicated" message from cc.
+ */
+  var connect[N,N]: bool
+  connect[ 1,1:N] := (f, t, t, f, f, f, t, t, f, f)
+  connect[ 2,1:N] := (t, f, f, f, f, f, f, f, f, f)
+  connect[ 3,1:N] := (t, f, f, f, f, f, f, f, f, f)
+  connect[ 4,1:N] := (f, f, f, f, t, f, f, f, f, t)
+  connect[ 5,1:N] := (f, f, f, t, f, t, f, f, t, f)
+  connect[ 6,1:N] := (f, f, f, f, t, f, t, f, f, f)
+  connect[ 7,1:N] := (t, f, f, f, f, t, f, t, f, f)
+  connect[ 8,1:N] := (t, f, f, f, f, f, t, f, f, f)
+  connect[ 9,1:N] := (f, f, f, f, t, f, f, f, f, t)
+  connect[10,1:N] := (f, f, f, t, f, f, f, f, t, f)
+
+  _process_body1(node, i)
+    var p := i
+    _do
+      _guard_iq1(j,1,N, p=i and connect[i][j], node[j],pairup, ()) -> p := j
+      _guard_oq1(j,1,N, p=i and connect[i][j], node[j],pairup, ()) -> p := j
+    _od
+    write(i, "paired with", p)
+  _process_end
+
+_program_end

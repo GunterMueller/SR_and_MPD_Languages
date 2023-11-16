@@ -1,0 +1,25 @@
+# test multiple replies
+# no output between calls to keep output determinstic.
+resource rep2()
+	op p1(x: int)
+	op p2(x:int)
+
+
+	call p1(1)
+	call p2(3)
+
+
+	proc p1(x)
+		write(x)
+		reply
+		write(777)
+		reply
+	 	in p2(y) ->
+			write(y)
+			reply
+			write(888)
+			reply
+			write(999,-y)
+		ni
+	end
+end

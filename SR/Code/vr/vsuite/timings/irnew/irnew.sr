@@ -1,0 +1,41 @@
+# interresource call with a new process creation
+# a proc is created on another resource in the same VM.  No 
+# optimization is done.
+
+resource server
+  op dummy()
+
+body server()
+	
+  proc dummy()
+    if false -> reply fi 		# forces creation of process when  
+  end					# proc is called.
+
+end
+
+resource fork()
+  import server
+
+  var limit, factor, base, trials :int 
+  var sc : cap server
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit := factor * base
+
+  sc := create server()
+
+  process test
+    var start, finish : int
+
+    fa t := 1 to trials ->
+        start := age()
+        fa i := 1 to limit -> call sc.dummy() af
+        finish := age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    af					# avoids memory overflow
+
+  end
+
+end

@@ -1,0 +1,15 @@
+resource t()
+	# former test 4
+	type r = rec(a: int; b: bool);
+	var a := (r(3, true), r(4, false), r(17, true));
+	fa i := 1 to 3 ->
+		write(a[i].a, a[i].b);
+	af
+
+	# former test 5
+	type s = rec(a:int; b[0:5]: int);
+	var s1: s;
+	var a1[0:5] : int := (1,2,3,4,5,6);
+	s1 := s(5, a1);
+	write(s1.a, s1.b[3]);
+end

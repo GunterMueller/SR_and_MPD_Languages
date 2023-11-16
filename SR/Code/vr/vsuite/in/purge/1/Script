@@ -1,0 +1,5 @@
+# ron Wed, 18 Jan 89 17:34:07 PST
+0 sr -c purge.sr
+0 srl a
+0 run
+0 rm -rf Interfaces core *.out

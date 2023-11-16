@@ -1,0 +1,280 @@
+							July, 1989
+							March, 1992
+							July, 1992
+
+Here are some of the questions that have been mailed to the SR-project,
+with some answers.  Some of these answers differ from the original replies,
+because the system has changed since then.
+    
+-------------------------------------------------------------------------------
+
+   I understand that SR has been used for course work at the graduate
+   level at U of Arizona. Would it be possible to get some idea on the kind
+   of problems that were attempted ? 
+
+Among other things, SR was used in a graduate level course in principles of
+concurrent programming as a small programming project and in a larger project
+course or independent studies.  Typical projects were ATM simulations,
+airline reservation systems, replicated databases, pieces of distributed
+operating systems, and experiments in fault-tolerance.  SR is being used
+similarly at UC Davis.
+
+-------------------------------------------------------------------------------
+
+    What kinds of restrictions apply to C functions referenced as "external"
+    from SR?  For example, is it possible to make blocking systems calls?
+    Would there be any interference with SR to use TCP/IP sockets?
+
+The general rule is, "be careful".  That is, once you get outside the
+bounds of the SR language proper, it's possible to mess things up
+fairly easily.  SR assumes that it knows what's going on in its process,
+and can get awfully confused if things happen behind its back.
+
+I realize that's awfully vague, but that's the general situation, and
+we haven't any documentation that's more precise.
+
+Externals work best for accessing quick system calls (getpid, chmod, etc.)
+not available directly, and for escaping into C for heavy numerical
+calculation.
+
+To answer your specific questions, if a system call blocks it will block
+ALL the SR processes within the virtual machine (Unix process).  That
+may or may not be a problem, depending on the program.
+
+I don't see any specific problem with sockets, as long as you stay away
+from the ones SR is using.
+
+-------------------------------------------------------------------------------
+
+    How could I establish a communication between a process running 
+    on a machine A and a daemon running on a machine B, with A <> B?
+    The only thing that the client knows is the resource name that he
+    wants to use and also the hostname where the daemon that contains
+    the resource runs.  Could you please send a little piece of code
+    that implements a short example?
+    
+SR doesn't provide a means for two independent programs to establish
+communications.  It only handles communications within a single SR "program",
+possibly running on multiple machines.
+
+-------------------------------------------------------------------------------
+
+   Do you know if anyone  has rewritten the socket routines to translate
+   into standard network byte-ordering?  We have a network of Suns and
+   Vaxes and would run SR on all of them instead of just on the Suns if so.
+   If no one has done it, are you interested if we make such revisions?
+
+Not to our knowledge;  we'd definitely be interested.
+
+-------------------------------------------------------------------------------
+
+    I was surprised to find that new is a keyword.  It is the only pre-defined
+    function (other than int, char, bool, which are already keywords) that is
+    a keyword.  Sort of odd; e.g., new is reserved, but free is not. 
+
+This was done to make parsing simpler;  new(x) differs from a "normal"
+function in that its argument x is not an expression, but instead a type name.
+For precedent consider "sizeof" in C or "new" in C++.
+"low" and "high" are also keywords, for the same reason.
+
+-------------------------------------------------------------------------------
+
+    What does your verification suite do?
+
+It runs about 450 sr programs and verifies that the output is as expected.
+Most of the programs are very simpleminded and just test one aspect of
+the compiler;  few are "real" SR programs.
+
+The whole process is controlled by a shell script "srv" that walks the
+"vsuite" directory tree.  "srv" and a small subset of the "vsuite" tree
+are part of the basic SR distribution in order to verify a successful
+build and installation.
+
+-------------------------------------------------------------------------------
+
+    Under what shell do your run the Scripts in your examples/* directories?
+    I don't recognize the leading '0' in the command lines of those Scripts.
+    
+They're run under control of the shell script "srv".  Each line contains a
+/bin/sh command, preceded by the expected exit status.  "srv" also does
+some implicit I/O redirection.
+
+-------------------------------------------------------------------------------
+
+    I'm getting an "RTS abort: stack corrupted" error.  Could this
+    error have come up as a result of a bug in my code, or is it a sign of
+    an SR bug?
+
+SR performs a few simple sanity checks before switching process stacks;  the
+message indicates that one of these failed, and something is wrong.  It could
+be due, for example, to storing using a bad subscript.
+
+-------------------------------------------------------------------------------
+
+    How can I add a new built-in procedure to the compiler?
+
+You need to modify at least three files in the compiler (sr) subdirectory:
+
+--  add an entry to sr/predefs.h
+
+--  add signature checking code in presig.c
+
+--- add code generation in pregen.c
+
+
+-------------------------------------------------------------------------------
+
+    I would be grateful for any hints on how to debug compiler problems.
+
+We use CodeCenter (formerly Saber C), dbx, and occasionally Purify.
+"sr -dxxx" is useful for printing data structures; see the file sr/Debugs
+for the meanings of the xxx flags.  
+
+    Do you have any documentation on the compiler, beyond what is
+    in the code?
+
+There's a little bit of stuff in the notes subdirectory,
+in particular the Tour outline.
+
+    Is there any utility to print out nodes, in a readable format? 
+
+Try ptree(nodeptr), which prints a tree of nodes (& their signatures)
+recursively.
+
+-------------------------------------------------------------------------------
+
+    We are having some fundamental problems understanding the basic
+    mapping of SR resources/processes and messages to their actual
+    Unix implementations.
+
+Each instance of an SR virtual machine is implemented as a Unix process
+(possibly but not necessarily on a different host from the first one).
+
+Each instance of an SR resource is a lightweight process within a virtual
+machine.  SR implements the lightweight processes itself.
+
+Messages are passed by Berkeley sockets if between different virtual
+machines, otherwise via memory (which of course is shared by all the
+lightweight processes).
+
+-------------------------------------------------------------------------------
+
+    I still do not understand the purpose of the srx
+    process.  I've mapped out the message paths of
+    all the messages that pass through the srx process.
+    Why aren't these messages sent directly to the
+    remote process?  In the case of the REQ_CREVM
+    message, why isn't the execl (rsh, ...) executed
+    directly from the rts process?
+    
+srx exists because we thought it would be a bit simpler to have a central
+point of focus for distributed programs.  For example, because srx starts
+all new virtual machines, it can easily ensure that they have unique
+numbers.  Although srx gets involved in starting VMs and putting them in
+touch with each other, they talk directly with each other from then on.
+
+-------------------------------------------------------------------------------
+
+	    I have had trouble using dbx with SR programs that run srx.  If
+    I compile sr/examples/remote/remote.sr with the -g switch and then run
+    the program under dbx, I get various errors: 'source file busy' 'srx cant
+    execute' 'stack overwritten; can't trace'.  Is there a way around these
+    problems?
+
+Not really (although I don't understand the one about "source file busy").
+The debugging of parallel programs is a hot research topic these days,
+and lots of people have lots of ideas, but we haven't done anything for SR.
+The old method of sticking in print statements can help.
+
+Also, you can set the environment variable SR_TRACE to a hexadecimal value;
+the different bits enable different sorts of debugging traces, as defined
+in rts/debug.h.
+
+-------------------------------------------------------------------------------
+    
+    In the io.c source code the CHECK_FILE macro accepts
+    three parameters: locn, fp, and rv.  If the fp is the noop
+    file, CHECK_FILE returns rv.  Why does it return rv?
+    As far as I can tell, none of the code that calls
+    CHECK_FILE uses the return value.
+
+The return values may be used by generated code, for example in
+    if read(f,i) = EOF -> ...
+
+-------------------------------------------------------------------------------
+
+    We have been looking at the C-code generated to invoke an operation.
+    We observed the use made of the comma operation in C. Neither of us
+    has made use of it before, and the cursory discussion in the literature
+    did not enlighten us as to why it is used here (at the end of each line
+    of code).  The code would appear to make sense with the comma replaced
+    by a semicolon.
+
+The value of a comma operator is its right operand; for example,
+	z = (1+2, 3+4);
+assigns 7 to z.
+
+The reason for the heavy use of the comma operator is that the compiler
+can be in the middle of something else, such as  generating an argument
+list, when it discovers that it needs to do a sequence of assignments.
+C doesn't allow multiple statments in the middle of an expression, i.e.
+	foo(a,b,{x=12;y=b-a;c=x*y});
+but SR can get what it needs by generating
+	foo(a,b,(x=12,y=b-a,c=x*y));
+which in the absence of side effects works like
+	x = 12;
+	y = b - a;
+	c = x * y;
+	foo(a,b,c);
+but is much easier to generate.
+
+The comma is also used sometimes when a semicolon would work,
+because the same generation routines are used in different situations.
+
+-------------------------------------------------------------------------------
+
+    - Could you elaborate on "An SR program runs on one or more networked
+	machines of the same architecture."?
+
+All SR programs execute using lightweight processes.  These may run in
+multiple Unix processes, but there are always many more lightweight
+processes than Unix processes.
+
+Depending on how a particular program is structured, the lightweight
+processes are distributed
+    (1) within a single Unix process
+or  (2) among multiple Unix processes on a single host
+or  (3) among multiple processes on multiple hosts (using rsh(1))
+
+The details are handled within SR;  the programmer just compiles the program
+and runs "a.out".  However, the multiple machines must have a close enough
+hardware and software environment to let them run the same executable file.
+
+    - Does SR have any of Icon's string scanning and backtracking?
+	[For those who don't know, Icon is from Arizona, too.]
+
+Nope.  SR is in most respects fairly traditional, and has more of a
+Pascal flavor than anything else.
+
+    - Could you compare & contrast SR with Ada's task model, Occam,
+	and the BBN Butterfly's MultiScheme?
+
+SR's process and interprocess communication model is similar in some
+ways to Ada and Occam, but is considerably more flexible.  The Jan 88
+TOPLAS paper gives the details.
+
+    - What is meant by "synchronizing?"  To be more specific, is the term
+	used in the asynch/sync sense or the synch/out-of-synch sense?
+
+The former.
+
+    - Has the underlying paradigm been formalized as in Hoare's CSP?
+
+No.
+
+    - Can the denotational semantics be described in terms of temporal logic?
+
+Not sure exactly what you mean here.  Some work on using continuations
+to express concurrency in denotational semantics has appeared recently
+(maybe in POPL?).  However, its relationship, if any, to temporal
+logic is not at all clear.

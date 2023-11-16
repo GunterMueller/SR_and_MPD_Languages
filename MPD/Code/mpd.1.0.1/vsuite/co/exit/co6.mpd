@@ -1,0 +1,34 @@
+# test exit and next.
+# output nondeterministic.
+resource co6()
+	op p(int a, int b)
+
+	int x = -5
+	int y = -6
+	write("begin:", x,y)
+	co [ i = 1 to 5] call p (11*i, i*11) ->
+		write ("exiting first co")
+		exit
+	oc
+	co [ i= 1 to 4, j = 2 to 3 ] call p(x,y) ->
+		write ("after quantified p(x,y):", i, j)
+		p(i,j)
+		if (i > j) { next }
+		p(-i,-j)
+	// call p(x,y) ->
+		write ("after simple p(x,y)")
+		co [ i=3 downto 0 ] call p(i,-1111) ->
+			write("testing i:", i)
+			if (i == 1) { next }
+			write("didn't pass:", i) 
+		oc
+	oc
+	write("done:",x,y)
+
+	proc p(a,b)  {
+		write("in p:",a,b)
+		# the following assignments should have no effect
+		a= 55555
+		b= 66666
+	}
+end

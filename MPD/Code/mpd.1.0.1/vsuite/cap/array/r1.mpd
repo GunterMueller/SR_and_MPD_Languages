@@ -1,0 +1,42 @@
+resource r2
+    op print(int x)
+body r2(int i)
+
+proc print(x)  {
+    write("printing", x, "from resource", i)
+}
+end
+
+
+
+resource r1
+    import r2
+body r1()
+    op p1(cap r2.print x)
+    op p2(cap r2 x)
+
+    cap r2  a[1:10]
+
+    for [ i = 1 to 10 ] {
+	a[i] = create r2(i)
+    }
+
+    call a[3].print(17)
+    call a[7].print(10005)
+    call p1(a[4].print)
+    call p2(a[6])
+
+    for [ i = 10 downto 1 ] {
+	destroy a[i]
+    }
+
+proc p1(x)  {
+    call x(-19)
+}
+
+proc p2(x)  {
+    call x.print(-27)
+}
+end
+
+

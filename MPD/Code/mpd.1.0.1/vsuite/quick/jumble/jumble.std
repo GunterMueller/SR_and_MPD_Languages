@@ -1,0 +1,152 @@
+hello, complex world...
+2 2.10000 2 3 4 3 3 4 3 2
+43 true \ 3.14159 3.00000e-20 5.00000e+20
+-5 17 3 8 5 7 -4 93 63 8 3
+2 3 -3 -2
+2.00000 3.00000 -3.00000 -2.00000
+9 3.37500 3.00000 0.500000 -27.0000
+1 11 10 -4
+true false false
+true false true true
+true
+false true true
+true
+augmops: 3 11 7 35 17 3 9 13 5 20 2 5.00000 2.50000 6.25000 1.75000
+3 args: 1992 1.61803 refrigerator
+casts:
+  true false true false true false true false true false true
+  ! # / b 2 0 0
+  98 99 100 -100 100 29 47 2 1 0 2 0
+  2.00000 47.0000 3.14159 1.00000 29.0000 2.00000 0.00000
+  finally  29  % 97 2.71830 2 true false ==null==
+11 -39 y b
+false true 0 255 -2147483648 2147483647 0 0 3 4 3 3
+conv: 2 100 64 256
+machine 0 priority 0, now 1492
+abs &c   5 7 14.9200 19.9100
+min/max  3 -1.20000 12.7000 94
+sqrt &c  1.73205 1.00000 2.00000
+round    1.00000 2.00000 2.00000 2.00000
+round    -1.00000 -2.00000 -2.00000 -2.00000
+log      0.00000 0.999999 0.333333 2.00000
+exp      1.00000 2.71828 7.38906 16.0000
+pi       3.14159
+sines    0.707107 0.866025 1.00000 0.00000 1.57080
+cosines  0.707107 0.500000 -1.00000 0.00000 1.57080
+tangents 1.00000 1.73205 -1.00000 0.785398 1.57080
+random   1.47092 8.17073 2.38948 12.3536 1.47092 8.17073 2.38948 12.3536 89.9360
+/tmp/xyzzy: 3 10 
+d 64 100 100 100.000000 144 144
+< true FALSE f T       true false      >
+apples    berries   cherries  !
+3.141590 3.142 3.141590e+00
+ 88.900   1.000 721.000  27.339 -47.832   2.718   3.142   3.236  11.778   4.344
+:00012345:
+d 64 100 100 100.000000 144 144
+sscanf returned 3
+64 100 100.000
+.25/\.23/\.22.35/\.33.32/\.45/\.43/\.42/\.55/\.53
+1 3 5 7 11 
+fib(1:20): 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
+varparam: 14 -> 42
+externals: getenv(SHELL)=/bin/sh fprintf(stdout,%05d,47)=00047
+using optypes: 1492 3 169 15.0000
+1.00000 5.00000 9.00000 2.30000 6.70000 1.00000 4.00000 8.00000 1.10000 
+3 5 3 5 7 11
+307 308 309 310 311 407 408 409 410 411 507 508 509 510 511 
+508 509 510 511 
+this is a test string and this is another
+bisbee 1 6 bi sb ee bisbee 3 8 bi sb ee scottsdale 10 10 sc otts dale
+strings/arrays: abcd abc bcd abcd abcd abc bcd abcd abxd abxd bookkeeper
+slice assignment: DEFG abcDEFGhij UTS zyxwvUTSrq hij hijDEFGhij DEF zDEFvUTSrq
+id matrix: 1 0 0 0 1 0 0 0 1
+[0/0] [1/1]a [2/2]ab [3/3]abc [4/4]abcd 
+[1:0] [1:1]z [1:2]zy [1:3]zyx [1:4]zyxw [1:5]zyxwv [1:6]zyxwvu [1:8]zyxwvuts 
+rec: 3 12.0000 7 5 8.00000 13.0000
+sending 23,39,42; sending 47,74,93; received 23,39,42; received 47,74,93; 
+sending 13,17,19; sending 53,59,67; in(13,17,19); in(53,59,67) [i=13]
+in: 5 10 15 20 25 1 6 11 16 21 2 =3 7 12 17 22 8 13 18 23 4 =9 14 19 =24
+subscripted op: 156 157 146 147 136 137 256 257 246 247 236 237
+local ops:  got loc1, got 3, got 1, got  2
+3 2 1 0
+calling waitsig; waitsig replying; sending signal; waitsig done.
+fwd 11 4 here
+fwd 11 4 done
+fwd 22 5 here
+fwd 22 5 done
+fwd 33 5 here
+fwd 33 5 done
+fwd 11 3 here
+fwd 11 3 done
+fwd 22 4 here
+fwd 22 4 done
+fwd 33 4 here
+fwd 33 4 done
+fwd 11 2 here
+fwd 11 2 done
+fwd 22 3 here
+fwd 22 3 done
+fwd 33 3 here
+fwd 33 3 done
+fwd 11 1 here
+fwd 11 1 done
+fwd 22 2 here
+fwd 22 2 done
+fwd 33 2 here
+fwd 33 2 done
+fwd 11 0 here
+fwd 11 0 done
+fwd 22 1 here
+fwd 22 1 done
+fwd 33 1 here
+fwd 33 1 done
+fwd 22 0 here
+fwd 22 0 done
+fwd 33 0 here
+fwd 33 0 done
+fwd 44 3 here
+fwd 44 3 done
+fwd 44 2 here
+fwd 44 2 done
+fwd 44 1 here
+fwd 44 1 done
+fwd 44 0 here
+fwd 44 0 done
+process ps: 
+  ps 1 8
+  ps 1 5
+  ps 1 2
+  ps 4 8
+  ps 4 5
+  ps 4 2
+  ps 7 8
+  ps 7 5
+  ps 7 2
+  ps 10 8
+  ps 10 5
+  ps 10 2
+process ps: 
+  ps 47 39
+co stmt:
+  b. ca[ 6 ]  is f
+  b. ca[ 5 ]  is e
+  b. ca[ 4 ]  is d
+  a. ca[ 3 ]  is c
+  a. ca[ 2 ]  is b
+  a. ca[ 1 ]  is a
+  ca: abcdef
+global ggg here
+491 locomotive
+global op gop here
+193 oceanliner
+gsem [I]  6
+gsem [II] 5
+929 perturbation
+rrr( geranium , 11213.0 ) replying
+rrr napping
+rrr created
+rrr final
+rrr killed
+done!
+main final
+global ggg final

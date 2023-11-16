@@ -1,0 +1,5 @@
+#  gmt  Fri Feb 24 15:00:10 MST 1989
+0 sr -c arith.sr
+0 srl arith
+0 run
+0 rm -rf Interfaces core *.out

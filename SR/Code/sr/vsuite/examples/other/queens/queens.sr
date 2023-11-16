@@ -1,0 +1,57 @@
+# Generate all possible solutions to the 8 queens problem.
+# The board is represented by board[1:8], which records
+# for each column whether there is a queen in that column,
+# and if so, which row it occupies.  In particular,
+#
+#   board[j] = i if there is a queen in row i of column j
+#            = 0 otherwise
+
+
+resource EightQueens()
+
+  op safe(row, column: int; board[1:8]: int) returns answer: bool
+  op place(column: int; board[1:8]: int)
+  var solution : int := 0
+
+  # Check whether it is safe to place a queen at row r, column c;
+  #   i.e., is b[c]=r a safe configuration?
+  proc safe(r,c,b) returns a
+    fa j := 1 to c-1 ->
+          if b[c-j]=r or b[c-j]=r-j or b[c-j]=r+j ->
+              a := false
+              return
+          fi
+    af
+    a := true
+  end
+
+
+  # Place a queen in all safe positions of column c,
+  # then try placing a queen in the next column.
+  # If a position in column 8 is safe, print the board.
+  proc place(c,b)
+    fa r := 1 to 8 ->
+        b[c] := r               # try placing a queen in (r,c)
+        if safe(r,c,b) ->
+            if c=8 ->           # have a solution
+                solution++
+                if solution<10  -> writes(solution,"   ")
+                [] solution>=10 -> writes(solution,"  ")
+                fi
+                fa i := 1 to 7 -> writes(b[i],"  ") af
+                write(b[8])
+            [] c<8 ->           # try next column
+                place(c+1,b)
+            fi
+        fi
+        b[c] := 0               # unrecord that a queen was placed
+    af
+  end
+
+  var board[1:8]: int := ([8] 0)
+  write("  Solutions to the 8 queens problem")
+  write("  Each line lists, for columns 1:8, the row each queen occupies")
+  write()
+  place(1,board)
+
+end

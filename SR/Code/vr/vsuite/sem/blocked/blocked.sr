@@ -1,0 +1,38 @@
+# program is buggy, but got a segmentation fault before;
+# now it exercises the iop.c code that updates blocked_on
+#
+# nondeterministic.
+
+resource jacobi
+   op worker(who:int)
+body jacobi()
+   sem arrive, continue
+
+   process coord
+      do true ->
+	   P(arrive)
+	   write("coord")
+	   V(continue)
+      od
+   end
+
+   proc worker(who)
+      do true ->
+	   V(arrive)
+	   P(continue)
+	   write(who,"continuing")
+	   exit
+      od
+   end
+end
+
+resource main()
+   import jacobi
+   var j := create jacobi()
+   fa i := 1 to 2 ->
+      send j.worker(i)
+   af
+   nap(5000)
+   write("destroying j")
+   destroy j
+end

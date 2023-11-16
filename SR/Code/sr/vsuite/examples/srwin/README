@@ -1,0 +1,88 @@
+This directory contains some sample programs that use SRWin to create
+graphics displays.
+
+To build and run one of these while running on an X terminal, enter
+	sr file.sr srwin.o -lX11
+	a.out
+(The -lX11 parameter may differ depending on your local environment.)
+
+
+The files included here are:
+
+colors.20
+colors.50
+colors.100
+	- RGB color files used by some of the programs below.  Each entry is a
+	  triple: intensity values for red, green, and blue.  Suffixes indicate
+	  the numbers of entries in a file.
+
+demo.sr
+	- A demonstration of various SRWin functions.  The program opens a
+	  window, sets the title, and beeps.  To draw in the window, press:
+		a - Arcs
+		b - Clear to black
+		c - Copy legends
+		g - Clear to green
+		h - Hide for a while (map/unmap)
+		i - Image copying to random locations
+		l - Lightning (polyline)
+		q - Quit
+		s - Stars (pixel)
+
+button.sr
+	- A program that implements and tests software buttons.
+
+
+hello.sr
+	- A simple program that prints "Hello world" and draws flying polygons.
+	  Several red and blue polygons float and bounce in the window.  A
+	  "Hello World" line appears and disappears randomly.
+
+gauss.sr
+	- Illustrates the Gauss-Seidel computation.  Usage:
+
+	    gauss Size_of_image Number_of_Workers
+	          North_value West_value South_value West_value < Color_file
+
+	  Arguments are optional.  The computation averages the image
+	  iteratively.  Hot color stands for value close to 1.0, cold
+	  stands for value close to 0.0.
+
+mandel.sr
+	- Computes the Mandelbrot set.  Usage:
+
+	    mandel Number_of_Workers Window_Width Window_Height
+		   X1 X2 Y1 Y2 Threshold < Color_file
+
+	  Arguments are optional.  The program first shows the color space it
+	  using.  The whole image is computed before it is displayed.  See the
+	  program for different coloring styles.  An example (a dragon like
+	  image):
+
+	    mandel 5 1000 800 -0.74591 -0.74448 0.11196 0.11339 150 < colors.100
+
+qsort.sr
+	- Visualization of the quick sort algorithm.  Initially, some random
+	  boxes are scattered in the window.  The X coordinate of a box
+	  represents its position in the data set.  The Y coordinate represents
+	  its value.  The program sorts the data in ascending order using a
+	  quicksort algorithm; the first element of each partition is chosen
+	  as its pivot.  During sorting, different box colors reflect different
+	  SR processes.  Dashed lines show the partitioning.  Simple directions
+	  are displayed at the bottom; press "q" to quit at any time.
+
+	Usage:
+
+	  qsort WindowSize Points DotSize
+
+winquad.sr
+	- Visualization of quadrature computation.  Press the space bar to
+	  start.  The computation involves 4 worker processes computing the
+	  integral of a function using an adaptive algorithm.  Each task is
+	  divided until it falls into some threshold.  A "done bar" is drawn
+	  at the top of the window, indicating that area has been computed.
+	  Press "q" to quit.
+
+	Usage:
+
+	  winquad StartXValue EndXValue Delay

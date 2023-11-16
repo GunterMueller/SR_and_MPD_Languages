@@ -1,0 +1,18 @@
+#  test that stop sets the exit status correctly
+#  test that final is executed only if stop code is 0
+
+resource foo ()
+
+	var n : int
+	if numargs() < 1 ->
+		stop fi
+	getarg (1, n)
+	stop (n)
+	write ("didn't stop")
+
+final
+	write ("final here")
+end
+
+
+end foo

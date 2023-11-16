@@ -1,0 +1,4 @@
+0 sr -c Queue.sr ArrayQueue.sr User.sr
+0 srl ArrayQueue User
+0 run
+0 rm -rf Interfaces core *.out

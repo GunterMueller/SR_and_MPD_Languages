@@ -1,0 +1,74 @@
+# test lots of different trace messages
+# also incidentally tests forward from within co-call, which got a segm fault
+
+global g ()
+   write ("g initializing")
+   process p  {
+      write ("global g here")
+   }
+   final {
+      write ("g finalizing")
+   }
+end
+
+resource h ()
+   write ("h initializing")
+   import g
+   write ("h here")
+   final {
+      write ("h finalizing")
+   }
+end
+
+resource r ()
+   write ("r initializing")
+   import h
+   sem s = 5
+   sem t
+   int  n 
+
+   op o(int i); op p(int i); op q(int i)
+   proc p (i)  {
+      write ("   p", i)
+   }
+   proc q(i)  {
+      if (i == 4) { return }
+      if (i == 5) { reply }
+      if (i == 6) { forward p(i) }
+   }
+
+   P(s)
+   V(t)
+   P(t)
+   V(s)
+
+   send o(1)
+   receive o(n)
+   write("n =", n)
+   send o(2)
+   send o(-5)
+   for [ i = 1 to 3 ] {
+      in o(n) st n < 0 ->
+	 write (n, "< 0")
+      [] o(n) st n > 0 ->
+	 write (n, "> 0")
+      [] else ->
+	 write ("no n")
+      ni
+   }
+
+   co [ i = 1 to 2 ]
+      p(i)
+   // [ i = 3 to 6 ]
+      q(i)
+   oc
+
+   cap h hcap = create h()
+   destroy hcap
+
+   destroy create vm()
+
+   final {
+      write ("r finalizing")
+   }
+end

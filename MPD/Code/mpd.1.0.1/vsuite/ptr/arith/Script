@@ -1,0 +1,5 @@
+#  gmt  Fri Feb 24 15:00:10 MST 1989
+0 mpd -c arith.mpd
+0 mpdl arith
+0 run
+0 rm -rf MPDinter core *.out

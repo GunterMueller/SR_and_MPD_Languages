@@ -1,0 +1,27 @@
+resource des4()
+	write(44)
+
+	final {
+		write(33)
+	}
+end
+
+resource d4
+import des4
+body d4()
+	cap des4  a 
+
+	write(55)
+	a = create des4()
+	write(66)
+	destroy a
+	write(77)
+
+	# do it all at once; didn't work in v2.0
+	#%#% sigh.. now works, but some C compilers can't handle it
+	#%#% destroy create des4 ()
+
+	final {
+		write(88)
+	}
+end

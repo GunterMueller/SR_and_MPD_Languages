@@ -1,0 +1,12 @@
+#  gmt  Wed May 24 17:37:46 MST 1989
+0 sr -c tty.sr
+0 srl main
+
+# We don't actually execute this any more: under solaris 2.3, it hangs forever.
+# (Under Solaris 2.0, 2.1, or 2.2 it aborts.)
+# Maybe Sun will eventually get select() right.
+
+# 0 a.out /dev/null >No_input.out 2>&1
+# 0 cmp -s No_input.std No_input.out
+
+0 rm -rf Interfaces core *.out

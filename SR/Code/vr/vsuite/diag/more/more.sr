@@ -1,0 +1,464 @@
+#  more test of error messages, not yet classified
+
+% incompatible bounds
+	resource main()
+ 	var array[2.3:0] :int
+	end
+
+% location is not a vm cap
+	resource main()
+	var n:int;
+	create main() on n
+	end
+
+% non-string concatenation
+	resource main()
+	var n:int
+	var f:real
+  	n || f
+  	end
+
+% invalid co-invocation
+	resource main()
+	co sin(3) oc
+	end
+
+% destroy object is not a capability
+	resource main()
+  	destroy main
+  	end
+
+% illegal parameter type for external
+	resource main()
+	op p()
+	var q: cap p
+	external backend (q : cap p)
+	proc p()
+	end
+        end	
+
+% illegal parameter type for external
+	resource main()
+	op p()
+	var q: cap p
+	external backend (ref q : cap p)
+	proc p()
+	end
+	end
+
+% no restrictions allowed on external
+	resource main()
+	external backend () {call}
+	end
+
+% illegal return type for external
+	resource main()
+	external backend (path: string[*]) returns ta[2:2]:real
+	end
+
+% duplicate .final. code
+	resource main()
+	final
+	end
+	final
+	end
+  	end
+
+% forward to incompatible op
+	resource main()
+  	op request(t: int) returns z : int
+  	op r(t: char) returns z : char
+	proc request(t) returns z
+      	forward r('c')
+	end
+	proc r(t) returns z
+  	end
+  	end
+
+% forward: not allowed outside a proc
+	resource main()
+  	op r()
+  	forward r()
+	proc r()
+  	end
+  	end
+
+% forward: op is restricted {call}
+	resource main()
+  	op f()  {call}
+  	op request() {call}
+	proc request()
+ 	forward f()
+	end
+	proc f()
+	end
+  	end
+
+% low/high: not an ordered type
+	resource main()
+  	type str =  string[2]
+  	var s:str
+  	low(str)
+  	end
+
+% a proc cannot implement an array op
+	resource main()
+  	op f[2]()
+  	proc f()
+  	end
+  	end
+
+% incorrect subscripting of p
+# tried to slice it
+	resource r
+    	op p[4] (int)
+	body r ()
+    	process pp (i := 1 to 4)
+       	in p[i:3](n) -> write ("p", i, ":", n) ni
+    	end
+	end
+
+% receive: argument 1 is incompatible
+ 	resource rcv1()
+        op p(x:int)
+        var z:string[2]
+        receive p(z)
+	end
+
+% non-constant array bounds in spec or record
+	resource main()
+  	var k:int
+  	type point = rec(y[1:k]:int); var a : ptr point
+  	a := new(point)
+  	end
+
+% non-constant string length in spec or record
+	resource main()
+  	var k:int
+  	type point = rec(y:string[k]); var a : ptr point
+  	a := new(point)
+  	end
+
+% cannot swap into or out of a slice
+	resource main()
+ 	var array[1:4] :int
+  	array[1:2] :=: array[2:3]
+	end
+
+% incompatible slice indices
+	resource main()
+ 	var array[1:4] :int
+  	array[1.0:2] := array[2:3]
+	end
+
+% wrong subscript type
+	resource main()
+ 	var array[1:4] :int
+  	array[1:2.0] := array[2:3]
+	end
+
+% both sides of swap operator must be variables
+	resource main()
+  	var n:int;
+  	n :=: 4
+  	end
+
+% sync expr must be boolean expression
+	resource r ()
+    	op p ()
+       	in p() st 45 -> write ("p") ni
+	end
+
+% no arguments allowed in .create vm().
+	resource main()
+	create vm(3)
+	end
+
+
+% non-string concatenation
+	resource main()
+	var n:int
+  	n ||:= 5
+  	end
+
+% not an op: x
+	resource main()
+  	var x:int
+  	receive x()
+	end
+
+% ambigous: don.t know what kind of null/noop
+	resource main()
+  	var x:=(null,noop)
+	end
+
+% non-integer shift operand
+	resource main()
+  	var v:int
+  	v := v << 4.4
+	end
+
+% incompatible swap
+  	resource main()
+    	var v:int
+    	v:=:"e"
+  	end
+
+% increment/decrement: not an ordered type
+	resource main()
+  	var v:string[3]
+   	v--
+	end
+
+% non-integer shift operand
+	resource main()
+  	var v:real
+   	v <<:= v
+	end
+
+% maxlength is not an integer
+	resource main()
+ 	var v:string[.3]
+	end
+
+% single bound is not integer
+	resource main()
+ 	var v[.3]:real
+	end
+
+% non-numeric exponentiation operand
+	resource main()
+ 	"s" ** 2
+	end
+
+% NOT operand is not bool or int
+	resource main()
+ 	var v:real
+ 	v:=~v
+	end
+
+% incompatible pointer subtraction
+	resource main()
+  	type point = rec(y[1:2]:int); var a : ptr point
+  	a - 3.3
+  	end
+
+% illegal or mismatched and/or/xor operands
+	resource main()
+  	type point = rec(y[1:2]:int); var a : ptr point
+  	a & a
+  	end
+
+% dereference object is not a pointer
+	resource main()
+ 	var s:bool
+  	s^
+	end
+
+
+% unary +/- operand is not simple numeric
+	 resource main()
+	var v:string[2]
+	-v[2]
+	end
+
+% subscripted object is not an array
+	#note, this is given twice
+	resource main()
+ 	var s:bool
+  	s[2:3] :=: s[2:3]
+	end
+
+% vm location is neither integer nor string
+	resource main()
+ 	var s:bool
+  	create vm() on s
+	end
+
+% element 3 of constructor is incompatible
+	resource main()
+ 	var s:= (1,2,"s")
+	end
+
+% too many subscripts
+	#two times
+	resource main()
+ 	var s[3:4]:real
+  	s[3:3,3:4] :=: s[3:3,4:4]
+	end
+
+% non-numeric operand or incompatible assignm
+	resource main()
+ 	var s:real
+  	s*:="s"
+	end
+
+% illegal or mismatched and/or/xor operands
+	resource main()
+ 	var s:real
+  	s&:="s"
+	end
+
+% too many subscripts
+	resource main()
+ 	var s: string[4]
+  	s[3:3,3:4] :=: s[3:3,4:4]
+	end
+
+% comment terminator outside comment
+ 	*/
+	resource main()
+  	end
+
+% illegal character .$.
+	resource main()
+  	$
+	end
+
+% circle: type never defined
+	resource main()
+  	var s:ptr circle
+	end
+
+% exp(): too many arguments
+	resource main()
+	exp(3,3,3,4)
+	end
+
+% exp(): too few arguments
+	resource main()
+	exp()
+	end
+
+% unterminated string
+	resource main()
+	var s:string[20]
+	s := "s
+	end
+
+% empty character literal
+	resource main()
+	var c:char
+	c := ''
+	end
+
+% illegal context for .*. as array bound
+	resource main()
+	type array = [*] int
+	var b: ptr array
+	b := new(array)
+	end
+
+% cannot pass slice expression to ref parameter
+	resource main()
+    	op p(ref x[1:2]:int)
+    	var s[1:2]:int
+	p(s[1:2])
+	proc p(x)
+	end
+	end
+
+% both bounds are .*.
+	resource main()
+	op p( b[*:*]: int)
+	proc p(b)
+	end
+	end
+
+% character literal contains multiple characters
+	resource main()
+	var c:char
+	c := 'kd
+	'
+	end
+
+% newline in character literal
+	resource main()
+	var c:char
+	c :='
+	'
+	end
+
+% too few arguments
+	resource main()
+	printf(stderr)
+	end
+
+% unknown field: c
+	resource main ()
+    	var r : rec (a, b : int)
+    	r.c
+	end
+
+% no enclosing loop
+	resource main()
+	next
+	end
+
+% invalid type
+	resource main()
+	var s[1:2,4:5]:int
+	write(s[1:3,4:3])
+	end
+
+% repetition count is not an integer
+	resource r ()
+   	var v := (["foo"] 5)
+	end
+
+% can.t use .noop. in pointer context
+	resource r ()
+   	var p : ptr any := noop
+	end
+
+% duplicate implementation of p
+	resource main()
+	op p()
+	proc p()
+	end
+	receive p()
+	end
+
+% undefined identifier: f
+	resource r ()
+   	create f()
+	end
+
+% undefined identifier: y
+	resource a
+   	import b
+   	const x := y +3
+	end
+	resource b
+   	import a
+   	const y := x - 2
+	body b ()
+   	a.x
+	end
+
+% invalid type
+	resource main()
+	var s:string[2]
+	pred(s)
+	end
+
+% illegal type for conversion
+	resource main()
+	var s:string[2]
+	chars(noop)
+	end
+
+% seektype argument is wrong type
+	resource main()
+	seek(noop,noop,2)
+	end
+
+% unterminated comment at EOF
+	resource main()
+	end
+	/*
+
+% recursively defined record
+	resource r ()
+	type obj = rec (o : obj)
+	end

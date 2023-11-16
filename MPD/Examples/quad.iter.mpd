@@ -1,0 +1,30 @@
+# an iterative MPD program for approximating the integral
+# of f(x) from x==a to x==b for f(x) = sin(x)*exp(x)
+
+# usage:  a.out intervals a b
+
+resource iterative_quad()
+
+  int intervals; getarg(1, intervals);
+  real a, b; getarg(2, a); getarg(3, b);
+
+  procedure f(real x) returns real fx {
+    fx = sin(x) * exp(x);
+  }
+
+  real width = (b-a)/intervals;    # distance between intervals
+  real fleft = f(a), fright, area = 0.0;
+      # fleft is used to compute f(x) just once per value of x
+
+  int start = age();    # start time, in milliseconds
+  for [x = (a + width) to b by width ] {
+      fright = f(x);
+      area += (fleft + fright) * width / 2;  # trapezoidal rule
+      fleft = fright;
+  }
+  int finish = age();   # finish time, in milliseconds
+
+  write("intervals =", intervals," a =", a, " b = ", b);
+  write(" area =", area, " time = ",finish-start);
+
+end

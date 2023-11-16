@@ -1,0 +1,10 @@
+	procedure trapezoidal(a, b: real; n: int;
+	          f: cap realfun ) returns area: real
+	    var x := a
+	    var h := (b-a)/n
+	    area := (f(a)+f(b))/2
+	    fa i := 1 to n-1 ->
+	        x +:= h; area +:= f(x)
+	    af
+	    area /:= h
+	end

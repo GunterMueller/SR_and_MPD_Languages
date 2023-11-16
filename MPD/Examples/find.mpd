@@ -1,0 +1,43 @@
+global defs           # shared definitions
+  const int MAXPATTERN = 20
+  const int MAXFILENAME = 20
+  const int MAXLINE = 120
+end
+
+resource grep()
+  import defs
+
+  string[MAXPATTERN] pattern; getarg(1, pattern)
+  string[MAXFILENAME] filename; getarg(2, filename)
+  file fd = open(filename, READ)
+
+  string[MAXLINE] line[2]  # two lines of strings
+  int ln = 1               # index of line being filled by read()
+
+  procedure find(string[*] pattern, string[*] line) {
+    # if line contains pattern, write out line
+    int i = 1, plen = length(pattern)
+    while (i <= (length(line) - plen + 1)) {
+      if (pattern == line[i:i+plen-1]) {
+          write(filename || ":", line); return
+      }
+      i++
+    }
+  }
+
+  procedure doread(int ln) returns int result {
+    result = read(fd, line[ln])
+  }
+
+  int start = age()
+  # find all instances of pattern in filename
+  int result = doread(ln)
+  while (result != EOF) {
+    co find(pattern, line[ln])
+    // result = doread(3-ln)
+    oc
+    ln = 3-ln
+  }
+  int finish = age()
+  write("execution time is", finish-start)
+end

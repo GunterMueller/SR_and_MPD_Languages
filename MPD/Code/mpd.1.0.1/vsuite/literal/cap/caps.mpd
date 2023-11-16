@@ -1,0 +1,97 @@
+#  test null and noop capabilities
+
+resource Rs
+    op op1 (string[*] s)
+    op op2 (string[*] s)
+body Rs ()
+    proc op1 (s)  {
+	write ("1:", s)
+	}
+    proc op2 (s)  {
+	write ("2:", s)
+	}
+end Rs
+
+resource main ()
+    import Rs
+    cap Rs  xcap
+    cap vm  vmcap
+    cap () gcap
+
+    xcap = null
+    if (xcap != null) { write("oops 1") }
+    if (null != xcap) { write("oops 1a") }
+    if (xcap == noop) { write("oops 2") }
+    if (noop == xcap) { write("oops 2a") }
+    xcap = create Rs ()
+    if (xcap == null) { write("oops 3") }
+    if (null == xcap) { write("oops 3a") }
+    if (xcap == noop) { write("oops 4") }
+    if (noop == xcap) { write("oops 4a") }
+    xcap.op1("AAA")
+    xcap.op2("BBB")
+    xcap.op1 = noop
+    if (xcap.op1 == null) { write("oops 5") }
+    if (null == xcap.op1) { write("oops 5a") }
+    if (xcap.op1 != noop) { write("oops 6") }
+    if (noop != xcap.op1) { write("oops 6a") }
+    xcap.op1("OOPS 7")
+    xcap.op2("CCC")
+    xcap.op2 = null
+    if (xcap.op2 != null) { write("oops 8") }
+    if (null != xcap.op2) { write("oops 8a") }
+    if (xcap.op2 == noop) { write("oops 9") }
+    if (noop == xcap.op2) { write("oops 9a") }
+    xcap = noop
+    if (xcap == null) { write("oops 10") }
+    if (null == xcap) { write("oops 10a") }
+    if (xcap != noop) { write("oops 11") }
+    if (noop != xcap) { write("oops 11a") }
+    if (xcap.op2 == null) { write("oops 12") }
+    if (null == xcap.op2) { write("oops 12a") }
+    if (xcap.op2 != noop) { write("oops 13") }
+    if (noop != xcap.op2) { write("oops 13a") }
+    xcap.op1("OOPS 14")
+    xcap.op2("OOPS 15")
+    xcap = null
+    if (xcap != null) { write("oops 16") }
+    if (null != xcap) { write("oops 16a") }
+    if (xcap == noop) { write("oops 17") }
+    if (noop == xcap) { write("oops 17a") }
+    if (xcap.op2 != null) { write("oops 18") }
+    if (null != xcap.op2) { write("oops 18a") }
+    if (xcap.op2 == noop) { write("oops 19") }
+    if (noop == xcap.op2) { write("oops 19a") }
+
+    vmcap = null
+    if (vmcap != null) { write("oops 20") }
+    if (null != vmcap) { write("oops 20a") }
+    if (vmcap == noop) { write("oops 21") }
+    if (noop == vmcap) { write("oops 21a") }
+    vmcap = noop
+    if (vmcap == null) { write("oops 22") }
+    if (null == vmcap) { write("oops 22a") }
+    if (vmcap != noop) { write("oops 23") }
+    if (noop != vmcap) { write("oops 23a") }
+    vmcap = create vm()
+    if (vmcap == null) { write("oops 24 (create vm() failed?)") }
+    if (null == vmcap) { write("oops 24a (create vm() failed?)") }
+    if (vmcap == noop) { write("oops 25") }
+    if (noop == vmcap) { write("oops 25a") }
+
+    gcap = null
+    if (gcap != null) { write("oops 26") }
+    if (null != gcap) { write("oops 26a") }
+    if (gcap == noop) { write("oops 27") }
+    if (noop == gcap) { write("oops 27a") }
+    gcap = noop
+    if (gcap == null) { write("oops 28") }
+    if (null == gcap) { write("oops 28a") }
+    if (gcap != noop) { write("oops 29") }
+    if (noop != gcap) { write("oops 29a") }
+
+    null                # test as stand-alone expressions
+    noop
+    write("done!")
+
+end main

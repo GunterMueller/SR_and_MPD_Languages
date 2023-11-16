@@ -1,0 +1,21 @@
+resource cs3()
+  optype results_type = (...)
+  op request(results_cap: cap results_type; ...)
+  const N := 20  # number of client processes
+  process client(i := 1 to N)
+    op results: results_type
+     ...
+    send request(results,...)
+    # possibly perform some other work
+    receive results(...)
+     ...
+  end
+  process server
+    do true ->
+      var results_cap: cap results_type
+      receive request(results_cap, ...)
+      # handle request
+      send results_cap(...)
+    od
+  end
+end

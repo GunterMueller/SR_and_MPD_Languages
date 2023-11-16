@@ -1,0 +1,36 @@
+# test identical proc names in two different resources
+# (among other things)
+# (used to hang)
+
+resource common
+  op start(c : cap common)
+end
+
+resource r1
+  extend common
+body r1()
+  proc start(c)
+    write("r1 has started")
+    c.start(c)
+  end
+end
+
+resource r2
+  extend common
+body r2()
+  proc start(c)
+    write("r2 has started")
+  end
+end
+
+resource main
+  import common,r1,r2
+body main()
+
+    var ca : cap r1, cb : cap r2
+    ca := create r1()
+    cb := create r2()
+    ca.start(cb)
+    cb.start(ca)
+
+end

@@ -1,0 +1,4 @@
+0 mpd -c extend2.mpd
+0 mpdl -R10 Servant
+1 run
+0 rm -rf MPDinter core *.out

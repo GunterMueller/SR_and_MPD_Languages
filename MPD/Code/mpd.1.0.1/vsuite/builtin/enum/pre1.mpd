@@ -1,0 +1,49 @@
+# predefined enums and other stuff.
+resource pre1()
+	type color = enum( blue,green,orange,red )
+	type lang = enum( english, german, french, chinese, sr0, successor, sr)
+
+	color  c
+	lang  l
+	accessmode  a
+	seektype  s
+
+	write( low(int),high(int) )
+	write( int(low(color)), int(high(color)) )
+	write( int(low(lang)), int(high(lang)) )
+	write( int(low(accessmode)), int(high(accessmode)) )
+	write( int(low(seektype)), int(high(seektype)) )
+
+	c = low(color)
+	s = low(seektype)
+	write( int(c), int(s) )
+
+	c = pred(red)
+	l = succ(sr0)
+	a = succ(READ)
+	s = pred(EXTEND)
+	c = succ(low(color))
+	s = pred(s)
+	write( int(c), int(s), int(a), int(l) )
+
+	c = pred(red)
+	if ((c ~= orange)) {
+		write(3)
+	} else if ((c == orange) ) {
+		write(35)
+	}
+	l = succ(sr0)
+	if ((l ~= successor)) {
+		write(4)
+	}
+	write( int(c), int(s), int(a), int(l) )
+
+	a = succ(READ)
+	s = pred(EXTEND)
+	c = succ(low(color))
+	if ((c ~= green)) {
+		write(5)
+	}
+	write( int(c), int(s), int(a), int(l) )
+end
+

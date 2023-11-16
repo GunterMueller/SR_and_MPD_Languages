@@ -1,0 +1,22 @@
+# this caused problems once... no idea why.
+# works when e is omitted (except x prints as 0)
+# but doesn't work when e is in spec... as below.
+# works too if f is removed.
+resource y
+	op e()
+	op f(x:int)
+body y()
+
+	write("hi from initial")
+
+	process q
+		write("hi from process q")
+		f(56);
+		e()
+	end
+	process r
+		write("hi from process r")
+		in f(x) -> write(x)  ni
+		in e() -> write("got e")  ni
+	end
+end

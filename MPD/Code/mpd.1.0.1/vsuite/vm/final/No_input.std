@@ -1,0 +1,10 @@
+foo 1 sum = 1
+foo 2 sum = 2
+foo 4 sum = 6
+foo 8 sum = 14
+final foo 2
+final foo 4
+final foo 8
+final g, sum =  14
+done
+final g, sum =  1

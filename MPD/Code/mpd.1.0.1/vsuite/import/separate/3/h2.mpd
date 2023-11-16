@@ -1,0 +1,4 @@
+# simple test in two files.
+global h1
+	type a = rec(int b; int c)
+end

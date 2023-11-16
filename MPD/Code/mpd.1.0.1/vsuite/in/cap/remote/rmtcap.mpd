@@ -1,0 +1,78 @@
+#  test of remote uses of dynamic operations and input from cap
+
+
+
+#  remote resource
+
+resource rmt
+    sem s, t                    # semaphores
+    op o1(char)                 # sent here, received in main
+    op o2(int) returns int      # called here, serviced in main
+    op drain (cap (int))        # called from main to service a cap on main
+
+body rmt ()
+    reply
+
+    P(s)                        # wait for go-ahead from main
+    for [ c = 'a' to 'f' ] {       # load o1's queue
+	send o1(c)
+    }
+    V(t)                        # signal readiness
+
+    for [ i = 1 to 9 ] {           # call o2, serviced by main, several times
+	write ("o2 returned:", o2(i))   # write result to ensure that
+    }                                  # data goes both ways correctly
+
+
+#  drain(opcap) -- drain the queue of an op, with diagnostics
+
+proc drain (q)  {
+    write ("drain: qsize", ?q)
+    while (true) {
+	in q(j) -> write ("drain:", j)
+	[] else -> exit
+	ni
+    }
+    write ("drain: qsize", ?q)
+    write ("drain: destroying op")
+    destroy (q)
+}
+
+end rmt
+
+
+
+#  main resource
+
+resource main ()
+    import rmt
+    char  c 
+    int  j 
+
+    cap rmt rc = create rmt() on create vm()
+
+    V(rc.s)                             # signal that we're ready
+    P(rc.t)                             # wait for ack
+
+    write ("o1 qsize:", ?rc.o1)         # check remote query
+    receive rc.o1(c)                    # simple receive
+    write ("received:", c)              
+    write ("o1 qsize:", ?rc.o1)
+    while (true) {
+	in rc.o1(c) -> write ("from o1:", c)    # simple input
+	[] else -> write ("no more o1"); exit   # check else branch
+	ni
+    }
+    write ("o1 qsize:", ?rc.o1)
+
+    for [ i = 1 to 9 ] {
+	in rc.o2(j) returns k -> k = 11 * j    # check call and return value
+	ni
+    }
+
+    cap (int) o = new (op (int))             # create dynamic op
+    for [ i = 1 to 5 ] { send o(i) }      # load its queue
+    rc.drain (o)                        # pass to remote machine for servicing
+
+    write ("done")
+end main

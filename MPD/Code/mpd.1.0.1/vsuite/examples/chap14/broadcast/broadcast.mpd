@@ -1,0 +1,63 @@
+global sizes
+  int N = 6    # matrix dimension, default 6
+body sizes
+  getarg(1, N)
+end
+
+resource point    # one instance per point
+  op compute(cap point rlinks[*], cap point clinks[*])
+  op rowval(int sender, real value)
+  op colval(int sender, real value)
+body point(int i, int j)
+  import sizes
+  real aij = 1.0
+  real bij = 1.0
+  real cij = 0.0
+  real  row[N], col[N]
+  row[j] = aij; col[i] = bij
+
+  proc compute(rlinks, clinks)  {
+    # broadcast aij to points on same row
+    for [ k = 1 to N st k != j ] {
+      send rlinks[k].rowval(j, aij)
+    }
+    # acquire other points from same row
+    for [ k = 1 to N st k != j ] {
+      in rowval(sender, v) -> row[sender] = v ni
+    }
+    # broadcast bij to points on same column
+    for [ k = 1 to N st k != i ] {
+      send clinks[k].colval(i, bij)
+    }
+    # acquire other points from same column
+    for [ k = 1 to N st k != i ] {
+      in colval(sender, v) -> col[sender] = v ni
+    }
+    # compute inner product of row and col
+    for [ k = 1 to N ] { cij += row[k]*col[k] }
+  }
+
+  final { writes(cij, " ") }
+end point
+
+resource main()
+  import sizes, point
+  cap point  pcap[N,N]
+  # create points
+  for [ i = 1 to N, j = 1 to N ] {
+    pcap[i,j] = create point(i, j)
+  }
+  # give each point capabilities for its neighbors
+  for [ i = 1 to N, j = 1 to N ] {
+    cap point  clink[N]
+    for [ k = 1 to N ] { clink[k] = pcap[k,j] }
+    send pcap[i,j].compute(pcap[i,1:N], clink)
+  }
+
+  final {
+    for [ i = 1 to N ] {
+      for [ j = 1 to N ] { destroy pcap[i,j] }
+      write()
+    }
+  }
+end

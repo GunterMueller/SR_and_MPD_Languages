@@ -1,0 +1,17 @@
+# see if semantics of destroy are correctly implemented
+resource a1()
+	op x (s:string[*])
+
+	write("hi")
+	x("initial")
+	destroy myresource()
+
+	final
+		write("bye")
+		x("final")
+		write("bye after x")
+	end
+	proc x(s)
+		write("x called from", s)
+	end
+end

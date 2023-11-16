@@ -1,0 +1,4 @@
+0 sr -c trans5.sr
+0 srl trans5
+0 run
+0 rm -rf Interfaces core *.out

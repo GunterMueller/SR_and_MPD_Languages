@@ -1,0 +1,40 @@
+#	Makefile created by MPDM
+
+
+MPD = mpd
+MPDFLAGS = 
+I = ./MPDinter
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/o2.o
+	mpdl  -o a.out o2
+
+compile: $I/o2.o
+
+run: link
+	a.out 
+
+$I/o1.spec: oops.mpd
+	$(MPD) $(MPDFLAGS) -s oops.mpd
+
+$I/o2.o: $I/o1.spec $I/o2.spec oops.mpd
+	$(MPD) $(MPDFLAGS) -b oops.mpd
+
+$I/o2.spec: oops.mpd
+	$(MPD) $(MPDFLAGS) -s oops.mpd
+
+clean:
+	rm -rf $I 
+
+cleanx: clean
+	rm -f core a.out
+
+ls:
+	@echo oops.mpd
+
+make:
+	mpdm oops.mpd
+

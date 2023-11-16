@@ -1,0 +1,7 @@
+#  Minimal srmap file.
+#
+#  Assumes that the filename on the local host is the filename to use on
+#  remote hosts.  This is valid, e.g., among the diskless clients of the
+#  same Sun server.
+
+*:**	$2

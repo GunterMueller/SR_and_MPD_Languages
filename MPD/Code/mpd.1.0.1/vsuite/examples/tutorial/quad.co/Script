@@ -1,0 +1,4 @@
+0 mpd quad.co.mpd
+0 a.out 1000 1 2 >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf MPDinter core *.out

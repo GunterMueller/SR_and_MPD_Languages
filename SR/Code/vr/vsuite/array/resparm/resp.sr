@@ -1,0 +1,20 @@
+#  used to get segmentation fault from missizing of
+#  string array passed as resource param
+
+#  the string[2] wasn't getting aligned up to 16 bytes,
+#  so the array was too small
+
+resource foo(s[100]: string[2])
+  write("howdy from foo")
+  var n := 0
+  fa i := 1 to ub(s) -> n +:= length(s[i]) af
+  write ("total lengths:", n)
+end
+
+resource main()
+  import foo
+  var s[100]: string[2]
+  fa i := 1 to 100 -> s[i] := string (([i % 3] 'x')) af
+  create foo(s)
+  write ("done")
+end

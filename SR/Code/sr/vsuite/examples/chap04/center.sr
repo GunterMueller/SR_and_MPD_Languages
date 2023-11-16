@@ -1,0 +1,12 @@
+resource main()
+  procedure center(var s: string[*])
+      var fill := maxlength(s) - length(s)
+      var front := fill/2
+      s := string(([front] '.')) || s || string(([fill-front] '.'))
+  end
+  # read in a string; center it; repeat.
+  var str: string[20]
+  do read(str) != EOF ->
+      call center(str); write(str)
+  od
+end

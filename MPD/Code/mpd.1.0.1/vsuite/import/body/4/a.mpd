@@ -1,0 +1,14 @@
+global a
+	const int x = 1234
+end
+
+resource b()
+
+	int  x = 56
+	write("hi",x)
+	if (x == 56) {
+		import a
+		write(a.x,x)
+	}
+
+end

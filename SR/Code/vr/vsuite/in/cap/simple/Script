@@ -1,0 +1,4 @@
+#  gmt  Mon May 24 10:38:43 MST 1993
+0 sr simcap.sr
+0 run
+0 rm -rf Interfaces core *.out

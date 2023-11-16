@@ -1,0 +1,30 @@
+# the run-time had problems with this
+# because of procedure call optimization.
+
+resource a1()
+	op q(int y)
+	op p()
+
+	call p()
+
+	proc p()  {
+		write("in p")
+		call q(1000)
+	}
+	proc q(y)  {
+		write("in q",y)
+	}
+end
+
+resource a2
+	import a1
+body a2()
+
+	cap a1  c
+	write("before create")
+	c = create a1()
+	write("after create")
+	destroy c
+	write("a2 initial done")
+
+end

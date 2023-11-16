@@ -1,0 +1,4 @@
+0 sr -c casts.sr
+0 srl casts
+0 run
+0 rm -rf Interfaces core *.out

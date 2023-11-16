@@ -1,0 +1,8 @@
+This directory holds modified versions of the examples from the SR book.
+The changes allow incorporation of the programs into the verification suite.
+Examples of the kinds of modifications are:
+    embedding fragments in complete programs
+    reducing output precision to hide floating-point hardware differences
+    removing irreproducible outputs such as age() values
+    changes to remove program nondeterminism
+	or to allow it to be hidden by sorting the output

@@ -1,0 +1,13 @@
+resource arg1()
+    var a: int := 0
+    var d: int := 0;
+    var c: bool := false;
+    var b[1:10]: char;
+    write("number of args is", numargs());
+    a := getarg(0, b);
+    write("getarg returns", a, b[1:a]);
+    a := getarg(1, d);
+    write("getarg returns", a, d);
+    a := getarg(2, c);
+    write("getarg returns", a, c);
+end

@@ -1,0 +1,6 @@
+#  gmt  Tue Oct 13 17:24:13 MST 1987  original
+#  gmt  Mon Mar  7 16:25:46 MST 1988  added literals on lhs; added generic cap
+0 sr -c caps.sr
+0 srl Rs main
+0 run
+0 rm -rf Interfaces core *.out

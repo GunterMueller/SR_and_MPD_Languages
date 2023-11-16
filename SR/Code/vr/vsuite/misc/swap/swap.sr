@@ -1,0 +1,78 @@
+# test lots of different swaps
+
+resource z()
+    type pt = rec (x, y : int)
+    procedure p() returns c: char;  c := 'p'; end
+    procedure q() returns c: char;  c := 'q'; end
+
+    var f1 := stdout,	f2 : file := noop
+    var v1 := myvm(),	v2 : cap vm := null
+    var z1:cap z:=noop,	z2 := myresource()
+    var b1 := true,	b2 := false
+    var c1 := 'x',	c2 := 'y'
+    var i1 := 11,	i2 := 22
+    var r1 := 1.11,	r2 := 2.22
+    var s1 := "sleet",	s2:string[7]:="rain"
+    var a1 := (2,3),	a2 := (5,7)
+    var k1 := pt(42,78),k2 := pt(67,31)
+    var o1 := p,	o2 := q
+
+
+    procedure swapall()		# swap all values
+	f1 :=: f2
+	v1 :=: v2
+	z1 :=: z2
+	b1 :=: b2
+	c1 :=: c2
+	i1 :=: i2
+	r1 :=: r2
+	s1 :=: s2
+	a1 :=: a2
+	k1 :=: k2
+	o1 :=: o2
+    end
+
+    procedure dumpall()		# dump all values
+	writes (f1, "f1  ")
+	writes (f2, "f2  ")
+	if v1 = myvm() -> writes('!')
+	    [] v1 = null -> writes('0')
+	    [] else      -> writes("???")
+	    fi
+	if v2 = myvm() -> writes('!')
+	    [] v2 = null -> writes('0')
+	    [] else      -> writes("???")
+	    fi
+	writes (' ')
+	if z1 = myresource() -> writes('!')
+	    [] z1 = noop -> writes('-')
+	    [] else      -> writes("???")
+	    fi
+	if z2 = myresource() -> writes('!')
+	    [] z2 = noop -> writes('-')
+	    [] else      -> writes("???")
+	    fi
+
+	printf ("  %.1b %.1b  %c %c  %2d %2d  %4.2f %4.2f  %s %s",
+	    b1, b2, c1, c2, i1, i2, r1, r2, s1, s2)
+	printf ("  %d,%d %d,%d  %d,%d %d,%d  %c %c\n",
+	    a1[1], a1[2], a2[1], a2[2], k1.x, k1.y, k2.x, k2.y, o1(), o2())
+    end
+
+    procedure swapval()		# check values returned by swap operations
+	write (b1:=:b2, c1:=:c2, i2:=:i2, r1:=:r2, s1:=:s2,
+	    (a1:=:a2)[2], (k1:=:k2).y, (o1:=:o2)())
+    end
+
+
+    dumpall()
+    swapall()
+    dumpall()
+    swapall()
+    dumpall()
+    write()
+    swapval()
+    swapval()
+    write()
+    dumpall()
+end

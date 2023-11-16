@@ -1,0 +1,6 @@
+1:  # "false"; EOF in middle of get(a)
+5:  32767 'z' false 'zyxwvutsrq' "ponmlkjihg"
+1:  'fedcba    '
+1:  "alpha"
+5:  'beta|a    '
+-1:  "alpha"

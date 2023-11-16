@@ -1,0 +1,39 @@
+#  a simple semaphore test.
+#
+#  just give a list of small integers to test; they should be echoed in order.
+#
+#  example: a.out 2 7 8 1 8 2 8
+
+
+resource semtest ()
+
+const int N = 9            # maximum input int
+
+sem done                # semaphore for signalling one more number done
+sem go[0:N]             # semaphore for signalling writer i to go
+
+op spin (int i )
+
+proc spin (i) {         # spin waiting for a signal, then write own index
+    reply               # indicate we're ready
+    while (true) {
+	P(go[i])        # wait for semaphore
+	writes(i," ")   # write out own number
+	V(done)         # signal done
+    }
+}
+
+
+    int  n 
+
+    co [ i = 0 to N ] spin(i) oc         # start up writers
+
+    for [ i = 1 to numargs() ] {
+	getarg(i,n)                     # get number
+	V(go[n])                        # tell that writer to go
+	P(done)                         # wait for it to finish
+    }
+    write()                             # terminate output
+    stop                                # and quit
+
+end semtest

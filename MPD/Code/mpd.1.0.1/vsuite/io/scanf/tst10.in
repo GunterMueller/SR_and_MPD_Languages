@@ -1,0 +1,10 @@
+$a 10
+
+# test suppressed -- these get bogus results because Sequent scanf
+#   scanf considers "12.99e" to be a legal f.p. number with value of zero
+
+$f%g%5s
+$d  12.99extra
+$f%f%5s
+$d  12.99extra
+#

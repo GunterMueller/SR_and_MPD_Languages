@@ -1,0 +1,251 @@
+.TH MPD 1 "3 Nov 2000" "University of Arizona"
+.SH NAME
+mpd \- MPD compiler
+.SH SYNOPSIS
+\fBmpd [\|\-sbcqwegvOTMCFP\|]
+[\|\-I \fRdir\fB\|]
+[\|\-o \fRfile\fB\|]
+[\|\-d \fRflags\fB\|]
+\fRfile.mpd ... otherfiles...
+.br
+.SH DESCRIPTION
+.LP
+.I Mpd
+compiles programs written in the MPD language.
+In the usual case, one or more
+.B .mpd
+files are compiled to produce
+.B .o
+files, and then the MPD linker,
+.IR mpdl (1),
+is called to produce an executable file
+.BR a.out .
+The last encountered resource is taken as the main resource.
+.LP
+Compilation and linking takes place in the context of an
+.I MPDinter
+directory used for passing specification and object files between
+.I mpd
+and
+.I mpdl
+runs.
+Files are created in the MPDinter directory
+as each resource or global is compiled.
+The MPDinter directory is needed for compilation and linking,
+but not execution, and can be deleted after an executable has been produced.
+.LP
+Each source file is read twice.
+The first pass copies component specifications into the MPDinter directory;
+the second pass generates object code.  
+If errors are detected in the first pass, the second pass is omitted.
+.LP
+Files not ending in \fB.mpd\fP
+(such as \fB.o\fP, \fB.a\fP, and \fP\-l\fP\fIxx\fP files)
+are not processed by
+.I mpd
+but are passed along to
+.IR mpdl .
+.SH OPTIONS
+.LP
+Any of the options
+.BR s , 
+.BR b , 
+.BR c , 
+.BR M , 
+or 
+.BR C
+inhibits linking.
+.TP
+.BI \-I " dir"
+Use
+.IR dir /MPDinter
+as the MPDinter directory instead of ./MPDinter.
+.TP
+.BI \-o " file"
+Use
+.I file
+for the executable instead of
+.BR a.out .
+.TP
+.B \-s
+Create specification files only (first pass only).
+.TP
+.B \-b
+Compile bodies only (second pass only), leaving specification files unaltered.
+.TP
+.B \-c
+Compile specs and bodies, but do not link
+.B .o
+files to create an executable file.
+.TP
+.B \-q
+Suppress the echoing of source file names as they are compiled.
+.TP
+.B \-w
+Suppress warning messages.
+.TP
+.B \-O
+Omit some runtime error checks and
+invoke the C optimizer to improve the generated code.
+.TP
+.B \-T
+Omit the ``timeslicing'' code that allows context switching at the top
+of each loop.
+.TP
+.B \-M
+Generate dependency information for use by
+.IR mpdm (1),
+then exit without compiling anything.
+.LP
+Additional options are useful mainly when debugging the compiler:
+.TP
+.B \-C
+Stop after generating
+.B .c
+files, leaving them undeleted.
+.TP
+.B \-F
+Inhibit constant folding.
+This can break programs by rendering certain expressions non-constant.
+.TP
+.B \-P
+Inhibit normal optimizations in the MPD compiler.
+.TP
+.BI \-d " flags"
+Write debugging output selected by
+.I flags
+on standard output.
+.TP
+.B \-e
+Use experimental versions of
+.I mpdl
+and
+.B .h
+files,
+and pass
+.B \-e
+to
+.I mpdl.
+.TP
+.B \-g
+Compile for debugging with
+.IR dbx (1),
+don't delete
+.B .c
+files, and pass
+.B \-g
+to
+.I mpdl.
+.TP
+.B \-v
+Announce version number,
+trace other programs invoked by
+.IR mpd ,
+and pass
+.B \-v
+to
+.IR mpdl .
+.SH ENVIRONMENT
+.IP MPD_PATH
+When compiling an
+.B import
+statement,
+.I mpd
+searches for a corresponding
+.B .spec
+file by looking first in the current directory,
+then in the MPDinter directory,
+and finally in the MPD library.
+If MPD_PATH is set, any directories named there are checked
+ahead of the standard search sequence.
+Directories in MPD_PATH are separated by colons (\fB:\fP).
+.br
+.ne 8
+.SH "EXECUTION ENVIRONMENT"
+.LP
+These environment variables can be set at execution time to affect
+the behavior of an MPD program:
+.IP MPD_PARALLEL
+Controls the number of processes that can run with true concurrency
+(as opposed to simulated concurrency) under MultiMPD.
+MultiMPD is a configuration option available on
+the SGI Iris, Sun Sparc running Solaris 2.x, and Sequent Symmetry.  
+The default value is 1 (no true concurrency).
+It makes little sense to set MPD_PARALLEL greater than the number
+of available processors.
+.IP MPD_SPIN_COUNT
+In MultiMPD, the number of times an idle processor will check for a task
+before relinquishing the CPU to the operating system.
+Larger values increase the opportunity for processes to quickly resynchronize
+at the expense of greater CPU usage.
+The default is 35.
+.IP MPD_NAP_INTERVAL
+In MultiMPD, the number of milliseconds an idle processor will nap
+after trying unsuccessfully to find something to run.
+The default is 10.
+.IP MPD_TRACE
+If not null, MPD_TRACE specifies the name of a file to receive a trace
+of messages, invocations, and other language-level events.
+Two special names, 
+.I stdout
+and
+.I stderr,
+direct the trace output to standard output and standard
+error output respectively.
+The default is no tracing.
+Traces from remote virtual machines appear only if the trace is
+directed to
+.I stdout
+or 
+.I stderr.
+The
+.IR mpdprof (1)
+program can be used to summarize the trace output.
+.IP MPD_DEBUG
+A hexadecimal number specifying a bit mask that enables debugging 
+information of various internal runtime events on standard error 
+output.  Each bit selects a different message category, and the 
+higher order bits (FFFFFF00) produce the most voluminous output.  
+Details are contained in the source code of the runtime system.  
+The default is no debugging.
+In contrast with MPD_TRACE, the output from MPD_DEBUG records
+internal events of interest to maintainers of the runtime system.
+.IP MPDXPATH
+Path to the executable of
+.IR mpdx ,
+which serves as the central controller of a distributed MPD program.
+The default is configured when the MPD system is built.
+.IP MPDMAP
+File to read for the network configuration information used to generate
+a host-independent ``network path'' of the executable
+for executing part of an MPD program on a remote host.
+The default is configured when the MPD system is built.
+.SH FILES
+.ta 27n
+file.mpd	MPD source file
+.br
+a.out	executable program
+.br
+MPDinter/component.c	C language intermediate file
+.br
+MPDinter/component.spec	specification file
+.br
+MPDinter/global.impl	global characteristics
+.br
+MPDinter/component.o	object file
+.SH SEE ALSO
+Gregory R. Andrews,
+.I "Foundations of Multithreaded, Parallel, and Distributed Programming."
+Addison\-Wesley, 2000, ISBN 0\-201\-35752\-6.
+.LP
+mpdl(1), mpdm(1), mpdprof(1), cc(1), dbx(1), mpdmap(5), mpdtrace(5)
+.LP
+The MPD web page, http://www.cs.arizona.edu/mpd/.
+.SH DIAGNOSTICS
+.LP
+Messages diagnosing erroneous programs are intended to be self-explanatory.
+.LP
+Messages indicating ``compiler malfunction'',
+or any error messages generated by the C compiler,
+indicate bugs in the MPD compiler
+that should be reported to its implementors.

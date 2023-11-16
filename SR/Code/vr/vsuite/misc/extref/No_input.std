@@ -1,0 +1,6 @@
+begin external reference test
+time looks plausible
+gettimeofday agrees
+mktemp worked
+delicious
+souvlaki

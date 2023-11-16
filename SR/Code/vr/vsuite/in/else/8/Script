@@ -1,0 +1,5 @@
+#  mcnamee  Tue Feb 21 13:56:06 PST 1989
+0 sr -c else12.sr
+0 srl a
+0 run
+0 rm -rf Interfaces core *.out

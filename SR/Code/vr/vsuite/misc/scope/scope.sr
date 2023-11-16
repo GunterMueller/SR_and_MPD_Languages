@@ -1,0 +1,19 @@
+resource scope()
+
+    var a1 := 100
+    begin
+	var a1 := 200
+	if true ->
+	    begin
+	   	var a1 := 300
+		    begin
+			var a1 := 400
+			write ("4: a1 = ", a1)
+		    end
+	    	write ("3: a1 = ", a1)
+	    end
+	fi
+	write ("2: a1 = ", a1)
+   end
+   write ("1: a1 = ", a1)
+end  scope

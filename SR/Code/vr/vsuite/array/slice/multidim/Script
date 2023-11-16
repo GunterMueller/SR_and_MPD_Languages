@@ -1,0 +1,4 @@
+#  gmt  Tue Apr 28 17:15:19 MST 1992
+0 sr mslice.sr
+0 run
+0 rm -rf Interfaces core *.out

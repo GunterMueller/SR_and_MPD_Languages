@@ -1,0 +1,27 @@
+# arrays of operations, including non-int subscripts
+resource array1()
+	op a[1:10](n:int) {send}
+	op b['a':'f'](n:int)
+
+	fa i := 10 downto 1 ->
+		send a[i](i*100)
+	af
+	# receive them in reverse order
+	fa i := 10 downto 1 ->
+		in a[i](j) ->
+			write(i,j)
+		ni
+	af
+
+	fa c := 'a' to 'f' ->
+		send b[c](int(c))
+	af
+
+	fa c := 'f' downto 'a' ->
+		var i : int
+		receive b[c](i)
+		write(i)
+	af
+
+
+end

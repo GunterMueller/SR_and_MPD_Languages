@@ -1,0 +1,42 @@
+ok:  var/res/ref parameter is not a variable
+ok:  var/res/ref parameter is not a variable
+ok:  var/res/ref parameter is not a variable
+ok:  assignment target is not a variable
+ok:  cannot receive an op that returns a value
+ok:  cannot receive an op having a var or res param
+ok:  cannot receive an op having a var or res param
+ok:  requires an operation
+ok:  requires an operation
+ok:  not an op: s1
+ok:  not an op: f
+ok:  op p declared but not implemented
+ok:  op foo declared but not implemented
+ok:  incorrect subscripting of f
+ok:  receive: wrong number of arguments
+ok:  receive: wrong number of arguments
+ok:  receive: wrong number of arguments
+ok:  receive: wrong number of arguments
+ok:  wrong number of arguments
+ok:  wrong number of arguments
+ok:  p2(): not enough arguments
+ok:  p2(): argument 1 is incompatible
+ok:  p2(): too many arguments
+ok:  op is restricted {call}
+ok:  op is restricted {send}
+ok:  op is restricted {send}
+ok:  op is restricted {call}
+ok:  op is restricted {send}
+ok:  incompatible assignment
+ok:  op is restricted {send}
+ok:  op is restricted {send}
+ok:  imported op must be referenced via a capability
+ok:  a proc cannot implement an imported op
+ok:  missing return parameter
+ok:  unexpected return parameter
+ok:  external must be declared at resource level
+ok:  no subscripts allowed on external
+ok:  warning: e(), parameter 1: type precludes returning a result
+ok:  warning: e(), parameter 2: type precludes returning a result
+ok:  illegal reference to formal parameter n
+ok:  warning: unnamed parameter is inaccessible
+ok:  duplicate implementation of sleep

@@ -1,0 +1,53 @@
+/* output deterministic but its order is nondeterministic
+ * controlling access as below is done to ensure deterministic output,
+ * but doing so makes this less interesting of an example.
+ * for a more useful example, use true as guards in r's and f's region
+ * statements.
+ */
+
+/* use unadvertised feature */
+#define NN 3 /* size of buffer */
+#define ND 4 /* number of depositers */
+#define NF 4 /* number of fetchers */
+
+_resource1(buffer,1,NN)
+  var slot[1:NN]: int; var full[1:NN] := ([NN] false)
+_resource_end1(buffer)
+_resource(f)
+  var front := 1
+  var turn  := 1
+_resource_end(f)
+_resource(r)
+  var rear := 1
+  var turn := ND
+_resource_end(r)
+
+resource main()
+  process depositers(i := 1 to ND)
+    var data: int
+    fa k := 1 to 5 ->
+      data := i*1000+k
+      _region(r, turn=i)
+        _region1(buffer,rear, not full[rear])
+          slot[rear] := data; full[rear] := true
+        _region_end1(buffer,rear)
+        rear := rear mod NN + 1
+        turn--; if turn < 1 -> turn := ND fi
+      _region_end(r)
+    af
+  end
+  process fetchers(i := 1 to NF)
+    var result: int
+    nap(10)
+    fa k := 1 to 5 ->
+      _region(f, turn=i)
+        _region1(buffer,front, full[front])
+          result := slot[front]; full[front] := false
+        _region_end1(buffer,front)
+        front := front mod NN + 1
+        turn++; if turn > NF -> turn := 1 fi
+      _region_end(f)
+      write( "fetcher", i, "got", result )
+    af
+  end
+end

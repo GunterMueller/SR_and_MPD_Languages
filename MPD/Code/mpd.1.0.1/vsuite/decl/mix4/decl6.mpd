@@ -1,0 +1,19 @@
+resource decl6()
+	int  z = 1111
+	final {
+		int  i = 1
+		int  j = 999
+		write(z); write(i); write(j)
+	}
+	op p()
+	proc p()  {
+		write(z)
+		z++
+		write(z)
+		destroy myresource()
+	}
+	process ho_hum  {
+		write(z)
+		p()
+	}
+end

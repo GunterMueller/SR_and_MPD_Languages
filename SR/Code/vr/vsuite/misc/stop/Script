@@ -1,0 +1,12 @@
+#  gmt  Thu Jan  7 14:22:05 MST 1988
+0 sr -c stop.sr
+0 srl foo
+0 a.out		>nocode.out 2>&1
+0 a.out 0	>code0.out 2>&1
+3 a.out 3	>code3.out 2>&1
+27 a.out 27	>code27.out 2>&1
+0 cmp -s nocode.out yesfinal.std
+0 cmp -s code0.out yesfinal.std
+0 cmp -s code3.out nofinal.std
+0 cmp -s code27.out nofinal.std
+0 rm -rf Interfaces core *.out

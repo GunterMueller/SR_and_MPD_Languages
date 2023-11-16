@@ -1,0 +1,24 @@
+# question mark operator.
+# should give warnings about ? proc_operation.
+# output nondeterministic.
+resource qm1()
+	op f()
+
+	op g() {send}
+	send g()
+	write( "A", ? f, ? g)
+	send f()
+	send g()
+	send f()
+	write( "B", ? f, ? g)
+	int  n = ?g
+	for [ i = 1 to n ] {
+		receive g()
+		write("in loop",i,?g)
+	}
+	write( "C", ? f, ? g)
+
+	proc f()  {
+		write("in f")
+	}
+end

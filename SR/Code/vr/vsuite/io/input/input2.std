@@ -1,0 +1,6 @@
+1:  # bad int; short lines to get and getline
+0:  0 'x' false 'zzzzzzzzzz' "--"
+1:  '12        '
+1:  "34"
+10:  '56|78|90|a'
+10:  "b|cd|ef|gh"

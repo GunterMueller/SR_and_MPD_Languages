@@ -1,0 +1,6 @@
+#  olsson  Fri Mar 17 21:13:19 PST 1989
+0 sr -c cosend.sr
+0 srl cosend
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out

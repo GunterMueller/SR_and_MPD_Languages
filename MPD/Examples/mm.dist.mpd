@@ -1,0 +1,63 @@
+/***************************************************************
+
+Distributed matrix multiplication using message passing.
+Uses a coordinator and W worker processes, as in Section 1.8 of the MPD book.
+Each worker computes N/W rows of results; assumes N is a multiple of W.
+
+Usage:  a.out N numWorkers
+
+***************************************************************/
+
+resource distributed_matrix_mult()
+
+  # read command line arguments for matrix sizes and numWorkers
+  int n; getarg(1, n);
+  int numWorkers; getarg(2, numWorkers);
+  if ((n % numWorkers) != 0)
+    { write("N must be a multiple of numWorkers"); stop(1); }
+  int stripSize = n/numWorkers;
+
+  op data[numWorkers] (real m[*,*]);      # channels to Workers
+  op result[numWorkers] (real m[*,*]);    # channels to Coordinator
+
+  process Coordinator {
+    real a[n,n] = ([n] ([n] 1.0)),
+         b[n,n] = ([n] ([n] 1.0)),
+         c[n,n];
+    # send strips of a[*,*] and all of b[*,*] to Workers
+    for [w = 1 to numWorkers] {
+      int startRow = stripSize*(w-1) + 1;
+      int endRow = startRow + stripSize - 1;
+      send data[w] (a[startRow:endRow,*]);
+      send data[w](b[*,*]);
+    }
+    # gather results from Workers
+    for [w = 1 to numWorkers] {
+      int startRow = stripSize*(w-1) + 1;
+      int endRow = startRow + stripSize - 1;
+      receive result[w](c[startRow:endRow,*]);
+    }
+    # print results
+    for [i = 1 to n] {
+      for [j = 1 to n] { writes(c[i,j]); writes(" "); }
+      write()
+    }
+  }
+
+  process Worker[w = 1 to numWorkers] {
+    real a[stripSize,n], b[n,n], c[stripSize,n];
+    # receive strip of a and all of b from Coordinator
+    receive data[w](a[*,*]);
+    receive data[w](b[*,*]);
+    # compute inner products of a[i,*] * b[*,j]
+    for [i = 1 to stripSize, j = 1 to n] {
+      real sum = 0.0;
+      for [k = 1 to n]
+        { sum += a[i,k] * b[k,j]; }
+      c[i,j] = sum;
+    }
+    # send results back to Coordinator
+    send result[w](c[*,*]);
+  }
+
+end distributed_matrix_mult

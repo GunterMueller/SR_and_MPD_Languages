@@ -1,0 +1,39 @@
+# boolean arrays, records, operation
+resource bool3()
+	op b() returns bool  x
+
+	bool  x[1:4] 
+	bool  bb = true
+	bool  c[false:true]
+	type t = rec( bool  a,b)
+
+	for [ i = lb(x) to ub(x) ] {
+		x[i] = i % 2 == 0
+	}
+	for [ i = lb(x) to ub(x) ] {
+		write(x[i])
+	}
+	write(b())
+	write(b())
+	write(b())
+	write(b())
+
+	proc b() returns x  {
+		x = bb
+		bb = ~ bb
+	}
+
+	process more  {
+		t  x 
+		x.a = true; x.b = false
+		write(x.a, x.b)
+		x.a :=: x.b
+		write(x.a,x.b)
+		for [ i = lb(c) to ub(c) ] {
+			c[i] = not i
+		}
+		for [ i = lb(c) to ub(c) ] {
+			write(c[i])
+		}
+	}
+end

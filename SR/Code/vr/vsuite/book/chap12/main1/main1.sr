@@ -1,0 +1,10 @@
+resource main1()
+  import foo
+  const N := 5
+  op done()
+  var foo1, foo2: cap foo
+  foo1 := create foo(N, 1, done)
+  foo2 := create foo(N, 2, done)
+  fa i := 1 to 2*N -> receive done() af
+  destroy foo1; destroy foo2
+end

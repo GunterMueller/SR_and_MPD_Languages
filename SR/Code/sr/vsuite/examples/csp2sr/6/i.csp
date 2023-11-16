@@ -1,0 +1,16 @@
+_program(i)
+
+  _specs
+    _process_spec(X)
+  _specs_end
+
+  _process_body(X)
+    write("start of X")
+    var c := 'a'
+    _do
+      _guard(c<='z') -> writes(c); c++
+    _od
+    write()
+  _process_end
+
+_program_end

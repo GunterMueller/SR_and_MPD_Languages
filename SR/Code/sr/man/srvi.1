@@ -1,0 +1,74 @@
+.TH SRVI 1 "8 April 1992" "University of Arizona"
+.SH NAME
+srvi \- install an SR program in the verification suite
+.SH SYNOPSIS
+\fBsrvi [ \-option ... ] \fPdir
+.SH DESCRIPTION
+.I Srvi 
+installs an SR program in the SR verification suite.
+It is part of the SR installation process and is not used by SR programmers.
+.LP
+A new directory 
+.I dir
+is created in the vsuite hierarchy
+to hold the program and associated files.
+.I dir
+may be given as a path relative to vsuite
+if the intermediate directories exist.
+.LP
+.I Srvi
+prompts for source files and input files.
+Enter each of these as a space-separated list.
+The list of input files may be empty.
+.LP
+After the specifications have been entered, the files are copied into
+the vsuite hierarchy and the program is compiled and linked.
+If no errors are found, it is executed using each
+specified input file in turn as standard input.
+If no input files are given, it is executed once with input from /dev/null.
+Standard output and error files are combined and saved from each run.
+A
+.B Script
+file is created for
+.IR srv (1).
+.LP
+.I Srvi
+normally finds binaries in the source hierarchy.
+The
+.B \-c
+and
+.B \-r
+options select the production (installed) versions of the
+compiler and runtime system respectively;
+the
+.B \-p
+option selects both of these.
+.SH FILES
+All files are created in
+.RI vsuite/ dir.
+.LP
+.ta 16n
+Script	verification script
+.br
+Compiler.std	compilation messages, if any
+.br
+xxxxx.std	output from input file `xxxxx'
+.SH SEE ALSO
+srv(1), sr(1), srl(1)
+.SH DIAGNOSTICS
+.I Srvi
+lists the SR system files to be used, and aborts if any are inaccessible.
+It checks the accessibility of all source and data files before
+copying anything or creating the 
+.B Script
+file.
+.LP
+.I Srvi
+refuses to overwrite a directory with an existing
+.B Script
+file.
+.SH CAVEATS
+.I Srvi
+does not support the full generality of
+.I srv.
+Complex verification scripts must be created manually.

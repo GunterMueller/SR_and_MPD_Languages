@@ -1,0 +1,11 @@
+0 csp2sr -te g.csp
+0 sr g.sr
+0 a.out >te.out 2>&1
+0 scmp both.std te.out
+
+0 csp2sr -ti g.csp
+0 sr g.sr
+0 a.out >ti.out 2>&1
+0 scmp both.std ti.out
+
+0 rm -rf Interfaces core *.out g.sr

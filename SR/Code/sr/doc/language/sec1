@@ -1,0 +1,70 @@
+.sh 1 "Introduction" 1
+.lp
+The SR concurrent programming language has been around,
+in one form or another, for over ten years.
+The earliest version, now called SR[[0]], contained
+mechanisms for asynchronous message passing
+and rendezvous [Andr81,Andr82].
+Its form of rendezvous,
+unique at the time,
+provided a means by which the process servicing
+a rendezvous could choose
+which invocation to service
+based on the values of invocation parameters.
+.\" Those mechanisms were implemented as a full language [Andr82].
+Experience using SR[[0]]
+substantiated the general appropriateness of
+the language,
+but also pointed out several deficiencies.
+That experience led us to redesign the language [Andr86].
+The result (SR version 1) [Olss86,Andr88]
+provided additional mechanisms for
+remote procedure call, dynamic process creation,
+and semaphores,
+as well as a means
+for specifying distribution of program modules.
+.pp
+Experience using version 1 of SR has led to further evolution
+of the language.
+Version 2 retains much of version 1's structure.
+However, it also enhances the mechanisms that support
+sharing of objects.
+This sharing is especially important in shared-memory environments,
+for which earlier versions of SR were not not really intended.
+(It is also important for supporting libraries,
+e.g., mathematical and windowing libraries.)
+.pp
+SR supports many `features' useful for concurrent programming.
+However, 
+our goals have always been to keep the language simple and easy to
+use,
+while at the same time to provide an efficient implementation.
+We achieve these goals by integrating common notions,
+both sequential and concurrent,
+into a few powerful mechanisms.
+We implement these mechanisms as part of a complete language to determine
+their feasibility and cost,
+to gain hands-on experience,
+and to provide a tool that can be used for research and teaching.
+.pp
+This paper introduces version 2 of SR,
+henceforth referred to as simply SR.
+It illustrates how a single language can provide support
+for different execution environments,
+ranging from shared-memory multiprocessors to distributed systems.
+This paper focuses on the highlights of the language;
+details can be found in [AnOl92].
+.pp
+The rest of this paper is organized as follows.
+Section 2 gives an overview of the SR model of computation.
+Section 3
+describes
+how synchronization, sharing, and distribution are supported in SR.
+Section 4 illustrates,
+by means of examples,
+SR's language mechanisms that support
+parallel and distributed programming.
+Finally,
+Section 5 contains some concluding remarks,
+including a brief discussion of
+some current research related to SR.

@@ -1,0 +1,24 @@
+resource decl5()
+	var a : int := 99
+	var b : int := 222
+	final
+		var i :int := 1
+		var j :int := a+1
+		write(a); write(b)
+		write(i); write(j)
+	end
+	var c : char := 'C'
+	type t = rec( t1, t2:int; t3:char )
+	var x : t
+	var d :int := a+b
+	process p
+		x.t1 := b
+		x.t2 := a
+		x.t3 := c
+		write(x.t2)
+		write(x.t1)
+		writes(x.t3)
+		write(d)
+		destroy myresource()
+	end
+end

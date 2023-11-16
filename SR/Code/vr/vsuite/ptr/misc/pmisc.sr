@@ -1,0 +1,76 @@
+resource p3(size: int)
+	type R = rec(b[1:100]: int; c: char)
+	op ww(pp: ptr R)	{call}
+
+
+	var b[1:12]: R;
+
+	fa i := 1 to 12 ->
+		fa j:= 1 to size ->
+			b[i].b[j] := 100*i + j;
+			b[i].c := char(i);
+		af
+	af
+
+	fa i := 1 to 12 ->
+		ww(@b[i])
+	af
+
+proc ww(pp)
+	if size > 100 -> write("bogus size:",size)
+	[] else ->
+		fa i := 1 to size ->
+			write(pp^.b[i]);
+		af
+	fi
+end
+end
+
+
+resource main
+	import p3
+body main()
+
+	# test bool pointer arg
+	op pr_bool (b : ptr bool)
+	proc pr_bool (b)
+	    writes (b^)
+	    if b^ -> write (" true")
+	    [] else -> write (" false") fi
+	end pr_bool
+
+	var v:= true
+	call pr_bool(@v)
+	v := false
+	pr_bool (@v)
+
+	# test null ptr
+	#  Date: Wed, 28 Dec 88 13:47:18 PST
+	#  From: jacobson%cello@hplabs.hp.com
+
+	type IvoWindow = rec(holder[101] : int)
+	type IvoWindowPtr = ptr IvoWindow
+
+	op foo(w : IvoWindowPtr)       # with this line it fails
+	proc foo(w)
+	  write("Doing foo", w)
+	end
+
+        op bar(w : ptr IvoWindow)      # with this line it works
+	proc bar(w)
+	  write("Doing bar", w)
+	end
+
+	foo(null)
+	bar(null)
+
+	# other stuff
+	var p3cap : cap p3;
+	var a : int
+	write("size? ")
+	read(a)
+	write ("creating using size", a)
+	p3cap := create p3(a);
+	destroy p3cap;
+	write("done")
+end

@@ -1,0 +1,35 @@
+# tests empty statement lists, etc.
+# no output.
+resource n0
+body n0() separate
+resource n1()
+	op p()
+	op q()
+	proc p()
+	end
+	proc q()
+		var a : int := 1
+		var b : int := 2
+		if a < b ->
+		[] a = b ->
+		[] a > b ->
+			do a > 0 ->
+				a --
+			[] a = 111 ->
+			od
+		fi
+		if a = 77 ->
+			if b = 88 ->
+				var c : char
+			[] b = 999 ->
+			[] else ->
+			fi
+		fi
+	end
+
+
+	final
+	end
+end
+body n0
+end

@@ -1,0 +1,12 @@
+#  gmt  Mon Jan 25 16:27:44 MST 1993
+0 mpd trc.mpd
+0 MPD_TRACE=Trace.tmp a.out >No_input.out 2>&1
+# edit addresses out of trace output; replace with x's
+0 sed <Trace.tmp >Trace.out 's/[0-9A-F][0-9A-F][0-9A-F][0-9A-F]* */xxxxxxxx  /g'
+0 scmp No_input.std No_input.out
+0 scmp Trace.std Trace.out
+0 mpdprof Trace.out
+0 cmp -s Profiler.std Profiler.out
+0 mpdprof -a Trace.out
+0 cmp -s AProf.std Profiler.out
+0 rm -rf MPDinter core *.tmp *.out

@@ -1,0 +1,24 @@
+# aliasing of parameters to see that copy-back is done in right order.
+resource alias()
+	op f( var x,y,z :int )
+	op go( x,y,z :int )
+
+	go(1,2,3)
+	go(-14,-15,-16)
+
+	proc go(a,b,c)
+		write("\n----", a,b,c)
+		var aa, bb, cc: int;
+		aa:=a; bb:=b; cc:=c; # original values
+		a:=aa; b:=bb; c:=cc; f(a,b,c); write(a,b,c);
+		a:=aa; b:=bb; c:=cc; f(a,b,b); write(a,b,c);
+		a:=aa; b:=bb; c:=cc; f(a,a,a); write(a,b,c);
+		a:=aa; b:=bb; c:=cc; f(a,b,a); write(a,b,c);
+		a:=aa; b:=bb; c:=cc; f(a,a,c); write(a,b,c);
+	end
+	proc f(x,y,z)
+		z := z + 1000
+		y := y + 100
+		x++
+	end
+end

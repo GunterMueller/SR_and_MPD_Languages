@@ -1,0 +1,61 @@
+# From: olsson@ivy.ucdavis.edu (Ron Olsson)
+# Date: Wed, 18 Jan 89 17:34:07 PST
+#
+# this program tests whether invocations are purged.
+# combine a local operation (foo) with global (another)
+# since purging from such a class is (slightly) more difficult.
+
+# ----------------------------------------------------------------------
+
+# Date: Fri, 15 Aug 2003 11:51:10 -0700
+# From: Ron Olsson <olsson@CS.UCDAVIS.EDU>
+#
+# It's taken me 14.5 years to figure out how to remove the
+# nondeterminism from this program ;-)
+
+# [revised version is below]
+
+# ----------------------------------------------------------------------
+
+resource a()
+   op go(f:cap (x:int))
+   op another(x:int)
+   process p1
+      send another(66)
+      send another(77)
+      in go(f) ->
+           send f(1234)
+           send another(88)
+           send f(9876)
+           send another(99)
+      ni
+   end
+    process p
+       fa i := 1 to 2 ->
+          op foo(x:int)
+          # 2003-08-15
+          #  oops: originally code had
+          # op foo(x:int)
+          #            send go(foo);
+          # but that makes the output nondet!
+          # (note that go serviced by p1 just once anyway.)
+          if i = 1 -> call go(foo)
+          [] else -> send go(foo) # don't really need, just don't block.
+          fi
+          in foo(x) -> write("foo1", i, x) # only possible when i = 1
+          [] another(x) and i = 2 -> write("another1", i, x)
+          ni
+          write(i,?foo,?another)
+          do i = 2 and ?another > 0 ->
+               var x:int
+               receive another(x)
+               write("another2", i, x)
+          od
+          do i = 2 and ?foo > 0 ->
+               var x:int
+               receive foo(x)
+               write("foo2", i, x)
+          od
+       af
+    end
+end

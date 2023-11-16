@@ -1,0 +1,38 @@
+
+
+resource arr8(int size)
+    rec (int ssn; int period_amt[1:6]; int other) a[1:10], b[1:4, 1:4]
+
+    for [ i = 1 to 10 ] {
+	a[i].ssn = 484807295 - i;
+	for [ j = 1 to size ] {
+		a[i].period_amt[j] = a[i].ssn - j;
+	}
+	a[i].other = -a[i].ssn;
+    }
+    for [ i = 1 to 3 ] {
+	for [ j = 2 to 4 ] {
+		b[i,j] = a[3*i+j-4];
+	}
+    }
+    for [ i = 1 to 3 ] {
+	for [ j = 2 to 4 ] {
+		write(i,':',j,b[i,j].ssn);
+		for [ k = 1 to size ] {
+			write(b[i,j].period_amt[k]);
+		}
+		write(b[i,j].other);
+	}
+    }
+end
+
+resource main
+	import arr8
+body main()
+    cap arr8  c 
+
+    for [ i = 0 to 3 ] {
+	c = create arr8(2*i);
+    }
+
+end

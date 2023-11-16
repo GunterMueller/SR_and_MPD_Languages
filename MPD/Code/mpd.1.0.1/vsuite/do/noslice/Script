@@ -1,0 +1,4 @@
+#  gmt  Tue Jun 29 09:37:33 MST 1999
+0 mpd -T noslice.mpd
+0 run
+0 rm -rf MPDinter core *.out

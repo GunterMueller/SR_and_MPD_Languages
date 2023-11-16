@@ -1,0 +1,32 @@
+# quantifiers in input statements
+# note: output nondeterministic
+
+resource inquant()
+	op p[1:2](char x)
+
+	send p[1]('x')
+	send p[2]('c')
+	in [ i= 1 to 2 ] p[i](x) ->
+		write (x, i)
+	ni
+	in [ i= 1 to 2 ] p[i](x) ->
+		write (x, i)
+	ni
+
+	op q[1:2](char x)
+
+	write ()
+	send q[1]('x')
+	send q[2]('G')
+	send q[2]('A')
+	send q[2]('R')
+	send q[1]('a')
+	send q[2]('H')
+	send q[2]('B')
+	send q[1]('c')
+	for [ i = 1 to 8 ] {
+		in [ i = 1 to 2 ] q[i](x) by x ->
+			write( x, i )
+		ni
+	}
+end

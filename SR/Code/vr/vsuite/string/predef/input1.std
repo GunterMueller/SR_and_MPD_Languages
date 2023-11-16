@@ -1,0 +1,20 @@
+arg 0 :  a.out  ( 5 )
+len: 12  max: 20  val: Philadelphia
+len: 7  max: 7  val: Oshkosh
+len: 3  max: 3  val: Ajo
+len: 0  max: 20  val: 
+opened: /tmp/sr.predef.test1
+removed: /tmp/sr.predef.test1
+opened: /tmp/sr.predef.test2
+removed: /tmp/sr.predef.test2
++-*
+Beautiful Downtown Burbank
+abcdefghijklmnopqrst
+uvwxyz
+ABCDEFGHIJKLMNOPQRST
+UVWXYZ
+one
+two
+three
+four
+five

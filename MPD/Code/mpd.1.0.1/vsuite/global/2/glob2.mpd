@@ -1,0 +1,138 @@
+#checks the follg.:
+# types, consts, vars, ops : declared/used/implemented/invoked by global
+#                            body or a resource that imports this global
+# tests legal combinations amongst the combinations mentioned above
+# also the scope of a var in global body is tested by using the var "callheader"
+
+global semaphores
+	op sema()               # implemented by resource A; invoked by B
+	op semb()               # implemented by resouce B; invoked by A
+	op semnodelay()         # implemented by A and B; invoked by "Shared"
+
+body semaphores()
+	write("global semaphores initialisation")
+	send semnodelay()
+	send semnodelay()
+	send semnodelay()
+end semaphores
+
+global printdecls
+	type primary_color = int
+	const int red = 1; const int blue = 2
+	primary_color  color = red  # global var with initialisation
+	string[4]colorname[1:2]     # global var-initialisation done in
+				    # global body; used by A and B
+	op  printdecls_via_printroutines_via_Shared_via_A()
+
+body printdecls
+
+	write("global printdecls initialisation")
+	proc  printdecls_via_printroutines_via_Shared_via_A()  {
+	    # this will be called in resource B, which imports A, which inturn
+	    # imports Shared and Shared imports printroutines that imports
+	    # printdecls
+	    write("Mesg from a procedure imported via 4 recursive imports")
+	}
+
+end printdecls
+
+global printroutines
+	import printdecls
+	op sendprint(string[*] s) {send} # implemented by "Shared" by "in"
+					   # invoked by A and B
+end printroutines
+
+global Shared
+	import semaphores
+	import printroutines
+	import printdecls
+	op callprint(string[*] s) {call} # invoked by A and B
+
+	const real PI = 3.141592654
+body Shared
+	string[20] callheader, sendheader, resourcename   # local to Shared
+	colorname[1] = "red"; colorname[2] = "blue"
+
+	callheader = "callprint@Shared : "
+
+	process Sharedprint  {
+		write("Sharedprint started")
+		while (true) {
+			sendheader = "sendprint@Shared : "
+			receive sendprint(resourcename)
+			write(sendheader, colorname[color],
+				"This sendprint mesg was from", resourcename)
+		}
+	}
+
+	proc callprint(resourcename)  {
+		write(callheader, colorname[color],
+			"This callprint was called by", resourcename)
+	}
+end Shared
+
+resource A
+	import semaphores
+	import printroutines
+	import printdecls
+	import Shared
+	const real TWOPI = 2 * PI
+	const real anotherTWOPI = 2 * Shared.PI     # once caused complr malfunction
+
+body A()
+ process a  {
+	primary_color  prevcolor 
+	# shouldn't alter the  "callheader" in Shared's body
+	string[20] callheader = "SCOPE ERROR"
+	write("A: 2*PI is", TWOPI)
+	write("A: another 2*PI is", anotherTWOPI)
+
+	receive semnodelay()
+
+	prevcolor = color
+	color = blue
+	write("A: the color was", colorname[prevcolor])
+	write("A: the color is", colorname[printdecls.color])
+	call callprint("A")
+	send sendprint("A")
+
+	nap(1000) # let sendprint() do its write
+	send semb()
+	reply
+	receive sema()
+
+ }
+end A
+
+
+resource B
+	import semaphores
+	import printroutines
+	import printdecls
+	import Shared
+	import A
+	const real THREEPI = 3 * PI
+
+body B()
+ process b  {
+	primary_color  prevcolor 
+
+	nap(1000) # give time for process Sharedprint to write  {
+	printdecls_via_printroutines_via_Shared_via_A()
+
+	write("B: 3*PI is", THREEPI)
+	create A()
+
+	receive semnodelay()
+	receive semb()
+	write("B: after receive semb()") ####
+	prevcolor = color
+	color = red
+	write("B: the color was", colorname[prevcolor])
+	write("B: the color is", colorname[printdecls.color])
+	call callprint("B")
+	send sendprint("B")
+
+	send sema()
+ }
+end B

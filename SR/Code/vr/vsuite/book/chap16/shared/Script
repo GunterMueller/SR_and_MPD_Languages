@@ -1,0 +1,10 @@
+0 sr shared.sr
+0 a.out 3 2 ../cities3 >cities3.out 2>&1
+0 a.out 4 4 ../cities4 >cities4.out 2>&1
+0 a.out 6 6 ../cities6 >cities6.out 2>&1
+0 a.out 8 4 ../cities8 >cities8.out 2>&1
+0 scmp cities3.out cities3.std
+0 scmp cities4.out cities4.std
+0 scmp cities6.out cities6.std
+0 scmp cities8.out cities8.std
+0 rm -rf Interfaces core *.out

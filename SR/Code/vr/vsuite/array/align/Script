@@ -1,0 +1,5 @@
+#  gmt  Wed Feb 26 17:48:03 MST 1992
+0 sr -do align.sr
+0 scmp Compiler.std Compiler.out
+0 run
+0 rm -rf Interfaces core *.out

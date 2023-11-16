@@ -1,0 +1,21 @@
+_program(c)
+
+  _specs
+    _process_spec2(A, 1,4, 1,4)
+      _port(A,o1, (x,y: int))
+  _specs_end
+
+  _process_body2(A, i, j)
+    var x := -1, y := -2
+    write("start of A", i, j)
+    if i < j ->
+      _stmt_i(A[j][i],o1,(x,y))
+      _stmt_o(A[j][i],o1,(i,j))
+    [] i > j ->
+      _stmt_o(A[j][i],o1,(i,j))
+      _stmt_i(A[j][i],o1,(x,y))
+    fi
+    write(i,j,"got",x,y)
+  _process_end
+
+_program_end

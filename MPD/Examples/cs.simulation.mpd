@@ -1,0 +1,31 @@
+# a simple CS simulation; illustrates the use of rendezvous
+
+# usage:  a.out numusers rounds
+
+global CS
+  op CSenter(int id) {call},    # must be called
+     CSexit()    # may be invoked by call or send
+body CS
+  process arbitrator {
+    while (true) {
+      in CSenter(id) by id ->
+          write("user", id, "in its CS at", age())
+      ni
+      receive CSexit()
+    }
+  }
+end
+
+resource main()
+  import CS
+  int numusers, rounds; getarg(1, numusers); getarg(2, rounds)
+
+  process user[i = 1 to numusers] {
+    for [j = 1 to rounds] {
+      call CSenter(i)
+      nap(int(random()*100))
+      send CSexit()
+      nap(int(random()*1000))
+    }
+  }
+end

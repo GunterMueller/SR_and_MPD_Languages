@@ -1,0 +1,34 @@
+$a 3
+$f%[[]%s
+$d[1]
+$d[[[]]]
+$f%[^[]%s
+$dx[i,j]
+$d()()[][]
+$f%[q]%s
+$dqqqQqq
+$dquietly!
+$f%[^q]%s
+$dabcdefghijklmnopqrstuvwxyz
+$dThe lazy gray dog was vaulted by the quick.brown.fox
+$f%[q^]%s
+$dq^q^r^s
+$d^quoth
+$f%[abcde]%s
+$dabsolutely
+$f%[^abcde]%s
+$dfabulous
+$f%[a-e]%s
+$dabsolutely
+$f%[^a-e]%s
+$dfabulous
+$f%[i-n]%s
+$dinteger
+$f%[_a-zA-Z0-9]%s
+$dabc_xyz_ABC_XYZ_0369`xyz
+$d23_skidoo baby
+$f%[-a-z]%s
+$da-b-c+d-e-f
+$f%[^-+/*]%s
+$dabc/def/ghi
+$dabc-def-ghi

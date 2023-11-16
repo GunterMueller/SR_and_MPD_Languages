@@ -1,0 +1,9 @@
+cgrep.mpd: resource grep(string[*] pattern, string[*] filename)
+cgrep.mpd:   procedure find(string[*] pattern, string[*] line)  {
+cgrep.mpd:     # if line contains pattern, write out line
+cgrep.mpd:     int plen = length(pattern)
+cgrep.mpd:       if (pattern == line[i:i+plen-1]) {
+cgrep.mpd:     # find all instances of pattern in filename
+cgrep.mpd:       find(pattern, line)
+cgrep.mpd:   string[MAXPATTERN] pattern; getarg(1, pattern)
+cgrep.mpd:       create grep(pattern, filename)

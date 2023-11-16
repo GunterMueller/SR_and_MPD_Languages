@@ -1,0 +1,37 @@
+#	Makefile created by MPDM
+
+
+MPD = mpd
+MPDFLAGS = 
+I = ./MPDinter
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/gries.o
+	mpdl  -o a.out gries
+
+compile: $I/gries.o
+
+run: link
+	a.out 
+
+$I/gries.o: $I/gries.spec gries.mpd
+	$(MPD) $(MPDFLAGS) -b gries.mpd
+
+$I/gries.spec: gries.mpd
+	$(MPD) $(MPDFLAGS) -s gries.mpd
+
+clean:
+	rm -rf $I 
+
+cleanx: clean
+	rm -f core a.out
+
+ls:
+	@echo gries.mpd
+
+make:
+	mpdm gries.mpd
+

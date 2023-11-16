@@ -1,0 +1,4 @@
+# 21-Aug-91 gmt
+0 mpd rec3.mpd
+0 run
+0 rm -rf MPDinter core *.out

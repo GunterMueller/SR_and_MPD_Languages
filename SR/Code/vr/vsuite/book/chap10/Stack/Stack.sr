@@ -1,0 +1,17 @@
+resource Stack
+  type result = enum(OK, OVERFLOW, UNDERFLOW)
+  op push(item: int) returns r: result
+  op pop(res item: int) returns r: result
+body Stack(size: int)
+  var store[1:size]: int, top: int := 0
+  proc push(item) returns r
+    if top<size -> store[++top] := item; r := OK
+    [] top=size -> r := OVERFLOW
+    fi
+  end
+  proc pop(item) returns r
+    if top>0 -> item := store[top--]; r := OK
+    [] top=0 -> r := UNDERFLOW
+    fi
+  end
+end Stack

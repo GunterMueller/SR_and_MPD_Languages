@@ -1,0 +1,35 @@
+#  check that messages sent by final code
+#  aren't destroyed when the resource is destroyed
+
+resource r (int n, cap (int) c)
+    write ("r", n, "starting")
+    send c (100 + n)
+
+    final {
+	write ("r", n, "exiting")
+	send c (200 + n)
+    }
+end
+
+resource m ()
+    import r
+    const int N = 10
+    cap r  c[N] 
+    int  j 
+    op o (int n )
+
+    for [ i = 1 to N ] {
+	c[i] = create r (i, o)
+    }
+
+    for [ i = 1 to N ] {
+	destroy c[i]
+    }
+
+    for [ i = 1 to 2 * N ] {
+	receive o (j)
+	write ("received", j)
+    }
+
+    write ("done")
+end

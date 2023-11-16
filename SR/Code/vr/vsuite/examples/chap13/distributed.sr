@@ -1,0 +1,42 @@
+resource Servant
+  op getfork(), relfork()
+body Servant(id: int)
+  process server
+    do true ->
+      receive getfork(); receive relfork()
+    od
+  end
+end
+
+resource Philosopher
+  import Servant
+body Philosopher(l, r: cap Servant; id, t: int)
+  process phil
+    fa i := 1 to t ->
+      l.getfork(); r.getfork()
+      write("Philosopher", id, "is eating")   # eat
+      l.relfork(); r.relfork()
+      write("Philosopher", id, "is thinking") # think
+    af
+  end
+end
+
+resource Main()
+  import Philosopher, Servant
+  var n, t: int
+  writes("how many Philosophers? "); read(n)
+  writes("how many sessions per Philosopher? ")
+  read(t)
+  var s[1:n]: cap Servant
+  # create the Servants
+  fa i := 1 to n ->
+    s[i] := create Servant(i)
+  af
+  # create the Philosophers; to prevent deadlock,
+  # they are passed capabilities for their servants
+  # in an asymmetric fashion
+  fa i := 1 to n-1 ->
+    create Philosopher(s[i], s[i mod n + 1], i, t)
+  af
+  create Philosopher(s[1], s[n], n, t)
+end

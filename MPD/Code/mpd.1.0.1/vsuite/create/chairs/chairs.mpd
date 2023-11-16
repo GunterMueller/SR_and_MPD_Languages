@@ -1,0 +1,113 @@
+#  Date: Mon, 25 Jan 1988 20:27 PST
+#  From: olsson@ivy.ucdavis.edu (Ron Olsson)
+#
+#  The attached program causes rts problems -- unless it has subscripting
+#  or other such user error that I don't see. On the Sun, I get:
+#
+#  [vm 2] RTS abort: stack overflow
+#  [vm 2] RTS abort: misdelivered mail
+#  [vm 3] RTS abort: packet read: Connection reset by peer.
+#
+#  generally the first message. Also, sometimes on the Sun, one of the
+#  processes seems to hang, looping forever, even after I get back my
+#  prompt. Some time later, especially if I do a `ps t', I get the first
+#  message. On Ultrix, it seems to hang like this too, but never
+#  terminates by itself.
+#
+#  The program is a simplification of a bigger one. We've spent a few
+#  hours simplifying it, but it is still not that simple. Good luck!
+
+#  When I run that program under Vax Unix, I get the "Connection reset by
+#  peer" message.  That's due to a race condition at termination;  I've
+#  fixed that one, but on reflection I know there are others, and I'm
+#  going to need to rework the termination algorithm.
+#
+#  On the sun I get "attempt to send to nonexistent process" -- another
+#  race problem -- and the stack overflow abort.  I've spent some time
+#  on this but haven't made any progress, so I'm going to set it aside
+#  for now.
+#
+#               -- gmt, 27 Jan 88
+
+# ADDITIONAL NOTES 11 Mar 88 BY gmt:
+#  Program has failed intermittently on megaron with
+#       [VM 2] net_send: bad file number
+#  both before and after the "misdelivered mail" fix installed today.
+#
+#  WARNING WARNING WARNING:  this program has been observed to leave
+#                            CPU burners grinding in the background
+#                            after exit.   ps agux | grep MPD
+
+
+#  Works under v2 as of 6/14/91.  Added to vsuite.
+
+
+
+
+resource Chair
+    op next_chair (cap Chair neighbor ) {send}
+    op player () {send}
+body Chair( cap () master )
+    cap Chair  neighbor 
+
+    process chair  {
+	bool  game_ended = false
+	receive next_chair(neighbor)
+	while (true) {
+	    receive player ()
+		    send master ()
+		    while (not game_ended) {
+			in next_chair(n) ->
+			    game_ended = true
+			    neighbor = n
+			[] player () ->
+			    send neighbor.player ()     # pass players on
+			ni
+		    }
+		    game_ended = false
+		send neighbor.player ()
+	}
+    }
+end Chair
+
+resource Main
+    import Chair
+body Main ()
+    const int MAXCHAIR = 3
+    cap vm vmcap[0:MAXCHAIR-1]
+    cap Chair ch_proc[0:MAXCHAIR-1]        # chair processes
+    op get_score () #{send}
+
+    write ("Creating chairs ... please wait"); flush (stdout)
+    for [ i = 0 to MAXCHAIR-1 ] {
+	vmcap[i] = create vm()
+	ch_proc[i] = create Chair(get_score) on vmcap[i]
+    }
+    write ("Game starts ...")
+
+    process master  {
+	for [ i = 0 to MAXCHAIR-1 ] {
+	    send ch_proc[i].next_chair (ch_proc[(i+1)%MAXCHAIR])
+	    send ch_proc[i].player ()
+	}
+	send ch_proc[0].player ()
+
+	for [ i= MAXCHAIR-1 downto 0 ] {
+	    write ("Music will be played")
+	    flush (stdout)
+	    for [ j = 0 to i ] {
+		receive get_score()
+		write ("Player gets chair")
+	    }
+
+	    if (i > 0) {
+		write ("Next round")
+		for [ j = 0 to i-1 ] {
+		    send ch_proc[j].next_chair (ch_proc[(j+1)%i])
+		}
+	    }
+	}
+
+	stop
+    }
+end Main

@@ -1,0 +1,21 @@
+resource conversation()
+  op server(int n) returns cap (string[10] s) c
+  process client [ i = 1 to 5 ] {
+    string[10] s[20] = ([20]" ")
+
+    cap (string[10] s) c
+    c = server(20)
+    for [ i = 1 to 20 ] { send c(s[i]) }
+
+  }
+  proc server(n) returns c  {
+    op line(string[10] s)
+    c = line
+    reply   # pass back capability for line
+    for [ i = 1 to n ] {
+      string[10] s
+      receive line(s)
+      # do something with s, e.g., print it
+    }
+  }
+end

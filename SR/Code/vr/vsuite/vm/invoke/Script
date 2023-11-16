@@ -1,0 +1,6 @@
+#  gmt  Tue Apr 14 10:41:14 MST 1992
+0 sr rinv.sr
+# sometimes the blocked process message gets lost, so just always discard it  
+0 a.out >No_input.out 2>/dev/null
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,24 @@
+# Test some cases where we were generating duplicate names in the C code.
+#
+# Output nondeterministic.
+
+resource d()
+    process x  {
+	op h(int x)
+	write ("sending 9876")
+	send h(9876)
+	write ("input x")
+	in h(x) ->
+	    write ("received", x)
+	ni
+    }
+    op h()
+    process y  {
+	write ("sending sem")
+	send h()
+	write ("receiving sem")
+	receive h()
+	write ("received sem")
+    }
+    write ("done")
+end

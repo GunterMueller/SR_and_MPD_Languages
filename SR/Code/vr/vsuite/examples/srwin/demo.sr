@@ -1,0 +1,230 @@
+# Window demo program
+#
+# Qiang A. Zhao, October 92
+#
+# Usage: demo [SIZE]
+
+resource demo()
+
+  import SRWin
+
+  const	HEADER := " SRWin Demo "
+  const	FOOTER := " University of Arizona "
+
+  const	MINS := 200
+  const	IMS := 50
+  const	OFF := 20
+
+  const	TWO_PI := 6.2831853
+
+  var	SIZE : int := 500;	getarg(1, SIZE)
+  if SIZE < MINS ->
+    write(stderr, "Invalid size.")
+    stop(1)
+  fi
+
+  op	ec : winEventChannel
+  var	header_w := 72, footer_w := 138
+  var	stay := true
+  var	mainwin, win2, win3, win4: winWindow
+  var	ev: winEvent
+  var	cur: winCursor
+  var	font: winFont
+  var	im: winImage
+  var	mpt: winPoint
+  var	mrect: winRectangle
+  var	crect[1] : winRectangle
+		:= ([1] winRectangle(OFF, OFF, SIZE-2*OFF, SIZE-2*OFF))
+
+  procedure rand() returns rv : int
+    rv := int(random(SIZE))
+  end
+
+  ###
+  # open a window called "Demo"; create an image
+  mainwin := WinOpen("", "Demo", ec, UseDefault, SIZE, SIZE)
+  if mainwin = null ->
+    write("can't open window")
+    stop(1)
+  fi
+  im := WinCreateImage(mainwin, UseDefault, IMS, IMS)
+  if im = null ->
+    write("can't create image")
+    WinClose(mainwin)
+    stop(1)
+  fi
+
+  # other contexts
+  win2 := WinNewContext(mainwin)
+  win3 := WinNewContext(mainwin)
+  win4 := WinNewContext(mainwin)
+
+  WinSetForeground(win2, "blue")
+  WinSetForeground(win3, "yellow")
+  WinSetForeground(win4, "cyan")
+  WinSetBackground(win4, "SeaGreen")
+
+  var lightYellow : winPixel := WinSetForeground(mainwin, "LightYellow")
+  fa i := 0 to IMS - 1 ->
+    fa j := 0 to IMS - 1 ->
+      WinPutPixel(im, winPoint(i, j), lightYellow)
+    af
+  af
+
+  # cursor and font
+  cur := WinCreateCursor(mainwin, XC_mouse)
+  if cur != null ->
+    WinSetCursor(mainwin, cur, "red", "yellow")
+  fi
+  font := WinLoadFont(mainwin, "lucidasanstypewriter-18")
+  if font = null ->
+    font := WinDefaultFont(mainwin)
+    write("OK, I'm trying to use the default font.")
+    write("There should be some error when I try close the default font.")
+  [] else ->
+    WinSetFont(win4, font)
+  fi
+  header_w := WinTextWidth(font, HEADER)
+  footer_w := WinTextWidth(font, FOOTER)
+  if header_w < SIZE ->
+    WinDrawImageString(win4, winPoint((SIZE-header_w)/2, OFF-5), HEADER)
+  fi
+  if footer_w < SIZE ->
+    WinDrawImageString(win4, winPoint((SIZE-footer_w)/2, SIZE-5), FOOTER)
+  fi
+
+  # clip
+  WinSetClipRectangles(win2, winPoint(0, 0), crect)
+  WinSetClipRectangles(win3, winPoint(0, 0), crect)
+  WinSetClipRectangles(win4, winPoint(0, 0), crect)
+
+  # attr's
+  WinSetArcMode(win2, ArcPieSlice)
+  WinSetFillAttr(win3, FillSolid, FillEvenOddRule)
+  WinSetLineAttr(win4, 0, LineOnOffDash, CapRound, JoinRound)
+  WinSetDashes(win4, 0, "\2\5\4\5\6\5\8\5\16\5")
+
+  # set up image
+  WinGetImage(mainwin, im, winRectangle((SIZE-IMS)/2, SIZE-OFF, IMS, OFF),
+	winPoint(0, (IMS-OFF)/2))
+  fa i := 0 to IMS - 1 ->
+    fa j := 0 to i - 1 ->
+      var	pv1, pv2 : winPixel
+      pv1 := WinGetPixel(im, winPoint(i, j))
+      pv2 := WinGetPixel(im, winPoint(j, i))
+      WinPutPixel(im, winPoint(i, j), pv2)
+      WinPutPixel(im, winPoint(j, i), pv1)
+    af
+  af
+
+  # info
+  write("a - Arcs")
+  write("b - Clear to black")
+  write("c - Copy legends")
+  write("g - Clear to green")
+  write("h - Hide for a while")
+  write("i - Image")
+  write("l - Lightning")
+  write("q - Quit")
+  write("s - Stars")
+
+  # test events...
+  WinBell(mainwin, -50)
+  WinSetLabels(mainwin, "SRWin Demonstration Program", "SRWin")
+  WinSetEventMask(mainwin, Ev_KeyDown)
+  WinSetPoll(mainwin, 50)
+  seed(0)
+  var	tmp : int
+  do stay ->
+    receive ec(ev)
+
+    if ev.event_type = Ev_KeyDown ->
+      var ch := char(ev.data)
+      write("Key char (", ch, "), keysym (", ev.keysym, ")")
+
+      if ch = 'q' | ch = 'Q' | ch = '\177' | ch = '\003' ->	# quit
+	stay := false
+
+      [] ch = 'h' ->		# unmap/map (hide)
+	WinUnmapWindow(mainwin)
+	nap(1000)
+	WinMapWindow(mainwin)
+
+      [] ch = 'b' ->		# clear to window background
+	WinClearArea(win4, crect[1])
+
+      [] ch = 'g' ->		# clear to green
+	WinEraseArea(win4, crect[1])
+
+      [] ch = 'a' ->		# arc's
+	fa i := 1 to random(3, 10) ->
+	  WinDrawArc(win4, winRectangle(rand(), rand(), rand()/2, rand()/2),
+	    int(random(360)), int(random(720)))
+	  WinFillArc(win2, winRectangle(rand(), rand(), rand()/2, rand()/2),
+	    int(random(360)), int(random(360)))
+	af
+
+      [] ch = 'i' ->		# image
+	fa i := 1 to random(5, 10) ->
+	  WinPutImage(win4, im, winRectangle(0, 0, IMS, IMS),
+	    winPoint(rand(), rand()))
+	af
+
+      [] ch = 's' ->		# stars
+	fa i := 1 to random(10, 40) ->
+	  WinDrawPixel(win4, winPoint(rand(), rand()))
+	af
+	tmp := int(random(2, 5))
+	var x : real := random(SIZE), y : real := random(SIZE)
+	var tmp2 := tmp * 2 + 1
+	var pts[tmp2] : winPoint
+	fa i := 1 to tmp2 ->
+	  var randt : real := random(2, 10)
+	  var rtmp : real := TWO_PI*(i-1)*tmp/tmp2
+	  pts[i].x := int(randt*cos(rtmp) + x)
+	  pts[i].y := int(randt*sin(rtmp) + y)
+	af
+	WinFillPolygon(win2, pts)
+	WinDrawPolygon(win4, pts)
+
+      [] ch = 'l' ->		# lightning
+	var pts[10] : winPoint
+	var root := winPoint(int(random(SIZE)), OFF)
+	fa i:= 1 to random(5, 10) ->
+	  var	dir1 := random(-10, 5)
+	  var	dir2 := random(dir1, 10)
+	  pts[1] := root
+	  fa j := 2 to 10 ->
+	    pts[j].x := pts[j-1].x + int(random(dir1, dir2))
+	    pts[j].y := pts[j-1].y + int(random(5, 15))
+	  af
+	  WinDrawPolyline(win3, pts)
+	  root := pts[int(random(1, 10))]
+	af
+
+      [] ch = 'c' ->		# duplicate legends
+	tmp := (SIZE-OFF-OFF)/OFF
+	fa i := 1 to tmp/2 + 1->
+	  WinCopyArea(mainwin, win4,
+	    winRectangle(0, 0, SIZE, OFF), winPoint(0, OFF*i))
+	  WinCopyArea(mainwin, win4,
+	    winRectangle(0, SIZE-OFF, SIZE, OFF), winPoint(0, OFF*(tmp-i+1)))
+	af
+      fi
+
+    [] ev.event_type = Ev_DeleteWindow ->
+      stay := false
+    fi
+    WinFlush(mainwin)
+  od
+  stop
+
+  ### final
+  final
+    if cur != null -> WinFreeCursor(mainwin, cur) fi
+    if font != null -> WinFreeFont(mainwin, font) fi
+    WinDestroyImage(im)
+    WinClose(mainwin)
+  end
+
+end demo

@@ -1,0 +1,49 @@
+
+
+
+
+
+
+
+
+
+
+      else { a[lx] :=: a[rx]; rx-- }
+      if (a[lx] <= pivot) { lx++ }
+    a[rx] :=: a[1];      # swap pivot line into place
+    if (ub(a) <= 1) { return; }   # base case
+    int lx = 2, rx = ub(a);
+    sort(a[1:rx-1]);     # sort "left" half
+    sort(a[lx:ub(a)]);   # sort "right" half
+    string[MAXLINE] pivot = a[1];
+    while(lx <= rx) {    # partition the array based on the pivot
+    write(data[i]);
+    { write("cannot open file", fname); stop(1); }
+    { write("input file is longer than", MAXFILE, "lines"); stop(1); }
+    }
+  # declare input array and read input file
+  # read input file name, then open the file
+  # sort the file, then print the result
+  # the quicksort procedure itself
+  file fd = open(fname, READ);
+  for [i = 1 to size] {
+  if (fd == null)
+  if (size > 10000)
+  int MAXLINE = 120, MAXFILE = 10000;
+  int size = 1;
+  op sort(var string[*] a[1:*])  # forward declaration for sort()
+  proc sort(a) {
+  size--;
+  sort(data[1:size]);
+  string[20] fname; getarg(1,fname);
+  string[MAXLINE] data[MAXFILE];
+  while(size <= MAXFILE & read(fd, data[size]) != EOF) { size++ }
+  }
+  }
+#         that the file contains at most 10,000 lines
+# assumes that lines are at most 120 characters and
+# reads an input file, sorts the lines, then writes data to stdout
+# recursive quicksort program in MPD
+# usage:  a.out filename
+end quick
+resource quick()

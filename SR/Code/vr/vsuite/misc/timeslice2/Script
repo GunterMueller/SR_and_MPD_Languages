@@ -1,0 +1,5 @@
+#  gmt  Mon May 22 14:20:12 MST 1989
+0 sr -c slice2.sr
+0 srl rmt slice2
+0 run
+0 rm -rf Interfaces core *.out

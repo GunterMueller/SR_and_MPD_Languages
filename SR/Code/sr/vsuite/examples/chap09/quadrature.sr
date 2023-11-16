@@ -1,0 +1,42 @@
+resource main()
+  op bag(a, b, fofa, fofb: real)
+  op result(area: real)
+  var area: real := 0.0
+
+  procedure f(x: real) returns fx: real
+    ...
+  end
+
+  process administrator
+    var l, r, part: real
+    ... initialize l and r to appropriate values ...
+    send bag(l, r, f(l), f(r))
+    do true ->
+      receive result(part); area +:= part
+    od
+  end
+
+  const N := 20  # number of worker processes
+  process worker(i := 1 to N)
+    var a, b, m, fofa, fofb, fofm: real
+    var larea, rarea, tarea, diff: real
+    do true ->
+      receive bag(a, b, fofa, fofb)
+      m := (a+b)/2; fofm := f(m)
+
+      ... compute larea, rarea, and tarea using trapezoidal rule ...
+
+      diff := abs(tarea - (larea + rarea))
+      if ... /* diff small enough */ ->
+          send result(tarea)
+      [] ... /* diff too large */ ->
+          send bag(a, m, fofa, fofm)
+          send bag(m, b, fofm, fofb)
+      fi
+    od
+  end
+
+  final  # once program terminates, print results
+    write("area is:", area)
+  end
+end

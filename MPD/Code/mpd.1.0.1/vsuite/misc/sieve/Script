@@ -1,0 +1,5 @@
+0 mpd -c sieve.mpd
+0 mpdl sieve
+0 run input1
+0 run input2
+0 rm -rf MPDinter core *.out

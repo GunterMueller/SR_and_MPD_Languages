@@ -1,0 +1,45 @@
+resource server
+   import SRanimator
+   op Start_Read(i : int), End_Read(i : int)
+   op Start_Write(i : int), End_Write(i : int)
+body server()
+   var Readers : int := 0, nobody_writing : bool := true
+   write("readers and writers server resource is alive")
+   reply
+   do true ->
+      in Start_Read(i) st nobody_writing -> Readers++
+
+# Move the reader to be inside the database.
+         call A_stepjumpto(3000+i, 7000+i, 3, 100)
+
+         write("   age=", age(), "reader", i, "has begun reading, Readers=",
+            Readers)
+      [] End_Read(i) -> Readers--
+
+# Move the reader back to its original position.
+# Change consumers's symbol to an outline black circle.
+         call A_stepjumpto(3000+i, 5000+i, 3, 100)
+         call A_fill(3000+i, "outline")
+         call A_color(3000+i, "black")
+
+         write("   age=", age(), "reader", i, "finished reading, Readers=",
+            Readers)
+      [] Start_Write(i) st nobody_writing and Readers = 0 ->
+         nobody_writing := false
+
+# Move the writer to be inside the database.
+         call A_stepjumpto(2000+i, 7000+i, 3, 100)
+
+         write("   age=", age(), "WRITER", i, "has begun WRITING")
+      [] End_Write(i) -> nobody_writing := true
+
+# Move the writer back to its original position.
+# Change the writer's symbol to an outline black circle.
+         call A_stepjumpto(2000+i, 4000+i, 3, 100)
+         call A_fill(2000+i, "outline")
+         call A_color(2000+i, "black")
+
+         write("   age=", age(), "WRITER", i, "has finished WRITING")
+      ni
+   od
+end server

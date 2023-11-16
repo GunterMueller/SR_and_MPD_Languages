@@ -1,0 +1,26 @@
+resource quick()
+  op sort(var int a[1:*])
+  int n = 10
+  # read in n
+  getarg(1,n)
+  int  a[1:n]
+  # read in data to be sorted
+  for [ i = 1 to n ] { read(a[i]) }
+  write("input:"); for [ i = 1 to n ] { write(a[i]) }
+  sort(a)
+  write("sorted:"); for [ i = 1 to n ] { write(a[i]) }
+
+  proc sort(a)  {
+    if (ub(a) <= 1) { return }
+    int pivot = a[1]
+    int lx = 2
+    int rx = ub(a)
+    while (lx <= rx) {
+	if (a[lx] <= pivot) { lx++
+	} else if (a[lx] >  pivot ) { a[lx] :=: a[rx]; rx--
+	}
+    }
+    a[rx] :=: a[1]
+    co sort(a[1:rx-1]) // sort(a[lx:ub(a)]) oc
+  }
+end quick

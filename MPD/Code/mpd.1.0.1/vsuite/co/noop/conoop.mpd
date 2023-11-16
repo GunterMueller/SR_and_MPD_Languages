@@ -1,0 +1,16 @@
+# output nondeterministic.
+
+resource cotest()
+	op q()
+	cap () c1, c2
+
+	c1 = noop; c2 = q
+	co q() -> write(3)
+	// c2() -> write(4)
+	// c1() -> write(9876543)
+	oc
+
+	proc q()  {
+		write(999999)
+	}
+end

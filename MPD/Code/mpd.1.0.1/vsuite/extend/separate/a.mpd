@@ -1,0 +1,26 @@
+# separate body with extend
+
+resource a
+    op f(int x)
+    op g()
+body a() separate
+
+resource b
+    extend a
+    import a
+body b() separate
+
+body a
+    write("hi from a")
+    proc f(x) { write(-x) }
+    proc g()  { write("a got g") }
+end
+
+body b
+    write("hi from b")
+    cap a  c
+    c = create a()
+    c.f(12); c.g(); send f(56); send g()
+    in f(x) -> write(x)  ni
+    in g() -> write("b's g")  ni
+end

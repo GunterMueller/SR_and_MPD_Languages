@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 sr -c import.sr
+0 srl -o a.out B
+0 run
+0 rm -rf Interfaces core *.out

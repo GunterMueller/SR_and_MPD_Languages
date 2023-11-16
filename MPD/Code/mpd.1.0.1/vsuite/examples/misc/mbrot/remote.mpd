@@ -1,0 +1,49 @@
+#  remote resource -- this is where the actual calculation is done
+#
+#  The MPD code just interfaces to the C code that does the real work.
+
+resource remote
+
+    type config = rec (         # configuration record
+	int cwidth                  #   cell width, in pixels -- must be even
+	int cheight                 #   cell height
+	int nwide                   #   output width, in cells
+	int nhigh                   #   output height
+	int niter                   #   number of iterations
+	real xll                    #   x ordinate
+	real yll                    #   y ordinate
+	real delta                  #   increment per pixel
+    )
+    optype outproc = (int m, int i, int j, char d[*]) {send}
+
+    op docell (int i, int j) {send}
+    op init (config c )
+    external calc (real x, real y, real d, res [*]char s, int n, int w, int h)
+
+body remote (int m, cap outproc o)
+
+    process p  {
+	config  c
+	int  i, j
+	real  x, y
+
+	# get initialization parameters
+	receive init (c)
+
+	# now we know how big the data will be; allocate the buffer
+	char s[c.cwidth*c.cheight]
+
+	# loop forever processing requests
+	while (true) {
+	    receive docell(i,j)      # get the request to process cell  [ i,j ]
+
+	    # calculate one cell and store results in buffer
+	    x = c.xll + c.delta * i * c.cwidth
+	    y = c.yll + c.delta * (j * c.cheight + c.cheight - 1);
+	    calc (x, y, c.delta, s, c.niter, c.cwidth, c.cheight)
+
+	    send o(m,i,j,s)          # send back the buffer, with identification
+	}
+    }
+
+end remote

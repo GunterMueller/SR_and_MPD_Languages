@@ -1,0 +1,116 @@
+# test new and free -- allocate, print contents, etc.
+
+resource alloc()
+
+	type ptype = ptr int
+	type stype = string[63]
+	type rtype1 = rec(int i, j)    # easy record (no initialization)
+	type rtype3 = rec(string[8] s) # trickier record
+	type atype = [3:5][7:11]rtype3  # even trickier array type
+
+	ptr bool  b 
+	ptr char  c 
+	ptr file  f 
+	ptr int  i 
+	ptr ptr int  z 
+
+	ptr rtype1  r1 
+	ptr rec (int ra; int rb) r2
+	ptr rtype3  r3 
+	ptr stype  s1 
+	ptr string[37] s2
+	ptr string[*] s3
+	ptr atype  a1, a2 
+
+	b = null
+	c = null
+	f = null
+	i = null
+	z = null
+	r1 = null
+	r2 = null
+	r3 = null
+	s1 = null
+	s2 = null
+	s3 = null
+	a1 = null
+	a2 = null
+
+	free(b)
+	free(c)
+	free(f)
+	free(i)
+	free(z)
+	free(r1)
+	free(r2)
+	free(r3)
+	free(s1)
+	free(s2)
+	free(s3)
+	free(a1)
+	free(a2)
+	free(null)
+
+	b = new(bool)
+	c = new(char)
+	f = new(file)
+	i = new(int)
+	z = new(ptype)
+	z^ = new(int)
+	r1 = new(rtype1)
+	r2 = new(rec(int i,j))
+	r3 = new(rtype3)
+	s1 = new(stype)
+	s2 = new(string[37])
+	s3 = new(string[99])
+	a1 = new(atype)
+	a2 = new([3:5][7:11]rtype3)
+
+	b^ = true
+	c^ = '!'
+	f^ = stdout
+	i^ = 211
+	z^^ = 42
+	r1^.i = 12;
+	r1^.j = 13;
+	r2^ = rtype1(47,92)
+	r3^ = rtype3("walrus")
+	s1^ = "hello"
+	s2^ = "Eastern"
+	s3^ = "Madagasgar"
+	a1^ = ([3]([5]rtype3("larch")))
+	a2^ = a1^
+
+	write(b^)
+	write(c^)
+	write(f^,"horsefeathers")
+	write(i^)
+	write(z^^)
+	write(r1^.i)
+	write(r1^.j)
+	write(r2^.ra)
+	write(r2^.rb)
+	write(r3^.s)
+	write(length(s1^), maxlength(s1^), s1^)
+	write(length(s2^), maxlength(s2^), s2^)
+	write(length(s3^), maxlength(s3^), s3^)
+	write(lb(a1^),ub(a1^),lb(a1^,2),ub(a1^,2),a1^[3,7].s,a1^[5,11].s)
+	write(lb(a2^),ub(a2^),lb(a2^,2),ub(a2^,2),a2^[3,7].s,a2^[5,11].s)
+
+	free(b)
+	free(c)
+	free(f)
+	free(i)
+	free(z^)
+	free(z)
+	free(r1)
+	free(r2)
+	free(r3)
+	free(s1)
+	free(s2)
+	free(s3)
+	free(a1)
+	free(a2)
+
+	write("done")
+end

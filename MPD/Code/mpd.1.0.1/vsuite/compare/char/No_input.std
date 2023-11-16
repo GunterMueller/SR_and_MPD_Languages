@@ -1,0 +1,5 @@
+4 5   < true    <= true    = false   != true    >= false    > false
+8 8   < false    <= true    = true   != false    >= true    > false
+8 7   < false    <= false    = false   != true    >= true    > true
+ok false
+ok false false

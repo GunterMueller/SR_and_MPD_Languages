@@ -1,0 +1,5 @@
+#  gmt/amym Jul 92
+0 mpd rend.mpd
+0 a.out 10 10 1 >No_input.out
+0 grep times No_input.out >/dev/null
+0 rm -rf MPDinter core *.out

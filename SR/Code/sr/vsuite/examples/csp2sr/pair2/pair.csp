@@ -1,0 +1,24 @@
+/* pairing problem
+ */
+_program(pair)
+  const N := 10
+  _specs
+    _process_spec1(node,1,N)
+      _port(node,pairup, ())
+  _specs_end
+
+  var connect[N,N]: bool
+  fa i := 1 to N, j := 1 to N ->
+    connect[i,j] := i != j
+  af
+
+  _process_body1(node, i)
+    var p := i
+    _do
+      _guard_iq1(j,1,N, p=i and connect[i][j], node[j],pairup, ()) -> p := j
+      _guard_oq1(j,1,N, p=i and connect[i][j], node[j],pairup, ()) -> p := j
+    _od
+    write(i, "paired with", p)
+  _process_end
+
+_program_end

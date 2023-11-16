@@ -1,0 +1,33 @@
+resource b()
+	op p (i : int)
+
+	send p (8888)
+	send p (9999)
+	send p (3333)
+	send p (1111)
+	fa n := 1 to 4 ->
+		in p(i) by i -> write(i) ni
+	af
+
+	op q (x : real)
+	send q (0.4)
+	send q (0.3)
+	send q (0.5)
+	send q (0.1)
+	send q (0.2)
+	fa n := 1 to 5 ->
+		in q (x) by x -> write (x) ni
+	af
+
+	op r (c : char)
+	send r ('x')
+	send r ('z')
+	send r ('c')
+	send r ('a')
+	send p (3142)
+	fa n := 1 to 5 ->
+		in r (c) by c -> write (c)
+		[] p (i) -> write(i)
+		ni
+	af
+end

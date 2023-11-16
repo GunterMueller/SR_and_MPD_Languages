@@ -1,0 +1,24 @@
+global barrier
+  const int N = 20  # number of processes
+  sem continue[N] = ([N] 0)
+  sem done = 0
+body barrier
+  process c  {
+    for [ i = 1 to 2 * N ] {
+      for [ w = 1 to N ] { P(done) }
+      for [ w = 1 to N ] { V(continue[w]) }
+    }
+  }
+end
+
+resource workers()
+  import barrier
+  # declarations of variables shared by workers
+  process worker [ i = 1 to N ] {
+    for [ k = 1 to 2 ] {
+      # code to implement one iteration of task i
+      V(done)
+      P(continue[i])
+    }
+  }
+end

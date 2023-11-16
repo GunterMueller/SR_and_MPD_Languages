@@ -1,0 +1,10 @@
+resource dealer
+ # only this order and this combo of imports caused problems.
+     import    player, defs
+body dealer()
+
+	write("hi")
+
+end
+
+# note: srv doesn't let test just compilation, so have fake body above.

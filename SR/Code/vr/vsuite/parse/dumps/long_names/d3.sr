@@ -1,0 +1,8 @@
+# long op names cause problems.
+resource d3()
+	op bozo_the_clown()
+	proc bozo_the_clown()
+	end
+	process oscar_the_ocelot
+	end
+end

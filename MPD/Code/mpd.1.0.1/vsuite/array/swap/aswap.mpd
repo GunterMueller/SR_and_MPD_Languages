@@ -1,0 +1,36 @@
+# test swapping of arrays
+
+resource aswap ()
+
+    char c[5] = chars ("abcde")
+    char d[5] = chars ("zyxwv")
+    write (c, d)
+    c :=: d
+    write (c, d)
+    d :=: c
+    write (c, d)
+    write (c :=: d)
+
+    procedure adump (int x[*,*])  {
+	for [ i= 1 to ub(x) ] {
+	    for [ j = 1 to ub(x,2) ] {
+		writes (x[i,j], " ")
+	} }
+	write ()
+    }
+
+    int a[3][5] = ((11,13,17,19,23), (29,31,37,41,43), (47,53,59,61,67))
+    int b[3,5]  = ((11,31,71,91,32), (92,13,73,14,34), (74,35,95,16,76))
+    adump (a)
+    adump (b)
+    write()
+
+    a :=: b
+    adump (a)
+    adump (b)
+    write()
+
+    adump (b :=: a)
+    adump (b :=: a)
+    write()
+end

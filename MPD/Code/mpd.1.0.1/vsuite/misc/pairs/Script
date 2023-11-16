@@ -1,0 +1,6 @@
+#  ron  Wed Feb 17 16:02:44 MST 1988
+0 mpd -c pairs.mpd
+0 mpdl pairs
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf MPDinter core *.out

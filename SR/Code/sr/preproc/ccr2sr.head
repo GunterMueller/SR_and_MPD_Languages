@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+#  ccr2sr - convert CCR notation to SR code
+
+NAME=ccr2sr
+OPTIONS=
+PATTERN=
+EXTENSION=.ccr

@@ -1,0 +1,6 @@
+1:  # token spacing; "true"; line length = string length;  EOF in middle of get(s)
+5:  -239 'C' true 'red, blue,' " green"
+1:  'republican'
+1:  "democratic"
+10:  'three|four'
+1:  "|"

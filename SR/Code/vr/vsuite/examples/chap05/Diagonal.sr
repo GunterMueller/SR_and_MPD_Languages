@@ -1,0 +1,6 @@
+global Diagonal
+  const N := 20
+  var a[N,N]: real := ([N*N] 0.0)
+body Diagonal
+  fa i := 1 to N -> a[i,i] := i af
+end Diagonal

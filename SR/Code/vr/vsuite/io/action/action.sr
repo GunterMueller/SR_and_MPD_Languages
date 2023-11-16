@@ -1,0 +1,78 @@
+# test open, close, flush, remove
+
+resource action()
+op cat(fname:string(*))
+initial
+    var f : file
+    var s : string[100]
+
+    f := open("nosuchfile", READ)
+    if f ~= null ->			# make sure we can't open if not there
+	write("oops -- opened nonexistent file")
+    [] else ->
+	write("non-open ok")
+    fi
+    f := open("Script", READ)
+    if f = null ->			# make sure we CAN open if file exists
+	write("oops -- can't find Script file")
+    [] else ->
+	write("open ok")
+	read (f, s)			# read one line to load the buffer
+	close(f)			# NOW close it after reading a line
+    fi
+
+    f := open("temp", WRITE)		# open temp file for testing
+    if f = null ->
+	write("can't open for write")
+	stop
+    fi
+
+    write(f,"'Twas bryllig, and the slithy toves")
+    write(f,"Did gyre and gimble in the wabe")
+    flush(f)				# flush output
+    cat("temp")				# make sure it really got flushed
+
+    write(f,"All mimsy were the borogoves")
+    write(f,"And the mome raths outgrabe")
+    close(f)				# close output
+    cat("temp")				# make sure everything's there
+
+    remove("temp");
+    f := open("temp", READ)
+    if f ~= null ->
+	write("reopen succeeded after file removed")
+    [] else ->
+	write("remove ok")
+    fi
+
+    f := open("t",WRITE)
+    if f ~= null ->
+	close(f)
+	remove("t")
+    [] else ->
+	write("one-char-name open failed")
+    fi
+
+    # we can't easily test that the following function correctly,
+    # but at least we can be sure they're accepted as legal.
+    flush(stdout)
+    close(stdout)
+end
+
+# cat the contents of a file
+proc cat(fname)
+    var f : file := open(fname, READ)
+    var s : string(100)
+    write()
+    write("----------",fname,"----------")
+    if f = null ->
+	write("can't open for read");
+    [] else ->
+	do read(f,s) ~= EOF ->
+	    write(s)
+	od
+    fi
+    close(f)
+    write()
+end
+end

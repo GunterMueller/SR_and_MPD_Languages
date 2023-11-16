@@ -1,0 +1,8 @@
+imp3 before create
+imp2 initial 2222
+imp2 before create
+imp1 initial -1 true -2 -3
+imp2 f -5555 -6666
+imp2 after create
+imp1 f 5 6
+imp1 f -99 -100

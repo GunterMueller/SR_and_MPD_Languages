@@ -1,0 +1,5 @@
+#  gmt  Wed Oct 14 10:14:46 MST 1987
+0 mpd -c file.mpd
+0 mpdl filetest
+0 run
+0 rm -rf MPDinter core *.out

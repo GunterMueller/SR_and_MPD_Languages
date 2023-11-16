@@ -1,0 +1,18 @@
+argtype: 2
+format: '%s'
+  2 < 1>: 'abraham'
+format: '%7s'
+  2 < 1>: 'abraham'
+format: '%5s'
+  2 < 1>: 'abrah'
+format: '%1s'
+  2 < 1>: 'a'
+format: '%25s'
+  2 < 1>: 'abraham'
+format: '%*s%s'
+  2 < 1>: 'lincoln'
+format: '%*4s%s'
+  2 < 1>: 'ham'
+format: '%s'
+  2 < 1>: 'thisstringistoolongforthetargetstringitshouldbetru'
+finished

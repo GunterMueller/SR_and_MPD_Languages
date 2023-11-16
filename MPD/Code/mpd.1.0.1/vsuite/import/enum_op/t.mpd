@@ -1,0 +1,18 @@
+resource t
+	type color = enum(blue,green,red)
+	op tst(int a[blue:red])
+body t()
+	process p  {
+		int a[low(color):high(color)]
+		for [ i = int(lb(a)) to int(ub(a)) ] { a[color(i)] = 100-i }
+		tst(a)
+		int  b[4:6]
+		for [ i = lb(b) to ub(b) ] { b[i] = 1000-i }
+		tst(b)
+	}
+	proc tst(x)  {
+		write( x[blue],x[green],x[red],x[red]+x[green]+x[blue])
+	}
+end
+
+

@@ -1,0 +1,16 @@
+resource Stack_User()
+  import Stack
+  result x
+  cap Stack  s1, s2
+  int  y
+  s1 = create Stack(10); s2 = create Stack(20)
+
+  s1.push(4); s1.push(37); s2.push(98)
+  if ((x = s1.pop(y)) != OK) { write("error")
+  } else { write(y)
+  }
+  if ((x = s2.pop(y)) != OK) { write("error")
+  } else { write(y)
+  }
+
+end

@@ -1,0 +1,12 @@
+resource Stack_User()
+  import Stack
+  var x: Stack.result
+  var s1, s2: cap Stack
+  var y: int
+  s1 := create Stack(10); s2 := create Stack(20)
+   ...
+  s1.push(4); s1.push(37); s2.push(98)
+  if (x := s1.pop(y)) != OK -> ... fi
+  if (x := s2.pop(y)) != OK -> ... fi
+   ...
+end

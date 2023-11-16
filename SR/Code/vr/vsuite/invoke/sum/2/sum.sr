@@ -1,0 +1,28 @@
+resource sum()
+	op p (val a: int) returns result: int
+
+
+	var b[0:9]:int
+	b[0] := 0
+	b[1] := 49
+	b[2] := -2
+	b[3] := 4
+	b[4] := 11
+	b[5] := -23
+	b[6] := 35
+	b[7] := 30
+	b[8] := -4567
+	b[9] := 1
+	fa i := lb(b) to ub(b)  ->
+	    write(i,b[i],p(b[i]))
+	af
+
+
+	proc p(a) returns result
+		if a <= 0 ->
+			result := 0
+		[] else ->
+			result := a + p(a-1)
+		fi
+	end
+end

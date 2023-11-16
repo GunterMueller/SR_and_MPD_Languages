@@ -1,0 +1,5 @@
+#  gmt  Thu Oct  8 09:57:45 MST 1987
+0 sr -c recurse.sr
+0 srl recurse
+0 run
+0 rm -rf Interfaces core *.out

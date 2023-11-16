@@ -1,0 +1,593 @@
+# This file does a little bit of many different things.
+#
+# Because it does so many things, it is compiled both with and without
+# optimization.  This tests constant folding (among other things).
+#
+# Output is nondeterministic in a few places.
+
+
+
+global ggg
+    int gi = 491
+    string[10] gs = "locomotive"
+    sem gsem = 5
+    op gop ()
+body ggg
+    write ("global ggg here")
+    proc gop () {
+	write ("global op gop here");
+	gi = 193
+	gs = "oceanliner"
+    }
+    V (gsem)
+final {
+    write ("global ggg final")
+}
+end
+
+
+
+resource rrr
+    const int ri = 929
+    const string[12] rs = "perturbation"
+body rrr (string[*] s, real x)
+    write ("rrr(",s,",",x,") replying")
+    reply
+    write ("rrr napping")
+    nap (10000)		# should certainly be killed before 10 seconds elapse!
+    write ("rrr awakened (OOPS!)")
+final {
+    write ("rrr final")
+}
+end
+
+
+
+
+#   Main resource.  
+#
+#   This used to be a long sequence of inline code, but it took forty minutes
+#   to compile the generated code with -O on an HP 9000/834.  Now it only
+#   takes ten minutes.
+
+resource jumble ()
+    write ("hello, complex world...")
+
+
+
+# expressions:
+
+procedure exprtest() {
+
+    # assignment, conversion, types, increment/decrement
+    type integer = int
+    type float = real
+    integer m
+    float y
+    m = 3
+    y = .7
+    y = m * y
+    m = int (y)
+    writes (m, " ", y)
+    writes (" ", m++)
+    writes (" ", m++)
+    writes (" ", m--)
+    writes (" ", m--)
+    writes (" ", ++m)
+    writes (" ", ++m)
+    writes (" ", --m)
+    writes (" ", --m)
+    write ()
+
+    # simple expressions
+    write (stdout, 43, true, '\\', 3.1415926, 3e-20, 5e20)
+    write (-5, +17, 1+2, 42/5, 47%7, 12-5, -(1+3), +93, 7*9, 1<<3, 12>>2)
+    write (12 mod 5, -12 mod 5, 12 mod -5, -12 mod -5)
+    write (12 mod 5.0, -12.0 mod 5, 12.0 mod -5, -12.0 mod -5.0)
+    write (3 ** 2, 1.5 ** 3, 27.0 ** (1.0/3.0), 4.0 ** -.5, -3.0 ** 3.0)
+    write (9 & 3, 9 | 3, 9 xor 3, not 3)
+    write (9 > 3, 9 == 3, 9 < 3)
+    write (true and true, true and false, true or false, true xor false)
+    write (true and false or true and true or false and true)
+    write (not true, not false, not not not (true and false))
+    write (false == true == false) # correct answer is "true"
+
+    # augmented ops
+    writes ("augmops: ", m = 3)
+    writes (" ", m += 8)
+    writes (" ", m -= 4)
+    writes (" ", m *= 5)
+    writes (" ", m /= 2)
+    writes (" ", m %= 7)
+    writes (" ", m **= 2)
+    writes (" ", m |= 4)
+    writes (" ", m &= 7)
+    writes (" ", m <<= 2)
+    writes (" ", m >>= 3)
+    writes (" ", y = 5)
+    writes (" ", y /= 2)
+    writes (" ", y **= 2)
+    writes (" ", y %= 2.25)
+    write ()
+
+}
+exprtest()
+
+
+
+# builtin functions:
+
+procedure builtins () {
+
+    # arg access:
+    writes (numargs(), " args: ")
+    int n = -1
+    real x = -2.7183
+    string[12] s
+    getarg (1, n)
+    getarg (2, x)
+    if (getarg (3, s) > 0) { write (n, x, s) }
+    else		   { write (n, x) }
+
+    # casts:
+    ptr real p = null
+    const [4]char a1 = (' ', '2', '9', ' ')
+    s = "finally"
+    write ("casts:")
+    write (" ",bool("true"),bool("false"),bool(" TRUE "),bool("  FALSE  "),
+	bool(1),bool(0),bool(47.3),bool(0.0),bool(@x),bool(p),bool('t'))
+    write (" ",char('!'),char(-221),char(47.0),char("  blfft "),char(a1),
+	int(char("    ")),int(char("")))
+    write (" ",int(98.6),int(99),int(" 64x "),int(" -100 "),int(" +144q "),
+	int(a1),int('/'),int(2.7183),int(true),int(false),
+	int(READWRITE),int(p))
+    write (" ",real(2),real('/'),double("  +314159e-5 "),real(true),real(a1),
+	real(READWRITE),double(p))
+    write (" ",string(s),string(a1),string('%'),string(97),string(2.7183),
+	string(READWRITE),string(true),string(false),string(p))
+
+    # other builtins:
+    write (pred(12), succ(-40), pred('z'), succ('a'))
+    type etype = enum (ev1, ev2, ev3, ev4, ev5)
+    write (low(bool), high(bool), int(low(char)), int(high(char)), low(int),
+	high(int), low(enum(e1,e2)), high(enum(e3)), high(enum(e4,e5,e6,e7)),
+	high(etype), int(ev4), int(etype(3)))
+    write ("conv:", int(2.7183), int("100"), int(" 100q "), int("100x"))
+    writes ("machine ", mymachine())
+    writes (" priority ", mypriority())
+    setpriority (1492)
+    write (", now", mypriority())
+    real pi
+    write ("abs &c  ", abs(5), abs(-7), abs(14.92), abs(-19.91))
+
+    # following is broken strangely to avoid a gcc varargs bug
+    writes ("min/max  ", min(3), " ")
+    write  (min(3,5.5,-1.2,4), max(12.7), max(-5,3,94))
+
+    write ("sqrt &c ", sqrt(3), floor(sqrt(3)), ceil(sqrt(3)));
+    write ("round   ", round(1.4), round(1.5), round(1.6), round (2.5))
+    write ("round   ", round(-1.4), round(-1.5), round(-1.6), round (-2.5))
+    write ("log     ", log(1), log(2.71828), log(2,8), log(100,10))
+    write ("exp     ", exp(0), exp(1), exp(2), exp(2,4))
+    write ("pi      ", pi = acos(-1.0))
+    write ("sines   ", sin(pi/4), sin(pi/3), sin(pi/2),   asin(0), asin(1))
+    write ("cosines ", cos(pi/4), cos(pi/3), cos(pi),     acos(1), acos(0))
+    write ("tangents", tan(.7854), tan(pi/3), tan(3*pi/4), atan(1), atan(47,0))
+
+    writes ("random  ");
+    seed (42); for [ i = 10 to 50 by 12 ] { writes (" ", random(i)) }
+    seed (42); for [ i = 10 to 50 by 12 ] { writes (" ", random(i)) }
+    write ("", random(89.7,90.5))
+
+}
+builtins ()
+
+
+
+# Input/Output:
+
+procedure iotest () {
+
+    string[20] fname = "/tmp/xyzzy"
+    file f = open (fname, WRITE)
+    writes (fname, ": ")
+    write (f, "abcdefghi")
+    flush (f)
+    seek (f, ABSOLUTE, 3)
+    writes (where (f), " ")
+    writes (f, "DEF")
+    seek (f, EXTEND, 0)
+    writes (where (f), " ")
+    close (f)
+			##%#% should reopen for read and print its contents
+    write ()
+    remove (fname)
+
+    # printf, sprintf, sscanf:
+
+    printf ("%c %x %d %i %f %o %q\n",
+	char(100), 100, 100, 100, 100, 100, 100)
+    printf ("< %b %B %.1b %.1B %10b %-10b >\n",
+	true, false, false, true, true, false)
+    printf ("%-10s%-10s%-10s!\n", "apples", "blueberries"[5:11], "cherries")
+    printf (stdout, "%f %.3f %e\n", 3.14159, 3.14159, 3.14159)
+    printf (
+	"%7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f %7.3f\n",
+	real(88.9), real(true), double(int(721.1412)), +27.339, -47.832, 
+	2 + .7183, 6.142 - 3, 2 * 1.618, 93.4 / 7.93, 192 % 7.819)
+    const string[10] fmt = ":%08o:\n"
+    printf (fmt, 12345q)
+    string[80] sbuf
+    sprintf (sbuf, "%c %x %d %i %f %o %q",
+	char(100), 100, 100, 100, 100, 100, 100)
+    write (sbuf)
+    int n
+    real x
+    string[12] s
+    write ("sscanf returned", sscanf (sbuf, "d %d %7s %f", n, s, x))
+    write (n, s, x)
+
+}
+iotest ()
+
+
+
+#  procedures and control structures
+
+procedure fib (int i) returns int n {
+    n = int(.5+.447214*exp(i,1.618033989))
+    return
+} 
+
+procedure triple (var int n) {
+    n = n * 3
+}
+
+procedure control() {
+
+    for [ i = 20 to 70 by 10, j = 5 downto 2 st j ~= 4 ] {
+	int n = i + j
+	writes (".", n)
+	if (n == 33 or n == 22) { next }
+	else if (n == 53) { exit }
+	else { writes ("/") }
+	writes ("\\")
+    }
+    write()
+
+    int i, j, k
+    i = 0
+    while (true) {
+	if (i % 2 == 1) { writes (i, " "); i = i + 1 }
+	else if (i == 8) { i = i+2 }
+	else if (i < 12) { i = i + 1 }
+	else 		{ exit }
+    }
+    write ()
+
+    # simple procedure
+    writes ("fib(1:20): ")
+    for [ i = 1 to 18 ] { writes (fib (i), " ") }
+    cap (int) returns int v fibcap = fib
+    writes (fibcap(19), " ")
+    cap (int) returns int v fc
+    fc = fibcap
+    write (fc(20))
+
+    # procedure with var param
+    int n = 14
+    writes ("varparam: ", n)
+    triple (n)
+    write (" ->", n)
+
+}
+control()
+
+
+
+# externals:
+
+    external fprintf (file f, string[*] s, int v)
+    external getenv (string[*] s) returns string[99] v
+    external puts (string[*] s)
+    writes ("externals: ")
+    writes ("getenv(SHELL)=", getenv("SHELL"))
+    fprintf (stdout, " fprintf(stdout,%%05d,47)=%05d", 47)
+    puts ("")				# writes \n
+
+
+
+# optypes:
+
+    optype itoi (int) returns int
+    optype rtoi (real) returns int
+    optype ijki (int i, int j, int k) returns real r
+    optype stoi (string[*] s) returns int i
+    optype unused (int, char)	# unused
+
+    op itoi isq;	proc isq (i) returns r		{ r = i * i }
+    op rtoi fix;	proc fix (r) returns i		{ i = int (r) }
+    op ijki fsum;	proc fsum (i, j, k) returns r	{ r = i + j + k }
+    external stoi atoi
+
+    write ("using optypes:", atoi("1492AD"), fix(3.14), isq(13), fsum(8,4,3))
+
+
+
+# arrays, strings, records
+
+procedure idmatrix() returns int a[3,3] {
+    for [ i = 1 to 3 ] {
+	for [ j = 1 to 3 ] {
+	   a[i,j] = 0
+	}
+	a[i,i] = 1
+    }
+}
+
+procedure cdump (char c[1:*]) {
+    writes ("[",lb(c),":",ub(c),"]",c," ")
+}
+
+procedure sdump (string[*] s) {
+    writes ("[",length(s),"/",maxlength(s),"]",s," ")
+}
+
+procedure structest () {
+
+    [3]real aa = (1.0, 2.3, 4.0)
+    real bb[4:6] = (5.0, 6.7, 8.0)
+    double cc[7:9] = (9.0, 1.0, 1.1)
+    for [ i = 1 to 3 ] { writes (aa[i], " ", bb[i+3], " ", cc[i+6], " ") }
+    write()
+
+    [7:11]int a[3:5]
+    write (lb(a), ub(a), lb(a,1), ub(a,1), lb(a,2), ub(a,2))
+    for [ i = 3 to 5, j = 7 to 11 ] { a[i][j] = 100 * i + j }
+    for [ i = 3 to 5, j = 7 to 11  ] { writes (a[i,j], " ") }; write()
+    for [ i = 1 to 4 ] { writes (a[5,8:11][i], " ") }; write()
+    begin {
+	string[47] s = "this is a test string"
+	[5]int b
+	int i = 4
+	int c[i]
+	string[20] t[30]
+	write (s, t[3] = "and this is another")
+    }
+    [6]char ca
+    char cb[3:8]
+    for [ i = 1 to 6 ] { ca[i] = "bisbee"[i] }
+    cb = ca
+    write (ca,lb(ca),ub(ca),ca[*:2],ca[3:4],ca[5:*],
+	cb, lb(cb), ub(cb), cb[*:4],cb[5:6],cb[7:*],
+	"scottsdale",length("scottsdale"),maxlength("scottsdale"),
+	"scottsdale"[*:2], "scottsdale"[3:6], "scottsdale"[7:*])
+
+    string[4] s1, s2
+    [3:6]char a1, a2
+    s1 = "abcd"
+    a1 = chars(s1)
+    a2 = a1
+    a2[5] = 'x'
+    s2 = string(a2)
+    a2 = chars(s2)
+    [10]char a3 = ('b', [2]'o', [2]'k', [2]'e', 'p', 'e', 'r')
+    write ("strings/arrays:",
+	s1, s1[*:3], s1[2:*], s1[*:*],
+	a1, a1[*:5], a1[4:*], a1[*],
+	a2, s2, a3)
+
+    begin {
+	char a[10] = chars("abcdefghij")
+	string[10] s = "zyxwvutsrq"
+	writes ("slice assignment: ")
+	writes (a[4:7] = chars("DEFG"));  writes (" ", a, " ")
+	writes (s[6:8] = "UTS");   writes (" ", s, " ")
+	writes (a[1:3] = a[8:10]); writes (" ", a, " ")
+	writes (s[2:4] = string(a[4:6]));  writes (" ", s, "\n")
+    }
+
+    # array and string procedures:
+
+    writes ("id matrix:")
+    int mat[3,3] = idmatrix()
+    for [ i = 1 to 3 ] {
+	for [ j = 1 to 3 ] {
+	    writes (" ", mat[i,j])
+	}
+    }
+    write ()
+
+    sdump (""); sdump("a"); sdump("ab"); sdump("abc"); sdump("abcd"); write()
+
+    char za[8] = chars("zyxwvuts")
+    for [ i = 0 to 6 ] { cdump(za[1:i]) }; cdump(za); write()
+
+    #   records
+    type rt = rec (int i; real r)
+    rt rv = rt (3, 12)
+    rec (int i; rt a[41:43]; double r) ra
+    ra.i = 7
+    ra.r = 13
+    ra.a = ([3] rt(5,8))
+    write ("rec:", rv.i, rv.r, ra.i, ra.a[41].i, ra.a[43].r, ra.r)
+
+}
+structest ()
+
+
+
+# send/receive:
+
+    int i, j, k, n
+    op o (int a, int b, int c)
+    writes("sending 23,39,42; ");  send o(23,39,42)
+    writes("sending 47,74,93; ");  send o(47,74,93)
+    receive o(i,j,k);  writes("received ", i, ",", j, ",", k, "; ")
+    receive o(i,j,k);  writes("received ", i, ",", j, ",", k, "; ")
+    write ()
+
+    writes("sending 13,17,19; ");  send o(13,17,19)
+    writes("sending 53,59,67; ");  send o(53,59,67)
+    in o(i,j,k) ->
+	writes ("in(", i, ",", j, ",", k, "); ")
+	in o(k,j,m) ->
+	    writes ("in(", k, ",", j, ",", m, ") [i=", i, "]")
+	ni
+	write ()
+    ni
+
+    op echo (int i)
+    for [ i = 1 to 25 ] { send echo(i) }
+    writes ("in:")
+    while (true) {
+	in echo(j) st j%3 == 0 -> writes (" =", j)
+	[] echo(j) by j%5 -> writes (" ", j)
+	[] else -> exit
+	ni
+    }
+    write ()
+
+# subscripted op:
+
+    const int six = 6
+    const int SIX = six
+    op oo[2,3:5][SIX:7](int)
+    writes ("subscripted op:")
+    for [ i = 1 to 2 ] {
+	for [ j = 3 to 5 ] {
+	    for [ k = 6 to 7 ] {
+		send oo[i][j,k] (100*i+10*j+k)
+	    }
+	}
+    }   
+    for [ i = 1 to 2 ] {
+	for [ j = 5 downto 3 ] {
+	    for [ k = 6 to 7 ] {
+		receive oo[i,j,k] (n)
+		writes (" ", n)
+    	    }
+	}
+    }
+    write ()
+
+# local ops:
+
+    procedure locops() {
+	int i
+	op loc1 ()
+	op loc2[3] (int)
+	writes ("local ops: ")
+	send loc1()
+	receive loc1()
+	writes (" got loc1")
+	send loc2[1](1)
+	send loc2[3](3)
+	send loc2[2](2)
+	receive loc2[3](i)
+	writes (", got ", i)
+	receive loc2[1](i)
+	writes (", got ", i)
+	receive loc2[2](i)
+	write  (", got ", i)
+    }
+    locops()
+
+# semaphores:
+
+    sem psem			# procs wait on psem
+    sem msem = 2		# main waits on msem
+    V (msem);	writes (?msem, " ")
+    P (msem);	writes (?msem, " ")
+    P (msem);	writes (?msem, " ")
+    receive msem(); write (?msem)
+
+procedure waitsig () {
+writes ("waitsig replying; ")
+reply
+P(psem)
+write ("waitsig done.")
+V(msem)
+}
+    writes ("calling waitsig; ")
+    waitsig()
+    writes ("sending signal; ")
+    V(psem)
+    P(msem)
+
+# forward:
+
+    op fwd (int, int)
+    proc fwd (i, j) {
+	write ("fwd", i, j, "here")
+	if (j > 0) { forward fwd (i, j-1) }
+	write ("fwd", i, j, "done")
+    }
+
+    send fwd (11,4)
+    send fwd (22,5)
+    fwd (33,5)
+    fwd (44,3)
+
+# process:
+
+process ps {
+  write ("process ps: ")
+  V(msem)
+}
+
+process q [ i = 1 to 10 by 3, j = 8 downto 2 by -3 ] {
+  write ("  ps",i,j)
+  V(msem)
+}
+    send ps()
+    send q(47,39)
+    for [ i = 1 to 14 ] { P(msem) }
+
+# co statement:
+
+procedure cshift (char c, int n) returns char r {
+    r = char (int(c) + n)
+}
+    char ca[6]
+    write ("co stmt:")
+    co [ i = 1 to 3 ]
+	ca[i] = cshift ('a', i-1) -> write ("  a. ca[",i,"]  is",ca[i])
+    // [ i = 4 to 6 ]
+	ca[i] = cshift ('a', i-1 ) -> write ("  b. ca[",i,"]  is",ca[i])
+    oc
+    write ("  ca:", ca)
+
+
+
+# globals:
+
+    import ggg
+    write (gi, gs)
+    gop()
+    write (gi, gs)
+    write ("gsem [I] ", ?gsem)
+    P(gsem)
+    write ("gsem [II]", ?gsem)
+
+# resources:
+
+    import rrr
+    write (ri, rs)
+    cap rrr rrrcap = create rrr ("geranium", 11213)
+    write ("rrr created")
+    destroy rrrcap
+    write ("rrr killed")
+
+    write ("done!")
+    return
+    write ("oops, didn't quit!")
+
+# final:
+
+    final {
+	write ("main final")
+	return
+	write ("oops, didn't quit final!")
+    }
+end

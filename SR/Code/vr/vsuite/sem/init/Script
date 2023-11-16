@@ -1,0 +1,5 @@
+0 sr -c -do initsem.sr
+0 cmp Compiler.std Compiler.out
+0 srl initsem
+0 run
+0 rm -rf Interfaces core *.out

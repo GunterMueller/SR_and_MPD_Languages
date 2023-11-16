@@ -1,0 +1,5 @@
+# ron Wed, 18 Jan 89 17:34:07 PST
+0 mpd -c purge.mpd
+0 mpdl a
+0 run
+0 rm -rf MPDinter core *.out

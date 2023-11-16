@@ -1,0 +1,197 @@
+# Distributed Dining Philosophers.  Based on the example in Section 13.3 of
+# "The SR Programming Language: Concurrency in Practice", by Greg Andrews and
+# Ron Olsson, Benjamin/Cummings, 1993.  The algorithm is from Chandy and Misra,
+# "Drinking Philosophers Problem", ACM TOPLAS v 6, n 4, Oct 1984, pp 632-646.
+# Usage:  a.out [n secs t_secs e_secs t_secs e_secs ...]
+# (for n philosophers, secs seconds running time, t_secs max thinking seconds,
+# e_secs max eating seconds for each philosopher)
+#
+resource Philosopher
+   import Servant, SRanimator
+body Philosopher(myservant : cap Servant; id, thinking, eating: int)
+   process phil
+      do true ->
+         nap(int(random(thinking)))
+         write(age(), "philosopher", id, "is hungry")
+
+# Change a hungry philosopher's symbol to be solid green.
+         call A_color(id, "green")
+         call A_fill(id, "solid")
+
+         myservant.getforks()
+
+# Change an eating philosopher's symbol to be solid blue.
+         call A_color(id, "blue")
+
+         nap(int(random(eating)))
+
+# Change a thinking philosopher's symbol to an outline black circle.
+         call A_fill(id, "outline")
+         call A_color(id, "black")
+
+         myservant.relforks()
+      od
+   end phil
+end Philosopher
+
+resource Servant
+   import SRanimator
+   op getforks(), relforks()
+   op needR(), needL(), passR(), passL()
+   op links(r, l : cap Servant)
+   op forks(haveR, dirtyR, haveL, dirtyL : bool)
+
+# This op and the variables below are used to hold the symbol id numbers of
+# the left and right fork symbols and where the left and right forks are
+# placed next to the philosopher when it possesses them.
+   op fork_ids(forkR, forkL, holderR, holderL : int)
+
+body Servant(id : int)
+   op hungry(), eat()
+   var r, l : cap Servant
+   var haveR, dirtyR, haveL, dirtyL : bool
+   var forkR, forkL, holderR, holderL : int
+
+   proc getforks()
+      send hungry(); receive eat()
+   end
+
+   process server
+      receive links(r, l)
+      receive forks(haveR, dirtyR, haveL, dirtyL)
+
+# Move a left or right fork initially given to this philosopher to be next
+# to the philosopher.
+      receive fork_ids(forkR, forkL, holderR, holderL)
+      if haveR -> call A_jumpto(forkR, holderR) fi
+      if haveL -> call A_jumpto(forkL, holderL) fi
+      if dirtyR -> call A_color(forkR, "orange")
+                   call A_fill(forkR, "solid") fi
+      if dirtyL -> call A_color(forkL, "orange")
+                   call A_fill(forkL, "solid") fi
+
+      do true->
+         in hungry() ->
+            if ~haveR -> send r.needL()
+            [] else ->
+               write(age(), "philosopher", id, "has right fork")
+            fi
+            if ~haveL -> send l.needR()
+            [] else ->
+               write(age(), "philosopher", id, "has left fork")
+            fi
+            do ~(haveR & haveL) ->
+               in passR() -> haveR := true; dirtyR := false
+                  write(age(), "philosopher", id, "got right fork")
+
+# Move the fork from where it was to be next to this philosopher and then
+# change its symbol to be a black outline circle i.e. not dirty.  Also raise
+# the fork's symbol to the closest viewing plane to make it more visible.
+                  call A_stepjumpto(forkR, holderR, 5, 100)
+                  call A_fill(forkR,  "outline")
+                  call A_color(forkR, "black")
+                  call A_raise(forkR)
+
+               [] passL() -> haveL := true; dirtyL := false
+                  write(age(), "philosopher", id, "got left fork")
+
+# Ditto.
+                  call A_stepjumpto(forkL, holderL, 5, 100)
+                  call A_fill(forkL,  "outline")
+                  call A_color(forkL, "black")
+                  call A_raise(forkL)
+
+               [] needR() st dirtyR -> haveR := false; dirtyR := false
+                  send r.passL(); send r.needL()
+                  write(age(), "philosopher", id, "sends dirty right fork")
+               [] needL() st dirtyL -> haveL := false; dirtyL := false
+                  send l.passR(); send l.needR()
+                  write(age(), "philosopher", id, "sends dirty left fork")
+               ni
+            od
+            write(age(), "philosopher", id, "has both forks")
+            send eat(); dirtyR := true; dirtyL := true
+            receive relforks()
+            write(age(), "philosopher", id, "is finished eating")
+
+# Now that the philosopher has finished eating, its forks are dirty so
+# change their symbols to be solid orange circles.
+            call A_color(forkL, "orange")
+            call A_fill(forkL, "solid")
+            call A_color(forkR, "orange")
+            call A_fill(forkR, "solid")
+
+         [] needR() -> haveR := false; dirtyR := false; send r.passL()
+            write(age(), "philosopher", id, "sends right fork")
+         [] needL() -> haveL := false; dirtyL := false; send l.passR()
+            write(age(), "philosopher", id, "sends left fork")
+         ni
+      od
+   end server
+end Servant
+
+resource Main()
+   import Philosopher, Servant, SRanimator
+   var n := 5; getarg(1, n); var runtime := 60; getarg(2, runtime)
+   var s[1:n] : cap Servant; var p[1:n] : cap Philosopher
+   var think[1:n] : int := ([n] 5); var eat[1:n] : int := ([n] 2)
+   fa i := 1 to n -> getarg(2*i+1, think[i]); getarg(2*i+2, eat[i]) af
+   write(n, "philosophers; think, eat times in seconds:")
+   fa i := 1 to n -> writes(" ", think[i]) af; write()
+   fa i := 1 to n -> writes(" ",   eat[i]) af; write()
+
+##### animator #####v
+# Change coordinates so 0,0 is the center, then create a big black outline
+# circle to be the table.
+   call A_coords(-1.5, -1.5, 1.5, 1.5)
+   call A_circle(1000, 0.0, 0.0, 1.0, "black", "outline")
+# Put some annotated symbols on the screen.
+   call A_circle(1001, -1.4, -0.6, 0.02, "black", "outline")
+   call A_text(1002, -1.3, -0.625, 0, "black", "clean fork")
+   call A_circle(1003, -1.4, -0.8, 0.02, "orange", "solid")
+   call A_text(1004, -1.3, -0.825, 0, "black", "dirty fork")
+   call A_circle(1005, -1.4, -1.0, 0.05, "black", "outline")
+   call A_text(1006, -1.3, -1.025, 0, "black", "THINKING")
+   call A_circle(1007, -1.4, -1.2, 0.05, "green", "solid")
+   call A_text(1008, -1.3, -1.225, 0, "black", "HUNGRY")
+   call A_circle(1009, -1.4, -1.4, 0.05, "blue",  "solid")
+   call A_text(1010, -1.3, -1.425, 0, "black", "EATING")
+# Put a clean set of forks, small black outline circles, near the table.
+   call A_text(1011, -1.0+0.05*(n+1), -1.41, 0, "black", "forks")
+   fa i := 1 to n ->
+      call A_circle(3000+i-1, -1.0+0.05*i, -1.4, 0.02, "black", "outline")
+   af
+   const TWO_PI := 2.0*acos(-1.0)
+   fa i := 1 to n ->
+# Put the philosophers, black outline circles, around the table.
+      call A_circle(i, sin(i*(TWO_PI/n)), cos(i*(TWO_PI/n)),
+         0.1, "black", "outline")
+      call A_text(2000+i, sin(i*(TWO_PI/n))+0.1, cos(i*(TWO_PI/n))+0.1,
+         1, "black", string(i))
+# Put nearly invisible circles (points) on the left and right side of each
+# philosopher to be places the forks can be moved to when the philosopher
+# gets possession of a fork.
+      call A_circle(4000+2*i, sin(i*(TWO_PI/n)-0.12), cos(i*(TWO_PI/n)-0.13),
+         0.001, "black", "outline")
+      call A_circle(4000+2*i+1, sin(i*(TWO_PI/n)+0.12), cos(i*(TWO_PI/n)+0.13),
+         0.001, "black", "outline")
+   af
+
+   fa i := 1 to n -> s[i] := create Servant(i)
+      create Philosopher(s[i], i, 1000*think[i], 1000*eat[i])
+   af
+   fa i := 1 to n -> send s[i].links(s[((i-2) mod n)+1], s[(i mod n)+1]) af
+   send s[1].forks(true, true, true, true)
+   fa i := 2 to n-1 -> send s[i].forks(false, false, true, false) af
+   send s[n].forks(false, false, false, false)
+
+# Send to each philosopher the xtango animator symbol id's of the two forks
+# the philosopher needs to eat and the places where possessed forks are to
+# be moved next to the philosopher.
+   fa i := 1 to n ->
+      send s[i].fork_ids(3000+((i-1) mod n), 3000+(i mod n),
+         4000+2*i, 4000+2*i+1)
+   af
+
+   nap(1000*runtime); write("must stop now"); call A_end(); stop
+end Main

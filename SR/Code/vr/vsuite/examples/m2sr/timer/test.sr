@@ -1,0 +1,29 @@
+/* results will almost differ between executions.
+ * uses signal_all (so only works with sc).
+ */
+resource test()
+
+  import timer
+  var done := 0
+
+  write("simulation started at", age())
+
+  process user(i := 1 to 4)
+    fa j := 1 to 10 ->
+      write("process", i, "sleeping at", age(), "for", 100*(i+j) )
+      timer.delay(10*(i+j))
+      write("process", i, "awake at", age())
+    af
+    done++
+  end
+
+  process clock
+    do true ->
+      nap(10)
+      timer.tick()
+      if done = 4 -> exit fi
+    od
+    write("simulation ended at", age())
+  end
+
+end

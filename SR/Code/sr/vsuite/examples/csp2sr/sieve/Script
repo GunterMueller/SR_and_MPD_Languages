@@ -1,0 +1,7 @@
+0 csp2sr -te sieve.csp
+0 sr -C sieve.sr
+
+0 csp2sr -ti sieve.csp
+0 sr -C sieve.sr
+
+0 rm -rf Interfaces core *.out sieve.sr

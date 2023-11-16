@@ -1,0 +1,18 @@
+resource cs2()
+  const N := 20  # number of client processes
+  op request(id: int; ...), results[N](...)
+  process client(i := 1 to N)
+     ...
+    send request(i, ...)
+    # possibly perform some other work
+    receive results[i](...)
+     ...
+  end
+  process server
+    do true ->
+      receive request(id, ...)
+      # handle request
+      send results[id](...)
+    od
+  end
+end

@@ -1,0 +1,14 @@
+# recurse.sr -- test recursive op definitions
+# pretty silly, but should work...
+
+resource recurse()
+    op links (neighbor : cap links)
+    op ulinks (uneighbor : cap ulinks)
+
+    var c: cap links
+    c := links
+    c := ulinks
+
+    proc links(n) end
+    proc ulinks(n) end
+end

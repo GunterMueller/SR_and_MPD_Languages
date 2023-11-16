@@ -1,0 +1,23 @@
+resource enum1
+	type e = enum( alpha, beta, gamma, delta )
+body enum1() separate
+
+body enum1
+	op print( e  x)
+
+	e  v 
+	v = delta; print( v )
+	v = beta; print( v )
+	v = alpha; print( v )
+	v = gamma; print( v )
+	print( succ(v) ); print( pred(v) ); print( succ(pred(v)) )
+
+	proc print(x)  {
+		if (x == alpha) { write("alpha")
+		} else if (x == beta ) { write("beta")
+		} else if (x == gamma ) { write("gamma")
+		} else if (x == delta ) { write("delta")
+		} else { write("????")
+		}
+	}
+end

@@ -1,0 +1,5 @@
+0 sr -c -do qm4.sr
+0 cmp Compiler.std Compiler.out
+0 srl qm4
+0 run
+0 rm -rf Interfaces core *.out

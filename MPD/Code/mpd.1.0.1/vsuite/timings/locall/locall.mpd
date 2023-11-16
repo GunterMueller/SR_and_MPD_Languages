@@ -1,0 +1,30 @@
+# timing for a local proc call
+# An empty proc is called many times.
+
+resource calls()
+
+  int  limit, base, factor, trials 
+
+  op dummy()
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit = factor * base
+
+  proc dummy()  {
+    skip
+  }
+
+  process test  {
+    int  start, finish 
+
+    for [ t = 1 to trials ] {
+	start = age()
+	for [ i = 1 to limit ] { dummy() }
+	finish = age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    }
+  }
+
+end

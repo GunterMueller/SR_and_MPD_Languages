@@ -1,0 +1,61 @@
+# another test of else with multiple processes
+# note: processes synchronize so execution is deterministic;
+# output is also deterministic.
+resource a()
+# note:  talk about being sensitive...
+#        removing hoho's second parameter makes infinite loop disappear
+#
+   op bozo(t:int);  op hoho(t,u:int);  op blocker() returns b:bool; op f(x:int)
+   op go()
+   op done()
+   # control[t] is 0 if else present for hoho during try t
+   # otherwise it is value to send to f
+const R := 2
+      var control[1:R] :int :=
+          ( 29,
+	     0)
+      var output[1:R] :int := ([R] -1)
+
+      fa t := 1 to R ->
+          write("****Try",t)
+	  send f(9999)
+          if control[t] != 0 -> send f(control[t])  fi
+          call bozo(t)
+          call hoho(t,t)
+	  receive done()
+      af
+      fa k := 1 to R ->
+            write(output[k])
+      af
+      fa k := 1 to R st control[k] != output[k] ->
+            write("oops",k); stop(1)
+      af
+
+   proc bozo(t)
+      write("bozo",t)
+      reply
+      # don't try this at home boys and girls
+      in f(x) and blocker() ->
+      ni
+   end
+
+   proc hoho(t,u)
+      reply
+send go()
+      if control[t] = 0 ->
+          in f(x) and x = -98765 /* always false */ -> output[t] := x
+          [] else -> output[t] := 0
+          ni
+      [] else ->
+          in f(x) -> output[t] := x
+          ni
+      fi
+      send done()
+   end
+   # the idea is to block bozo so that the hoho's get put on
+   # the new process list for f.
+   proc blocker() returns b
+      b := true
+receive go()
+   end
+end

@@ -1,0 +1,20 @@
+resource factorial
+	import gl
+	op fact(int k , cap gl.answer ans ) {send}
+body factorial()
+
+   proc fact(k, ans)  {
+	op gl.answer myanswer
+	int  kfact 
+
+	if (k<0) { send ans(-1)
+	} else if (k==0 or k==1 ) { send ans(1)
+	} else {
+		# k is greater than 1 so compute k!
+		send fact(k-1,myanswer)
+		receive myanswer(kfact)
+		send ans(k*kfact)
+	}
+   }
+
+end

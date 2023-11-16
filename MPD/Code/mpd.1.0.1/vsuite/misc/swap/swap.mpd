@@ -1,0 +1,79 @@
+# test lots of different swaps
+
+resource z()
+    type pt = rec (int x, y )
+    optype charop = () returns char c
+    procedure p() returns char c  { c = 'p' }
+    procedure q() returns char c  { c = 'q' }
+
+    file f1 = stdout;        file f2 = noop
+    cap vm v1 = myvm();      cap vm v2 = null
+    cap z z1 = noop;         cap z z2 = myresource()
+    bool b1 = true;          bool b2 = false
+    char c1 = 'x';           char c2 = 'y'
+    int i1 = 11;             int i2 = 22
+    real r1 = 1.11;          real r2 = 2.22
+    string[5] s1 = "sleet";  string[7] s2 = "rain" 
+    int a1[2] = (2,3);       [2]int a2 = (5,7)
+    pt k1 = pt(42,78);       pt k2 = pt(67,31)
+    cap charop o1 = p;       cap charop o2 = q
+
+
+    procedure swapall() {       # swap all values
+	f1 :=: f2
+	v1 :=: v2
+	z1 :=: z2
+	b1 :=: b2
+	c1 :=: c2
+	i1 :=: i2
+	r1 :=: r2
+	s1 :=: s2
+	a1 :=: a2
+	k1 :=: k2
+	o1 :=: o2
+    }
+
+    procedure dumpall() {       # dump all values
+	writes (f1, "f1  ")
+	writes (f2, "f2  ")
+	if (v1 == myvm()) { writes('!')
+	    } else if (v1 == null ) { writes('0')
+	    } else { writes("???")
+	    }
+	if (v2 == myvm()) { writes('!')
+	    } else if (v2 == null ) { writes('0')
+	    } else { writes("???")
+	    }
+	writes (' ')
+	if (z1 == myresource()) { writes('!')
+	    } else if (z1 == noop ) { writes('-')
+	    } else { writes("???")
+	    }
+	if (z2 == myresource()) { writes('!')
+	    } else if (z2 == noop ) { writes('-')
+	    } else { writes("???")
+	    }
+
+	printf ("  %.1b %.1b  %c %c  %2d %2d  %4.2f %4.2f  %s %s",
+	    b1, b2, c1, c2, i1, i2, r1, r2, s1, s2)
+	printf ("  %d,%d %d,%d  %d,%d %d,%d  %c %c\n",
+	    a1[1], a1[2], a2[1], a2[2], k1.x, k1.y, k2.x, k2.y, o1(), o2())
+    }
+
+    procedure swapval() {       # check values returned by swap operations
+	write (b1:=:b2, c1:=:c2, i2:=:i2, r1:=:r2, s1:=:s2,
+	    (a1:=:a2)[2], (k1:=:k2).y, (o1:=:o2)())
+    }
+
+
+    dumpall()
+    swapall()
+    dumpall()
+    swapall()
+    dumpall()
+    write()
+    swapval()
+    swapval()
+    write()
+    dumpall()
+end

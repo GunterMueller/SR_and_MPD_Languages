@@ -1,0 +1,5 @@
+0 mpd -c imp1.mpd imp2.mpd imp3.mpd
+0 mpdl imp2 imp1 imp3
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf MPDinter core *.out

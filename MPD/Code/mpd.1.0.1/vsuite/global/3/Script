@@ -1,0 +1,5 @@
+# aprasad  Jul 91
+
+0 mpd glob.mpd
+0 run
+0 rm -rf MPDinter core *.out

@@ -1,0 +1,17 @@
+resource imp3
+	import imp2, imp1
+body imp3()
+	op f(int x) {send}
+
+	cap imp2  c
+	t z
+	write("imp3 before create")
+	c = create imp2(2222)
+	z.a = -5555
+	z.b = -6666
+	send c.f(z)
+
+	proc f(x)  {
+		write("oops, should not have happened",x)
+	}
+end

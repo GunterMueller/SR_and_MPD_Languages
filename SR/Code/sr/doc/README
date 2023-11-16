@@ -1,0 +1,11 @@
+This directory contains troff(1) source for those PostScript files in ../ps
+which are formatted using troff.  The README in ../ps lists the documents and
+their contents.
+
+The Makefiles here and in ../man build the PostScript files.  Because troff
+variants abound, they should just be considered guides;  you'll probably have
+to experiment to make things work.  There are some non-critical references to
+local files such as tech report covers that will need to be removed.
+
+Some informal notes, not all current or correct, are stored as simple
+text files in ../notes.

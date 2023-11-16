@@ -1,0 +1,60 @@
+#  distributed topology computation -- wave method
+#
+#  usage: a.out datafile [startnode]
+#
+#  datafile lists number of nodes, then pairs of neighbors, as integers
+
+resource main
+  import node, printer
+body main()
+
+  process compute_topology  {
+
+    # get file name and start node
+    string[40] pn
+    if (getarg(1,pn) == EOF) {
+	write(stderr,"usage: a.out datafile [startnode]"); stop }
+    int  sn = 1
+    getarg(2,sn)        # if unsuccessful, use initialized value of 1
+
+    # read number of nodes and initial topology
+    file  f 
+    f = open(pn,READ)
+    if (f == null) {
+	write("Error:  cannot open file", pn); stop }
+    int  n 
+    read(f,n)
+    int initial_top[1:n,1:n] = ([n*n] 0)
+
+    int  i,j 
+    while (true) {
+	if (read(f,i) == EOF) { exit }
+	if (read(f,j) == EOF) {
+	   write("Error:  there must be an even number of nodes"); stop }
+	if (i<1 or i>n or j<1 or j>n) {
+	   write("Error:  each node must be between 1 and n"); stop }
+	initial_top[i,j] = j; initial_top[j,i] = i
+    }
+
+    # output initial topology
+    write("    Initial Topology read from", pn)
+    for [ i = 1 to n ] {
+	writes(i,":  ")
+	for [ j = 1 to n ] { writes(initial_top[i,j]," ") }
+	write("")
+    }
+    write("")
+
+    # create printer and n nodes
+    cap printer  pr 
+    cap node  nc[1:n] 
+    pr = create printer(n)
+    for [ i = 1 to n ] { nc[i] = create node(n,i,pr) }
+    for [ i = 1 to n ] { nc[i].neighbors(nc,initial_top[i,1:n]) }
+
+    # start all nodes
+    co [ i = 1 to n ] nc[i].start() oc
+
+  }
+
+end main

@@ -1,0 +1,31 @@
+_program(nest)
+  const N := 7
+  _specs
+    _process_spec1(A, 1,N)
+      _port(A,foo, (x: int))
+  _specs_end
+
+  _process_body1(A, i)
+    var x := -99
+    write("start of A", i)
+    _if
+      _guard_iq1(k, 1,N, k!=i, A[k],foo, (x)) ->
+        write(i, "got", x, "from", k)
+        _if
+          _guard_iq1(j, 1,N, j=k, A[j],foo, (x)) ->
+            write(i, "got", x, "from", j, k)
+          _guard_oq1(j, 1,N, j=k, A[j],foo, (i*100)) ->
+            write(i, "sent", i*100, "to", j, k)
+        _fi
+      _guard_oq1(k, 1,N, k!=i, A[k],foo, (i*10)) ->
+        write(i, "sent", i*10, "to", k)
+        _if
+          _guard_iq1(j, 1,N, j=k, A[j],foo, (x)) ->
+            write(i, "got", x, "from", j, k)
+          _guard_oq1(j, 1,N, j=k, A[j],foo, (i*100)) ->
+            write(i, "sent", i*100, "to", j, k)
+        _fi
+    _fi
+  _process_end
+
+_program_end

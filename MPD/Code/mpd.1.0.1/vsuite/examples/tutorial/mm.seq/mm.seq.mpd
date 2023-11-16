@@ -1,0 +1,29 @@
+# sequential matrix multiplication program
+# computes and prints c = a x b for n x n matrices
+
+# usage:  a.out size
+
+resource matrix_mult()
+
+  # read command line argument for matrix sizes
+  int n; getarg(1,n);
+
+  # declare matrices and initialize a and b
+  real a[n,n] = ([n] ([n] 1.0)),
+       b[n,n] = ([n] ([n] 1.0)),
+       c[n,n];
+
+  for [i = 1 to n, j = 1 to n] {  # compute n**2 inner products
+    real sum = 0.0;
+    for [k = 1 to n]
+      { sum += a[i,k]*b[k,j]; }
+    c[i,j] = sum;
+  }
+
+  # print result, by rows
+  for [i = 1 to n] {
+    for [j = 1 to n] { writes(c[i,j], " "); }  # one line per row
+    write();   # append a newline
+  }
+
+end

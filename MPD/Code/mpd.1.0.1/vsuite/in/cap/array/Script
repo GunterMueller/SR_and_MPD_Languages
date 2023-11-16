@@ -1,0 +1,4 @@
+#  gmt  Thu May 27 11:09:57 MST 1993
+0 mpd oparr.mpd
+0 run
+0 rm -rf MPDinter core *.out

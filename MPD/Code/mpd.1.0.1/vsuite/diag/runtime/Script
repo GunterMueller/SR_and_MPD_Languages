@@ -1,0 +1,71 @@
+#  test for occurrence of runtime error messages
+#  gmt/shiu  Mon Mar  4 19:21:52 MST 1991
+
+0 mpd -c runerrs.mpd
+0 mpdl -R3 g r runerrs
+0 rm -f Errors.out
+2 a.out 00 >>Errors.out 2>&1
+1 a.out 01 >>Errors.out 2>&1
+1 a.out 02 >>Errors.out 2>&1
+1 a.out 03 >>Errors.out 2>&1
+1 a.out 04 >>Errors.out 2>&1
+1 a.out 05 >>Errors.out 2>&1
+1 a.out 06 >>Errors.out 2>&1
+1 a.out 07 >>Errors.out 2>&1
+1 a.out 08 >>Errors.out 2>&1
+1 a.out 09 >>Errors.out 2>&1
+2 a.out 10 >>Errors.out 2>&1
+1 a.out 11 >>Errors.out 2>&1
+2 a.out 12 >>Errors.out 2>&1
+2 a.out 13 >>Errors.out 2>&1
+1 a.out 14 >>Errors.out 2>&1
+1 a.out 15 >>Errors.out 2>&1
+1 a.out 16 >>Errors.out 2>&1
+1 a.out 17 >>Errors.out 2>&1
+1 a.out 18 >>Errors.out 2>&1
+1 a.out 19 >>Errors.out 2>&1
+1 a.out 20 >>Errors.out 2>&1
+1 a.out 21 >>Errors.out 2>&1
+1 a.out 22 >>Errors.out 2>&1
+1 a.out 23 >>Errors.out 2>&1
+1 a.out 24 >>Errors.out 2>&1
+1 a.out 25 >>Errors.out 2>&1
+1 a.out 26 >>Errors.out 2>&1
+1 a.out 27 >>Errors.out 2>&1
+1 a.out 28 >>Errors.out 2>&1
+1 a.out 29 >>Errors.out 2>&1
+1 a.out 30 >>Errors.out 2>&1
+1 a.out 31 >>Errors.out 2>&1
+1 a.out 33 >>Errors.out 2>&1
+1 a.out 34 >>Errors.out 2>&1
+1 a.out 35 >>Errors.out 2>&1
+1 a.out 36 >>Errors.out 2>&1
+1 a.out 37 >>Errors.out 2>&1
+1 a.out 38 >>Errors.out 2>&1
+1 a.out 39 >>Errors.out 2>&1
+1 a.out 40 >>Errors.out 2>&1
+1 a.out 41 >>Errors.out 2>&1
+1 a.out 42 >>Errors.out 2>&1
+1 a.out 43 >>Errors.out 2>&1
+1 a.out 44 >>Errors.out 2>&1
+1 a.out 45 >>Errors.out 2>&1
+1 a.out 46 >>Errors.out 2>&1
+1 a.out 47 >>Errors.out 2>&1
+1 a.out 48 >>Errors.out 2>&1
+1 a.out 49 >>Errors.out 2>&1
+1 a.out 50 >>Errors.out 2>&1
+1 a.out 51 >>Errors.out 2>&1
+1 a.out 52 >>Errors.out 2>&1
+1 a.out 53 >>Errors.out 2>&1
+1 a.out 54 >>Errors.out 2>&1
+1 a.out 55 >>Errors.out 2>&1
+1 a.out 56 >>Errors.out 2>&1
+1 a.out 57 >>Errors.out 2>&1
+1 a.out 58 >>Errors.out 2>&1
+1 a.out 59 >>Errors.out 2>&1
+1 a.out 60 >>Errors.out 2>&1
+0 a.out 61 >>Errors.out 2>&1
+1 a.out 62 >>Errors.out 2>&1
+1 a.out 63 >>Errors.out 2>&1
+0 cmp -s Errors.std Errors.out
+0 rm -rf MPDinter core *.out

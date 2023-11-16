@@ -1,0 +1,16 @@
+# question mark operator.
+# local array of operations.
+resource qm7()
+
+	op f[1:10]() {send}
+	for [ i = 1 to 10 ] {
+		send f[i]()
+	}
+	for [ i = 1 to 10 ] {
+		write( i, ? f[i] )
+	}
+	for [ i = 1 to 10 ] {
+		receive f[i]()
+		write( i, ? f[i] )
+	}
+end

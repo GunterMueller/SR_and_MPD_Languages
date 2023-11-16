@@ -1,0 +1,5 @@
+0 sr -c -do sem2.sr
+0 cmp Compiler.std Compiler.out
+0 srl sem2
+0 run
+0 rm -rf Interfaces core *.out

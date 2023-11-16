@@ -1,0 +1,4 @@
+0 sr -c fact1.sr
+0 srl fact1
+0 run
+0 rm -rf Interfaces core *.out

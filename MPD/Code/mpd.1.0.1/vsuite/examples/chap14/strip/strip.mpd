@@ -1,0 +1,49 @@
+global sizes
+  int N = 6     # matrix dimension, default 10
+  int PR = 2    # number of processes, default 2
+  int S         # strip size
+body sizes
+  getarg(1, N); getarg(2, PR); S = N/PR
+  if (N mod PR != 0) {
+    write("N must be a multiple of PR"); stop
+  }
+end
+
+resource mult()
+  import sizes
+  real  a[N,N], b[N,N], c[N,N]
+  sem done = 0, continue = 0
+
+  int start = age()  # determine start time
+  process strip [ p = 1 to PR ] {
+    const int R = (p-1)*S + 1    # starting row of strip
+    # initialize parts of a and b
+    for [ i = R to R+S-1, j = 1 to N ] {
+      a[i,j] = 1.0; b[i,j] = 1.0
+    }
+    # barrier to wait for all initialization
+    V(done); P(continue)
+    # compute S*N inner products
+    for [ i = R to R+S-1, j = 1 to N ] {
+      real inner_prod = 0.0  # local accumulator
+      for [ k = 1 to N ] {
+	inner_prod += a[i,k]*b[k,j]
+      }
+      c[i,j] = inner_prod
+    }
+  }
+
+  process coordinator  {
+    for [ i = 1 to PR ] { P(done) }
+    for [ i = 1 to PR ] { V(continue) }
+  }
+
+  final {  # write results (if arrays exist)
+    int finish = age()  # determine finish time
+    if (N mod PR != 0) { stop }
+    for [ i = 1 to N ] {
+      for [ j = 1 to N ] { writes(c[i,j], " ") }
+      write()
+    }
+  }
+end

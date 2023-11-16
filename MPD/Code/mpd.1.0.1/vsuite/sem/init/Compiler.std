@@ -1,0 +1,12 @@
+
+===============  initsem  ===============
+
+ops:
+   Rs  SYM2 sema: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 semb: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 semc: K_OP T_OP(){send}:T_VOID
+   Rp  SYM2 a: K_OP T_OP(){send}:T_VOID
+   Rp  SYM2 b: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 s: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 t: K_OP [1:5]T_OP(){send}:T_VOID
+   Rs  SYM2 u: K_OP [1:3][1:2]T_OP(){send}:T_VOID

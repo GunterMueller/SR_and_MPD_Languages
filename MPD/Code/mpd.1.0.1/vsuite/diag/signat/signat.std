@@ -1,0 +1,72 @@
+ok:  illegal use of predefined function
+ok:  resources can only have value parameters
+ok:  assignment target is not a variable
+ok:  expr++: not a variable
+ok:  expr--: not a variable
+ok:  --expr: not a variable
+ok:  ++expr: not a variable
+ok:  not a variable
+ok:  not a variable
+ok:  not a variable
+ok:  not a variable
+ok:  not a variable
+ok:  result arg must be a variable
+ok:  not a variable
+ok:  object of .@. is not a variable
+ok:  incompatible assignment
+ok:  incompatible assignment
+ok:  incompatible assignment
+ok:  incompatible assignment
+ok:  incompatible assignment
+ok:  incompatible semaphore initializer
+ok:  incompatible initialization
+ok:  incompatible initialization
+ok:  incompatible initialization
+ok:  illegal conversion
+ok:  illegal conversion
+ok:  illegal conversion
+ok:  p(): argument 2 is incompatible
+ok:  p(): argument 1 is incompatible
+ok:  wrong number of items for rec constructor
+ok:  wrong number of items for rec constructor
+ok:  item 1 of rec constructor is incompatible
+ok:  not a type
+ok:  not a type
+ok:  not a type
+ok:  not a type
+ok:  not a type
+ok:  not a type
+ok:  not a type
+ok:  not an optype
+ok:  incompatible initialization
+ok:  incompatible initialization
+ok:  incompatible assignment
+ok:  incompatible assignment
+ok:  cannot dereference a .ptr any.
+ok:  illegal object of capability
+ok:  illegal object of capability
+ok:  enum literal duplicates id .alpha.
+ok:  incompatible comparison
+ok:  illegal comparison for unordered type
+ok:  illegal type for comparison
+ok:  illegal type for comparison
+ok:  illegal object of capability
+ok:  subscripted object is not an array
+ok:  wrong subscript type
+ok:  illegal bounds type
+ok:  ub(), argument 1: not an array
+ok:  ub(), argument 2: array does not have that many dimensions
+ok:  ub(), argument 2: not integer literal
+ok:  ub(), argument 2: value must be greater than zero
+ok:  subscripted object is not an array
+ok:  illegal quantifier type
+ok:  illegal quantifier increment
+ok:  incompatible quantifier increment
+ok:  incompatible quantifier limit
+ok:  incompatible quantifier limit
+ok:  incompatible quantifier limit
+ok:  .by. expression must be ordered type
+ok:  .st. expression must be boolean
+ok:  guard expression is not boolean
+ok:  guard expression is not boolean
+ok:  guard expression is not boolean

@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+#  csp2sr - convert CSP notation to SR code
+
+NAME=csp2sr
+OPTIONS="[-ti] [-te]"
+PATTERN="-t[ie]"
+EXTENSION=.csp

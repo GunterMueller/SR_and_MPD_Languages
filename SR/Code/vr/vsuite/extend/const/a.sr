@@ -1,0 +1,19 @@
+# test nested implicit imports by extend
+
+resource a
+    const N := 10
+end
+
+resource b
+    extend a
+    const M := N+30
+    const L := a.N+100
+    import a	# no problem, in theory
+    const K := a.N + 74
+end
+
+resource c
+    extend b
+body c()
+    write (N, M, L, a.N, b.N, b.M, K)
+end

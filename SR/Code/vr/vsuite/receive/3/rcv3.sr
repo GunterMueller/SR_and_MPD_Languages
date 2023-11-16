@@ -1,0 +1,13 @@
+# test receive statement of op with no parameters
+resource rcv3()
+	op p(x:int)
+	op semop()
+	var z:int
+	write(1111)
+	send semop()
+	send p(3333)
+	write(2222)
+	receive p(z)
+	receive semop()
+	write(z)
+end

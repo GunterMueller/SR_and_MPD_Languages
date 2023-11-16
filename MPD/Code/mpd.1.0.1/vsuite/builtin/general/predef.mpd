@@ -1,0 +1,50 @@
+resource predef()
+	int  a, b, i, j 
+	char  c, d, e, f 
+	a = 5
+	b = -11
+	i = 17
+	j = 3
+	write( abs(a), abs(b), abs(-i), -abs(-j), abs(-b - 17) )
+	write( max(a,b,i,j), min(a,b,i,j), max(j,a), min(j,a) )
+	write( max(a), min(i), min( max(a,b), min(i,j), max(a,j) ) )
+	c = 'g'
+	d = 'b'
+	e = 'p'
+	f = 'f'
+	write( max(c,d,e,f), min(c,d,e,f), max(f,c), min(f,c) )
+	write( max(c), min(e), min( max(c,d), min(e,f), max(c,f) ) )
+
+	# mixed-mode min/max, esp. with odd case as last entry
+	write (min(4,5,3.0), min(3,4,5.0), min(5.0,4.0,3), min(3.0,4.0,5),
+	    max(4,5,3.0), max(3,4,5.0), max(5.0,4.0,3), max(3.0,4.0,5))
+
+	type color = enum(red,blue,green,yellow,purple,pink)
+	type day = enum(Sunday,Monday,Tuesday)
+	color  p,q 
+	p = green
+	q = purple
+	write( int(p), int(q), int( max(p,q,yellow,pink) ) )
+	write( int(succ(p)), int(pred(p)),
+		int(succ(Monday)), int(pred(Monday)) )
+	write( succ(succ(succ(pred(pred(8))))) )
+
+	write( low(int), high(int), low(bool), high(bool) )
+	write( int(low(char)), int(high(char)) )
+	write( int(low(day)), int(high(day)) )
+
+	a = -3
+	b =  0
+	i =  4
+	write( bool(a), bool(b), bool(i) )
+	write( char(68), char(66) )
+
+	char aa[1:10,3:5], bb[-4:11], cc['a':'e',4:5]
+	int dd['g':'i',false:true]
+	aa[3,3] = bb[-3]
+	write( lb(aa), ub(aa), lb1(aa), ub1(aa), lb2(aa), ub2(aa) )
+	write( lb(bb), ub(bb), lb1(bb), ub1(bb) )
+	write( length(string(bb)) )
+	write( lb(cc), ub(cc), lb1(cc), ub1(cc), lb2(cc), ub2(cc) )
+	write( lb(dd), ub(dd), lb1(dd), ub1(dd), lb2(dd), ub2(dd) )
+end

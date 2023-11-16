@@ -1,0 +1,7 @@
+#  gmt  Fri Jan 29 12:58:03 MST 1988
+#  gmt  Tue Feb  2 17:20:14 MST 1993
+0 $RSHPATH $HOST -n date >date.out
+0 sr -c virt.sr
+0 srl rsc main
+0 a.out $HOST2 >No_input.out 2>&1
+0 rm -rf Interfaces core *.out

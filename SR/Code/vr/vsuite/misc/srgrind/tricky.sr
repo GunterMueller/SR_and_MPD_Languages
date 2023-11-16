@@ -1,0 +1,61 @@
+#  a dumb but legal program to challenge & test srgrind with
+
+
+#  these comments should be italicized  # as should these
+#  ("normal" comment form)
+
+/*  these comments should also be italicized */
+/*  ("alternate" comment form)  */
+
+#  this whole line */  is a comment  /* per # the rules of SR
+
+/*  in SR, /* these comments nest */ (true) but that's too much to hope for  */
+
+#  (we falsely tell vgrind that srings end at EOL; otherwise we'd still at this
+#   point be in the "string" started the the apostrophe in "that's", above.)
+
+
+#						look for "g" in margin
+global g
+    const p : ptr char := null	# lots of keywords here
+    const i : int := EOF	# EOF is a keyword
+end
+
+
+#						look for "main" in margin
+#						(but just once!)
+resource main
+body main() separate
+
+
+#						look for "empty" in margin
+#						(but just once!)
+resource empty
+body empty ()
+#						look for "none" in margin
+    process none
+    end
+end
+
+
+#						look for "main" in margin
+body main
+    op out (s : string[*])
+
+	var a[7] : char
+	var b : bool
+
+	a := ('a','b','c','d','e','f','g')	# seven quoted chars
+	out(string(a))
+	b := true	# just to put in some keywords here and there
+	out ("this and \" this and ' this and /* this are all quoted")
+	b := false
+	out ("this and ' this and \" this and # this are all quoted")
+	b := true
+	write(stdout,"done")	# stdout etc. are deliberately not "keywords"
+
+#						look for "out" in margin
+    proc out(s)
+	write(s)
+    end
+end

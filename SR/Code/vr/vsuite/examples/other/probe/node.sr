@@ -1,0 +1,66 @@
+resource node
+  import printer
+  optype echo_type (topology[1:*,1:*] : int)
+  op neighbors(links[1:*] : cap node; indices[1:*] : int)
+  op initiate(res topology[1:*,1:*] : int)
+  op probe(from : int; echo : cap echo_type)
+body node(n, myid: int; pr : cap printer) separate
+
+body node
+
+  var links[1:n] : cap node
+  var indices[1:n] : int
+
+  proc neighbors(Links,Indices)
+    links := Links; indices := Indices
+    writes("neighbors of node ", myid, ":  ")
+    fa i := 1 to n st indices[i]~= 0 -> writes(indices[i]," ") af
+    write()
+  end
+
+  proc initiate(topology)
+    op echo : echo_type
+    send probe(myid,echo)
+    receive echo(topology)
+  end
+
+  process probe_handler
+    do true ->
+        in probe(from,echo_back) ->
+            var mytop[1:n,1:n] : int := ([n]([n] 0))
+                  mytop[myid,1:*] := indices
+            op  echo : echo_type
+            var probed : int := 0
+
+            # send probe to other neighbors
+            fa k := 1 to n st k ~= from and indices[k]~=0 ->
+                send links[k].probe(myid,echo)
+                probed++
+            af
+
+            # receive echoes and handle other probes
+            do probed>0 ->
+	        in echo(othertop) ->
+		    var ot[1:n,1:n] : int := othertop
+                    fa i := 1 to n, j := 1 to n
+                         st mytop[i,j]=0 and ot[i,j]~=0 ->
+                             mytop[i,j] := ot[i,j]
+                    af
+                    probed--
+                [] probe(from,echo_back) ->
+                    var empty_top[1:n,1:n] : int := ([n]([n] 0))
+                    send echo_back(empty_top)
+	        ni
+            od
+
+            # send final topology to printer
+            send pr.print(myid,mytop)
+
+            # echo mytop back to first prober
+            send echo_back(mytop)
+
+        ni
+    od
+  end probe_handler
+
+end node

@@ -1,0 +1,4 @@
+0 mpd -c fact2.mpd
+0 mpdl fact2
+0 run
+0 rm -rf MPDinter core *.out

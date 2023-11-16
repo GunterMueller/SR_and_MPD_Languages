@@ -1,0 +1,5 @@
+Note: running dsort on input5 takes a long time.
+Good test though because lots of processes
+and messages.
+IN fact, more processes than can execute at one time,
+so some can't be created until earlier ones have completed.

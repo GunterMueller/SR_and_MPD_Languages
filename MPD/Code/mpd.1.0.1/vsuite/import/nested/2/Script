@@ -1,0 +1,4 @@
+0 mpd -c global.mpd player.mpd dealer.mpd
+0 mpdl defs dealer
+0 run
+0 rm -rf MPDinter core *.out

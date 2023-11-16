@@ -1,0 +1,4 @@
+0 mpd -c trans6.mpd
+0 mpdl trans6
+0 run
+0 rm -rf MPDinter core *.out

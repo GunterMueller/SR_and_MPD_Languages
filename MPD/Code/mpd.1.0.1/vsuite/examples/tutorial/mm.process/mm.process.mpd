@@ -1,0 +1,28 @@
+# matrix multiplication using processes and fine-grained concurrency
+# usage:  a.out size
+
+resource matrix_mult()
+  # read command line argument for matrix sizes
+  int n; getarg(1,n);
+
+  # declare matrices and initialize a and b
+  real a[n,n] = ([n] ([n] 1.0)),
+       b[n,n] = ([n] ([n] 1.0)),
+       c[n,n];
+
+  # compute inner product of a[i,*] * b[*,j]
+  process inner[i = 1 to n, j = 1 to n] {
+    real sum = 0.0;
+    for [k = 1 to n]
+      { sum += a[i,k] * b[k,j] }
+    c[i,j] = sum;
+  }
+
+  # wait for processes to terminate, then print result, by rows
+  final {
+    for [i = 1 to n] {
+      for [j = 1 to n] { writes(c[i,j], " "); }  # one line per row
+      write();   # append a newline
+    }
+  }
+end

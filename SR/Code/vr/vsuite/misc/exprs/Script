@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 sr -c expr.sr
+0 srl expr
+0 run 
+0 rm -rf Interfaces core *.out

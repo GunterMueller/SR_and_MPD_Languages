@@ -1,0 +1,53 @@
+# test pointers to records including forward refs
+
+resource prec()
+
+	type rt = rec (int a; ptr rt nxt);
+	ptr rt rp
+
+	# simple case
+	rt k
+	k.a = 14;
+	rp = @k
+	write(rp^.a);
+
+	# array of pointers
+	rt rlist[1:10]
+	for [ i = 1 to 9 ] {
+		rlist[i].a = i;
+		rlist[i].nxt = @rlist[i+1];
+	}
+	rlist[10].a = 10;
+	rlist[10].nxt = null;
+
+	rp = @rlist[1];
+	while (true) {
+	    if (rp ~= null) {
+		write(rp^.a)
+		rp = rp^.nxt;
+	    } else {
+		write("NULL");
+		exit;
+	    }
+	}
+
+	# forward refs
+	type pt2 = ptr t2
+	pt2  p 
+	ptr t2  q, r 
+
+	type t1 = rec (int i; ptr t2 p)
+	t1  r1 
+	type t2 = rec (char c; ptr t1 p)
+	ptr t2  s, t 
+
+	t2 r2 = t2 ('!', @r1)
+	r1 = t1 (491, @r2)
+	p = r1.p
+	write (r1.i, r1.p^.c)
+	write (r2.p^.i, r2.c)
+	write (p^.p^.i, p^.c)
+	q = r = s = t = p
+	write (r^.p^.i, q^.c)
+	write (t^.p^.i, s^.c)
+end

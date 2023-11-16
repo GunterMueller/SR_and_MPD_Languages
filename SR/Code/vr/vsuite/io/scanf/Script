@@ -1,0 +1,6 @@
+# vin Mon Apr 15 1991
+0 sr -o scan  scan.sr
+0 sr -o sscan sscan.sr
+0 sh run.sh > run.out 2>&1
+0 cmp -s run.std run.out
+0 rm -rf Interfaces core *.out *.sout scan sscan

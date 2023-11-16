@@ -1,0 +1,8 @@
+global glob
+  var x := 0
+  sem mutex := 1 #  for exclusive access to x
+body glob
+  final
+    write(x)
+  end
+end

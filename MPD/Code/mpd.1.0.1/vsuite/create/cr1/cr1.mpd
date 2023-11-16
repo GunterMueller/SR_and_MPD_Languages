@@ -1,0 +1,19 @@
+resource cr1(int a, int b[1:10])
+    write("number is", a);
+    for [ i = 1 to 10 ] {
+	write("b[", i, "] is", b[i]);
+    }
+end
+
+
+resource main
+    import cr1
+body main()
+    cap cr1 c
+    int b[1:10]
+
+    for [ i = 1 to 10 ] {
+	b[i] = i;
+    }
+    c = create cr1(7, b);
+end

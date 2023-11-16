@@ -1,0 +1,357 @@
+Systems Supporting SR
+Version 2.3.3
+
+January 18, 2005
+Gregg Townsend
+
+
+This version of SR was built and tested on these platforms:
+
+    Intel x86 (Linux)
+    Sun Sparc (Solaris)
+
+Code is also included for these systems:
+
+    Apollo DN (Domain/OS SR10.3)
+    Data General AViiON (DG/UX)
+    DEC VAX (Ultrix or BSD Unix)
+    DEC MIPS (Ultrix)
+    DEC Alpha (Digital Unix, Linux)
+    Encore Multimax (Umax)
+    Harris HC/UX (Tahoe architecture)
+    HP PA-RISC (HP-UX)
+    HP 9000 series 300 (HP-UX)
+    IBM RS/6000 (AIX)
+    Intel 386/486/Pentium (SVR4, NetBSD, FreeBSD)
+    Intel Paragon (OSF/1)
+    Motorola System V/68
+    NeXT (Mach)
+    Sequent Symmetry (Dynix 3.2 under "ucb" universe; NOT Dynix/PTX)
+    Silicon Graphics (Irix)
+    Sun 3 (SunOS 4)
+    Sun 4 / Sparc (SunOS 4)
+
+Additionally, any other system running Unix System V Release 4 is a candidate
+using csw/svr4.c for context switching; see the "Untested Systems" section
+below.
+
+SR is written in C with a little assembly code for context switching.
+Bison can substitute for Yacc and Flex can substitute for Lex.
+
+The notes below give additional information for particular systems.  In many
+cases, certain tests in the full verification suite (vsuite) are known to fail
+because of C compiler bugs or other system limitations.  These are isolated
+problems that do not affect the majority of SR programs.  In addition,
+misc/srgrind fails on all systems lacking the Berkeley "vgrind" program.
+
+
+******************************  Tested Systems  ******************************
+
+
+Intel x86 architecture running Linux:
+
+    Tested on: Red Hat Linux 9 (Kernel 2.4) and Fedora 2 (Kernel 2.6).
+
+    Before building, set "LIBM= -lm -lc" and "LIBR=-L/usr/X11/lib"
+    in ./Configuration.
+
+    Multi-SR is unreliable in recent versions of Intel Linux.
+    (This is only a problem if you configure Multi-SR and run
+    with SR_PARALLEL set in the environment.)
+
+
+Sun SPARC architecture running Solaris:
+
+    Tested on: SunOS 5.7 and 5.9 using cc
+    (the unbundled SunPro compiler, "C 5.0")
+
+    Before building, set "LIBC=-lsocket -lnsl" and "RSHPATH=/bin/rsh" in
+    ./Configuration, and set CCPATH as appropriate.  If using SunPro C,
+    also set "CFLAGS=-D__svr4__ -g" in the main Makefile.
+
+    IMPORTANT: SR for Solaris does not need the BSD compatibility package.
+    Be sure that /usr/ucb is NOT in the search path when running "make".
+
+    A small number of warning messages are produced during the build.
+
+    Vsuite failures:  These tests fail due to incorrect assumptions
+    about the system time() function:
+	builtin/nap, misc/external, misc/extref
+
+    Under Solaris, use of MultiSR precludes use of virtual machines.
+    When MultiSR configured *and enabled* (by setting SR_PARALLEL > 1)
+    the following additional vsuite tests fail:
+	book/chap12/main2, book/chap15/vm, create/chairs, diag/runtime
+	diag/trace, examples/other/mbrot, examples/other/remote, global/[3456],
+	in/cap/remote, literal/cap, misc/timeslice2, quick/vm, vm/*
+
+
+******************************  Untested Systems  ******************************
+
+
+DEC Alpha (Tru64 Unix, aka OSF/1, aka Digital Unix):
+
+    Tested on: Digital Unix version 4.0 / 564.
+
+    This implementation provides 32 bit integers for SR's int type although
+    these machines support 64 bit ints.  Thus, SR's int corresponds to C's int.
+
+
+Dec Alpha (Linux):
+
+    Tested on: Red Hat Linux 6.0 (Kernel 2.2.5).
+
+    Before building, set "LIBM= -lm -lc" and "LIBR=-L/usr/X11/lib"
+    in ./Configuration.
+
+    Numerous warning messages are produced while building SR,
+    but the system seems to run correctly.
+
+    Vsuite failure:  misc/external fails because it assumes that the
+    system time_t datatype is the same size as an int.
+
+
+Silicon Graphics:
+
+    Tested on:	Indigo2 (MIPS R10000 chip) running Irix 6.5.
+
+    This system is configured for the O32 (Irix 5) or N32 (Irix 6.2) ABI.
+    It does not work with the N64 (Irix 6.0) ABI.
+
+    Before building, set CCPATH=/usr/bin/cc and RSHPATH=/usr/bsd/rsh
+    in ./Configuration.  Also add "-w" to the CFLAGS in the Makefile
+    if you don't want a huge volume of helpful warnings about (mostly)
+    legal C code.
+
+    Note: The assembly code in ./csw must be built using /bin/as,
+    not the GNU assembler.
+
+
+IBM RS/6000:
+
+    Tested on: IBM RS/6000 model 43P (PowerPC 604 chip) running AIX 4.3.
+
+    Vsuite failure: quick/jumble fails its optimization test (sr -O).
+    The test program runs correctly without optimization.
+
+
+System V Release 4:
+
+    To build SR on a generic SVR4 system, edit csw/Makefile to use the
+    SVR4 library functions makecontext/setcontext fo context switching.
+    Remove the four lines specifying the build of "asm.o" and replace
+    them with these two lines:
+
+	    asm.o:  svr4.c
+		    $(CC) $(CFLAGS) -c -o asm.o svr4.c
+
+    We once tested this on a Sun running Solaris, but on that platform
+    the sparc.s context switching code is used by choice because it is
+    considerably faster.
+
+
+Apollo:
+
+    We have included code from an Apollo port of SR Version 1 that was done
+    using GCC and GAS.  This was tested under Domain/OS version 10.3.
+    Gcc was used instead of cc because cc defines __STDC__ when it isn't
+    really a standard C compiler.  The generated code is compiled by cc.
+
+    Change the main Makefile to specify
+	CC = gcc
+	AS = gas
+	CFLAGS = -Dap3000
+
+    The assembly language code was slightly modified for SR V2 and has
+    not been tested.
+
+
+Data General AViiON:
+
+    Be sure to set RSHPATH=/usr/bin/remsh in ./Configuration.
+    SR V1 was never completely verified on the AViiON, and V2 is untried.
+
+
+DEC VAX:
+
+    SR Version 1 ran on the Vax.  We no longer have a Vax available for
+    testing Version 2.  Under Vax Ultrix, SR worked with gcc or cc,
+    but not with vcc.
+
+
+DEC MIPS:
+
+    Earlier versions were tested on a Decstation 3100 running Ultrix V4.3
+    Rev 43, using "cc", and on a DEC 5000 running Ultrix V4.2A.
+
+    Vsuite failures: with standard cc, the misc/swap vsuite test provokes
+    a Trace/BPT trap in the compiler, and misc/rmember also fails.
+
+    An earlier version of SR was tested using c89 ("Dec C for Ultrix on RISC
+    V1.0").  With this compiler, sr/input.c got a bugcheck when built with -g;
+    the fix is to build without -g.  Srwin did not build with c89.  The vsuite
+    tests misc/exprs, misc/swap, and rec/3 failed due to compiler bugs; we have
+    been told that at least some of these are fixed in c89 V1.1.  Some other
+    failures appeared to be similar but were investigated in detail.
+
+
+Encore Multimax:
+
+    SR V2 (single threaded) has been build on Umax 4.13 using some special
+    procedures.  cc was used for the csw directory; gcc was used for all
+    other directories.  Because the grammar is too complex for the Encore
+    version of Yacc, the .c and .h files were generated on another system.
+
+
+Harris HC/UX (Tahoe architecture):
+
+    Contributed code from SR Version 1 is included.  Version 2 is untested.
+
+
+HP PA-RISC (9000/800, 9000/700 series):
+
+    Version 2.3.1 was tested on: Hewlett-Packard 9000/735 running HP-UX 9.01.
+
+    Before building, change RSHPATH as indicated in ./Configuration.
+
+    Ignore any messages about "ranlib: ar already did it for you".
+
+    Vsuite failure: misc/rmember fails due to a compiler bug.
+
+    Note: won't build with the gnu assembler (as).
+
+
+HP 9000/300 series:
+
+    Version 2.1 was tested on: Hewlett-Packard 9000/330 running HP-UX 7.0.
+
+    Before building, change RSHPATH as indicated in ./Configuration.
+    Also set CFLAGS = +Np300 +Nw500 in the main Makefile.
+
+    Ignore any messages about "ranlib: ar already did it for you".
+
+    Vsuite failures:
+    
+	array/slice/2 fails due to a C preprocessor bug.
+
+	quick/jumble takes an especially long time to compile on this
+	system when optimization is enabled.
+
+
+Intel 386/486/Pentium (SVR4):
+
+    We have included contributed code for an SVR4 system but we cannot
+    test this configuration.
+
+
+Intel 386/486/Pentium (NetBSD):
+
+    Earlier version tested on: i386-netbsd 0.9a
+
+    Before building, set "XINCL=/usr/X386/include" in ./Configuration.
+
+    SR was built for testing using GNU Make (gmake).  The standard "make"
+    has problems with the library references ($$LIBx) in several Makefiles.
+
+
+Intel 386/486/Pentium (FreeBSD):
+
+    Earlier version tested on: FreeBSD-2.0.950412-SNAP and 
+    FreeBSD-2.1-Development.
+
+    Before building, set "XINCL=/usr/X11R6/include" in ./Configuration.
+
+    SR was built for testing using GNU Make (gmake).
+
+
+Intel Paragon:
+
+    Earlier version tested on: 16-node Intel Paragon XP/S model A4
+    (16 MB per node) running OSF/1 release 1.2.1.
+
+    A partition name must be specified to run an SR program.  The easiest
+    way to do this is to set the environment variable NX_DFLT_PART.  See
+    the release notes for more information about how the SR programming
+    model is mapped onto the Paragon architecture.
+
+    It is possible in principle to generate an SR cross-compiler on a
+    machine supporting the Paragon cross development tools, but this
+    configuration is not supported by SR.  SR must be built and run on
+    the Paragon itself.
+
+    Before building, set LIBR=-lnx in ./Configuration.
+
+    IMPORTANT:  The Paragon "make" utility doesn't handle the "#" character
+    properly.  The workaround is to always use "pmake MAKE=pmake" in place
+    of "make".
+
+    The Paragon's C preprocessor folds very long lines (over 400 characters)
+    generated by macro expansion.  This causes csp2sr, and presumably the
+    other SR preprocessors as well, to produce illegal SR code under rare
+    circumstances.
+
+    It appears that CLOCKS_PER_SEC is defined incorrectly in <time.h>.
+    This has no effect on SR programs but cause the csw/csloop timing
+    program (not normally run) to give incorrect results.
+
+    Vsuite failure: examples/csp2sr/sort2, due to the line folding problem.
+
+
+Sequent Symmetry:
+
+    Version 2.3 was tested on: Sequent Symmetry running Dynix 3.2.
+
+    Before building, edit ./Configuration and set LIBC and LIBM for the Sequent
+    as indicated in the comments there.  Also edit the main Makefile and add
+    CFLAGS=-Y if you are building MultiSR; see the installation documentation
+    for details.
+
+    This port was done under the "ucb" universe of Dynix.  Installation under
+    Dynix/PTX has not been tried and is not likely to succeed without much pain.
+
+    MultiSR does not build with the ATS C compiler (atscc): the necessary -Y
+    compiler option evokes numerous bogus "function redefined" diagnostics.
+    Single-threaded SR builds and runs correctly using atscc (without -Y).
+
+    The SRWin X-windows interface does not work very well, for reasons that
+    are not understood; and it does not work at all under MultiSR.
+
+    Vsuite failure: the misc/rmember vsuite test fails.
+
+
+
+Sun 4 / Sparc running SunOS version 4 (sometimes called Solaris 1.1):
+
+    Version 2.3.1 was tested on: Sun 4/490 running SunOS 4.1.1, using "cc".
+
+    Vsuite failure: with standard (bundled) cc, the misc/rmember test fails.
+
+    Sun's "acc" compiler gives a segmentation fault on some architectures
+    when compiling rts/io.c and rts/scan.c with -g; the fix is to compile
+    without -g.  (The "acc" configuration has not been tested recently.)
+
+
+Sun 3:
+
+    Version 2.3 was tested on: Sun 3/80 running SunOS 4.1.1.
+
+    Vsuite failure: with standard (bundled) cc, the misc/rmember test fails.
+
+
+Motorola System V/68:
+
+    Contributed code from SR Version 1 is included.  Version 2 is untested.
+
+
+NeXT:
+
+    Version 2.1 was tested on: NeXT Mach 2.1
+
+    Vsuite failures: several tests fail because the NeXT outputs floating
+    point numbers incorrectly.  The tests are:
+
+	array/rec/slice, book/chap01/matrix, book/chap04/trapezoidal,
+	book/chap07/mult, book/chap09/quadrature, book/chap14/*,
+	builtin/general, create/args1, global/1, global/2, global/op,
+	invoke/ref, io/read, misc/exprs, misc/fa, misc/getarg,
+	misc/swap, quick/jumble, real/array, real/external

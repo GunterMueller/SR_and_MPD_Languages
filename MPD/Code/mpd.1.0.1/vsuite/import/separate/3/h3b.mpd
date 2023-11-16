@@ -1,0 +1,7 @@
+body hh
+	a x
+	x.b = 3
+	x.c = 4
+	write(x.b,x.c,x.b-x.c)
+
+end

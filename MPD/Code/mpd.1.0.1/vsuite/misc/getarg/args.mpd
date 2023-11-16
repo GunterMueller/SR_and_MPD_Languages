@@ -1,0 +1,20 @@
+resource ArgType
+
+body ArgType()
+   process main  {
+      bool  b = false
+      char  c = '?'
+      int  n = 47
+      ptr any  p = null
+      real  r = 2.7183
+      int  rc 
+
+      rc = getarg(1, b); write(rc, b)
+      rc = getarg(2, c); write(rc, c)
+      rc = getarg(3, n); write(rc, n)
+      rc = getarg(4, p); write(rc, p)
+      rc = getarg(5, r); write(rc, r)
+      write ()
+
+   }
+end

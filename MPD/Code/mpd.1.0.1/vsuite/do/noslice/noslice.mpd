@@ -1,0 +1,33 @@
+# Date: Tue, 22 Jun 1999 15:34:35 -0700
+# From: olsson@cs.ucdavis.edu (Ron Olsson)
+
+# with -T compiler flag, order of output is deterministic:
+# process one finishes before process two.
+# (assuming that process one gets to run before process two.)
+# demonstrates whether iteration counting code is removed from do loops.
+# 1999-06-22 discovered (and patched) that it wasn't.
+
+resource main()
+  const int L = 10000 # same as default -L
+
+  process one  {
+    int sum = 0
+    int k = 1
+    while (k <= L+1) {
+      sum += k
+      k++
+    }
+    write("one", sum)
+  }
+
+  process two  {
+    int sum = 0
+    int k = 1
+    while (k <= L-1) {
+      sum += k
+      k++
+    }
+    write("two", sum)
+  }
+
+end

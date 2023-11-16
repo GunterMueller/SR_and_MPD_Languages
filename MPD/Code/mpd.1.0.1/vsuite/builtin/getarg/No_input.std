@@ -1,0 +1,4 @@
+number of args is 0
+getarg returns 5 a.out
+getarg returns -1 0
+getarg returns -1 false

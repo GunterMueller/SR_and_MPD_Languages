@@ -1,0 +1,16 @@
+#  check that call and send are both (now) allowed with procedures
+
+resource main()
+
+    procedure p (int v) {
+    	write(v)
+    }
+
+    p(1)
+    call p(2)
+    co call p(3)
+    oc
+    send p(4)
+    co send p(5)
+    oc
+end

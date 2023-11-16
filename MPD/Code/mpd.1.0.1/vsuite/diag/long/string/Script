@@ -1,0 +1,5 @@
+# gmt Wed Jun 26 14:37:09 MST 1991
+0 sh ../makelong.sh part1.mpd '	"' '{c#o?w%a@b!u&n$g*a&d=u}' part2.mpd >temp.mpd
+1 mpd -c temp.mpd
+0 cmp Compiler.std Compiler.out
+0 rm -rf MPDinter core *.out temp.mpd

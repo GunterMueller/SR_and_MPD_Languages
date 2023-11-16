@@ -1,0 +1,4 @@
+0 mpd -c t4.mpd
+0 mpdl t4
+0 run input1
+0 rm -rf MPDinter core *.out

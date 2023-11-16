@@ -1,0 +1,260 @@
+#  test of compiler messages related to import/extend (& also globals)
+
+
+% can't open spec file
+# import of nonexistent resource from body
+	resource foo ()
+	    import unk
+	end
+
+
+% can't open spec file
+# import of nonexistent resource from spec
+	resource c
+		import unk
+		op f(var cap unk x)
+	body c() separate
+	body c
+		cap unk  y
+		proc f(x)  {
+			x = y
+			x = create unk()
+		}
+	end
+
+
+% can't open spec file
+# separate body but spec never seen
+	body b
+	end
+
+
+% can't open spec file
+# different test of nonexistent import in spec
+	resource r
+		import unk
+	body r (cap unk x) separate
+	resource t
+		import r
+	body t()
+	end
+
+
+% can't open spec file
+# testing with deeply nested imports
+	resource l1
+		import l0
+	body l1() separate
+	resource l2
+		import l1
+	body l2() separate
+	resource l3
+		import l2
+	body l3() separate
+	resource l4
+		import l3
+	body l4() separate
+	resource l5
+		import l4
+	body l5() separate
+	# should complain about l0 not compiled when compile this body.
+	body l5
+	end
+
+
+% undefined identifier: i
+# tests that imports are not transitive
+	resource a
+	    const int i = 1
+	end
+
+	resource b
+	    import a
+	    const int j = 1
+	end
+
+	resource c ()
+	    import b
+	    write (i)
+	end
+
+
+% duplicate identifier: f
+# complain when extend conflicts with previous local definition
+	resource a
+		op f()
+	body a() separate
+	resource b
+		op f()
+		extend a        # should complain about duplicate f
+	body b()
+		proc f()  {  write("hi from f")  }
+		f()
+	end
+
+
+% duplicate identifier: f
+# complain when local definition conflicts with previous extend
+	resource a
+		op f()
+	body a() separate
+	resource b
+		extend a
+		op f()  # should complain about duplicate f
+	body b()
+		proc f()  {  write("hi from f")  }
+		f()
+	end
+
+
+% duplicate identifier: g
+# test duplicate identifier due to extend of conflicting abstract resources
+	resource a1
+		op f1(int x)
+		op g()
+	body a1() separate
+	resource a2
+		op f2(int x)
+		op g()
+	body a2() separate
+	resource b
+		extend a1, a2   # should complain about duplicate g
+	body b()
+	end
+
+
+% duplicate identifier: f
+# test duplicate identifier on extend of *concrete* resource
+	resource a
+		op f(int x)
+		op g()
+	body a() separate
+	resource b
+		op h(int x)
+		extend a
+		op i()
+	body b() separate
+	resource c
+		op f()
+		extend b        # should complain about duplicate f
+	body c()
+	end
+
+
+% undefined identifier: a
+# test that scope of imported identifiers is properly limited
+	global a
+		const int x = 1234
+	end
+	resource b()
+		int  x = 56
+		write("hi",x)
+		if (x == 56) {
+			import a
+			write(a.x,x)
+		}
+		write(a.x,x) # should complain about this
+	end
+
+
+% ambiguous identifier: Y
+# test that an error is generated when the unqualified name is ambiguous
+	global a
+		const int X = 10
+		const int Y = -5
+	end
+	global aa
+		const int XX = 10
+		const int Y = -5
+	end
+	resource b
+		import a,aa
+	body b()
+		write(a.X)
+		write(a.Y)
+		write(aa.Y)
+		write(X)
+		write(XX)
+		write(Y)        # ambiguous
+	end
+
+
+% ambiguous identifier: Y
+	global a
+		const int X = 10
+		const int Y = -5
+	end
+	global aa
+		const int XX = 210
+		const int Y = -25
+	end
+	resource b()
+		import a
+
+	    write(a.X)
+	    write(a.Y)
+	    write(X)
+	    write(Y)
+	    int  x = 56
+	    if (x == 56) {
+		    import aa
+		    write(aa.Y)
+		    write(XX)
+		    write(X)
+	    }
+	    if (x == 56) {
+		    import aa
+		    write(Y)    # ambiguous
+	    }
+	end
+
+
+% illegal object of capability
+# can't define capability for a global component.
+	global g
+	end
+	resource r ()
+	    import g
+	    cap g  gc
+	end
+
+
+% illegal object of capability
+# wasn't diagnosed when combined with ref parameter error
+	global glob
+	   int cnt = 0
+	body glob
+	end
+
+	resource hi
+	   import glob
+	body hi(cap hi h, var cap glob g)
+	   write(g.cnt)
+	end
+
+
+% not a resource
+# cannot create a global
+	global g
+	end
+	resource r ()
+	    import g
+	    create g()
+	end
+
+
+% cannot extend a global
+	global a
+	end
+	resource b
+	    extend a
+	body b ()
+	end
+
+
+% .extend. is not allowed in a global
+	resource g
+	end
+	global h
+	    extend g
+	end

@@ -1,0 +1,19 @@
+sem m holds 8
+P(m)
+P(m)
+P(m)
+P(m)
+P(m)
+P(m)
+P(m)
+P(m)
+sem m holds 0
+eleven 4
+eleven(4) = 44
+eleven 7
+<cap>(7) = 77
+caparg calling c()
+noarg here
+caparg calling c()
+noarg here
+done

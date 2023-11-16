@@ -1,0 +1,75 @@
+# test pointer arithmetic
+
+resource arith ()
+	var a[1:9] : int := (111,222,333,444,555,666,777,888,999)
+
+	var p : ptr int := @a[1]
+	var q : ptr int := p + 8
+	var r : ptr int := q - 5
+	var m : int := q - p
+	var n : int := r - q
+	var o : int := r - p
+	write (p^, q^, r^, m, n, o, p = p, p ~= p, p = q)
+
+	p++
+	q--
+	write (" ",p^, q^, r^, q-p, r-q, r-p, q = q, q ~= q, q = r)
+	--p
+	++q
+	write (" ",p^, q^, r^, q-p, r-q, r-p, q = q, q ~= q, q = r)
+	p +:= 1
+	q -:= 1
+	write (" ",p^, q^, r^, q-p, r-q, r-p, q = q, q ~= q, q = r)
+	p -:= 1
+	q +:= 1
+	write (" ",p^, q^, r^, q-p, r-q, r-p, q = q, q ~= q, q = r)
+
+	var pa : ptr any := p
+	var qa : ptr any := 8 + p
+	var ra : ptr any := @a[4]
+	p := pa;
+	q := qa;
+	r := ra;
+	m := q - pa
+	n := ra - q
+	o := r - pa
+	write (p^, q^, r^, m, n, o, p = pa, qa ~= q, pa = qa)
+
+	type pint = ptr int
+	var pp : pint := @a[1]
+	var qp : pint := 8 + pp
+	var rp : pint := qp - 5
+	m := qp - pp
+	n := r - qp
+	o := rp - pa
+	write (pp^, qp^, rp^, m, n, o, pp = p, qp ~= qa, pp = qp)
+
+	var ca[1:9] : char := chars("123456789")
+	var cp : ptr char := @ca[1]
+	var cq : ptr char := cp + 8
+	var cr : ptr char := cq - 5
+	write (cp^, cq^, cr^, cq-cp, cr-cq, cr-cp, cp=cq-8, cq=cr, cq!=cr+5)
+
+	type xrec = rec ( cv : char; iv : int; pv : ptr any )
+	var xa[9] : xrec
+	fa i := 1 to 9 ->
+		xa[i].cv := ca[i]
+		xa[i].iv := a[i]
+		xa[i].pv := @ca[i]
+	af
+	var px : ptr xrec := @xa[1]
+	var qx : ptr xrec := px + 8
+	var rx : ptr xrec := qx - 5
+	write (px^.cv, qx^.cv, rx^.cv,
+		qx-px, rx-qx, rx-px, px=px, qx!=qx, rx=px)
+	pa := px
+	qa := qx
+	ra := rx
+	write (px^.iv, qx^.iv, rx^.iv,
+		qx-pa, ra-qx, ra-px, pa=px, qx!=qa, ra=px)
+
+	px++
+	qx--
+	write (" ",px^.iv, qx^.iv, rx^.iv,
+		qx-px, rx-qx, rx-px, rx=ra, qx=qa, px=pa)
+end

@@ -1,0 +1,25 @@
+resource fact2()
+	op factorial(val a: int; res result:int)
+	op trick(val a: int)
+
+
+	fa i := 0 to 20 ->
+	    call trick(i)
+	af
+
+
+	proc trick(a)
+		var ans:int
+		factorial(a,ans)
+		write(ans)
+	end
+
+	proc factorial(a,result)
+		if a <= 1 ->
+			result := 1
+		[] else ->
+			factorial(a-1,result)
+			result := a * result
+		fi
+	end
+end

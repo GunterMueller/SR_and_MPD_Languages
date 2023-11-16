@@ -1,0 +1,16 @@
+
+===============  sem1  ===============
+
+ops:
+  xRi  SYM2 sem1.s1: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 s2: K_OP T_OP(){send}:T_VOID
+   Ri  SYM2 s3: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 s4: K_OP T_OP(){send}:T_VOID
+   Ri  SYM2 s5: K_OP T_OP(){send}:T_VOID
+   Ri  SYM2 s6: K_OP T_OP(){send}:T_VOID
+   Ri  SYM2 s7: K_OP T_OP(T_INT){send}:T_VOID
+   Rs  SYM2 s8: K_OP T_OP():T_VOID
+   Ri  SYM2 foo: K_OP T_OP(T_OCAP):T_VOID
+   Rp  SYM2 invoker: K_OP T_OP(){send}:T_VOID
+   Rp  SYM2 p: K_OP T_OP(){send}:T_VOID
+   Pi  SYM3 t(1t): K_OP T_OP(){send}:T_VOID

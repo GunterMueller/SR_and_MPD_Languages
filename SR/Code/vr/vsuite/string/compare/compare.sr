@@ -1,0 +1,35 @@
+resource compare()
+	op try (s1, s2 : string[*])
+
+	try("","")
+	try("","a")
+	try("b","")
+	try("c","c")
+	try("d","e")
+	try("g","f")
+	try("hijkl","hijkl")
+	try("mnopq","mnopr")
+	try("stuvx","stuvw")
+	try("123","123")
+	try("123","1234")
+	try("1234","123")
+	try("aaaaaaaaaaaaaaaaaaaa","bbbbbbbbbbbbbbbbbbbb")
+	try("c","c")
+	try("bdbdbdbdbdbdbdbdbdhhg","bdbdbdbdbdbdbdbdbdhhg")
+	try("zzzzzzzzzzzzzzzzzx","zzzzzzzzzzzzzzzzzy")
+
+proc try (s1, s2)
+	if (s1  = s2) -> put("== "); fi
+	if (s1 != s2) -> put("!= "); fi
+	if (s1 <= s2) -> put("<= "); fi
+	if (s1 <  s2) -> put("<  "); fi
+	if (s1 >= s2) -> put(">= "); fi
+	if (s1 >  s2) -> put(">  "); fi
+	put("\"")
+	put(s1)
+	put("\" \"")
+	put(s2)
+	put("\"\n")
+end
+
+end

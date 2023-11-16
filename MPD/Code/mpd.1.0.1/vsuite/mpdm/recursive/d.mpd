@@ -1,0 +1,18 @@
+
+resource D()
+    import A
+    import B
+    import C
+    write (u + 30, x + 40)
+    create A()
+    create B()
+    create C()
+end D
+
+global g
+   const int a = 25
+   int  t 
+body g
+   t = 6
+end g
+

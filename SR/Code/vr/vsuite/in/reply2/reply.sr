@@ -1,0 +1,15 @@
+resource pairs()
+	op node(me : int)
+	op start()
+	initial
+		send node(1)
+		start()
+	end
+	proc node(me)
+		var paired_with : int := me
+		write(me,"p_w:",paired_with)
+		in start() -> reply ni
+		write(me,"p_w too:",paired_with)
+	end
+end
+

@@ -1,0 +1,35 @@
+resource a(a1: char; b[1:*]: int; c: int; d:string[*])
+    write("first arg is", a1)
+    write("second arg is:")
+    fa i := 1 to ub(b) ->
+	write(b[i])
+    af
+    write("third arg is", c)
+    write("fourth arg is", d)
+    write()
+end
+
+resource b (c1, c2: cap (int){call}; d1, d2: rec (c: char, i: int); e: real)
+    write ("b: calling c1(12) and c2(47)")
+    c1(12)
+    c1(47)
+    write ("b: other args:", d1.c, d1.i, d2.c, d2.i, e)
+end
+
+resource foo
+    import a;
+body foo()
+    import b
+    var capa : cap a;
+    var bb[1:10]: int;
+    type rtype = rec (a : char; b : int)
+
+    procedure echo (n : int) write ("hello number", n) end
+
+    fa i := 1 to 10 ->
+	bb[i] := 1000+i
+    af
+    capa := create a('z', bb[1:7], 249, "yippee!")
+
+    create b (echo, echo, rtype('q',17), rtype('r',55), 3.14159)
+end

@@ -1,0 +1,24 @@
+# the create is legal since r1 and r2 are structurally equiv.  The
+# invocation of z.f1, also legal, really invokes f2 in the instance of r2.
+# Works fine under v1.1 (with output `r2 88'), but not under 91d or 91f:
+
+resource r1
+  op f1(x:int)
+body r1()
+  proc f1(x)
+    write("r1", x)
+  end
+end
+resource r2
+  op f2(x:int)
+body r2()
+  proc f2(x)
+    write("r2", x)
+  end
+end
+resource main()
+  import r1, r2
+    var z : cap r1
+    z := create r2()
+    z.f1(88)
+end

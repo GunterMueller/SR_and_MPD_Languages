@@ -1,0 +1,7009 @@
+%!
+%%BoundingBox: (atend)
+%%Pages: (atend)
+%%DocumentFonts: (atend)
+%%EndComments
+%
+% FrameMaker PostScript Prolog 3.0, for use with FrameMaker 3.0
+% Copyright (c) 1986,87,89,90,91 by Frame Technology Corporation.
+% All rights reserved.
+%
+% Known Problems:
+%	Due to bugs in Transcript, the 'PS-Adobe-' is omitted from line 1
+/FMversion (3.0) def 
+% Set up Color vs. Black-and-White
+	/FMPrintInColor systemdict /colorimage known
+		systemdict /currentcolortransfer known or def
+% Uncomment this line to force b&w on color printer
+%   /FMPrintInColor false def
+/FrameDict 195 dict def 
+systemdict /errordict known not {/errordict 10 dict def
+		errordict /rangecheck {stop} put} if
+% The readline in 23.0 doesn't recognize cr's as nl's on AppleTalk
+FrameDict /tmprangecheck errordict /rangecheck get put 
+errordict /rangecheck {FrameDict /bug true put} put 
+FrameDict /bug false put 
+mark 
+% Some PS machines read past the CR, so keep the following 3 lines together!
+currentfile 5 string readline
+00
+0000000000
+cleartomark 
+errordict /rangecheck FrameDict /tmprangecheck get put 
+FrameDict /bug get { 
+	/readline {
+		/gstring exch def
+		/gfile exch def
+		/gindex 0 def
+		{
+			gfile read pop 
+			dup 10 eq {exit} if 
+			dup 13 eq {exit} if 
+			gstring exch gindex exch put 
+			/gindex gindex 1 add def 
+		} loop
+		pop 
+		gstring 0 gindex getinterval true 
+		} def
+	} if
+/FMVERSION {
+	FMversion ne {
+		/Times-Roman findfont 18 scalefont setfont
+		100 100 moveto
+		(FrameMaker version does not match postscript_prolog!)
+		dup =
+		show showpage
+		} if
+	} def 
+/FMLOCAL {
+	FrameDict begin
+	0 def 
+	end 
+	} def 
+	/gstring FMLOCAL
+	/gfile FMLOCAL
+	/gindex FMLOCAL
+	/orgxfer FMLOCAL
+	/orgproc FMLOCAL
+	/organgle FMLOCAL
+	/orgfreq FMLOCAL
+	/yscale FMLOCAL
+	/xscale FMLOCAL
+	/manualfeed FMLOCAL
+	/paperheight FMLOCAL
+	/paperwidth FMLOCAL
+/FMDOCUMENT { 
+	array /FMfonts exch def 
+	/#copies exch def
+	FrameDict begin
+	0 ne dup {setmanualfeed} if
+	/manualfeed exch def
+	/paperheight exch def
+	/paperwidth exch def
+	/yscale exch def
+	/xscale exch def
+	currenttransfer cvlit /orgxfer exch def
+	currentscreen cvlit /orgproc exch def
+	/organgle exch def /orgfreq exch def
+	setpapername 
+	manualfeed {true} {papersize} ifelse 
+	{manualpapersize} {false} ifelse 
+	{desperatepapersize} if
+	end 
+	} def 
+	/pagesave FMLOCAL
+	/orgmatrix FMLOCAL
+	/landscape FMLOCAL
+/FMBEGINPAGE { 
+	FrameDict begin 
+	/pagesave save def
+	3.86 setmiterlimit
+	/landscape exch 0 ne def
+	landscape { 
+		90 rotate 0 exch neg translate pop 
+		}
+		{pop pop}
+		ifelse
+	xscale yscale scale
+	/orgmatrix matrix def
+	gsave 
+	} def 
+/FMENDPAGE {
+	grestore 
+	pagesave restore
+	end 
+	showpage
+	} def 
+/FMFONTDEFINE { 
+	FrameDict begin
+	findfont 
+	ReEncode 
+	1 index exch 
+	definefont 
+	FMfonts 3 1 roll 
+	put
+	end 
+	} def 
+/FMFILLS {
+	FrameDict begin
+	array /fillvals exch def
+	end 
+	} def 
+/FMFILL {
+	FrameDict begin
+	 fillvals 3 1 roll put
+	end 
+	} def 
+/FMNORMALIZEGRAPHICS { 
+	newpath
+	0.0 0.0 moveto
+	1 setlinewidth
+	0 setlinecap
+	0 0 0 sethsbcolor
+	0 setgray 
+	} bind def
+	/fx FMLOCAL
+	/fy FMLOCAL
+	/fh FMLOCAL
+	/fw FMLOCAL
+	/llx FMLOCAL
+	/lly FMLOCAL
+	/urx FMLOCAL
+	/ury FMLOCAL
+/FMBEGINEPSF { 
+	end 
+	/FMEPSF save def 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	[/fy /fx /fh /fw /ury /urx /lly /llx] {exch def} forall 
+	fx fy translate 
+	rotate
+	fw urx llx sub div fh ury lly sub div scale 
+	llx neg lly neg translate 
+	} bind def
+/FMENDEPSF {
+	FMEPSF restore
+	FrameDict begin 
+	} bind def
+FrameDict begin 
+/setmanualfeed {
+%%BeginFeature *ManualFeed True
+	 statusdict /manualfeed true put
+%%EndFeature
+	} def
+/max {2 copy lt {exch} if pop} bind def
+/min {2 copy gt {exch} if pop} bind def
+/inch {72 mul} def
+/pagedimen { 
+	paperheight sub abs 16 lt exch 
+	paperwidth sub abs 16 lt and
+	{/papername exch def} {pop} ifelse
+	} def
+	/papersizedict FMLOCAL
+/setpapername { 
+	/papersizedict 14 dict def 
+	papersizedict begin
+	/papername /unknown def 
+		/Letter 8.5 inch 11.0 inch pagedimen
+		/LetterSmall 7.68 inch 10.16 inch pagedimen
+		/Tabloid 11.0 inch 17.0 inch pagedimen
+		/Ledger 17.0 inch 11.0 inch pagedimen
+		/Legal 8.5 inch 14.0 inch pagedimen
+		/Statement 5.5 inch 8.5 inch pagedimen
+		/Executive 7.5 inch 10.0 inch pagedimen
+		/A3 11.69 inch 16.5 inch pagedimen
+		/A4 8.26 inch 11.69 inch pagedimen
+		/A4Small 7.47 inch 10.85 inch pagedimen
+		/B4 10.125 inch 14.33 inch pagedimen
+		/B5 7.16 inch 10.125 inch pagedimen
+	end
+	} def
+/papersize {
+	papersizedict begin
+		/Letter {lettertray letter} def
+		/LetterSmall {lettertray lettersmall} def
+		/Tabloid {11x17tray 11x17} def
+		/Ledger {ledgertray ledger} def
+		/Legal {legaltray legal} def
+		/Statement {statementtray statement} def
+		/Executive {executivetray executive} def
+		/A3 {a3tray a3} def
+		/A4 {a4tray a4} def
+		/A4Small {a4tray a4small} def
+		/B4 {b4tray b4} def
+		/B5 {b5tray b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	/FMdicttop countdictstack 1 add def 
+	statusdict begin stopped end 
+	countdictstack -1 FMdicttop {pop end} for 
+	} def
+/manualpapersize {
+	papersizedict begin
+		/Letter {letter} def
+		/LetterSmall {lettersmall} def
+		/Tabloid {11x17} def
+		/Ledger {ledger} def
+		/Legal {legal} def
+		/Statement {statement} def
+		/Executive {executive} def
+		/A3 {a3} def
+		/A4 {a4} def
+		/A4Small {a4small} def
+		/B4 {b4} def
+		/B5 {b5} def
+		/unknown {unknown} def
+	papersizedict dup papername known {papername} {/unknown} ifelse get
+	end
+	stopped 
+	} def
+/desperatepapersize {
+	statusdict /setpageparams known
+		{
+		paperwidth paperheight 0 1 
+		statusdict begin
+		{setpageparams} stopped pop 
+		end
+		} if
+	} def
+/savematrix {
+	orgmatrix currentmatrix pop
+	} bind def
+/restorematrix {
+	orgmatrix setmatrix
+	} bind def
+/dmatrix matrix def
+/dpi    72 0 dmatrix defaultmatrix dtransform
+    dup mul exch   dup mul add   sqrt def
+/freq dpi 18.75 div 8 div round dup 0 eq {pop 1} if 8 mul dpi exch div def
+/sangle 1 0 dmatrix defaultmatrix dtransform exch atan def
+/DiacriticEncoding [
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/.notdef /.notdef /.notdef /.notdef /space /exclam /quotedbl
+/numbersign /dollar /percent /ampersand /quotesingle /parenleft
+/parenright /asterisk /plus /comma /hyphen /period /slash /zero /one
+/two /three /four /five /six /seven /eight /nine /colon /semicolon
+/less /equal /greater /question /at /A /B /C /D /E /F /G /H /I /J /K
+/L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft /backslash
+/bracketright /asciicircum /underscore /grave /a /b /c /d /e /f /g /h
+/i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z /braceleft /bar
+/braceright /asciitilde /.notdef /Adieresis /Aring /Ccedilla /Eacute
+/Ntilde /Odieresis /Udieresis /aacute /agrave /acircumflex /adieresis
+/atilde /aring /ccedilla /eacute /egrave /ecircumflex /edieresis
+/iacute /igrave /icircumflex /idieresis /ntilde /oacute /ograve
+/ocircumflex /odieresis /otilde /uacute /ugrave /ucircumflex
+/udieresis /dagger /.notdef /cent /sterling /section /bullet
+/paragraph /germandbls /registered /copyright /trademark /acute
+/dieresis /.notdef /AE /Oslash /.notdef /.notdef /.notdef /.notdef
+/yen /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+/ordfeminine /ordmasculine /.notdef /ae /oslash /questiondown
+/exclamdown /logicalnot /.notdef /florin /.notdef /.notdef
+/guillemotleft /guillemotright /ellipsis /.notdef /Agrave /Atilde
+/Otilde /OE /oe /endash /emdash /quotedblleft /quotedblright
+/quoteleft /quoteright /.notdef /.notdef /ydieresis /Ydieresis
+/fraction /currency /guilsinglleft /guilsinglright /fi /fl /daggerdbl
+/periodcentered /quotesinglbase /quotedblbase /perthousand
+/Acircumflex /Ecircumflex /Aacute /Edieresis /Egrave /Iacute
+/Icircumflex /Idieresis /Igrave /Oacute /Ocircumflex /.notdef /Ograve
+/Uacute /Ucircumflex /Ugrave /dotlessi /circumflex /tilde /macron
+/breve /dotaccent /ring /cedilla /hungarumlaut /ogonek /caron
+] def
+/ReEncode { 
+	dup 
+	length 
+	dict begin 
+	{
+	1 index /FID ne 
+		{def} 
+		{pop pop} ifelse 
+	} forall 
+	0 eq {/Encoding DiacriticEncoding def} if 
+	currentdict 
+	end 
+	} bind def
+/graymode true def
+	/bwidth FMLOCAL
+	/bpside FMLOCAL
+	/bstring FMLOCAL
+	/onbits FMLOCAL
+	/offbits FMLOCAL
+	/xindex FMLOCAL
+	/yindex FMLOCAL
+	/x FMLOCAL
+	/y FMLOCAL
+/setpattern {
+	 /bwidth  exch def
+	 /bpside  exch def
+	 /bstring exch def
+	 /onbits 0 def  /offbits 0 def
+	 freq sangle landscape {90 add} if 
+		{/y exch def
+		 /x exch def
+		 /xindex x 1 add 2 div bpside mul cvi def
+		 /yindex y 1 add 2 div bpside mul cvi def
+		 bstring yindex bwidth mul xindex 8 idiv add get
+		 1 7 xindex 8 mod sub bitshift and 0 ne
+		 {/onbits  onbits  1 add def 1}
+		 {/offbits offbits 1 add def 0}
+		 ifelse
+		}
+		setscreen
+	 {} settransfer
+	 offbits offbits onbits add div FMsetgray
+	/graymode false def
+	} bind def
+/grayness {
+	FMsetgray
+	graymode not {
+		/graymode true def
+		orgxfer cvx settransfer
+		orgfreq organgle orgproc cvx setscreen
+		} if
+	} bind def
+	/HUE FMLOCAL
+	/SAT FMLOCAL
+	/BRIGHT FMLOCAL
+	/Colors FMLOCAL
+FMPrintInColor 
+	
+	{
+	/HUE 0 def
+	/SAT 0 def
+	/BRIGHT 0 def
+	% array of arrays Hue and Sat values for the separations [HUE BRIGHT]
+	/Colors   
+	[[0    0  ]    % black
+	 [0    0  ]    % white
+	 [0.00 1.0]    % red
+	 [0.37 1.0]    % green
+	 [0.60 1.0]    % blue
+	 [0.50 1.0]    % cyan
+	 [0.83 1.0]    % magenta
+	 [0.16 1.0]    % comment / yellow
+	 ] def
+      
+	/BEGINBITMAPCOLOR { 
+		BITMAPCOLOR} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPCOLORc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUECOLOR } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUECOLORc } def
+	/K { 
+		Colors exch get dup
+		0 get /HUE exch store 
+		1 get /BRIGHT exch store
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} def
+	/FMsetgray { 
+		/SAT exch 1.0 exch sub store 
+		  HUE 0 eq BRIGHT 0 eq and
+			{1.0 SAT sub setgray}
+			{HUE SAT BRIGHT sethsbcolor} 
+		  ifelse
+		} bind def
+	}
+	
+	{
+	/BEGINBITMAPCOLOR { 
+		BITMAPGRAY} def
+	/BEGINBITMAPCOLORc { 
+		BITMAPGRAYc} def
+	/BEGINBITMAPTRUECOLOR { 
+		BITMAPTRUEGRAY } def
+	/BEGINBITMAPTRUECOLORc { 
+		BITMAPTRUEGRAYc } def
+	/FMsetgray {setgray} bind def
+	/K { 
+		pop
+		} def
+	}
+ifelse
+/normalize {
+	transform round exch round exch itransform
+	} bind def
+/dnormalize {
+	dtransform round exch round exch idtransform
+	} bind def
+/lnormalize { 
+	0 dtransform exch cvi 2 idiv 2 mul 1 add exch idtransform pop
+	} bind def
+/H { 
+	lnormalize setlinewidth
+	} bind def
+/Z {
+	setlinecap
+	} bind def
+	/fillvals FMLOCAL
+/X { 
+	fillvals exch get
+	dup type /stringtype eq
+	{8 1 setpattern} 
+	{grayness}
+	ifelse
+	} bind def
+/V { 
+	gsave eofill grestore
+	} bind def
+/N { 
+	stroke
+	} bind def
+/M {newpath moveto} bind def
+/E {lineto} bind def
+/D {curveto} bind def
+/O {closepath} bind def
+	/n FMLOCAL
+/L { 
+ 	/n exch def
+	newpath
+	normalize
+	moveto 
+	2 1 n {pop normalize lineto} for
+	} bind def
+/Y { 
+	L 
+	closepath
+	} bind def
+	/x1 FMLOCAL
+	/x2 FMLOCAL
+	/y1 FMLOCAL
+	/y2 FMLOCAL
+	/rad FMLOCAL
+/R { 
+	/y2 exch def
+	/x2 exch def
+	/y1 exch def
+	/x1 exch def
+	x1 y1
+	x2 y1
+	x2 y2
+	x1 y2
+	4 Y 
+	} bind def
+/RR { 
+	/rad exch def
+	normalize
+	/y2 exch def
+	/x2 exch def
+	normalize
+	/y1 exch def
+	/x1 exch def
+	newpath
+	x1 y1 rad add moveto
+	x1 y2 x2 y2 rad arcto
+	x2 y2 x2 y1 rad arcto
+	x2 y1 x1 y1 rad arcto
+	x1 y1 x1 y2 rad arcto
+	closepath
+	16 {pop} repeat
+	} bind def
+/C { 
+	grestore
+	gsave
+	R 
+	clip
+	} bind def
+	/FMpointsize FMLOCAL
+/F { 
+	FMfonts exch get
+	FMpointsize scalefont
+	setfont
+	} bind def
+/Q { 
+	/FMpointsize exch def
+	F 
+	} bind def
+/T { 
+	moveto show
+	} bind def
+/RF { 
+	rotate
+	0 ne {-1 1 scale} if
+	} bind def
+/TF { 
+	gsave
+	moveto 
+	RF
+	show
+	grestore
+	} bind def
+/P { 
+	moveto
+	0 32 3 2 roll widthshow
+	} bind def
+/PF { 
+	gsave
+	moveto 
+	RF
+	0 32 3 2 roll widthshow
+	grestore
+	} bind def
+/S { 
+	moveto
+	0 exch ashow
+	} bind def
+/SF { 
+	gsave
+	moveto
+	RF
+	0 exch ashow
+	grestore
+	} bind def
+/B { 
+	moveto
+	0 32 4 2 roll 0 exch awidthshow
+	} bind def
+/BF { 
+	gsave
+	moveto
+	RF
+	0 32 4 2 roll 0 exch awidthshow
+	grestore
+	} bind def
+/G { 
+	gsave
+	newpath
+	normalize translate 0.0 0.0 moveto 
+	dnormalize scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	closepath fill
+	grestore
+	} bind def
+/A { 
+	gsave
+	savematrix
+	newpath
+	2 index 2 div add exch 3 index 2 div sub exch 
+	normalize 2 index 2 div sub exch 3 index 2 div add exch 
+	translate 
+	scale 
+	0.0 0.0 1.0 5 3 roll arc 
+	restorematrix
+	stroke
+	grestore
+	} bind def
+	/x FMLOCAL
+	/y FMLOCAL
+	/w FMLOCAL
+	/h FMLOCAL
+	/xx FMLOCAL
+	/yy FMLOCAL
+	/ww FMLOCAL
+	/hh FMLOCAL
+	/FMsaveobject FMLOCAL
+	/FMoptop FMLOCAL
+	/FMdicttop FMLOCAL
+/BEGINPRINTCODE { 
+	/FMdicttop countdictstack 1 add def 
+	/FMoptop count 4 sub def 
+	/FMsaveobject save def
+	userdict begin 
+	/showpage {} def 
+	FMNORMALIZEGRAPHICS 
+	3 index neg 3 index neg translate
+	} bind def
+/ENDPRINTCODE {
+	count -1 FMoptop {pop pop} for 
+	countdictstack -1 FMdicttop {pop end} for 
+	FMsaveobject restore 
+	} bind def
+/gn { 
+	0 
+	{	46 mul 
+		cf read pop 
+		32 sub 
+		dup 46 lt {exit} if 
+		46 sub add 
+		} loop
+	add 
+	} bind def
+	/str FMLOCAL
+/cfs { 
+	/str sl string def 
+	0 1 sl 1 sub {str exch val put} for 
+	str def 
+	} bind def
+/ic [ 
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0223
+	0
+	{0 hx} {1 hx} {2 hx} {3 hx} {4 hx} {5 hx} {6 hx} {7 hx} {8 hx} {9 hx}
+	{10 hx} {11 hx} {12 hx} {13 hx} {14 hx} {15 hx} {16 hx} {17 hx} {18 hx}
+	{19 hx} {gn hx} {0} {1} {2} {3} {4} {5} {6} {7} {8} {9} {10} {11} {12}
+	{13} {14} {15} {16} {17} {18} {19} {gn} {0 wh} {1 wh} {2 wh} {3 wh}
+	{4 wh} {5 wh} {6 wh} {7 wh} {8 wh} {9 wh} {10 wh} {11 wh} {12 wh}
+	{13 wh} {14 wh} {gn wh} {0 bl} {1 bl} {2 bl} {3 bl} {4 bl} {5 bl} {6 bl}
+	{7 bl} {8 bl} {9 bl} {10 bl} {11 bl} {12 bl} {13 bl} {14 bl} {gn bl}
+	{0 fl} {1 fl} {2 fl} {3 fl} {4 fl} {5 fl} {6 fl} {7 fl} {8 fl} {9 fl}
+	{10 fl} {11 fl} {12 fl} {13 fl} {14 fl} {gn fl}
+	] def
+	/sl FMLOCAL
+	/val FMLOCAL
+	/ws FMLOCAL
+	/im FMLOCAL
+	/bs FMLOCAL
+	/cs FMLOCAL
+	/len FMLOCAL
+	/pos FMLOCAL
+/ms { 
+	/sl exch def 
+	/val 255 def 
+	/ws cfs 
+	/im cfs 
+	/val 0 def 
+	/bs cfs 
+	/cs cfs 
+	} bind def
+400 ms 
+/ip { 
+	is 
+	0 
+	cf cs readline pop 
+	{	ic exch get exec 
+		add 
+		} forall 
+	pop 
+	
+	} bind def
+/wh { 
+	/len exch def 
+	/pos exch def 
+	ws 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/bl { 
+	/len exch def 
+	/pos exch def 
+	bs 0 len getinterval im pos len getinterval copy pop
+	pos len 
+	} bind def
+/s1 1 string def
+/fl { 
+	/len exch def 
+	/pos exch def 
+	/val cf s1 readhexstring pop 0 get def
+	pos 1 pos len add 1 sub {im exch val put} for
+	pos len 
+	} bind def
+/hx { 
+	3 copy getinterval 
+	cf exch readhexstring pop pop 
+	} bind def
+	/h FMLOCAL
+	/w FMLOCAL
+	/d FMLOCAL
+	/lb FMLOCAL
+	/bitmapsave FMLOCAL
+	/is FMLOCAL
+	/cf FMLOCAL
+/wbytes { 
+	dup 
+	8 eq {pop} {1 eq {7 add 8 idiv} {3 add 4 idiv} ifelse} ifelse
+	} bind def
+/BEGINBITMAPBWc { 
+	1 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAPGRAYc { 
+	8 {} COMMONBITMAPc
+	} bind def
+/BEGINBITMAP2BITc { 
+	2 {} COMMONBITMAPc
+	} bind def
+/COMMONBITMAPc { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	r                    
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} image 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BEGINBITMAPBW { 
+	1 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAPGRAY { 
+	8 {} COMMONBITMAP
+	} bind def
+/BEGINBITMAP2BIT { 
+	2 {} COMMONBITMAP
+	} bind def
+/COMMONBITMAP { 
+	/r exch def
+	/d exch def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	r                    
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} image
+	bitmapsave restore 
+	grestore
+	} bind def
+	/proc1 FMLOCAL
+	/proc2 FMLOCAL
+	/newproc FMLOCAL
+/Fmcc {
+    /proc2 exch cvlit def
+    /proc1 exch cvlit def
+    /newproc proc1 length proc2 length add array def
+    newproc 0 proc1 putinterval
+    newproc proc1 length proc2 putinterval
+    newproc cvx
+} bind def
+/ngrayt 256 array def
+/nredt 256 array def
+/nbluet 256 array def
+/ngreent 256 array def
+	/gryt FMLOCAL
+	/blut FMLOCAL
+	/grnt FMLOCAL
+	/redt FMLOCAL
+	/indx FMLOCAL
+	/cynu FMLOCAL
+	/magu FMLOCAL
+	/yelu FMLOCAL
+	/k FMLOCAL
+	/u FMLOCAL
+/colorsetup {
+	currentcolortransfer
+	/gryt exch def
+	/blut exch def
+	/grnt exch def
+	/redt exch def
+	0 1 255 {
+		/indx exch def
+		/cynu 1 red indx get 255 div sub def
+		/magu 1 green indx get 255 div sub def
+		/yelu 1 blue indx get 255 div sub def
+		/k cynu magu min yelu min def
+		/u k currentundercolorremoval exec def
+		nredt indx 1 0 cynu u sub max sub redt exec put
+		ngreent indx 1 0 magu u sub max sub grnt exec put
+		nbluet indx 1 0 yelu u sub max sub blut exec put
+		ngrayt indx 1 k currentblackgeneration exec sub gryt exec put
+	} for
+	{255 mul cvi nredt exch get}
+	{255 mul cvi ngreent exch get}
+	{255 mul cvi nbluet exch get}
+	{255 mul cvi ngrayt exch get}
+	setcolortransfer
+	{pop 0} setundercolorremoval
+	{} setblackgeneration
+	} bind def
+	/tran FMLOCAL
+/fakecolorsetup {
+	/tran 256 string def
+	0 1 255 {/indx exch def 
+		tran indx
+		red indx get 77 mul
+		green indx get 151 mul
+		blue indx get 28 mul
+		add add 256 idiv put} for
+	currenttransfer
+	{255 mul cvi tran exch get 255.0 div}
+	exch Fmcc settransfer
+} bind def
+/BITMAPCOLOR { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/bitmapsave save def 
+	colorsetup
+	/is w d wbytes string def
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{cf is readhexstring pop} {is} {is} true 3 colorimage 
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPCOLORc { 
+	/d 8 def
+	gsave
+	translate rotate scale /h exch def /w exch def
+	/lb w d wbytes def 
+	sl lb lt {lb ms} if 
+	/bitmapsave save def 
+	colorsetup
+	/is im 0 lb getinterval def 
+	ws 0 lb getinterval is copy pop 
+	/cf currentfile def 
+	w h d [w 0 0 h neg 0 h] 
+	{ip} {is} {is} true 3 colorimage
+	bitmapsave restore 
+	grestore
+	} bind def
+/BITMAPTRUECOLORc { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        
+        /is w string def
+        
+        ws 0 w getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {ip} {gip} {bip} true 3 colorimage
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUECOLOR { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop } 
+        { cf gis readhexstring pop } 
+        { cf bis readhexstring pop } 
+        true 3 colorimage 
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPTRUEGRAYc { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        
+        /is w string def
+        
+        ws 0 w getinterval is copy pop 
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        {ip gip bip w gray} image
+        bitmapsave restore 
+        grestore
+        } bind def
+/ww FMLOCAL
+/r FMLOCAL
+/g FMLOCAL
+/b FMLOCAL
+/i FMLOCAL
+/gray { 
+        /ww exch def
+        /b exch def
+        /g exch def
+        /r exch def
+        0 1 ww 1 sub { /i exch def r i get .299 mul g i get .587 mul
+			b i get .114 mul add add r i 3 -1 roll floor cvi put } for
+        r
+        } bind def
+/BITMAPTRUEGRAY { 
+        gsave
+        translate rotate scale /h exch def /w exch def
+        /bitmapsave save def 
+        /is w string def
+        /gis w string def
+        /bis w string def
+        /cf currentfile def 
+        w h 8 [w 0 0 h neg 0 h] 
+        { cf is readhexstring pop 
+          cf gis readhexstring pop 
+          cf bis readhexstring pop w gray}  image
+        bitmapsave restore 
+        grestore
+        } bind def
+/BITMAPGRAY { 
+	8 {fakecolorsetup} COMMONBITMAP
+	} bind def
+/BITMAPGRAYc { 
+	8 {fakecolorsetup} COMMONBITMAPc
+	} bind def
+/ENDBITMAP {
+	} bind def
+end 
+	/ALDsave FMLOCAL
+	/ALDmatrix matrix def ALDmatrix currentmatrix pop
+/StartALD {
+	/ALDsave save def
+	 savematrix
+	 ALDmatrix setmatrix
+	} bind def
+/InALD {
+	 restorematrix
+	} bind def
+/DoneALD {
+	 ALDsave restore
+	} bind def
+%%EndProlog
+%%BeginSetup
+(3.0) FMVERSION
+1 1 612 792 0 1 19 FMDOCUMENT
+0 0 /NewCenturySchlbk-Bold FMFONTDEFINE
+1 0 /Courier FMFONTDEFINE
+2 0 /NewCenturySchlbk-Roman FMFONTDEFINE
+3 0 /Courier-Bold FMFONTDEFINE
+4 0 /NewCenturySchlbk-Italic FMFONTDEFINE
+5 0 /Times-Italic FMFONTDEFINE
+6 0 /Times-Roman FMFONTDEFINE
+7 0 /Courier-Oblique FMFONTDEFINE
+8 0 /Times-Bold FMFONTDEFINE
+32 FMFILLS
+0 0 FMFILL
+1 .1 FMFILL
+2 .3 FMFILL
+3 .5 FMFILL
+4 .7 FMFILL
+5 .9 FMFILL
+6 .97 FMFILL
+7 1 FMFILL
+8 <0f1e3c78f0e1c387> FMFILL
+9 <0f87c3e1f0783c1e> FMFILL
+10 <cccccccccccccccc> FMFILL
+11 <ffff0000ffff0000> FMFILL
+12 <8142241818244281> FMFILL
+13 <03060c183060c081> FMFILL
+14 <8040201008040201> FMFILL
+16 1 FMFILL
+17 .9 FMFILL
+18 .7 FMFILL
+19 .5 FMFILL
+20 .3 FMFILL
+21 .1 FMFILL
+22 0.03 FMFILL
+23 0 FMFILL
+24 <f0e1c3870f1e3c78> FMFILL
+25 <f0783c1e0f87c3e1> FMFILL
+26 <3333333333333333> FMFILL
+27 <0000ffff0000ffff> FMFILL
+28 <7ebddbe7e7dbbd7e> FMFILL
+29 <fcf9f3e7cf9f3f7e> FMFILL
+30 <7fbfdfeff7fbfdfe> FMFILL
+%%EndSetup
+%%Page: "20" 22
+%%BeginPaperSize: Letter
+%%EndPaperSize
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 20 -) 296.45 42.62 T
+1 9 Q
+(end) 82.79 714 T
+(##########) 82.79 692 T
+(var) 82.79 681 T
+(got,) 104.36 681 T
+(tmp) 131.32 681 T
+(:) 152.89 681 T
+(int) 163.67 681 T
+(do) 82.79 670 T
+(true) 98.96 670 T
+(->) 125.93 670 T
+(in) 93.57 659 T
+(ec\050ev\051) 109.75 659 T
+(->) 147.49 659 T
+(if) 104.36 648 T
+(\050ev.event_type) 120.53 648 T
+(=) 201.42 648 T
+(Ev_KeyUp\051) 212.2 648 T
+(->) 266.13 648 T
+(var) 115.14 626 T
+(ch) 136.71 626 T
+(:=) 152.89 626 T
+(char\050ev.data\051) 169.06 626 T
+(if) 115.14 615 T
+(ch) 131.32 615 T
+(=) 147.49 615 T
+(\325q\325) 158.28 615 T
+(|) 179.85 615 T
+(ch) 190.63 615 T
+(=) 206.81 615 T
+(\325Q\325) 217.6 615 T
+(|) 239.17 615 T
+(ch) 249.95 615 T
+(=) 266.13 615 T
+(\325\134177\325) 276.91 615 T
+(|) 314.66 615 T
+(ch) 325.45 615 T
+(=) 341.62 615 T
+(\325\134003\325) 352.41 615 T
+(->) 390.15 615 T
+(stop) 125.93 604 T
+([]) 115.14 593 T
+(ch) 131.32 593 T
+(=) 147.49 593 T
+(\325) 158.28 593 T
+(\325) 169.06 593 T
+(->) 179.85 593 T
+(if) 125.93 582 T
+(not) 142.1 582 T
+(started) 163.67 582 T
+(->) 206.81 582 T
+(started) 136.71 571 T
+(:=) 179.85 571 T
+(true) 196.03 571 T
+(WinClearArea\050mainwin,) 136.71 560 T
+(winRectangle\0500,) 255.34 560 T
+(0,) 341.62 560 T
+(SIZE,) 357.8 560 T
+(SIZE+DOT\051\051) 390.15 560 T
+(banner\050textw,) 136.71 549 T
+(MSG_RUNNING\051) 212.2 549 T
+(got) 136.71 538 T
+(:=) 158.28 538 T
+(0) 174.46 538 T
+(send) 136.71 527 T
+(job\0501,) 163.67 527 T
+(NP\051) 201.42 527 T
+([]) 125.93 516 T
+(else) 142.1 516 T
+(->) 169.06 516 T
+(WinBell\050mainwin,) 136.71 505 T
+(0\051;) 228.38 505 T
+(f) 125.93 494 T
+(i) 131.32 494 T
+([]) 115.14 483 T
+(ch) 131.32 483 T
+(=) 147.49 483 T
+(\325-\325) 158.28 483 T
+(->) 179.85 483 T
+(slp) 125.93 472 T
+(+:=) 147.49 472 T
+(5) 169.06 472 T
+([]) 115.14 461 T
+(ch) 131.32 461 T
+(=) 147.49 461 T
+(\325+\325) 158.28 461 T
+(->) 179.85 461 T
+(slp) 125.93 450 T
+(:=) 147.49 450 T
+(max\050slp) 163.67 450 T
+(-) 206.81 450 T
+(5,) 217.6 450 T
+(0\051) 233.77 450 T
+([]) 115.14 439 T
+(ch) 131.32 439 T
+(=) 147.49 439 T
+(\325r\325) 158.28 439 T
+(->) 179.85 439 T
+(if) 125.93 428 T
+(not) 142.1 428 T
+(started) 163.67 428 T
+(->) 206.81 428 T
+(regenerate\050\051) 136.71 417 T
+(banner\050textw,) 136.71 406 T
+(MSG_READY\051) 212.2 406 T
+([]) 125.93 395 T
+(else) 142.1 395 T
+(->) 169.06 395 T
+(WinBell\050mainwin,) 136.71 384 T
+(0\051) 228.38 384 T
+(f) 125.93 373 T
+(i) 131.32 373 T
+(f) 115.14 362 T
+(i) 120.53 362 T
+([]) 104.36 340 T
+(ev.event_type) 120.53 340 T
+(=) 196.03 340 T
+(Ev_DeleteWindow) 206.81 340 T
+(->) 293.09 340 T
+(stop) 115.14 329 T
+(f) 104.36 318 T
+(i) 109.75 318 T
+([]) 93.57 296 T
+(done\050tmp\051) 109.75 296 T
+(->) 163.67 296 T
+(#) 249.95 296 T
+(in) 260.74 296 T
+(got) 104.36 285 T
+(+:=) 125.93 285 T
+(tmp) 147.49 285 T
+(if) 104.36 274 T
+(got) 120.53 274 T
+(>=) 142.1 274 T
+(NP) 158.28 274 T
+(->) 174.46 274 T
+(banner\050textw,) 115.14 263 T
+(MSG_DONE\051) 190.63 263 T
+(started) 115.14 252 T
+(:=) 158.28 252 T
+(false) 174.46 252 T
+(f) 104.36 241 T
+(i) 109.75 241 T
+(ni) 93.57 230 T
+(od) 82.79 219 T
+(###) 82.79 197 T
+(Final) 104.36 197 T
+(f) 82.79 186 T
+(inal) 88.18 186 T
+(WinClose\050mainwin\051) 93.57 175 T
+(end) 82.79 164 T
+(end) 72 142 T
+(qsort) 93.57 142 T
+FMENDPAGE
+%%EndPage: "20" 21
+%%Page: "19" 21
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 19 -) 296.45 42.62 T
+1 9 Q
+(#####################################################################) 82.79 703 T
+(#) 82.79 692 T
+(open) 93.57 692 T
+(main) 120.53 692 T
+(window) 147.49 692 T
+(mainwin) 82.79 681 T
+(:=) 125.93 681 T
+(WinOpen\050"",) 142.1 681 T
+("Quick) 206.81 681 T
+(Sort",) 244.56 681 T
+(ec,) 282.31 681 T
+(UseDefault,) 303.88 681 T
+(SIZE,) 368.58 681 T
+(SIZE+OFF\051) 400.94 681 T
+(if) 82.79 670 T
+(mainwin) 98.96 670 T
+(=) 142.1 670 T
+(null) 152.89 670 T
+(->) 179.85 670 T
+(write\050"Ouch,) 93.57 659 T
+(can\325t) 163.67 659 T
+(open) 196.03 659 T
+(window"\051) 222.99 659 T
+(stop\0501\051) 93.57 648 T
+(f) 82.79 637 T
+(i) 88.18 637 T
+(WinSetEventMask\050mainwin,) 82.79 626 T
+(Ev_KeyUp\051) 217.6 626 T
+(ww) 82.79 615 T
+(:=) 98.96 615 T
+(WinNewContext\050mainwin\051) 115.14 615 T
+(boxw) 82.79 604 T
+(:=) 109.75 604 T
+(WinNewContext\050mainwin\051) 125.93 604 T
+(textw) 82.79 593 T
+(:=) 115.14 593 T
+(WinNewContext\050mainwin\051) 131.32 593 T
+(fa) 82.79 582 T
+(i:=) 98.96 582 T
+(1) 120.53 582 T
+(to) 131.32 582 T
+(JS) 147.49 582 T
+(->) 163.67 582 T
+(cwins[i]) 93.57 571 T
+(:=) 142.1 571 T
+(WinNewContext\050mainwin\051) 158.28 571 T
+(WinSetForeground\050cwins[i],) 93.57 560 T
+(colors[i]\051) 239.17 560 T
+(af) 82.79 549 T
+(WinSetForeground\050mainwin,) 82.79 538 T
+("black"\051) 222.99 538 T
+(WinSetForeground\050boxw,) 82.79 527 T
+("orange"\051) 206.81 527 T
+(WinSetForeground\050textw,) 82.79 516 T
+("lightyellow"\051) 212.2 516 T
+(WinSetLineAttr\050boxw,) 82.79 505 T
+(0,) 196.03 505 T
+(LineDoubleDash,) 212.2 505 T
+(CapButt,) 298.48 505 T
+(JoinMiter\051) 347.02 505 T
+(##) 82.79 483 T
+(a) 98.96 483 T
+(taste) 109.75 483 T
+(of) 142.1 483 T
+(f) 158.28 483 T
+(lavor) 163.67 483 T
+(seed\0500\051) 82.79 472 T
+(##) 82.79 450 T
+(sorting) 98.96 450 T
+(control) 142.1 450 T
+(regenerate\050\051) 82.79 439 T
+(banner\050textw,) 82.79 428 T
+(MSG_READY\051) 158.28 428 T
+(slp) 82.79 417 T
+(:=) 104.36 417 T
+(40) 120.53 417 T
+(##) 82.79 395 T
+(workers,) 98.96 395 T
+(get) 147.49 395 T
+(job) 169.06 395 T
+(from) 190.63 395 T
+(bag...) 217.6 395 T
+(process) 82.79 384 T
+(worker\050id) 125.93 384 T
+(:=) 179.85 384 T
+(1) 196.03 384 T
+(to) 206.81 384 T
+(JS\051) 222.99 384 T
+(var) 93.57 373 T
+(lo,) 115.14 373 T
+(mid,) 136.71 373 T
+(hi:) 163.67 373 T
+(int) 185.24 373 T
+(var) 93.57 362 T
+(x,) 115.14 362 T
+(y,) 131.32 362 T
+(w,) 147.49 362 T
+(h:) 163.67 362 T
+(int) 179.85 362 T
+(var) 93.57 351 T
+(mywork:) 115.14 351 T
+(int) 158.28 351 T
+(:=) 179.85 351 T
+(0) 196.03 351 T
+(receive) 93.57 329 T
+(job\050lo,) 136.71 329 T
+(hi\051) 179.85 329 T
+(do) 93.57 318 T
+(true) 109.75 318 T
+(->) 136.71 318 T
+(mid) 104.36 307 T
+(:=) 125.93 307 T
+(part\050id,) 142.1 307 T
+(lo,) 190.63 307 T
+(hi,) 212.2 307 T
+(x,) 233.77 307 T
+(y,) 249.95 307 T
+(w,) 266.13 307 T
+(h\051) 282.31 307 T
+(WinDrawRectangle\050boxw,) 104.36 296 T
+(winRectangle\050x,) 228.38 296 T
+(y,) 314.66 296 T
+(w,) 330.84 296 T
+(h\051\051) 347.02 296 T
+(if) 104.36 285 T
+(lo) 120.53 285 T
+(<) 136.71 285 T
+(mid) 147.49 285 T
+(-) 169.06 285 T
+(1) 179.85 285 T
+(->) 190.63 285 T
+(if) 115.14 274 T
+(mid) 131.32 274 T
+(+) 152.89 274 T
+(1) 163.67 274 T
+(<) 174.46 274 T
+(hi) 185.24 274 T
+(->) 201.42 274 T
+(send) 125.93 263 T
+(job\050mid+1,) 152.89 263 T
+(hi\051) 212.2 263 T
+([]) 115.14 252 T
+(else) 131.32 252 T
+(->) 158.28 252 T
+(mywork) 125.93 241 T
+(+:=) 163.67 241 T
+(hi) 185.24 241 T
+(-) 201.42 241 T
+(mid) 212.2 241 T
+(+) 233.77 241 T
+(1) 244.56 241 T
+(f) 115.14 230 T
+(i) 120.53 230 T
+(hi) 115.14 219 T
+(:=) 131.32 219 T
+(mid) 147.49 219 T
+(-1) 169.06 219 T
+([]) 104.36 208 T
+(else) 120.53 208 T
+(->) 147.49 208 T
+(mywork) 115.14 197 T
+(+:=) 152.89 197 T
+(mid) 174.46 197 T
+(-) 196.03 197 T
+(lo) 206.81 197 T
+(+) 222.99 197 T
+(1) 233.77 197 T
+(if) 115.14 186 T
+(mid) 131.32 186 T
+(+) 152.89 186 T
+(1) 163.67 186 T
+(<) 174.46 186 T
+(hi) 185.24 186 T
+(->) 201.42 186 T
+(lo) 125.93 175 T
+(:=) 142.1 175 T
+(mid) 158.28 175 T
+(+) 179.85 175 T
+(1) 190.63 175 T
+([]) 115.14 164 T
+(else) 131.32 164 T
+(->) 158.28 164 T
+(mywork) 125.93 153 T
+(+:=) 163.67 153 T
+(hi) 185.24 153 T
+(-) 201.42 153 T
+(mid) 212.2 153 T
+(+) 233.77 153 T
+(1) 244.56 153 T
+(if) 125.93 142 T
+(lo) 142.1 142 T
+(=) 158.28 142 T
+(hi) 169.06 142 T
+(->) 185.24 142 T
+(mywork) 201.42 142 T
+(--) 239.17 142 T
+(f) 255.34 142 T
+(i) 260.74 142 T
+(#) 336.23 142 T
+(one) 347.02 142 T
+(work) 368.58 142 T
+(counted) 395.55 142 T
+(twice) 438.69 142 T
+(send) 125.93 131 T
+(done\050mywork\051) 152.89 131 T
+(mywork) 125.93 120 T
+(:=) 163.67 120 T
+(0) 179.85 120 T
+(receive) 125.93 109 T
+(job\050lo,) 169.06 109 T
+(hi\051) 212.2 109 T
+(f) 115.14 98 T
+(i) 120.53 98 T
+(f) 104.36 87 T
+(i) 109.75 87 T
+(od) 93.57 76 T
+FMENDPAGE
+%%EndPage: "19" 20
+%%Page: "18" 20
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 18 -) 296.45 42.62 T
+1 9 Q
+(fa) 93.57 714 T
+(i:=) 109.75 714 T
+(1) 131.32 714 T
+(to) 142.1 714 T
+(NP) 158.28 714 T
+(->) 174.46 714 T
+(numbers[i]) 104.36 703 T
+(:=) 163.67 703 T
+(int\050random\050SIZE\051+1\051) 179.85 703 T
+(drawDot\050ww,) 104.36 692 T
+(i,) 169.06 692 T
+(numbers[i],) 185.24 692 T
+(0\051) 249.95 692 T
+(af) 93.57 681 T
+(end) 82.79 670 T
+(##) 82.79 648 T
+(Draw) 98.96 648 T
+(a) 125.93 648 T
+(box) 136.71 648 T
+(stands) 158.28 648 T
+(for) 196.03 648 T
+(a) 217.6 648 T
+(point) 228.38 648 T
+(being) 260.74 648 T
+(sorted) 293.09 648 T
+(proc) 82.79 637 T
+(drawDot\050win,) 109.75 637 T
+(idx,) 179.85 637 T
+(value,) 206.81 637 T
+(slp\051) 244.56 637 T
+(if) 93.57 626 T
+(slp) 109.75 626 T
+(>) 131.32 626 T
+(0) 142.1 626 T
+(->) 152.89 626 T
+(nap\050slp\051) 169.06 626 T
+(f) 217.6 626 T
+(i) 222.99 626 T
+(WinDrawRectangle\050win,) 93.57 615 T
+(winRectangle\050int\050SCALE*\050idx-1\051\051,) 104.36 604 T
+(SIZE-value-DOT2,) 282.31 604 T
+(DOT,) 373.98 604 T
+(DOT\051\051) 400.94 604 T
+(end) 82.79 593 T
+(###) 82.79 571 T
+(#) 82.79 560 T
+(Partition) 93.57 560 T
+(proc) 82.79 549 T
+(part\050id,) 109.75 549 T
+(left,) 158.28 549 T
+(right,) 190.63 549 T
+(x,) 228.38 549 T
+(y,) 244.56 549 T
+(w,) 260.74 549 T
+(h\051) 276.91 549 T
+(returns) 293.09 549 T
+(mid) 336.23 549 T
+(var) 93.57 538 T
+(minv) 115.14 538 T
+(:=) 142.1 538 T
+(SIZE+1,) 158.28 538 T
+(maxv) 201.42 538 T
+(:=) 228.38 538 T
+(-1) 244.56 538 T
+(var) 93.57 527 T
+(i) 115.14 527 T
+(:) 125.93 527 T
+(int) 136.71 527 T
+(fa) 93.57 516 T
+(i) 109.75 516 T
+(:=) 120.53 516 T
+(left) 136.71 516 T
+(to) 163.67 516 T
+(right) 179.85 516 T
+(->) 212.2 516 T
+(minv) 104.36 505 T
+(:=) 131.32 505 T
+(min\050minv,) 147.49 505 T
+(numbers[i]\051) 201.42 505 T
+(maxv) 104.36 494 T
+(:=) 131.32 494 T
+(max\050maxv,) 147.49 494 T
+(numbers[i]\051) 201.42 494 T
+(af) 93.57 483 T
+(x) 93.57 472 T
+(:=) 104.36 472 T
+(int\050\050left-1\051) 120.53 472 T
+(*) 190.63 472 T
+(SCALE) 201.42 472 T
+(+) 233.77 472 T
+(DOT2\051) 244.56 472 T
+(h) 93.57 461 T
+(:=) 104.36 461 T
+(maxv) 120.53 461 T
+(-) 147.49 461 T
+(minv) 158.28 461 T
+(+) 185.24 461 T
+(1) 196.03 461 T
+(y) 93.57 450 T
+(:=) 104.36 450 T
+(SIZE) 120.53 450 T
+(-) 147.49 450 T
+(minv) 158.28 450 T
+(-) 185.24 450 T
+(h) 196.03 450 T
+(w) 93.57 439 T
+(:=) 104.36 439 T
+(int\050\050right-left\051) 120.53 439 T
+(*) 212.2 439 T
+(SCALE\051) 222.99 439 T
+(#) 93.57 428 T
+(WinDrawRectangle\050boxw,) 93.57 417 T
+(winRectangle\050x,) 217.6 417 T
+(y,) 303.88 417 T
+(w,) 320.05 417 T
+(h\051\051) 336.23 417 T
+(#) 93.57 406 T
+(recolor) 104.36 406 T
+(to) 147.49 406 T
+(my) 163.67 406 T
+(color) 179.85 406 T
+(fa) 93.57 395 T
+(i:=) 109.75 395 T
+(left) 131.32 395 T
+(to) 158.28 395 T
+(right) 174.46 395 T
+(->) 206.81 395 T
+(drawDot\050cwins[id],) 104.36 384 T
+(i,) 206.81 384 T
+(numbers[i],) 222.99 384 T
+(0\051) 287.7 384 T
+(af) 93.57 373 T
+(WinSync\050mainwin,) 93.57 362 T
+(false\051) 185.24 362 T
+(#) 287.7 362 T
+(intended) 298.48 362 T
+(to) 347.02 362 T
+(slow) 363.19 362 T
+(things) 390.15 362 T
+(down) 427.9 362 T
+(#) 93.57 351 T
+(var) 93.57 340 T
+(pivot) 115.14 340 T
+(:=) 147.49 340 T
+(numbers[left]) 163.67 340 T
+(var) 93.57 329 T
+(lx) 115.14 329 T
+(:=) 131.32 329 T
+(left+1,) 147.49 329 T
+(rx) 190.63 329 T
+(:=) 206.81 329 T
+(right) 222.99 329 T
+(do) 93.57 318 T
+(lx) 109.75 318 T
+(<=) 125.93 318 T
+(rx) 142.1 318 T
+(->) 158.28 318 T
+(if) 104.36 307 T
+(numbers[lx]) 120.53 307 T
+(<=) 185.24 307 T
+(pivot) 201.42 307 T
+(->) 233.77 307 T
+(lx++) 249.95 307 T
+([]) 104.36 296 T
+(numbers[lx]) 120.53 296 T
+(>) 185.24 296 T
+(pivot) 196.03 296 T
+(->) 228.38 296 T
+(drawDot\050mainwin,) 115.14 285 T
+(lx,) 206.81 285 T
+(numbers[lx],) 228.38 285 T
+(0\051) 298.48 285 T
+(drawDot\050mainwin,) 115.14 274 T
+(rx,) 206.81 274 T
+(numbers[rx],) 228.38 274 T
+(0\051) 298.48 274 T
+(numbers[lx]) 115.14 263 T
+(:=:) 179.85 263 T
+(numbers[rx]) 201.42 263 T
+(drawDot\050cwins[id],) 115.14 252 T
+(lx,) 217.6 252 T
+(numbers[lx],) 239.17 252 T
+(slp\051) 309.27 252 T
+(drawDot\050cwins[id],) 115.14 241 T
+(rx,) 217.6 241 T
+(numbers[rx],) 239.17 241 T
+(slp\051) 309.27 241 T
+(WinSync\050mainwin,) 115.14 230 T
+(false\051) 206.81 230 T
+(#) 287.7 230 T
+(intended) 298.48 230 T
+(to) 347.02 230 T
+(slow) 363.19 230 T
+(things) 390.15 230 T
+(down) 427.9 230 T
+(rx--) 115.14 219 T
+(f) 104.36 208 T
+(i) 109.75 208 T
+(od) 93.57 197 T
+(if) 93.57 186 T
+(rx) 109.75 186 T
+(>) 125.93 186 T
+(left) 136.71 186 T
+(->) 163.67 186 T
+(drawDot\050mainwin,) 104.36 175 T
+(left,) 196.03 175 T
+(numbers[left],) 228.38 175 T
+(0\051) 309.27 175 T
+(drawDot\050mainwin,) 104.36 164 T
+(rx,) 196.03 164 T
+(numbers[rx],) 217.6 164 T
+(0\051) 287.7 164 T
+(numbers[rx]) 104.36 153 T
+(:=:) 169.06 153 T
+(numbers[left]) 190.63 153 T
+(drawDot\050cwins[id],) 104.36 142 T
+(left,) 206.81 142 T
+(numbers[left],) 239.17 142 T
+(slp\051) 320.05 142 T
+(drawDot\050cwins[id],) 104.36 131 T
+(rx,) 206.81 131 T
+(numbers[rx],) 228.38 131 T
+(slp\051) 298.48 131 T
+(f) 93.57 120 T
+(i) 98.96 120 T
+(#) 93.57 109 T
+(mid) 93.57 98 T
+(:=) 115.14 98 T
+(rx) 131.32 98 T
+(return) 93.57 87 T
+(end) 82.79 76 T
+FMENDPAGE
+%%EndPage: "18" 19
+%%Page: "17" 19
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 17 -) 296.45 42.62 T
+0 14 Q
+(Appendix C. Sample Program - Quick Sort) 72 710.67 T
+1 9 Q
+(#) 72 690 T
+(Quick) 82.79 690 T
+(Sort) 115.14 690 T
+(#) 72 679 T
+(#) 72 668 T
+(Qiang) 82.79 668 T
+(A.) 115.14 668 T
+(Zhao,) 131.32 668 T
+(October) 163.67 668 T
+(92) 206.81 668 T
+(#) 72 657 T
+(#) 72 646 T
+(Usage:) 82.79 646 T
+(qsort) 120.53 646 T
+(WindowSize) 152.89 646 T
+(Points) 212.2 646 T
+(DotSize) 249.95 646 T
+(resource) 72 624 T
+(qsort\050\051) 120.53 624 T
+(const) 82.79 602 T
+(JS) 115.14 602 T
+(:=) 131.32 602 T
+(4) 147.49 602 T
+(#) 287.7 602 T
+(number) 298.48 602 T
+(of) 336.23 602 T
+(job) 352.41 602 T
+(servers) 373.98 602 T
+(import) 82.79 591 T
+(SRWin) 120.53 591 T
+(op) 82.79 569 T
+(banner\050win:) 98.96 569 T
+(winWindow;) 163.67 569 T
+(str:) 222.99 569 T
+(string[*]\051) 249.95 569 T
+(op) 82.79 558 T
+(regenerate\050\051) 98.96 558 T
+(op) 82.79 547 T
+(drawDot\050win:) 98.96 547 T
+(winWindow;) 169.06 547 T
+(idx,) 228.38 547 T
+(value,) 255.34 547 T
+(slp:) 293.09 547 T
+(int\051) 320.05 547 T
+(op) 82.79 536 T
+(part\050id,) 98.96 536 T
+(left,) 147.49 536 T
+(right:) 179.85 536 T
+(int;) 217.6 536 T
+(var) 244.56 536 T
+(x,) 266.13 536 T
+(y,) 282.31 536 T
+(w,) 298.48 536 T
+(h:) 314.66 536 T
+(int\051) 330.84 536 T
+(returns) 357.8 536 T
+(mid:int) 400.94 536 T
+(op) 82.79 525 T
+(job\050left,) 98.96 525 T
+(right:) 152.89 525 T
+(int\051) 190.63 525 T
+(op) 82.79 514 T
+(done\050int\051) 98.96 514 T
+(var) 82.79 492 T
+(SIZE) 104.36 492 T
+(:=) 131.32 492 T
+(500;) 147.49 492 T
+(getarg\0501,) 201.42 492 T
+(SIZE\051) 255.34 492 T
+(var) 82.79 481 T
+(NP) 104.36 481 T
+(:=) 120.53 481 T
+(SIZE/2;) 136.71 481 T
+(getarg\0502,) 201.42 481 T
+(NP\051) 255.34 481 T
+(var) 82.79 470 T
+(DOT) 104.36 470 T
+(:=) 125.93 470 T
+(6;) 142.1 470 T
+(getarg\0503,) 201.42 470 T
+(DOT\051) 255.34 470 T
+(if) 82.79 448 T
+(\050SIZE) 98.96 448 T
+(<) 131.32 448 T
+(100\051) 142.1 448 T
+(or) 169.06 448 T
+(\050NP) 185.24 448 T
+(<) 206.81 448 T
+(10\051) 217.6 448 T
+(->) 239.17 448 T
+(write\050"Invalid) 93.57 437 T
+(Value,) 174.46 437 T
+(sorry..."\051) 212.2 437 T
+(stop\0501\051) 93.57 426 T
+(f) 82.79 415 T
+(i) 88.18 415 T
+(const) 82.79 393 T
+(OFF) 115.14 393 T
+(:=) 136.71 393 T
+(40) 152.89 393 T
+(const) 82.79 382 T
+(DOT2) 115.14 382 T
+(:) 142.1 382 T
+(int) 152.89 382 T
+(:=) 174.46 382 T
+(DOT/2) 190.63 382 T
+(const) 82.79 371 T
+(SCALE) 115.14 371 T
+(:) 147.49 371 T
+(real) 158.28 371 T
+(:=) 185.24 371 T
+(real\050SIZE-DOT\051/real\050NP-1\051) 201.42 371 T
+(const) 82.79 349 T
+(MSG_READY) 115.14 349 T
+(:=) 169.06 349 T
+("Press) 185.24 349 T
+(\325SPACE\325) 222.99 349 T
+(to) 266.13 349 T
+(go") 282.31 349 T
+(const) 82.79 338 T
+(MSG_RUNNING) 115.14 338 T
+(:=) 179.85 338 T
+("Running:) 196.03 338 T
+(\325+\325/\325-\325) 249.95 338 T
+(to) 293.09 338 T
+(adjust) 309.27 338 T
+(speed") 347.02 338 T
+(const) 82.79 327 T
+(MSG_DONE) 115.14 327 T
+(:=) 163.67 327 T
+("Done,) 179.85 327 T
+(\325r\325) 217.6 327 T
+(to) 239.17 327 T
+(regenerate) 255.34 327 T
+(numbers") 314.66 327 T
+(var) 82.79 305 T
+(numbers[NP]) 104.36 305 T
+(:) 169.06 305 T
+(int) 179.85 305 T
+(var) 82.79 294 T
+(mainwin,) 104.36 294 T
+(ww,) 152.89 294 T
+(boxw,) 174.46 294 T
+(textw:) 206.81 294 T
+(winWindow) 244.56 294 T
+(var) 82.79 283 T
+(cwins[1:JS]) 104.36 283 T
+(:winWindow) 169.06 283 T
+(var) 82.79 272 T
+(colors[1:JS]) 104.36 272 T
+(:) 174.46 272 T
+(string[6]) 185.24 272 T
+(colors[1]) 115.14 261 T
+(:=) 169.06 261 T
+("red") 185.24 261 T
+(colors[2]) 115.14 250 T
+(:=) 169.06 250 T
+("yellow") 185.24 250 T
+(colors[3]) 115.14 239 T
+(:=) 169.06 239 T
+("green") 185.24 239 T
+(colors[4]) 115.14 228 T
+(:=) 169.06 228 T
+("cyan") 185.24 228 T
+(op) 82.79 217 T
+(ec) 104.36 217 T
+(:) 120.53 217 T
+(winEventChannel) 131.32 217 T
+(var) 82.79 206 T
+(ev:) 104.36 206 T
+(winEvent) 125.93 206 T
+(var) 82.79 195 T
+(slp:) 104.36 195 T
+(int) 131.32 195 T
+(:=) 152.89 195 T
+(0) 169.06 195 T
+(var) 82.79 184 T
+(started) 104.36 184 T
+(:=) 147.49 184 T
+(false) 163.67 184 T
+(##) 82.79 162 T
+(Draw) 98.96 162 T
+(a) 125.93 162 T
+(string) 136.71 162 T
+(at) 174.46 162 T
+(the) 190.63 162 T
+(bottom) 212.2 162 T
+(proc) 82.79 151 T
+(banner\050win,) 109.75 151 T
+(str\051) 174.46 151 T
+(WinClearArea\050mainwin,) 93.57 140 T
+(winRectangle\0500,) 212.2 140 T
+(SIZE+DOT,) 298.48 140 T
+(SIZE,) 352.41 140 T
+(OFF-DOT\051\051) 384.76 140 T
+(WinDrawString\050win,) 93.57 129 T
+(winPoint\050OFF,) 196.03 129 T
+(SIZE+30\051,) 271.52 129 T
+(str\051) 325.45 129 T
+(end) 82.79 118 T
+(##) 82.79 96 T
+(Generate) 98.96 96 T
+(random) 147.49 96 T
+(numbers) 185.24 96 T
+(proc) 82.79 85 T
+(regenerate\050\051) 109.75 85 T
+(WinClearArea\050mainwin,) 93.57 74 T
+(winRectangle\0500,) 212.2 74 T
+(0,) 298.48 74 T
+(SIZE,) 314.66 74 T
+(SIZE+DOT\051\051) 347.02 74 T
+FMENDPAGE
+%%EndPage: "17" 18
+%%Page: "16" 18
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 16 -) 296.45 42.62 T
+1 9 Q
+(var) 93.57 714 T
+(pressed) 115.14 714 T
+(:) 158.28 714 T
+(bool) 169.06 714 T
+(:=) 196.03 714 T
+(false) 212.2 714 T
+(do) 93.57 703 T
+(true) 109.75 703 T
+(->) 136.71 703 T
+(var) 104.36 692 T
+(ev:) 125.93 692 T
+(winEvent) 147.49 692 T
+(receive) 104.36 681 T
+(evchan\050ev\051) 147.49 681 T
+(if) 104.36 659 T
+(ev.event_type) 120.53 659 T
+(=) 196.03 659 T
+(Ev_ButtonDown) 206.81 659 T
+(->) 282.31 659 T
+(pressed) 115.14 648 T
+(:=) 158.28 648 T
+(true) 174.46 648 T
+(WinSetBorder\050mywin,) 115.14 637 T
+(but.border,) 222.99 637 T
+(borderColor\051) 287.7 637 T
+(WinEraseArea\050revw,) 115.14 626 T
+(winRectangle\0500,) 217.6 626 T
+(0,) 303.88 626 T
+(w,) 320.05 626 T
+(h\051\051) 336.23 626 T
+(WinDrawString\050revw,) 115.14 615 T
+(winPoint\050labx,) 222.99 615 T
+(laby\051,) 303.88 615 T
+(labelString\051) 341.62 615 T
+([]) 104.36 593 T
+(ev.event_type) 120.53 593 T
+(=) 196.03 593 T
+(Ev_ButtonUp) 206.81 593 T
+(->) 271.52 593 T
+(WinSetBorder\050mywin,) 115.14 582 T
+(but.border,) 222.99 582 T
+(borderColor\051) 287.7 582 T
+(WinEraseArea\050normalw,) 115.14 571 T
+(winRectangle\0500,) 233.77 571 T
+(0,) 320.05 571 T
+(w,) 336.23 571 T
+(h\051\051) 352.41 571 T
+(WinDrawString\050normalw,) 115.14 560 T
+(winPoint\050labx,) 239.17 560 T
+(laby\051,) 320.05 560 T
+(labelString\051) 357.8 560 T
+(if) 115.14 549 T
+(pressed) 131.32 549 T
+(->) 174.46 549 T
+(cb\050but,) 125.93 538 T
+(labelString\051) 169.06 538 T
+(f) 115.14 527 T
+(i) 120.53 527 T
+(pressed) 115.14 516 T
+(:=) 158.28 516 T
+(false) 174.46 516 T
+([]) 104.36 494 T
+(ev.event_type) 120.53 494 T
+(=) 196.03 494 T
+(Ev_EnterWindow) 206.81 494 T
+(->) 287.7 494 T
+(WinSetBorder\050mywin,) 115.14 483 T
+(but.border,) 222.99 483 T
+(borderColor\051) 287.7 483 T
+([]) 104.36 461 T
+(ev.event_type) 120.53 461 T
+(=) 196.03 461 T
+(Ev_ExitWindow) 206.81 461 T
+(->) 282.31 461 T
+(pressed) 115.14 450 T
+(:=) 158.28 450 T
+(false) 174.46 450 T
+(WinSetBorder\050normalw,) 115.14 439 T
+(but.border,) 233.77 439 T
+(buttonColor\051) 298.48 439 T
+(WinEraseArea\050normalw,) 115.14 428 T
+(winRectangle\0500,) 233.77 428 T
+(0,) 320.05 428 T
+(w,) 336.23 428 T
+(h\051\051) 352.41 428 T
+(WinDrawString\050normalw,) 115.14 417 T
+(winPoint\050labx,) 239.17 417 T
+(laby\051,) 320.05 417 T
+(labelString\051) 357.8 417 T
+(f) 104.36 406 T
+(i) 109.75 406 T
+(WinFlush\050mywin\051) 104.36 384 T
+(od) 93.57 373 T
+(end) 82.79 362 T
+(end) 72 351 T
+(Button) 93.57 351 T
+(###) 158.28 351 T
+(global) 179.85 351 T
+(resource) 72 329 T
+(ButtonTest\050\051) 120.53 329 T
+(import) 82.79 318 T
+(SRWin,) 120.53 318 T
+(Button) 158.28 318 T
+(op) 82.79 296 T
+(cb1,) 98.96 296 T
+(cb2:) 125.93 296 T
+(buttonCallBack) 152.89 296 T
+(proc) 82.79 274 T
+(cb1\050b,) 109.75 274 T
+(str\051) 147.49 274 T
+(write\050"Hello"\051) 93.57 263 T
+(end) 82.79 252 T
+(proc) 82.79 230 T
+(cb2\050b,) 109.75 230 T
+(str\051) 147.49 230 T
+(write\050"Quit"\051; stop\0500\051) 93.57 219 T
+(end) 82.79 208 T
+(var) 82.79 186 T
+(mywin:) 104.36 186 T
+(winWindow) 142.1 186 T
+(:=) 196.03 186 T
+(WinOpen\050"",) 212.2 186 T
+("Button) 276.91 186 T
+(Test",) 320.05 186 T
+(null,) 357.8 186 T
+(UseDefault,) 390.15 186 T
+(130,) 454.86 186 T
+(80\051) 481.83 186 T
+(WinFlush\050mywin\051) 82.79 175 T
+(send) 82.79 164 T
+(button\050buttonRec\050mywin,) 109.75 164 T
+(10,) 239.17 164 T
+(10,) 260.74 164 T
+(50,) 282.31 164 T
+(40,) 303.88 164 T
+(2\051,) 325.45 164 T
+("red",) 147.49 153 T
+("white",) 185.24 153 T
+("blue",) 233.77 153 T
+("Hello",) 276.91 153 T
+(cb1\051) 325.45 153 T
+(send) 82.79 142 T
+(button\050buttonRec\050mywin,) 109.75 142 T
+(70,) 239.17 142 T
+(10,) 260.74 142 T
+(50,) 282.31 142 T
+(40,) 303.88 142 T
+(2\051,) 325.45 142 T
+("green",) 147.49 131 T
+("blue",) 196.03 131 T
+("white",) 239.17 131 T
+("Quit",) 287.7 131 T
+(cb2\051) 330.84 131 T
+(f) 82.79 109 T
+(inal) 88.18 109 T
+(WinClose\050mywin\051) 93.57 98 T
+(end) 82.79 87 T
+(end) 72 76 T
+(ButtonTest) 93.57 76 T
+FMENDPAGE
+%%EndPage: "16" 17
+%%Page: "15" 17
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 15 -) 296.45 42.62 T
+0 14 Q
+(Appendix B. Sample Program - Button) 72 710.67 T
+1 9 Q
+(#) 72 690 T
+(\322button.sr\323) 82.79 690 T
+(Q. A. Zhao, March 93) 324 690 T
+(global) 72 668 T
+(Button) 109.75 668 T
+(import) 82.79 646 T
+(SRWin) 120.53 646 T
+(type) 82.79 624 T
+(buttonRec) 109.75 624 T
+(=) 163.67 624 T
+(rec) 174.46 624 T
+(\050) 196.03 624 T
+(window) 158.28 613 T
+(:) 196.03 613 T
+(winWindow) 206.81 613 T
+(x,) 158.28 602 T
+(y,) 174.46 602 T
+(w,) 190.63 602 T
+(h,) 206.81 602 T
+(border) 222.99 602 T
+(:) 260.74 602 T
+(int) 271.52 602 T
+(\051) 115.14 591 T
+(optype) 82.79 569 T
+(buttonCallBack\050buttonRec;) 120.53 569 T
+(string[*]\051) 260.74 569 T
+(op) 82.79 547 T
+(button\050) 98.96 547 T
+(but:) 158.28 547 T
+(buttonRec;) 185.24 547 T
+(borderColor,) 158.28 536 T
+(buttonColor,) 228.38 536 T
+(labelColor) 298.48 536 T
+(:) 357.8 536 T
+(winColor;) 368.58 536 T
+(labelString:) 158.28 525 T
+(string[*];) 228.38 525 T
+(cb:) 158.28 514 T
+(cap) 179.85 514 T
+(buttonCallBack\051) 201.42 514 T
+(body) 72 492 T
+(Button) 98.96 492 T
+(import) 82.79 470 T
+(SRWin) 120.53 470 T
+(###) 82.79 448 T
+(A) 104.36 448 T
+(button) 115.14 448 T
+(proc) 82.79 437 T
+(button\050but,) 109.75 437 T
+(borderColor,) 174.46 437 T
+(buttonColor,) 244.56 437 T
+(labelColor,) 314.66 437 T
+(labelString,) 379.37 437 T
+(cb\051) 449.47 437 T
+(var) 93.57 426 T
+(labelFont) 115.14 426 T
+(:) 169.06 426 T
+(winFont) 179.85 426 T
+(:=) 222.99 426 T
+(WinDefaultFont\050but.window\051) 239.17 426 T
+(var) 93.57 404 T
+(x) 115.14 404 T
+(:=) 125.93 404 T
+(but.x) 142.1 404 T
+(+) 174.46 404 T
+(but.border) 185.24 404 T
+(var) 93.57 393 T
+(y) 115.14 393 T
+(:=) 125.93 393 T
+(but.y) 142.1 393 T
+(+) 174.46 393 T
+(but.border) 185.24 393 T
+(var) 93.57 382 T
+(w) 115.14 382 T
+(:=) 125.93 382 T
+(but.w) 142.1 382 T
+(-) 174.46 382 T
+(but.border) 185.24 382 T
+(*) 244.56 382 T
+(2) 255.34 382 T
+(var) 93.57 371 T
+(h) 115.14 371 T
+(:=) 125.93 371 T
+(but.h) 142.1 371 T
+(-) 174.46 371 T
+(but.border) 185.24 371 T
+(*) 244.56 371 T
+(2) 255.34 371 T
+(var) 93.57 360 T
+(labx) 115.14 360 T
+(:=) 142.1 360 T
+(\050w) 158.28 360 T
+(-) 174.46 360 T
+(WinTextWidth\050labelFont,) 185.24 360 T
+(labelString\051\051) 314.66 360 T
+(/) 390.15 360 T
+(2) 400.94 360 T
+(var) 93.57 349 T
+(laby) 115.14 349 T
+(:=) 142.1 349 T
+(\050h) 158.28 349 T
+(+) 174.46 349 T
+(WinFontAscent\050labelFont\051) 185.24 349 T
+(-) 320.05 349 T
+(WinFontDescent\050labelFont\051\051) 330.84 349 T
+(/) 476.43 349 T
+(2) 487.22 349 T
+(var) 93.57 327 T
+(mywin:) 115.14 327 T
+(winWindow) 152.89 327 T
+(op) 93.57 316 T
+(evchan:) 109.75 316 T
+(winEventChannel) 152.89 316 T
+(mywin) 93.57 305 T
+(:=) 125.93 305 T
+(WinCreateSubwindow\050but.window,) 142.1 305 T
+(evchan,) 309.27 305 T
+(OffScreen,) 352.41 305 T
+(x,) 411.73 305 T
+(y,) 427.9 305 T
+(w,) 444.08 305 T
+(h\051) 460.26 305 T
+(if) 93.57 294 T
+(mywin) 109.75 294 T
+(=) 142.1 294 T
+(null) 152.89 294 T
+(->) 179.85 294 T
+(write\050stderr,) 104.36 283 T
+("Button:) 179.85 283 T
+(\325",) 228.38 283 T
+(labelString,) 249.95 283 T
+("\325) 320.05 283 T
+(cannot) 336.23 283 T
+(be) 373.98 283 T
+(created"\051) 390.15 283 T
+(return) 104.36 272 T
+(f) 93.57 261 T
+(i) 98.96 261 T
+(WinSetEventMask\050mywin,) 93.57 239 T
+(Ev_ButtonDown) 217.6 239 T
+(|) 293.09 239 T
+(Ev_ButtonUp) 303.88 239 T
+(|) 368.58 239 T
+(Ev_EnterWindow) 115.14 228 T
+(|) 196.03 228 T
+(Ev_ExitWindow\051) 206.81 228 T
+(var) 93.57 206 T
+(normalw) 115.14 206 T
+(:) 158.28 206 T
+(winWindow) 169.06 206 T
+(:=) 222.99 206 T
+(WinNewContext\050mywin\051) 239.17 206 T
+(WinSetForeground\050normalw,) 93.57 195 T
+(labelColor\051) 233.77 195 T
+(WinSetBackground\050normalw,) 93.57 184 T
+(buttonColor\051) 233.77 184 T
+(var) 93.57 162 T
+(revw) 115.14 162 T
+(:) 142.1 162 T
+(winWindow) 152.89 162 T
+(:=) 206.81 162 T
+(WinNewContext\050mywin\051) 222.99 162 T
+(WinSetForeground\050revw,) 93.57 151 T
+(buttonColor\051) 217.6 151 T
+(WinSetBackground\050revw,) 93.57 140 T
+(labelColor\051) 217.6 140 T
+(WinSetBorder\050normalw,) 93.57 118 T
+(but.border,) 212.2 118 T
+(buttonColor\051) 276.91 118 T
+(WinEraseArea\050normalw,) 93.57 107 T
+(winRectangle\0500,) 212.2 107 T
+(0,) 298.48 107 T
+(w,) 314.66 107 T
+(h\051\051) 330.84 107 T
+(WinDrawString\050normalw,) 93.57 96 T
+(winPoint\050labx,) 217.6 96 T
+(laby\051,) 298.48 96 T
+(labelString\051) 336.23 96 T
+(WinMapWindow\050normalw\051) 93.57 85 T
+(#) 287.7 85 T
+(same) 298.48 85 T
+(as) 325.45 85 T
+(mapping) 341.62 85 T
+(\325mywin\325) 384.76 85 T
+FMENDPAGE
+%%EndPage: "15" 16
+%%Page: "14" 16
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 14 -) 296.45 42.62 T
+2 10 Q
+0.11 (Icon, but that have not yet been implemented. These include mutable color cells, reading and writing) 72 713.33 P
+(images from and to \336les, etc.) 72 701.33 T
+2.41 (While providing more user interface features is an important development direction, tuning) 90 683.33 P
+0.8 (SR) 72 671.33 P
+0.8 (W) 85.14 671.33 P
+0.8 (in for better performance is also essential. One possible thread of revising SR) 94.58 671.33 P
+0.8 (W) 460.25 671.33 P
+0.8 (in is to rewrite) 469.68 671.33 P
+-0.07 (the locking scheme after the multi-threaded Xlib is available [Gild93]. For example, based on the new) 72 659.33 P
+0.04 (Xlib, SR) 72 647.33 P
+0.04 (W) 109.63 647.33 P
+0.04 (in would no longer need to lock Xlib data structures and functions entries. Only data struc-) 119.06 647.33 P
+0.71 (tures created and used by SR) 72 635.33 P
+0.71 (W) 210.49 635.33 P
+0.71 (in must be protected by locking. The semaphore could be made on a) 219.93 635.33 P
+-0.22 (per) 72 623.33 P
+-0.22 (-connection basis to further relieve processes working on one display from competing for locks with) 86.99 623.33 P
+(those working on other displays.) 72 611.33 T
+FMENDPAGE
+%%EndPage: "14" 15
+%%Page: "13" 15
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 13 -) 296.45 42.62 T
+2 10 Q
+6.06 (Function) 90 470.33 P
+3 9 Q
+11.76 (WinOpen\050\051) 140.29 470.33 P
+2 10 Q
+6.06 ( creates the display record and the \336rst context window record.) 188.83 470.33 P
+3 9 Q
+4.75 (WinCreateSubwindow\050\051) 72 458.33 P
+2 10 Q
+2.45 ( inserts a subwindow into the subwindow list and creates a new context) 179.85 458.33 P
+1.38 (window record.) 72 446.33 P
+3 9 Q
+2.68 (WinNewContext\050\051) 147.68 446.33 P
+2 10 Q
+1.38 ( only creates a context window record. All three functions return) 228.57 446.33 P
+(pointers to the context window records they create.) 72 434.33 T
+0.93 (However) 90 416.33 P
+0.93 (, SR) 130.16 416.33 P
+0.93 (W) 149.79 416.33 P
+0.93 (in doesn\325) 159.22 416.33 P
+0.93 (t keep track of every context window record it creates. When a function) 200.51 416.33 P
+0.02 (like) 72 404.33 P
+3 9 Q
+0.04 (WinDestroyWindow\050\051) 92.02 404.33 P
+2 10 Q
+0.02 ( is called, it walks the list of subwindows and destroys those required, but it) 189.08 404.33 P
+0.62 (cannot destroy other context window records not passed in the list of arguments. After destroying a) 72 392.33 P
+(window) 72 380.33 T
+(, other context window handles still referring to the old window should not be used.) 106.62 380.33 T
+0 11 Q
+(Concurrency Issues) 72 349.67 T
+2 10 Q
+0.03 (A semaphore in SR) 72 325.33 P
+0.03 (W) 160.37 325.33 P
+0.03 (in serializes calls to Xlib. Whenever a function is about to change something, for) 169.81 325.33 P
+0.86 (example load a font or draw a line, it does a) 72 313.33 P
+3 9 Q
+1.67 (P) 285.65 313.33 P
+2 10 Q
+0.86 ( operation on that semaphore; afterwards it does a) 291.04 313.33 P
+3 9 Q
+1.67 (V) 534.61 313.33 P
+2 10 Q
+0.36 (operation on the semaphore. The operations provided without this mutual exclusion scheme include,) 72 301.33 P
+3.42 (partly because of performance concerns,) 72 289.33 P
+3 9 Q
+6.65 (WinTextWidth\050\051) 276.6 289.33 P
+2 10 Q
+3.42 (,) 352.09 289.33 P
+3 9 Q
+6.65 (WinFontAscent\050\051) 361.07 289.33 P
+2 10 Q
+3.42 (,) 441.96 289.33 P
+3 9 Q
+6.65 (WinFontDescent\050\051) 450.94 289.33 P
+2 10 Q
+3.42 (,) 537.22 289.33 P
+3 9 Q
+0.6 (WinGetPixel\050\051) 72 277.33 P
+2 10 Q
+0.31 (,) 142.1 277.33 P
+3 9 Q
+0.6 (WinPutPixel\050\051) 147.97 277.33 P
+2 10 Q
+0.31 (, and) 218.07 277.33 P
+3 9 Q
+0.6 (WinAddPixel\050\051) 244.42 277.33 P
+2 10 Q
+0.31 (. The \336rst four functions read information in the) 314.52 277.33 P
+1.28 (memory space of the application program. They are safe as long as the subject of the operation is) 72 265.33 P
+-0.1 (valid. When using the last two functions, the application program must ensure that there is no simul-) 72 253.33 P
+(taneous access to the same row in the image.) 72 241.33 T
+-0.09 (When) 90 223.33 P
+3 9 Q
+-0.17 (WinOpen\050\051) 119.71 223.33 P
+2 10 Q
+-0.09 ( is called and succeeds in creating the window) 168.24 223.33 P
+-0.09 (, it does a) 378.76 223.33 P
+3 9 Q
+-0.17 (reply) 425.27 223.33 P
+2 10 Q
+-0.09 ( so it gets detached) 452.23 223.33 P
+0.24 (and becomes a separate process, the event handler) 72 211.33 P
+0.24 (. This process periodically checks whether there is) 306.75 211.33 P
+-0.16 (an event pending from the X server) 72 199.33 P
+-0.16 (. If there is any) 233.71 199.33 P
+-0.16 (, it retrieves the event from Xlib, and calls a C func-) 302.46 199.33 P
+0.73 (tion to \336nd out which subwindow the event should be in. Then the event is dispatched to the regis-) 72 187.33 P
+-0.05 (tered event channel, if there is one. The delay between two checking iterations of the event handler is) 72 175.33 P
+(controlled by) 72 163.33 T
+3 9 Q
+(WinSetPoll\050\051) 134.38 163.33 T
+2 10 Q
+(; the minimum delay value is set to 1 millisecond.) 199.09 163.33 T
+3 9 Q
+-0.3 (WinClose\050\051) 90 145.33 P
+2 10 Q
+-0.15 ( destroys the windows and closes the connection to the X server) 143.93 145.33 P
+-0.15 (. It resets a \337ag \336eld in) 434.11 145.33 P
+(the display record so the event handler) 72 133.33 T
+(, which also periodically checks this \336eld, can exit.) 251.35 133.33 T
+0 11 Q
+(Future Development) 72 102.67 T
+2 10 Q
+0.21 (SR) 72 78.33 P
+0.21 (W) 85.14 78.33 P
+0.21 (in has borrowed a lot of ideas from X-Icon [Jeff92] on providing user interface primitives. At the) 94.58 78.33 P
+0.87 (time this document was written, there are still a lot of nice features that SR) 72 66.33 P
+0.87 (W) 434.37 66.33 P
+0.87 (in can learn from X-) 443.8 66.33 P
+72 63 540 720 C
+72 477 540 720 C
+2 9 Q
+0 X
+0 K
+(Display Record) 144 609.57 T
+144 561.57 468 606.57 R
+6 X
+V
+0.25 H
+2 Z
+0 X
+N
+153 633.57 279 651.57 R
+6 X
+V
+0 X
+N
+(Context W) 153 654.57 T
+(indow Record) 196.77 654.57 T
+333 633.57 459 651.57 R
+6 X
+V
+0 X
+N
+(Context W) 333 654.57 T
+(indow Record) 376.77 654.57 T
+218.21 668.26 216 660.57 213.79 668.26 216 667.46 4 Y
+V
+216 696.57 216 667.46 2 L
+N
+(W) 182.8 699.57 T
+(indow Handle) 191.28 699.57 T
+180 696.57 252 705.57 R
+3 X
+N
+398.2 668.26 396 660.57 393.8 668.26 396 667.46 4 Y
+0 X
+V
+396 696.57 396 667.46 2 L
+N
+(W) 362.8 700.29 T
+(indow Handle) 371.28 700.29 T
+360 696.57 432 706.29 R
+3 X
+N
+246.85 611.58 252.14 605.58 244.47 607.87 246.34 609.29 4 Y
+0 X
+V
+207.14 634.14 246.35 609.29 2 L
+N
+260.11 605.04 252.13 605.58 259.19 609.35 258.87 607.02 4 Y
+V
+387.14 634.14 258.88 607.02 2 L
+N
+(Subwindow list) 261 591.57 T
+261 570.57 459 588.57 R
+5 X
+V
+0 X
+N
+279 588.57 279 570.57 2 L
+V
+1 X
+N
+297 588.57 297 570.57 2 L
+0 X
+V
+1 X
+N
+315 588.57 315 570.57 2 L
+0 X
+V
+1 X
+N
+333 588.57 333 570.57 2 L
+0 X
+V
+1 X
+N
+351 588.57 351 570.57 2 L
+0 X
+V
+1 X
+N
+369 588.57 369 570.57 2 L
+0 X
+V
+1 X
+N
+387 588.57 387 570.57 2 L
+0 X
+V
+1 X
+N
+405 588.57 405 570.57 2 L
+0 X
+V
+1 X
+N
+441 588.57 441 570.57 2 L
+0 X
+V
+1 X
+N
+414 579.57 432 579.57 2 L
+0 X
+V
+1 H
+10 X
+N
+252.51 537.33 261 534.57 252.34 532.41 253.32 534.84 4 Y
+0 X
+V
+0.25 H
+180 263 63 36 261 570.57 A
+261.71 530.29 351.71 539.29 R
+7 X
+V
+0 X
+(Xlib data structures) 265.02 533.29 T
+72.14 717.71 540 717.71 2 L
+N
+72 504 540 513 R
+7 X
+V
+0 X
+(Figure 7. Objects in SR) 249.57 507 T
+(W) 345.62 507 T
+(in) 354.11 507 T
+72 495 540 495 2 L
+N
+353.44 592.32 359.99 587.72 352 588.15 353.48 589.97 4 Y
+V
+225 634.14 353.49 589.96 2 L
+N
+399.4 594.82 395.71 587.72 395.07 595.69 397.08 594.47 4 Y
+V
+405 634.14 397.08 594.46 2 L
+N
+72 63 540 720 C
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "13" 14
+%%Page: "12" 14
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 12 -) 296.45 42.62 T
+0 14 Q
+(Appendix A. The Implementation of SR) 72 710.67 T
+(W) 355.33 710.67 T
+(in) 368.54 710.67 T
+2 10 Q
+0.71 (A basic knowledge of the X W) 72 685.33 P
+0.71 (indow System is very helpful in understanding the implementation of) 212.3 685.33 P
+0.18 (SR) 72 673.33 P
+0.18 (W) 85.14 673.33 P
+0.18 (in. V) 94.58 673.33 P
+0.18 (arious books and articles listed in the Reference section describe the X W) 115.86 673.33 P
+0.18 (indow System and) 454.86 673.33 P
+(Xlib.) 72 661.33 T
+0 11 Q
+(The Client-Server Model) 72 630.67 T
+2 10 Q
+2.18 (Like many other X-based systems, SR) 72 606.33 P
+2.18 (W) 257.66 606.33 P
+2.18 (in follows and bene\336ts from the client-server computing) 267.09 606.33 P
+-0.27 (model. Conceptually) 72 594.33 P
+-0.27 (, what) 164.65 594.33 P
+3 9 Q
+-0.52 (WinOpen\050\051) 195.77 594.33 P
+2 10 Q
+-0.27 ( establishes is a full-duplex connection between the X server and) 244.31 594.33 P
+0.83 (the client program. This allows outputs \337ow from the client to the server) 72 582.33 P
+0.83 (, and inputs \337ow from the) 416.64 582.33 P
+(server to the client:) 72 570.33 T
+-0.2 (In a) 90 264.33 P
+4 F
+-0.2 (virtual machine) 110.9 264.33 P
+2 F
+-0.2 ( running a client program, SR) 184.16 264.33 P
+-0.2 (W) 321.08 264.33 P
+-0.2 (in acts as a global embedded with Xlib. Appli-) 330.51 264.33 P
+0.2 (cation processes, which may be in one or more) 72 252.33 P
+4 F
+0.2 (resources) 289.3 252.33 P
+2 F
+0.2 (, communicate with each other to accomplish) 331.46 252.33 P
+0.08 (some computation tasks. They call SR) 72 240.33 P
+0.08 (W) 247.51 240.33 P
+0.08 (in primitives in order to display some data or manipulate the) 256.94 240.33 P
+1.02 (windows. These calls are serialized by SR) 72 228.33 P
+1.02 (W) 269.73 228.33 P
+1.02 (in to prevent them from simultaneous access to shared) 279.17 228.33 P
+0.35 (critical data structures in Xlib, and they are turned into X requests by Xlib and sent to the X server) 72 216.33 P
+0.35 (.) 537.22 216.33 P
+0.51 (Inputs from various windows, on the other hand, are delivered to the event handler) 72 204.33 P
+0.51 (. The event han-) 463.12 204.33 P
+0.85 (dler responds to the exposure events by sending back redrawing information to the server) 72 192.33 P
+0.85 (, and for-) 496.48 192.33 P
+0.19 (wards other events to the appropriate event channel \050denoted by a little circle in the above \336gure\051 by) 72 180.33 P
+(asynchronous message passing.) 72 168.33 T
+0 11 Q
+(Manipulating W) 72 137.67 T
+(indow Objects) 163.02 137.67 T
+2 10 Q
+0.12 (The implementation of SR) 72 113.33 P
+0.12 (W) 193.42 113.33 P
+0.12 (in includes two parts: an SR global) 202.85 113.33 P
+3 9 Q
+0.23 (SRWin) 367.34 113.33 P
+2 10 Q
+0.12 ( and a set of C functions. The C) 394.3 113.33 P
+0.95 (functions are called as) 72 101.33 P
+4 F
+0.95 (externals) 181.86 101.33 P
+2 F
+0.95 ( from the SR global. There are a few type of data objects that hold) 223.3 101.33 P
+0.33 (state information of context windows and) 72 89.33 P
+4 F
+0.33 (displays) 267.79 89.33 P
+2 F
+0.33 ( \050connections to X server\051. Both the SR part and C) 305.89 89.33 P
+(part can access these objects \050see Figure) 72 77.33 T
+(7\051.) 260.61 77.33 T
+72 63 540 720 C
+72 279 540 567 C
+144 370.43 468 532.43 R
+6 X
+0 K
+V
+0.5 H
+2 Z
+0 X
+N
+153 469.43 459 514.43 R
+5 X
+V
+0.25 H
+0 X
+N
+153 379.43 459 442.43 R
+5 X
+V
+0 X
+N
+162 388.43 450 406.43 R
+4 X
+V
+0 X
+N
+7 X
+90 450 67.5 9 382.5 424.43 G
+0 X
+90 450 67.5 9 382.5 424.43 A
+7 X
+90 450 40.5 9 202.5 487.43 G
+0 X
+90 450 40.5 9 202.5 487.43 A
+7 X
+90 450 40.5 9 301.5 487.43 G
+0 X
+90 450 40.5 9 301.5 487.43 A
+7 X
+90 450 40.5 9 400.5 487.43 G
+0 X
+90 450 40.5 9 400.5 487.43 A
+2 9 Q
+(V) 144 535.43 T
+(irtual Machine) 150.09 535.43 T
+(Application Code) 153 517.43 T
+(SR) 153 445.43 T
+(W) 164.82 445.43 T
+(in) 173.3 445.43 T
+0 F
+(Xlib) 162 409.43 T
+216.73 416.98 216 405.01 210.27 415.55 213.5 416.27 4 Y
+0.5 H
+N
+198 487.43 213.5 416.26 2 L
+N
+226.42 410.95 215.99 405.01 221.68 415.57 224.05 413.26 4 Y
+N
+297 487.43 224.05 413.26 2 L
+N
+0.25 H
+90 450 4.5 4.5 310.5 482.93 A
+90 450 4.5 4.5 409.5 482.93 A
+317.6 473.27 310.49 482.93 321.64 478.51 319.62 475.89 4 Y
+V
+387 424.43 319.64 475.89 2 L
+0.5 H
+N
+402.24 473.37 409.49 482.93 408.41 470.98 405.33 472.17 4 Y
+V
+387 424.43 405.34 472.17 2 L
+N
+2 F
+(event handler) 295 435 T
+-0.21 (Application Processes) 207 499.43 P
+222.62 366.5 216 343.43 209.38 366.5 216 366.5 4 Y
+2 X
+V
+216 396 216 366.5 2 L
+V
+4 H
+N
+380.39 392.36 387 415.43 393.61 392.36 387 392.36 4 Y
+V
+387 392.36 387 343.43 2 L
+V
+N
+0 X
+(Input Flow) 360 328.43 T
+(Output Flow) 189 328.43 T
+(Figure 6. SR) 237.26 300 T
+(W) 289.19 300 T
+(in Internal Layout) 297.68 300 T
+72 288 540 288 2 L
+0.25 H
+N
+72 554 540 554 2 L
+N
+248.2 483 243 486 248.2 489 248.2 486 4 Y
+3 X
+V
+255.8 489 261 486 255.8 483 255.8 486 4 Y
+V
+248.2 486 255.8 486 2 L
+0.5 H
+0 Z
+N
+347.2 483 342 486 347.2 489 347.2 486 4 Y
+V
+354.8 489 360 486 354.8 483 354.8 486 4 Y
+V
+347.2 486 354.8 486 2 L
+N
+316.51 410.78 305.99 405.01 311.86 415.48 314.18 413.13 4 Y
+2 Z
+N
+324 423 314.2 413.12 2 L
+N
+72 63 540 720 C
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "12" 13
+%%Page: "11" 13
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 1) 296.67 42.62 T
+(1 -) 305.78 42.62 T
+0 14 Q
+(References) 72 710.67 T
+2 10 Q
+([AnOl93]) 72 685.33 T
+2.59 (Andrews, G. R., and Olsson, R. A.) 126 685.33 P
+4 F
+2.59 (The SR Programming Language: Concurrency in) 302.03 685.33 P
+(Practice) 126 673.33 T
+2 F
+(. Benjamin/Cummings Publishing Company) 163 673.33 T
+(, Inc., Redwood City) 364.95 673.33 T
+(, California, 1993.) 456.2 673.33 T
+([Brow91]) 72 649.33 T
+3.61 (Brown, M. H., editor) 126 649.33 P
+3.61 (.) 231.03 649.33 P
+4 F
+3.61 (An Anthology of Algorithm Animations using Zeus.) 240.19 649.33 P
+2 F
+3.61 (TR 76b) 503.06 649.33 P
+4.85 (\050videotape\051. Digital Equipment Corporation, Systems Research Center) 126 637.33 P
+4.85 (, Palo Alto,) 479.57 637.33 P
+(California, August 1991.) 126 625.33 T
+([Gild93]) 72 601.33 T
+2.48 (Gildea, S. Multi-Threaded Xlib.) 126 601.33 P
+4 F
+2.48 (The X Resource, Issue Five) 284.23 601.33 P
+5 14 Q
+3.13 (\320) 421.55 601.33 P
+4 10 Q
+2.48 ( Proceedings of the 7) 428.55 601.33 P
+4 8 Q
+1.99 (th) 532.3 605.33 P
+4 10 Q
+1.38 (Annual X T) 126 589.33 P
+1.38 (echnical Conference) 181.73 589.33 P
+2 F
+1.38 (, pages 159-166. O\325Reilly & Associates, Inc., Sebastopol,) 273.75 589.33 P
+(California, 1993.) 126 577.33 T
+([Huds93]) 72 553.33 T
+1.33 (Hudson, S.) 126 553.33 P
+4 F
+1.33 (W) 181.97 553.33 P
+1.33 (inpack) 190.49 553.33 P
+5 14 Q
+1.68 (\320) 225.5 553.33 P
+4 10 Q
+1.33 ( Minimal Retargetable W) 232.5 553.33 P
+1.33 (indow Package) 351.41 553.33 P
+2 F
+1.33 (. GVU Center) 421.77 553.33 P
+1.33 (, College of) 486.81 553.33 P
+(Computing, Georgia Institute of T) 126 541.33 T
+(echnology) 282.41 541.33 T
+(, 1993.) 326.83 541.33 T
+([Jeff92]) 72 517.33 T
+0.9 (Jeffrey) 126 517.33 P
+0.9 (, C. L.) 156.9 517.33 P
+4 F
+0.9 (X-Icon: An Icon W) 190.15 517.33 P
+0.9 (indow Interface, V) 275.19 517.33 P
+0.9 (ersion 2) 359.89 517.33 P
+2 F
+0.9 (. TR 92-26. Dept. of Computer) 396.86 517.33 P
+(Science, The University of Arizona.) 126 505.33 T
+([OlAn92]) 72 481.33 T
+1.12 (Olsson, R. A., Andrews, G. R., Cof\336n, M. H., and T) 126 481.33 P
+1.12 (ownsend, G. M.) 368.56 481.33 P
+4 F
+1.12 (SR, A Language for) 446.14 481.33 P
+3.48 (Parallel and Distributed Programming) 126 469.33 P
+2 F
+3.48 (. TR 92-09, Dept. of Computer Science, The) 316.48 469.33 P
+(University of Arizona, March 1992.) 126 457.33 T
+([NyeA92]) 72 433.33 T
+-0.11 (Nye, A., editor) 126 433.33 P
+-0.11 (.) 191.86 433.33 P
+4 F
+-0.11 (Xlib Programming Manual, for V) 197.3 433.33 P
+-0.11 (ersion 1) 349.16 433.33 P
+-0.11 (1 of the X W) 384.39 433.33 P
+-0.11 (indow System; 3rd ed) 438.55 433.33 P
+2 F
+-0.11 (.) 537.22 433.33 P
+(O\325Reilly & Associates, Inc., Sebastopol, California, 1992.) 126 421.33 T
+([ScGe86]) 72 397.33 T
+-0.18 (Schei\337er) 126 397.33 P
+-0.18 (, R. W) 165.79 397.33 P
+-0.18 (. and Gettys, J. The X W) 192.46 397.33 P
+-0.18 (indow System.) 304.14 397.33 P
+4 F
+-0.18 (ACM T) 373.94 397.33 P
+-0.18 (ransactions on Graphics, V) 406.19 397.33 P
+-0.18 (ol.) 528.9 397.33 P
+(5, No. 2, April 1986) 126 385.33 T
+2 F
+(, pages 79-109.) 215.8 385.33 T
+([ScGe92]) 72 361.33 T
+0 (Schei\337er) 126 361.33 P
+0 (, R. W) 165.79 361.33 P
+0 (., and Gettys, J., with Flowers, J. and Rosenthal D.) 192.82 361.33 P
+4 F
+0 (X W) 431.34 361.33 P
+0 (indow System - The) 449.67 361.33 P
+0.43 (Complete Reference to Xlib, X Protocol, ICCCM, XLFD; 3rd ed) 126 349.33 P
+2 F
+0.43 (. Digital Press, Burlington,) 414.13 349.33 P
+(Massachusetts, 1992.) 126 337.33 T
+([Zhao93]) 72 313.33 T
+0.58 (Zhao, Q. A.) 126 313.33 P
+4 F
+0.58 (SR) 182.17 313.33 P
+0.58 (W) 195.69 313.33 P
+0.58 (in Manual Page) 204.21 313.33 P
+2 F
+0.58 (. Dept. of Computer Science, The University of Arizona,) 279.02 313.33 P
+(May 1993.) 126 301.33 T
+FMENDPAGE
+%%EndPage: "11" 12
+%%Page: "10" 12
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 10 -) 296.45 42.62 T
+1 9 Q
+(var i: int) 108 714 T
+(fa i := 0 to 199 ->) 108 703 T
+(# a horizontal red line) 324 703 T
+(WinPutPixel\050im, winPoint\050i, 50\051, p\051) 118.79 692 T
+(af) 108 681 T
+2 10 Q
+(Calling) 90 663.33 T
+3 9 Q
+(WinPutImage\050\051) 126.47 663.33 T
+2 10 Q
+( copies a rectangular area in the image to a window:) 196.57 663.33 T
+1 9 Q
+(# copies the image to \05020, 10\051 on window \322mywin\323) 108 646 T
+(WinPutImage\050mywin, im, winRectangle\0500, 0, 199, 99\051, winPoint\05020, 10\051\051) 108 635 T
+2 10 Q
+0.3 (Unlike windows and their backup copies, an image is kept in the memory area of the application) 90 617.33 P
+0.04 (program, not the X server) 72 605.33 P
+0.04 (. Primitives like) 190.6 605.33 P
+3 9 Q
+0.07 (WinPutPixel\050\051) 267.36 605.33 P
+2 10 Q
+0.04 ( operate locally without generating any net-) 337.46 605.33 P
+1.25 (work traf\336c. On a shared memory parallel machine, processes on different processors can actually) 72 593.33 P
+(manipulate a shared image concurrently) 72 581.33 T
+(, resulting in faster program execution.) 258.58 581.33 T
+0 14 Q
+(9. Conclusions) 72 542.67 T
+2 10 Q
+0.72 (Building on top of Xlib, SR) 72 517.33 P
+0.72 (W) 198.34 517.33 P
+0.72 (in is a quite simple graphics library for SR. Like Xlib, SR) 207.77 517.33 P
+0.72 (W) 478.76 517.33 P
+0.72 (in provides) 488.2 517.33 P
+0.32 (graphics and windowing mechanisms without enforcing any particular policy) 72 505.33 P
+0.32 (, user interface, or look-) 429.17 505.33 P
+(and-feel. SR) 72 493.33 T
+(W) 127.9 493.33 T
+(in provides a few higher) 137.33 493.33 T
+(-level abstractions consistent with the rest of the SR language.) 248.39 493.33 T
+0.98 (Many interactive programs are) 90 475.33 P
+4 F
+0.98 (event driven) 240.51 475.33 P
+2 F
+0.98 (, meaning that they follow a paradigm in which an) 297.56 475.33 P
+-0.14 (event-reading loop is the primary control pattern driving the program. If a program must be prepared) 72 463.33 P
+(to respond to user input, it cannot compute for long periods without checking for window events.) 72 451.33 T
+1.36 (SR) 90 433.33 P
+1.36 (W) 103.14 433.33 P
+1.36 (in, however) 112.58 433.33 P
+1.36 (, supports a multi-paradigm programming model. Some of the processes in an) 166.69 433.33 P
+1.09 (interactive system can be totally unaware that the system as a whole is interacting with the user) 72 421.33 P
+1.09 (.) 537.22 421.33 P
+0.98 (Other process can be solely devoted to processing user commands. This modularity greatly reduces) 72 409.33 P
+(the burden on the programmer) 72 397.33 T
+(.) 214.14 397.33 T
+0.16 (Multiple processes and event channels help make programming in SR) 90 379.33 P
+0.16 (W) 414.05 379.33 P
+0.16 (in easy and ef\336cient. The) 423.49 379.33 P
+0.03 (message passing and operation invocation methods in SR makes those abstractions feasible. The con-) 72 367.33 P
+0.35 (currency in SR gives SR) 72 355.33 P
+0.35 (W) 184.25 355.33 P
+0.35 (in the power of implementing retained windows, where window redrawing) 193.69 355.33 P
+0.21 (is handled automatically) 72 343.33 P
+0.21 (. Given the primitives presented in SR) 185.71 343.33 P
+0.21 (W) 364.09 343.33 P
+0.21 (in, advanced user interface features) 373.53 343.33 P
+(can be written in SR.) 72 331.33 T
+-0.05 (This document gives many examples of using SR) 90 313.33 P
+-0.05 (W) 314.38 313.33 P
+-0.05 (in. The SR) 323.82 313.33 P
+-0.05 (W) 372.23 313.33 P
+-0.05 (in reference manual in the SR dis-) 381.66 313.33 P
+2.46 (tribution provides a complete list of SR) 72 301.33 P
+2.46 (W) 266.66 301.33 P
+2.46 (in operations with syntax and semantics explanations) 276.1 301.33 P
+0.45 ([Zhao93]. Many programming details, such as shapes of standard cursors, can be found in various X) 72 289.33 P
+(W) 72 277.33 T
+(indow System books and articles listed in the \322Reference\323 section below) 81.43 277.33 T
+(.) 409.63 277.33 T
+0 11 Q
+(Acknowledgments) 72 228.67 T
+2 10 Q
+2.24 (SR) 72 204.33 P
+2.24 (W) 85.14 204.33 P
+2.24 (in was inspired by X-Icon, an X interface developed by Clint Jeffery for the Icon language) 94.58 204.33 P
+3.07 ([Jeff92]. Many useful ideas came from the) 72 192.33 P
+4 F
+3.07 (W) 290.05 192.33 P
+3.07 (inpack) 298.56 192.33 P
+2 F
+3.07 ( graphics library created by Scott Hudson) 329.47 192.33 P
+-0.18 ([Huds93]. Gregory Andrews and Gregg T) 72 180.33 P
+-0.18 (ownsend provided a lot of guidance on designing, implement-) 259.71 180.33 P
+(ing, and documenting the library) 72 168.33 T
+(.) 223.23 168.33 T
+FMENDPAGE
+%%EndPage: "10" 11
+%%Page: "9" 11
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 9 -) 298.75 42.62 T
+0 11 Q
+(Binding Context Information W) 72 712.67 T
+(ith W) 252.13 712.67 T
+(indows) 281.93 712.67 T
+2 10 Q
+0.47 (Usually a graphics primitive does not contain all the information needed to draw a particular thing.) 72 688.33 P
+0.34 (The X server maintains resources called) 72 676.33 P
+4 F
+0.34 (graphics contexts) 262.08 676.33 P
+2 F
+0.34 ( that specify many attributes that apply to) 341.23 676.33 P
+(each graphic request.) 72 664.33 T
+-0.06 (Different graphics contexts can be used to write to the same window) 90 646.33 P
+-0.06 (. An SR) 403.49 646.33 P
+-0.06 (W) 438.18 646.33 P
+-0.06 (in window handle is) 447.61 646.33 P
+0.25 (actually a) 72 634.33 P
+4 F
+0.25 (binding) 120.82 634.33 P
+2 F
+0.25 ( of a window on the screen with a particular graphics context. Function) 156.72 634.33 P
+3 9 Q
+0.48 (WinOpen\050\051) 491.47 634.33 P
+2 10 Q
+-0.19 (creates both a system window and a graphics context, and binds them together) 72 622.33 P
+-0.19 (, producing the binding) 433.23 622.33 P
+(\050) 72 610.33 T
+4 F
+(context window) 75.33 610.33 T
+2 F
+(\051 as its return value.) 146.21 610.33 T
+1.65 (Function) 90 592.33 P
+3 9 Q
+3.21 (WinNewContext\050\051) 135.89 592.33 P
+2 10 Q
+1.65 ( creates a new graphics context, binds it with the old window) 216.77 592.33 P
+1.65 (, and) 515.39 592.33 P
+0.02 (returns the new context window) 72 580.33 P
+0.02 (. The new and old window handles can write to the same system win-) 219.99 580.33 P
+(dow) 72 568.33 T
+(. Closing either of those window handles removes the window) 89.59 568.33 T
+(.) 372.24 568.33 T
+0.07 (Graphics contexts reduce the traf\336c between the X server and the application programs. The con-) 90 550.33 P
+-0.14 (text information is maintained by the X server and only needs to be sent once, and that information is) 72 538.33 P
+0.41 (automatically applied to later drawing requests specifying the id of the graphics context. In the case) 72 526.33 P
+0.58 (of changes, only the required few \336elds need to be sent. For example, when setting foreground, only) 72 514.33 P
+(the foreground \336eld needs to be sent; when setting the font, only the font \336eld needs to be sent.) 72 502.33 T
+1.38 (Multiple graphics contexts can be created so application programs can switch among different) 90 484.33 P
+-0.01 (graphic bindings with ease. A common practice is to create all required context windows at the begin-) 72 472.33 P
+-0.28 (ning of resources or processes, set desired attributes for each context window) 72 460.33 P
+-0.28 (, then use them wherever) 423.39 460.33 P
+0.79 (appropriate. T) 72 448.33 P
+0.79 (wo examples of the use of graphics contexts and context windows are the button pro-) 138.54 448.33 P
+(gram and Quicksort program discussed earlier) 72 436.33 T
+(, and shown in Appendices B and C.) 286.33 436.33 T
+0 11 Q
+(Enabling and Disabling On-screen Outputs) 72 405.67 T
+2 10 Q
+0.28 (SR) 72 381.33 P
+0.28 (W) 85.14 381.33 P
+0.28 (in maintains a backup copy of window contents. When a drawing primitive is called, it draws to) 94.58 381.33 P
+(the backup copy \336rst, then draws to the system window) 72 369.33 T
+(. Both copies are stored in the X server) 327.82 369.33 T
+(.) 506.06 369.33 T
+0.8 (T) 90 351.33 P
+0.8 (o further reduce the communication traf\336c between the X server and the application program,) 95.75 351.33 P
+-0.12 (on-screen drawing can be temporarily disabled by a call to) 72 339.33 P
+3 9 Q
+-0.23 (WinDisableOutput\050\051) 342.2 339.33 P
+2 10 Q
+-0.12 (. This is done on a per) 439.26 339.33 P
+0.3 (top-level window basis. One call on any of the subwindows or context windows will disable on-screen) 72 327.33 P
+0.89 (output for the whole window tree. Subsequent drawing will only affect the backup copy) 72 315.33 P
+0.89 (. When it is) 484.38 315.33 P
+0.78 (desired the window can be updated by calling) 72 303.33 P
+3 9 Q
+1.51 (WinUpdateWindow\050\051) 290.94 303.33 P
+2 10 Q
+0.78 (, which copies the backup copy to) 382.61 303.33 P
+(the system window on screen. T) 72 291.33 T
+(o enable drawing, use) 218.05 291.33 T
+3 9 Q
+(WinEnableOutput\050\051) 321.16 291.33 T
+2 10 Q
+(.) 412.83 291.33 T
+0 11 Q
+(Using Images) 72 260.67 T
+2 10 Q
+(For an application that operates on the pixel level, using images could greatly improve performance.) 72 236.33 T
+0.97 (Function) 90 218.33 P
+3 9 Q
+1.88 (WinCreateImage\050\051) 135.2 218.33 P
+2 10 Q
+0.97 ( creates a memory area for storing an image of speci\336ed depth and) 221.48 218.33 P
+-0.19 (size. The following code fragment creates an image of size 200 by 100 in pixels using the default depth) 72 206.33 P
+(of the window:) 72 194.33 T
+1 9 Q
+(var im: winImage := WinCreateImage\050mywin, UseDefault, 200, 100\051) 108 177 T
+(if im = null ->) 108 166 T
+(write\050"Cannot create image"\051) 118.79 155 T
+(stop) 118.79 144 T
+(f) 108 133 T
+(i) 113.39 133 T
+3 F
+5.62 (WinPutPixel\050\051) 90 115.33 P
+2 10 Q
+2.9 ( writes a pixel value to the image.) 160.1 115.33 P
+4 F
+2.9 (Pixel values) 342.11 115.33 P
+2 F
+2.9 ( can be pre-calculated using) 399.78 115.33 P
+3 9 Q
+(WinSetForeground\050\051) 72 103.33 T
+2 10 Q
+(, which returns an integer value representing the speci\336ed color:) 169.06 103.33 T
+1 9 Q
+(var p: winPixel := WinSetForeground\050mywin, "red"\051) 108 86 T
+(# other processing) 108 75 T
+FMENDPAGE
+%%EndPage: "9" 10
+%%Page: "8" 10
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 8 -) 298.75 42.62 T
+2 10 Q
+0.77 (data array has been sorted, the administrator process prompts the user for generating a new set of) 72 381.33 P
+(data and starting over again.) 72 369.33 T
+(The complete program is listed in Appendix) 90 351.33 T
+(C.) 294.35 351.33 T
+0 14 Q
+(8. Speeding Up the Program) 72 312.67 T
+2 10 Q
+1.78 (T) 72 287.33 P
+1.78 (ransmitting messages over the network takes time and slows down the program. Thus, calls to) 78.05 287.33 P
+1.14 (SR) 72 275.33 P
+1.14 (W) 85.14 275.33 P
+1.14 (in that generate network traf\336c are expensive. This section describes ways to reduce network) 94.58 275.33 P
+(traf\336c.) 72 263.33 T
+-0.01 (T) 90 245.33 P
+-0.01 (o prevent multiple access to shared X data structures, SR) 95.75 245.33 P
+-0.01 (W) 360.51 245.33 P
+-0.01 (in employs low-level locking in many) 369.95 245.33 P
+0.72 (function calls. Calling those routines prevents the program from gaining better parallelism. Even if) 72 233.33 P
+0.37 (there is another implementation based on a Multi-threaded Xlib [Gild93] available, which can elimi-) 72 221.33 P
+-0.03 (nate much locking, the application must not abuse the input and output \337ows. Keeping these in mind) 72 209.33 P
+(often helps in developing a fast application.) 72 197.33 T
+0 11 Q
+(Reducing Unnecessary Input Events) 72 166.67 T
+2 10 Q
+-0.21 (When an event happens on a window) 72 142.33 P
+-0.21 (, it is checked against the event mask of the window) 241.58 142.33 P
+-0.21 (. If this event) 479 142.33 P
+0.01 (is among the selected types, it is passed to SR) 72 130.33 P
+0.01 (W) 283.14 130.33 P
+0.01 (in for processing. If it is not, it is passed to the parent) 292.57 130.33 P
+0.82 (window to be checked. By registering only the required event types, an SR) 72 118.33 P
+0.82 (W) 424.28 118.33 P
+0.82 (in program can reduce) 433.71 118.33 P
+(the traf\336c on the network and, hence, improve performance.) 72 106.33 T
+72 63 540 720 C
+72 388 540 720 C
+0 X
+0 K
+%%BeginBinary:  29106    
+504 563 241.92 270.24 0 184.7 427.76 BEGINBITMAPGRAYc
+j
+XL
+8Z
+XH
+J5
+P+UG00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00;fJ#@#J5>f:f
+900000000O!UI00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00<TA%J%H"A5?T<*
+00000000F0000000000UIFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FFFFFFFF00FFFF00FFFF=#:"C#B#J'F"B5
+000000FFFFFFFF80000FFFF000000UI00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00=$8#A":%8(:%<#B#8%9(8$>5B$
+FF000000FF0000FF00000000FF00000000000000000000FFFF000000000000FF0000FF00000000UIFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000000>$J#;'<"@":'>"8$>5A"9">$
+FF0000<FFFF0000FFFF0000FF000000FFFF0000FFFFFFFFUI00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF000000000000@$J#:#?"8#B$E5J%
+FFFFFFEFFFF00FFFF000000FFFFUIFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF8FFFFFFFF>%J"B#8"A"G5
+00FF0000K00FFFF00FFUI00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00@$J$B"J5A"9">a
+FF0000JFF0000FF?UIFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FFFFFF=#8$A":":"E":$>#J5B$?R
+00FFFF0000FFFF0000FF00000000AUI00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FFFFFF=":#C#9%@'E.?&>5
+FFFFFF0000FF0000FFFF00000000FFFF00000000FFFFFF00000000FFFF00000000UIFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF<dA#;P9#:%8#8#?%9%9#<%>5?d<d
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFUI00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00;VB$J5>V:V
+FF0000O9UIFF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FF00FFJ#JZ
+=FFFFO:UG
+8j
+XH
+8%Z"S"P#
+FFFFFF00X3003232FFJ%8r
+X:0000000032J"J';$
+O 00W9FFFFFFFF3232FF3200J,
+X?FF320000FF323232323232;"J"="9&
+FFX3FFFFFF320032FFJ&
+XC0032323232J"J/
+O FFW:00323232323232FFFF32FF32FFFFJ#9"8%
+X:3232FF32323232;"J(;#
+00X300320032FF3232FFFFJ#8*
+X83232003232FF32FF32FF00J"J&>#
+O 00W80032FF00FF0000
+;"J%8%8$8"
+FFX0323232FFFF003200FFFFFFFFJ"9&
+X7FF3232323232J"J(9$
+O FFW9FFFFFFFF32FFFF00FFFFJ&<"
+X93232323232FF;"J%9%
+00X.32323232FF32FFFFJ&C"
+X5FF32FFFFFF00J"J&A"
+O 00W63232323232FFJ(?#
+X6FFFFFFFF32FFFF0000;"J"J'
+FFHFFW-323232323232J"JrJrDPI"
+O 00V%32;32FFJ$:%:%:%:%:%:%:%:%:%:%:%:%:`:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:$;%:%:%:%8&;%:%:%:&9%:$;(
+O!0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000FFFF00000000000000000000000000000000000000FF00000000000000003232FF32FF32J$:%:%:%:%:%:%:%:%:%:%:%:%:P:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:$;%:%:%:%:$;%:%:%:%:%:$;#QA"
+O!FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF32FF;"
+00J"J"J"
+Q-00RG00P?00J&9#
+X/32323232323232J"J&J&D(8"D"
+O FFV&3232323232=3232323232FFFFFFFF32FFFFFF00;"JRJR
+FFW ;J"J"Jr%H"
+Q-FFRGFFP"32FFFFFF00FFJP
+X+J"JrJrJ"
+O 00V5329327FF;"JPFr:&;&
+00W132FF32FFFFFF3232323232J"J"JPEQD"
+Q-00RG00OE00J'
+WF323232323232J"JPC&J"
+O FFVF3232323232600;"Jr9'rF"
+FFWH32FFFFFFFF32FF32FFJ"J"J&I&9&9&
+Q-FFRGFFO/3232323232FFFFFF32FF3232323232FFFFFF00FFJRF&:R
+W63232323232J"J'J"
+O 00VLFF32FFFFFFFFAFF;"J&
+00WA3232323232J"J"JRCr#H"
+Q-00RG00O>32FFFF00Jw$9$G"
+X!32FFFFFF32FF32FFJ"JQ"P:(E#
+O FFVM32FFFF32FFFFFFFF0000;"
+FFJ"J"J"
+Q-FFRGFFP?FF
+J"Jr@&J"
+O 00VI3232323232324FF;"JrJP;'R"
+00UL32O@32323232323200J"J&JtJR="H"
+Q-00REFFFF00FFFF:32O'FF00J(
+VEFF32FFFFFF32FFJ"J'J"
+O FFVC323232323232J00;"JrJP
+FFV032O(J"J":r:PJrJ&H"H"
+Q-FFRGFF32632@323232323200FFJ&9PJP@rFQ
+V%3232323232A32J"JRJrJPJ"
+O 00U#:327O,FF;"JTCr
+00V>32J"J"JPI&J"H"
+Q-00RG00O%32323232328FF00J&JR
+V73232323232O(J"J&:RJ&J"
+O FFU,323232323263232323232O<00;"JRJR@&
+FFV&?3232323232J"J"JrC%9%J"H"
+Q-FFRGFFF32FFFFFFFF32323232C00FFJP=&=P
+W!3232323232J"JQ'J"
+O 00V+323232323232O.FF;"JP
+00W-J"J"J"H"
+Q-00RG00P,FF00Jr
+W"32J"J";"GwJ"
+O FFV 32FF32O!00;"J(HP"P
+FFVHFFFF32FFFFFFFF32J"J"J'G&J"H"
+Q-FFRGFFB3232323232323232323232J00FFJPFR
+VKJ"J"
+O 00WEFF;"JrJ&Jr
+00V$32@3232323232:32J"J"9PJQJ$9$J"H"
+Q-00RG00A6323232FFFFFF:FF00J(
+W>FFFFFFFF32FFFFJ"Jr<&J"
+O FFU=323232323232OD00;"JP<R
+FFV9J"J"J"H"
+Q-FFRGFFP,00FFJ&J&
+V+3232323232O33232323232J"JRJRJ"
+O 00U)O1KFF;"
+00J"J"J&J"H"
+Q-00RG0073232323232O>FF00JR
+V>J"JrJ"
+O FFU?32OM00;"JP
+FFV;J"J"J"H"
+Q-FFRGFFP,00FFJr
+V232J"JPJ"
+O 00U2P.FF;"JrJ'
+00V<32O'323232323232J"J"J";"JPB"H"
+Q-00RG00932FFO)FF00JrG(
+V(32FFFF32FFFFFFFFJ"JPJ"
+O FFU(P800;"Jw
+FFV-32J"J"@Q#;#J"H"
+Q-FFRGFF32FF3232OA00FFJ&9&Jr@&
+V;FFFFFF32FF3232323232F323232323232J"JRErFP@QJ"
+O 00UA32>FF;"J&Jr<P
+00V#3232323232>32J"J"RJ%9$@rJ"H"
+Q-00RG00932323232FFFFFF32MFF00J&A&E&
+V93232323232FFFFFF32FFFF32FFFFFFJ"J#;"J"
+O FFU7FFFF32P&00;"JRJ&
+FFV4O 3232323232J"J"JsFRJ"H"
+Q-FFRGFFO 32;00FFJ&;P$
+VM323232323232FFFFJ"J$9%@sJ"
+O 00UH323232FFFFFFFF32O/FF;"JRD#P
+00VBFF32J"J"J"H"
+Q-00RG00P,FF00Jr
+V.32J"JPJ&DrJ"
+O FFU.C323232323232O#00;"JRDP
+FFW"J"J"J&J"H"
+Q-FFRGFFO)3232323232L00FFJR
+W0J"J"
+O 00WEFF;"Jr8wJr
+00V 3232M32J"J&8-J";"J"H"
+Q-00RG00FFFFFFFFFFFF32FFFFFF32FF32FFFFFFO!FF32@FF00J(
+W<FFFFFFFF32FFFFJ"J"
+O FFWE00;"
+FFJ"J"JrJ"H"
+Q-FFRGFF432O?00FFJ&;t9PJ&
+V'323232323232G3232323232J"JR9VJRJ"
+O 00U%MO%FF;"J*:%:%:%:%:%:%:%:%:%:%:%:%
+00UK32323232FF00000000000000000000000000003200000000000000000000000000000000000000000000000000000000000000000000000000J"JP$:%:%:%:%:%:%:%:%:%:%:%:%:"H"
+Q-00RD32FFFFFFFFFFFFFFFFFFFFFFFF32FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+J"JrGrJrJ&J"
+O FFPM3232O032P53232323232P$00;"JPIPJPJrJR
+FFQIO2O432HJ$:%:%:$r#:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%9&:%:&J"H"
+Q.00000000000000000000000000003200000000000000000000003200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000FF000000000000000000000000FFP000FFJ%:%:%:%P$:%:%:%:%:%:%:%:#r$:%:%:%:%:%:%:%:%:%:%:%:%:%:P&
+Q-FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3232FFFFFFFFFFFFFFFFFFFFFF32FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF32FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF3232323232J"JPJQJ"
+O 00R3P9P<FF;"J"Jr
+00Q'00P-32J&I&JrPE&J"J"H"
+R!32323232323232323232E323232323232OJ00P0FF00JQGRJ&JRJ&
+R!EFFFFFF32FF4O43232323232J"J&JRJ"
+O FFPH3232323232Q;Q$00;"J"JRJ&
+FFQ'FF:O33232323232J(Jr;"J"H"
+S3FFFF32FFFFFFFFP+32FFP000FFJrJ&JP
+R<32G3232323232P%J"JPJuQJ"
+O 00Q<>32S$FF;"J"JP%
+00Q'00P%32FFFFFFJrJ"J"H"
+R032Q:00P0FF00JP
+R1J"J&J"
+O FFTE3232323232PI00;"J"J&JR
+FFQ'FFO/3232323232Q#JRJ&J"J"H"
+R<>3232323232P9FFP000FFJRJr
+S2:32J"J&JPJrJ"
+O 00Q03232323232O>OB32P@FF;"J"JRJP
+00Q'00O"Q7J"J"H"
+V#00P0FF00
+J"J"
+O FFWE00;"J"J&
+FFQ'FFPF3232323232JrC%9%J&J"H"
+S?32FFFFFFFF32323232O>3232323232P/00FFJPIPJR
+S@O>J"JrJ"
+O 00SF32QFFF;"J"JrJP
+00Q'00P332O J&JrJ"H"
+SBFFFFFF32FFP$32P0FF00JP
+ULJ"JrJ&I&J"
+O FFQK32;32323232323232323232R700;"J"JPJ(GR
+FFQ'FFO?;FFFF32FFFFFFFFJ&J"H"
+TH3232323232Q500FFJrJ&JR
+R$32O73232323232O J"JPJRJ&J"
+O 00Q$O7P$3232323232PCFF;"J"JR
+00Q'00R=J&J"J"H"
+RM3232323232PM00P0FF00JR
+RLJ"J'JrJ"
+O FFPK323232323232L32S=00;"J"JP'JP
+FFQ'FF?323232323232GJQJr#J"H"
+R%Q>32FFFFP000FFJP
+UJJ"J"
+O 00WEFF;"J"JrJr
+00Q'00P 32P(32J&:rJ&=PJPC'J"H"
+QM323232323232B3232323232P*323232323232P,FF00JR:PJRJ&
+QLBPGFF00FFFFFFJ"JrJrJ&J"
+O FFQA32O(32O@3232323232PE00;"J"JPJPJQ
+FFQ'FFO5O*O@JrJ"J"H"
+SG32P#FFP000FFJ&JPJ&
+S/32323232324O?3232323232J"J&JRJRB&J"
+O 00Q(3232323232O P(3232323232P?FF;"J"JRGrJR
+00Q'00H32Q(J";"J&JrJ"J"H"
+RAFF32O*3232323232632O+00P0FF00J(Jr=RJPJr
+RBFFFFFFFF32FFFFH326O"32J"J$9$JPJ"
+O FFRCFFFFFF323232OIPG00;"J"J(
+FFQ'FFP9FFFF32FFFFFFFFJrJ"J"H"
+R.32Q<FFP000FFJPC&
+R/3232323232J"JRJ&J"
+O 00Q?OG3232323232R!FF;"J"J&JRJ&
+00Q'00P63232323232DO"3232323232JRJR9"J"H"
+SCOK00P0FF00
+J"J&J"
+O FFQ.3232323232T200;"J"JR
+FFQ'FFO JrJrJ"J"H"
+RJ32F32P!FFP000FFJPJP
+RKHJ"JrJ"
+O 00T$32Q:FF;"J"JP
+00Q'00QFJrJ"J"H"
+S,32P>00P0FF00JP
+S-J"J&J&J"
+O FFQJ3232323232H3232323232RE00;"J"JRJREr
+FFQ'FFO<F32JPJ&J"J"H"
+T2=3232323232FFFP000FFJR
+U%J"J&J"
+O 00R,3232323232S4FF;"J"JR
+00Q'00OLJ"J"H"
+V#00P0FF00J&
+T23232323232J"JrARJ"
+O FFRL32R.00;"J"JP
+FFQ'FFP@J"J"H"
+V#FFP000FFJr
+UC32J"JrJPJ"
+O 00SJ32@PKFF;"J"JP
+00Q'00Q>J&J"J"H"
+T 3232323232OL00P0FF00JR
+SMJ"J"
+O FFWE00;"J"J&
+FFQ'FFR63232323232J&JR="J"H"
+TL3232323232@FFP000FFJR
+TKJ"J"
+O 00WEFF;"Jr"rJr
+00Q$32FF32O-32J&9PJPJrJ"H"
+Q+FFFF00FFFFO/P/32Q FF00JP
+U.J"J"
+O FFWE00;"J"
+FFQ'FFJ"H"
+X400FFJ&9&J&
+Q+32323232323232323232O/3232323232J"JZJRJ&BrJ"
+O 00P)/O-P/323232323232Q FF;"J"JRBP
+00Q'00QMJ"J"H"
+V#00P0FF00Jr
+T532J"JPJ"
+O FFS5R+00;"J"
+FFQ'FFJ&B"J"H"
+U@3232323232FFP000FFJR
+U?J"J"
+O 00WEFF;"J"J&
+00Q'00Q(3232323232JRJ"J"H"
+T5O500P0FF00JrJr?r
+QB3293232J"JPJPAPJ"
+O FFPB;SJ00;"J"
+FFQ'FFJ"J"H"
+V#FFP000FF
+J"J"
+O 00WEFF;"J"J&J&A&
+00Q'0053232323232;32323232323232323232JRJ#;#=RJ"J"H"
+QB9FFFF3232Q&00P0FF00JP
+R7J"JrJ"
+O FFS*32R400;"J"JP
+FFQ'FFPLJ"J"H"
+V#FFP000FFJrErJr
+Q03232Q232J"JPGPJ&JPJ"
+O 00P093232323232PDQ/FF;"J"JRJrJr
+00Q'00O(H32I32JrJPJ&?PJ"J"H"
+R,32O%=3232323232O200P0FF00JPJR
+R-OGJ"J"
+O FFWE00;"J"9&G&Jr:&J"
+FFQ'FF32323232323232323232Q)323232323232:FFJRERJP:RJ"H"
+Q0Q)PJ00FFJrJ&Jw
+Q<32OC3232323232D32J"JPDr:&JRJP"QJrJ"
+O 00P<323232323232O%D32=32Q0FF;"J"JP:RJP
+00Q'00CPKJ"J"H"
+V#00P0FF00J&
+U(3232323232J"JRJ"
+O FFT&Q800;"J"E&J&
+FFQ'FF3232323232P@3232323232JRD&JRJwJ"J"H"
+Q<3232323232P+D325FFP000FFJRJr=Q"P
+R"PF3232J"JrJ";#J"
+O 00P332Q5FF3232Q<FF;"J"=PJrJ&
+00Q'00P+32O&FFFFFF32FFJPJ"J"H"
+SFP&00P0FF00Jr
+S 32J"JPJ&J"
+O FFR P03232323232Q+00;"J"J&DR
+FFQ'FFQB3232323232J&J#;"J"J"H"
+Q53232323232Q5FFFF32HFFP000FFJRJrJ&JR
+Q4=32O53232323232O&J"JPJRJ"
+O 00Q*O5RHFF;"J"J&Jr
+00Q'00OA3232323232OG32JRJ%9$J"J"H"
+S OB32323232FFFFFFL00P0FF00J&
+TJFFFFFF32FFJ"JrJ"
+O FFR%32S900;"J"J&JP
+FFQ'FFK3232323232EJR?rJ"J"H"
+R*32Q0FFP000FFJPJ&
+R;P.3232323232J"JrJ$9%J"
+O 00P+32Q7323232FFFFFFFFQ@FF;"J&JR
+00Q'00FFFFFFFFQ7J&J"J"H"
+S'3232323232PE00P0FF00JR
+S&J"J&J"
+O FFQ:3232323232T&00;"J"JR
+FFQ'FFO,J&JrJ"J"H"
+Q-3232323232QG32?FFP000FFJRJrJP
+Q,M32PAJ"JPJ"
+O 00Q2T.FF;"J"
+00Q'00JrJrJ"J"H"
+RH32O,32O=00P0FF00JPJP
+RIO.J"J&J"
+O FFT+3232323232Q500;"J"@rJ&JR
+FFQ'FF32B3232323232PAJPJRJrJrJ"J"H"
+Q9BP*327327FFP000FFJPJP
+TD9J"J&J&J"
+O 00QH3232323232O.3232323232R3FF;"J"JRJR
+00Q'00O:O,JrJ"J"H"
+S$32PF00P0FF00J&JP
+Q93232323232O5J"JRJ&J&J"
+O FFP7Q%323232323293232323232Q-00;"J"JRJ%9%
+FFQ'FFQ57FFFFFFFF32323232JrJPJ"J"H"
+T/32O"4FFP000FFJrBP
+SK32J"J&JPJ"
+O 00R$3232323232BRCFF;"J"BrJrCR
+00Q'0032K32JPJPJ"J"H"
+Q;MQ-00P0FF00J&
+U83232323232J"J&JRJ"
+O FFS/3232323232O"Q(00;"J"J&BR
+FFQ'FFP>3232323232JRJ"J"H"
+SKOMFFP000FFJ&J&
+Q;3232323232M3232323232J"JRJRJ"
+O 00P9KT!FF;"J">r"rJr
+00Q'0032FF32PJ32JP9PJPJ"J"H"
+Q7PLO*00P0FF00
+J"J"
+O FFWE00;"J"
+FFQ'FFJ"J"H"
+V#FFP000FFJ&9&J&
+Q732323232323232323232PL3232323232J"JYrJRJ"
+O 00P532PDQLFF;"J"JPJr
+00Q'007O=32JPJ"J"H"
+S:P200P0FF00
+J"J"
+O FFWE00;"J"
+FFQ'FFJ&J"J"H"
+QE3232323232R'FFP000FFJRJ&
+QDO=3232323232J"JRJ"
+O 00R8S&FF;"J"
+00Q'00J"J"H"
+V#00P0FF00
+J"JrJrJ"
+O FFSD32;32Q&00;"J"JPJP
+FFQ'FFQ8=J"J"H"
+V#FFP000FF
+J"JrJ"
+O 00P-32U1FF;"J#P
+00Q'0032J&J&H"J"H"
+TF3232323232=323232323200P0FF00JRJR
+TE;J"J"
+O FFWE00;"J"
+FFQ'FFJ&J"J"H"
+Q/3232323232R=FFP000FFJR
+Q.J"JrJ"
+O 00R/32S/FF;"J"HrJP
+00Q'0032O8JPJ"J"H"
+QAR+00P0FF00Jr
+T=32J"JPJ"
+O FFS=R#00;"J"
+FFQ'FFJ&J"J"H"
+S13232323232P;FFP000FFJ&JR
+QA3232323232O8J"JRCrJ"
+O 00P?32T9FF;"J"JPJw
+00Q'00GP+32JrJ-J"J"H"
+S*32O'FFFFFF32FF32FFFFFF32FFFFO-00P0FF00JrJP
+QJ32O(J"JPJrJ"
+O FFPJP%32R800;"J"JP
+FFQ'FFPHJ&JrJrJ"J"H"
+R'3232323232O132O332AFFP000FFJRJPJtJP
+R&O1C327J"J&JVJ"
+O 00R*3232323232O'R$FF;"J"J&JR
+00Q'00=3232323232O(JRJ&J"J"H"
+QJP%3232323232OD00P0FF00JR
+T'J"J&J&J"
+O FFR=3232323232O53232323232Q700;"J"JRJR
+FFQ'FFP/O3JrJ"J"H"
+S(32PBFFP000FFJr="JP
+Q 3232OHJ"J(JPJ"
+O 00>3232FF32323232O)U@FF;"J$:%:':/:%:%:%:%:%:%;$;"9%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%;%:%:%:%:%:%:%:%:%:%:%:%:%
+00I0000000000000000FF0000000000FF00000032FFFFFFFF0032000000000000000000000000000000000000000000000000000000FF00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000J%:%:"8$:"8#;%:%:%:%:%:%:%;$?%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%;%:%:%:%:%:%:%:%:%:%:%:%:%:"H"
+O FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF32FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF32FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00Jx
+PA32J"G"?"JP8P?"J&J"
+O 00FFFFO%FFOM3232323232S800;"J"ArJ&9&JRJ"
+FFO9FF32K32323232323232323232OHS%00J'=PJP9'J"
+O?3232FF323232LFFFFFF32FFFFU8FFJ#;#
+O?FFFF3232J"G"?";PJ"J"
+O FF0000O000U<FF;"J&8&J"
+00P<32323232323232323232U4FFJP=#J"
+PAFFFFUF00J"E&8rJP?&
+O<FF323232323232;3232323232J"G"D"?R8PJRJ"
+O 00FF32IU900;"J&8rJ"
+FFO<323232323232V200JR8PJ"
+OAVFFF
+J"G"?"J&A"J"
+O FF0000O*323232323200U<FF;"J&JRJ"
+00P 3232323232;U5FFJRJ"
+P%V;00J&
+OJ3232323232J"G"?"BRJ"J"
+O 00FFFFO'FFU<00;"Jr;rHrJ"
+FFP%323232U+00JP=PJPJ"
+P,4U?FF
+J"G"?"HrJ"J"
+O FF000032O!00U<FF;"JrDPrJ$J"
+00O53232BFF3232U/FFJ&J&J":"J"
+O<00FFFFFFFF5FFFFFF32FF?32FFUC00J"J&=&J(
+O<FF=323232323232323232324323232FF3232FFJ"G"J(;RI'J"
+O 00FFFFFFF32FFFFFFFFFF32FFFFFFFFU=00;"JrJ"
+FFOA32V400JP9&DrJ"
+OH323232323232V+FFJ&DQ'?PG":"
+O<3232323232323232323232FF32J"G">#PIRJ#:"J"
+O FF00FF00CFFFF00U<FF;"J"JrJ"
+00O6FFO-32U1FFJ"JrJPJ"
+O<00>327UE00J&EP
+OH3232323232J"G"?"@RJrJ"J"
+O 00FFFF432<FFU<00;"JP$J"
+FFP.32FFFFUF00J'J"
+Q%323232323232U<FFJr8&9P
+PB323232323232J"G"?"J&FP8S":"J"
+O FF0000?32323232323200U<FF;"JQJ"
+00P'V!FFJ&J"
+P43232323232V.00Jr?R
+P#32J"G"?";#DPJ&J"
+O 00FFFF3232J3232323232U<00;"J":"J&@RJ"
+FFO732FFO 3232323232U)00JRJ"
+PBULFF
+J"G"?"J"J"
+O FF0000O:00U<FF;"J&J"
+00OL3232323232V+FFJ&DRJ"
+O>3232323232V=00JR
+O=J"G"?"JrJ"J"
+O 00FFFFJ327FFU<00;"JPJ"
+FFP4UC00J'J"
+P@323232323232V!FFJP
+P@J"G"?">rJ"J"
+O FF000032O+00U<FF;"JPJ"
+00O@V7FFJrJ&J"
+OC32>3232323232V(00J&Jr9%9%
+ODFF32FFFFFF432FFFFFFFF32323232J"G"?"JP?";"H"J"
+O 00FFFFAFF32FFU<00;"J(J"
+FFP9FFFFFFFF32FFFFU<00J&J"
+OF3232323232VJFFJ(
+OEFFFFFFFF32FFFFJ"G"?"=&JrJ"J"
+O FF00003232323232@32500U<FF;"JRJ&=";"J"
+00O=43232323232FF32U?FFJrCr?R=(J"
+O93232FFFFFFFF32FFFFV#00J&EPJr
+O:FFFF00FFFF?32J"G"?"JrCPC"J"
+O 00FFFFB32FFU<00;"JPJ"
+FFP,UK00JrB&J"
+P)323232323232V&FFJ(JPBR
+O73232323232FF32:J"G";"9$E&J"J"
+O FF00FF3232323232323232O$00U<FF;"J"8%9%9%:-:%:%:%:&9%:#J"
+00O,FF32323232000000FF0000000000000000FFFFFFFF000000000000320000003200000000003232323232000000000000U+FFJ"9P%:%:%:%:%r":%9R8%:$J"
+O20032FF32FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF32FF32FFFFFFFFFFFFFFFFFFFFFFFFU=00J%JR
+O400320000GJ"H#9#J&J"
+O 0032323232>3232323232V700;"J";$JRJ"
+FFO.FF323232:V$00J.J"J"
+O132FF323232FFFFFF32FF32FFFFO900U=FFJ"9$
+O4FF323232J"D#9)J"
+O FF323232FFFF00FF32FFFFW*FF;"J"9"J"
+00O*FFFFVMFFJ(J"J"
+O200323232323232O>FFU=00J):%:%:%:%:%:%:%:%:%
+O30000FFFFFF00FF00000000000000000000000000000000000000000000000000000000000000000000000000J"G*:%:%:%:%:%:%:%:%:%8"J"
+O 00323232323232FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00U<00;"J(J"
+FFO+FFFFFFFF32FFFFVJ00J&J"
+O03232323232W2FFJR
+O/J"J"J"
+O FFP(FFU<FF;"JtJ"
+00O%32W FFJ#;$J"
+O)3232FF32FFW400J%9)
+O 0000000032323200320000FFJ)9"J"J"
+O!FFFFFFFF32323200FFOJ00U<00;"J#J"
+FFK3232W/00J$;":"J"
+O FF3232FFFFW9FFJ&9"s
+O"FF32FF32FFFF32J%<";%J"J"
+O 0000000032FFFFFFFFOCFFU<FF;"J$:";#J"
+00I32FFFF32FFFFW$FFJ";#J"
+O&32FFFFW900J";#
+O$32FFFFJ";#J"J"
+O"32FFFFOM00U<00;"J)J"
+FFHFFFFFF00FFFFFFFFW,00J(="J"
+M32FF323200323200W9FFJ%
+O!FFFF00FFJ#8#J"J"
+K32323232P&FFU<FF;"J%9%J"
+00A323232320032FFFFW0FFJ&D"J"
+HFF32FF32FFFFW900<$:%:*:"s:";%<%:%:%:%:%:%:%:%:%:%:):%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%8":%:%
+0000000000000000000000FF00000000003200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000FF0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000<$:%:T9#;$9&8%<%:%:%:%:%:%:%:%:%:%:S:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%8":%:%
+FFFFFFFFFFFFFF3232FF32FF3232323232FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFJ)<(
+?32323200000000FFFFFF32FF32FFFFJ%:$:(J"
+;3232323232FFFF00323232323232WDFFJ(=$;#
+:0032FF32FF32FF323232FFFF;"G):":)
+FF323232000000003200FF32FF32FFFFFFFFJ#:%9"s
+5323232FFFFFFFF32I#C";%J"
+323232FFFFFFFFWI00J&8"8$;$
+4FF32FFFFFF00003232FFFF00;%9%:$9&;#8"
+0000000000000000000000FF32323232FFFFFF<$9P#9#9*
+FFFFFF32323232FFFF32FF32FFFFFFFFC%;"sJ"
+323232320032X(FF;";#;&;%@"
+FF3232FF32FFFFFFFFFFFFFF00?);"9#
+32323200000000FF32FFFF@"8$<%
+FF32FFFFFF32FFFF=%J"J"
+32323232?FFWJ00;#<":&
+3232003232323232<,;#
+FF32FF32FF32FF3232323200FF;%9";%
+0000000032FFFFFFFF9);#J"J"
+3232003232FF3232FFFF800WJFF:$9'<"
+FF00FFFF32FF32FFFFFF@$
+3232328&;#
+3232320032FFFF:)J"J"
+FFFFFFFF0032FFFF>FFWJ00J"
+600:"8":%:#8":%:%8$:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:"
+32000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000009#8$8%:P:%:%8$:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:%:#
+FFFFFF32FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+9&
+32323232328R
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+J%J#@#<"9#@#J"J"
+J32323232O&323232323232323232D32O-32J%J"J"A"A"A"?"J"E"
+KFFFFFF32532>FFFFFFFF32?3232J"G"@#;":#<#8#@#J"
+O6FF3232FF3232FF32FF32FF32FFJFFJ"9'8%9#9%9$9$?"A"A"A"@%9$?$9$:#8"9"8$8%?$8%9$9$9$
+O"3232FF32FF323232FF3232323232FF3232323232323232FFFFFFFF32323232323232323232323232323232323232323232323232323232323232323232323232323232J%>%8%8";+8$D&?#>&C%8&>*:"?+>&85
+K323232FF32FFFF3232FFFF32FF32FFFF32FF32FFFFFF32FF32FF323232323232FF3232323232FF32FFFF32FFFFFF32FFFFFF32FF32FFFFFFFF32FFFFFF32FFFF32FFFF32FFFFFF325FFFFFF32FF32FFFFFF32FF32FFFFFF32FF32FFFFFFJ$?";"A"B"E&>#?PJ$J&C&>$9$
+KFF32FFFFFFFFFFFFFF32FFFF32FF@3232324FF3232FFFFFF3232FFFF323232323232J#J%J$E$?%8%
+LFF32P832FFFFFF5FFFF32FFFF32FFFFFFFFFFFFFFFFJ#:"J%:"G"?#J"J"8"8#;"="8#8%;";"
+MFF3232:FF32323232FF32FF@32B3232FF323232FF32323232FF3232J%E$?$9$J+=%8%8";%8&8%=&8$81
+O"FF3232FF323232FFFFFF323232O+FF3232FFFFFF323232FFFF323232FF32323232FF3232FFFF323232FFFF3232FFFF323232FFFFFFFFFF323232FFFFFF323232FFFFFF323232J"9"8Q9$9"8$8"9$<$J"J#9$?%8%>%8$:#?$?$9$9%
+JFFFFFFFFFFFFFFFFFFFFFFFF32FF32FF:FF?FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFJ&9"J%
+O@FF323232FFFFOIFF3232FFJ$J#J"
+OAFFFFFFP!FFFFAFF
+
+
+
+
+
+
+8j
+XH
+
+ENDBITMAP
+%%EndBinary
+72 406 540 415 R
+7 X
+V
+2 9 Q
+0 X
+(Figure 5. Screen dump of the Quicksort program) 205.14 409 T
+72 710.14 540 710.14 2 L
+0.25 H
+2 Z
+N
+72 397 540 397 2 L
+N
+72 63 540 720 C
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "8" 9
+%%Page: "7" 9
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 7 -) 298.75 42.62 T
+2 10 Q
+0.26 (record type) 72 512.76 P
+1 9 Q
+0.51 (buttonRec) 127.11 512.76 P
+2 10 Q
+0.26 ( to characterize a button, an operation type) 175.65 512.76 P
+1 9 Q
+0.51 (buttonCallBack) 380.06 512.76 P
+2 10 Q
+0.26 ( for declaring call-) 455.56 512.76 P
+1.61 (back functions, and an operation) 72 500.76 P
+1 9 Q
+3.13 (button\050\051) 233.89 500.76 P
+2 10 Q
+1.61 ( for creating a button. An application program usually) 277.03 500.76 P
+0.64 (\322) 72 488.76 P
+4 F
+0.64 (sends) 75.89 488.76 P
+2 F
+0.64 (\323 to operation) 101.41 488.76 P
+1 9 Q
+1.24 (button\050\051) 168.31 488.76 P
+2 10 Q
+0.64 (, and the registered call-back function is invoked when the user clicks) 211.45 488.76 P
+(on the button.) 72 476.76 T
+0 14 Q
+(7. V) 72 438.1 T
+(isualizing a Quicksort Algorithm) 97.94 438.1 T
+2 10 Q
+-0.25 (In this section, a Quicksort visualization program, which was inspired by [Brow91], is presented as an) 72 412.76 P
+(example of a larger program.) 72 400.76 T
+0.64 (The Quicksort algorithm uses a few worker processes that run in parallel with a) 90 382.76 P
+4 F
+0.64 (bag of tasks) 472.18 382.76 P
+2 F
+0.64 ( to) 527.69 382.76 P
+0.76 (assign work to processes dynamically) 72 370.76 P
+0.76 (. Initially) 246.44 370.76 P
+0.76 (, an administrator process generates an array of ran-) 289.23 370.76 P
+1.03 (dom data points and it puts the initial task, which is denoted by a pair of indices) 72 358.76 P
+4 F
+1.03 (\0501, n\051) 464.05 358.76 P
+2 F
+1.03 ( for all the) 488.96 358.76 P
+0.38 (points, in the bag. W) 72 346.76 P
+0.38 (orker processes then remove tasks one at a time for processing. When a process) 168.7 346.76 P
+0.58 (gets a task) 72 334.76 P
+4 F
+0.58 (\050l, h\051) 126.5 334.76 P
+2 F
+0.58 (, which marks the region the worker should work on in the data array) 148.73 334.76 P
+0.58 (, it partitions) 477.94 334.76 P
+-0.25 (the region according to the traditional Quicksort algorithm. If the partition results in one or more new) 72 322.76 P
+0 (tasks, the worker process gives itself the \336rst new task for further processing and puts the remaining) 72 310.76 P
+0.11 (tasks back in the bag. If the partition results in no new tasks, the worker process tries to get another) 72 298.76 P
+(task from the bag.) 72 286.76 T
+0.44 ( The data points are drawn as little boxes on screen. The data array lies horizontally) 90 268.76 P
+0.44 (, so that for) 485.73 268.76 P
+0.74 (each data box, its) 72 256.76 P
+4 F
+0.74 (x) 158.29 256.76 P
+2 F
+0.74 ( coordinate corresponds to its index or position in the array and its) 163.29 256.76 P
+4 F
+0.74 (y) 483.18 256.76 P
+2 F
+0.74 ( coordinate) 488.17 256.76 P
+-0.16 (corresponds to the value of the data. When the array is sorted the boxes should line up from lower) 72 244.76 P
+-0.16 (-left) 521.31 244.76 P
+(to upper) 72 232.76 T
+(-right corner) 110.5 232.76 T
+(.) 168.23 232.76 T
+0.76 (Each worker process is assigned a unique color) 90 214.76 P
+0.76 (. When a worker gets a new task, it changes the) 311.34 214.76 P
+0.46 (color of all points in that region. This makes it easy to distinguish when different processes work on) 72 202.76 P
+(different regions of the data array) 72 190.76 T
+(.) 227.84 190.76 T
+-0.07 (T) 90 172.76 P
+-0.07 (o make the data manipulation more obvious, each worker draws a dashed box around the area it) 95.75 172.76 P
+1.2 (will work on when it gets a new task. This clearly marks each partition \050as in Figure) 72 160.76 P
+1.2 (5\051, and also) 484.64 160.76 P
+(shows how bad the situation can be when the algorithm chooses a bad pivot point.) 72 148.76 T
+1.69 (The administrator process which initializes the bag of tasks also interacts with the user) 90 130.76 P
+1.69 (. For) 516.65 130.76 P
+0.83 (example, the computer would be too fast for human eyes to catch any details of the changes on the) 72 118.76 P
+-0.13 (data. Thus, there are places where the program delays for a certain amount of time. When the sorting) 72 106.76 P
+0.11 (is in progress, the administrator accepts user input to adjust the delay time. In order to detect termi-) 72 94.76 P
+0.34 (nation of a sort, the administrator process gathers information about what has been done. When the) 72 82.76 P
+72 63 540 720 C
+72 519.43 540 720 C
+177.75 601.43 474.75 700.43 R
+6 X
+0 K
+V
+0.25 H
+2 Z
+0 X
+N
+186.75 610.43 465.75 691.43 R
+7 X
+V
+0 X
+N
+483.75 691.43 501.75 691.43 2 L
+N
+483.75 610.43 501.75 610.43 2 L
+N
+491.1 685.66 492.75 691.43 494.4 685.66 492.75 685.66 4 Y
+V
+494.4 616.2 492.75 610.43 491.1 616.2 492.75 616.2 4 Y
+V
+492.75 685.66 492.75 616.2 2 L
+0 Z
+N
+186.75 592.43 186.75 574.43 2 L
+2 Z
+N
+465.75 592.43 465.75 556.43 2 L
+N
+192.52 581.78 186.75 583.43 192.52 585.08 192.52 583.43 4 Y
+V
+459.98 585.08 465.75 583.43 459.98 581.78 459.98 583.43 4 Y
+V
+192.52 583.43 459.98 583.43 2 L
+0 Z
+N
+474.75 574.43 474.75 556.43 2 L
+2 Z
+N
+480.52 563.78 474.75 565.43 480.52 567.08 480.52 565.43 4 Y
+V
+480.52 565.43 501.75 565.43 2 L
+N
+459.98 567.08 465.75 565.43 459.98 563.78 459.98 565.43 4 Y
+V
+438.75 565.43 459.98 565.43 2 L
+N
+172.48 697.55 177.74 700.43 174.81 695.2 173.65 696.37 4 Y
+V
+173.65 696.37 150.75 673.43 2 L
+N
+189.68 686.2 186.74 691.43 192.01 688.55 190.84 687.37 4 Y
+V
+190.85 687.37 204.75 673.43 2 L
+N
+294.75 577.43 345.89 586.43 R
+7 X
+V
+2 9 Q
+0 X
+(width) 308.34 580.43 T
+488.75 628.43 497.75 673.43 R
+7 X
+V
+0 X
+(height) 0 -270 494.75 637.61 TF
+375.32 560.72 438.32 569.72 R
+7 X
+V
+0 X
+(border width) 380.02 563.72 T
+87.75 637.43 168.75 673.43 R
+7 X
+V
+0 X
+(x, y position of) 98.21 667.43 T
+(child relative to) 95.63 656.43 T
+(parent origin) 100.96 645.43 T
+204.75 664.43 267.75 673.43 R
+7 X
+V
+0 X
+(child origin) 212.62 667.43 T
+69.75 538.43 546.75 547.43 R
+7 X
+V
+0 X
+(Figure 4. W) 241.42 541.43 T
+(indow Con\336guration) 290.03 541.43 T
+71.89 716.71 539.89 716.71 2 L
+N
+71.89 528.14 539.89 528.14 2 L
+N
+72 63 540 720 C
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "7" 8
+%%Page: "6" 8
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 6 -) 298.75 42.62 T
+1 9 Q
+(subw := WinCreateSubwindow\050mywin, evchan, UseDefault, 10, 20, 300, 400\051) 108 714 T
+2 10 Q
+0.39 (The subwindow begins at) 90 696.33 P
+4 F
+0.39 (\050x, y\051) 211.54 696.33 P
+2 F
+0.39 ( relative to its parent\325) 234.14 696.33 P
+0.39 (s top-left corner) 335.31 696.33 P
+0.39 (. The subwindow can use its) 408.26 696.33 P
+-0.03 (parent\325) 72 684.33 P
+-0.03 (s event channel, or it may register a new one, or not use any) 104.39 684.33 P
+-0.03 (. Subwindows can help a program-) 380.95 684.33 P
+(mer implement common user interface objects such as dialog boxes, buttons, and menus.) 72 672.33 T
+0.87 (W) 90 654.33 P
+0.87 (indows do not need to be visible. If) 99.43 654.33 P
+3 9 Q
+1.7 (OffScreen) 268.21 654.33 P
+2 10 Q
+0.87 ( is used instead of) 316.75 654.33 P
+3 9 Q
+1.7 (UseDefault) 406.64 654.33 P
+2 10 Q
+0.87 ( when creating a) 460.56 654.33 P
+0.36 (window) 72 642.33 P
+0.36 (, the window is initially kept off-screen. When it is necessary the window can be \322) 106.62 642.33 P
+4 F
+0.36 (mapped) 487.45 642.33 P
+2 F
+0.36 (\323 to) 524.09 642.33 P
+0.03 (be displayed. For example, subwindows used as dialog boxes are not always displayed. When the pro-) 72 630.33 P
+0.47 (gram needs some speci\336c input from the user) 72 618.33 P
+0.47 (, a dialog box can be popped up, and after the user has) 283.51 618.33 P
+(\336nished input, the dialog box can be hidden away:) 72 606.33 T
+1 9 Q
+(var dbox: winWindow := WinCreateSubwindow\050mywin, evchan,) 108 589 T
+(OffScreen, 10, 10, 100, 100\051) 324 578 T
+(# some processing ...) 108 567 T
+(WinMapWindow\050dbox\051) 108 556 T
+(# asks user input, read, some processing ...) 108 545 T
+(WinUnmapWindow\050dbox\051) 108 534 T
+2 10 Q
+0.01 (However) 90 516.33 P
+0.01 (, some other things need to be done to make this code work. For each window) 130.16 516.33 P
+0.01 (, there is an) 484.99 516.33 P
+4 F
+0.01 (event mask) 72 504.33 P
+2 F
+0.01 ( attribute that tells what kind of events this window is expecting. When an event is gener-) 123.1 504.33 P
+-0.05 (ated, it is tested against the event mask of the window) 72 492.33 P
+-0.05 (. If the event is of selected type, it is sent to the) 322.73 492.33 P
+1.36 (registered event channel. Otherwise the event is passed to the parent of the window and checked) 72 480.33 P
+0.22 (again. When a window is created initially off-screen, the event mask is empty) 72 468.33 P
+0.22 (. If afterwards input on) 431.39 468.33 P
+(this window is desired, SR) 72 456.33 T
+(W) 193.8 456.33 T
+(in routine) 203.24 456.33 T
+3 9 Q
+(WinSetEventMask\050\051) 251.73 456.33 T
+2 10 Q
+( can be used to select events of interest:) 343.4 456.33 T
+1 9 Q
+(WinSetEventMask\050dbox, Ev_KeyDown | Ev_ButtonDown\051) 108 439 T
+2 10 Q
+0.31 (The event mask is set to a bitwise) 90 421.33 P
+4 F
+0.31 (or) 251.71 421.33 P
+2 F
+0.31 (\325ed list of event types. In the above example, future key and) 261.69 421.33 P
+(mouse button press events will be delivered to the event channel for that window) 72 409.33 T
+(.) 445.55 409.33 T
+1.23 (T) 90 391.33 P
+1.23 (ake a button as another example. A software button may look like a rectangular box. It may) 96.05 391.33 P
+(change its appearance when the user presses a mouse button within it.) 72 379.33 T
+4 9 Q
+(open subwindow) 108 362 T
+(set initial border and event mask, write label) 108 351 T
+(map window) 108 340 T
+1 F
+(do true ->) 108 329 T
+4 F
+(get event) 144 318 T
+1 F
+(if) 144 307 T
+4 F
+(button pressed) 157.28 307 T
+1 F
+(->) 219.68 307 T
+4 F
+(change to reverse video) 180 296 T
+1 F
+([]) 144 285 T
+4 F
+(button released) 157.28 285 T
+1 F
+(->) 222.68 285 T
+4 F
+(change to normal display with highlighted border) 180 274 T
+(invoke the user speci\336ed call-back function) 180 263 T
+1 F
+([]) 144 252 T
+4 F
+(enter window) 157.28 252 T
+1 F
+(->) 215.36 252 T
+4 F
+(highlight border) 180 241 T
+1 F
+([]) 144 230 T
+4 F
+(exit window) 157.28 230 T
+1 F
+(->) 209.38 230 T
+4 F
+(back to normal display) 180 219 T
+1 F
+(f) 144 208 T
+(i) 149.39 208 T
+(od) 108 197 T
+2 10 Q
+-0.07 (When mapped on screen, a window may have a border surrounding it. The window border may be) 90 179.33 P
+0.94 (used for drawing attention to a special area, for example a button. However the border is different) 72 167.33 P
+-0.03 (from the decoration that a window manager would put for each window) 72 155.33 P
+-0.03 (. When creating a window) 400.58 155.33 P
+-0.03 (, the) 519.48 155.33 P
+0.64 (width of the border is not included in the size of the window) 72 143.33 P
+0.64 (. When placing a subwindow) 355.11 143.33 P
+0.64 (, its border) 488.55 143.33 P
+(needs to be taken into consideration \050see Figure) 72 131.33 T
+(4\051.) 295.61 131.33 T
+(SR) 90 113.33 T
+(W) 103.14 113.33 T
+(in function) 112.58 113.33 T
+3 9 Q
+(WinSetBorder\050\051) 165.51 113.33 T
+2 10 Q
+( sets the border width and border color of a window) 241 113.33 T
+(, e.g.:) 476.82 113.33 T
+1 9 Q
+(WinSetBorder\050mywin, 3, "red"\051) 108 96 T
+2 10 Q
+-0.25 (A sample program that implements buttons as described above is listed in Appendix) 90 78.33 P
+-0.25 (B. It includes) 478.68 78.33 P
+0.71 (a global) 72 66.33 P
+1 9 Q
+1.39 (Button) 112.32 66.33 P
+2 10 Q
+0.71 ( and a test resource that shows how to create a button. The global) 144.67 66.33 P
+1 9 Q
+1.39 (Button) 461.05 66.33 P
+2 10 Q
+0.71 ( exports a) 493.4 66.33 P
+FMENDPAGE
+%%EndPage: "6" 7
+%%Page: "5" 7
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 5 -) 298.75 42.62 T
+2 10 Q
+1.54 (Another common programming model is the de-coupled programming model, where some pro-) 90 267.76 P
+0.95 (cesses do the computation while a coordinator process communicates with the computing processes) 72 255.76 P
+(and interacts with the user) 72 243.76 T
+(. It is best illustrated in Section 7 \050\322V) 196.94 243.76 T
+(isualizing a Quicksort Algorithm\323\051.) 368.11 243.76 T
+0 14 Q
+(6. Advanced W) 72 205.09 T
+(indow Management) 176.94 205.09 T
+2 10 Q
+0.22 (W) 72 179.76 P
+0.22 (indows created by) 81.43 179.76 P
+3 9 Q
+0.42 (WinOpen\050\051) 167.79 179.76 P
+2 10 Q
+0.22 ( are often called) 216.32 179.76 P
+4 F
+0.22 (top-level) 293.64 179.76 P
+2 F
+0.22 ( or) 331.93 179.76 P
+4 F
+0.22 (application level) 347.36 179.76 P
+2 F
+0.22 ( windows. They are man-) 423.07 179.76 P
+0.44 (aged by a special program, the) 72 167.76 P
+4 F
+0.44 (window manager) 218.27 167.76 P
+2 F
+0.44 (. SR) 297.55 167.76 P
+0.44 (W) 316.68 167.76 P
+0.44 (in supports yet another kind of windows,) 326.12 167.76 P
+4 F
+0.44 (sub-) 520.57 167.76 P
+0.01 (windows) 72 155.76 P
+2 F
+0.01 (. Hierarchically) 112.53 155.76 P
+0.01 (, a subwindow is a child of another window) 183.24 155.76 P
+0.01 (, which is referred to as its parent.) 380.71 155.76 P
+-0.19 (When displayed, a subwindow is placed on top of its parent and) 72 143.76 P
+4 F
+-0.19 (clipped) 365.49 143.76 P
+2 F
+-0.19 ( inside its parent. Subwindows) 398.6 143.76 P
+-0.24 (share a single network connection to the display with their parents. A top-level window may have sev-) 72 131.76 P
+(eral subwindows as its children. A subwindow may also have its own subwindows.) 72 119.76 T
+(Function) 90 101.76 T
+3 9 Q
+(WinCreateSubwindow\050\051) 134.24 101.76 T
+2 10 Q
+( creates a subwindow as a child of an existing window:) 242.09 101.76 T
+1 9 Q
+(var subw: winWindow) 108 84.43 T
+(# starts at \050x, y\051 = \05010, 20\051 in the parent window, width 300, height 400) 108 73.43 T
+72 63 540 720 C
+72 274.43 540 720 C
+72 312.43 540 708.43 R
+7 X
+0 K
+V
+1 9 Q
+0 X
+(resource) 108 702.43 T
+(pointer\050\051) 156.53 702.43 T
+(import) 118.79 691.43 T
+(SRWin) 156.53 691.43 T
+(#) 324 691.43 T
+(f) 334.79 691.43 T
+(irst) 340.18 691.43 T
+(thing) 367.14 691.43 T
+(const) 118.79 680.43 T
+(W) 151.14 680.43 T
+(:=) 161.93 680.43 T
+(500) 178.1 680.43 T
+(const) 118.79 669.43 T
+(H) 151.14 669.43 T
+(:=) 161.93 669.43 T
+(300) 178.1 669.43 T
+(# open window and load font) 118.79 658.43 T
+(op) 118.79 647.43 T
+(evchan:) 134.96 647.43 T
+(winEventChannel) 178.1 647.43 T
+(var) 118.79 636.43 T
+(mywin:) 140.35 636.43 T
+(winWindow) 178.1 636.43 T
+(:=) 232.03 636.43 T
+(WinOpen\050"",) 248.2 636.43 T
+("Pointer",) 312.91 636.43 T
+(evchan,) 372.23 636.43 T
+(UseDefault,) 415.37 636.43 T
+(W,) 480.08 636.43 T
+(H\051) 496.26 636.43 T
+(if) 118.79 625.43 T
+(mywin) 134.96 625.43 T
+(=) 167.32 625.43 T
+(null) 178.1 625.43 T
+(->) 205.06 625.43 T
+(write\050"Sorry,) 129.57 614.43 T
+(cannot) 205.06 614.43 T
+(open) 242.81 614.43 T
+(a) 269.77 614.43 T
+(window"\051) 280.56 614.43 T
+(stop\0501\051) 129.57 603.43 T
+(f) 118.79 592.43 T
+(i) 124.18 592.43 T
+(var) 118.79 581.43 T
+(ft:) 140.35 581.43 T
+(winFont) 161.93 581.43 T
+(:=) 205.06 581.43 T
+(WinLoadFont\050mywin,) 221.24 581.43 T
+("lucidasanstypewriter-14"\051) 323.7 581.43 T
+(if) 118.79 570.43 T
+(ft) 134.96 570.43 T
+(=) 151.14 570.43 T
+(null) 161.93 570.43 T
+(->) 188.89 570.43 T
+(ft) 129.57 559.43 T
+(:=) 145.75 559.43 T
+(WinDefaultFont\050mywin\051) 161.93 559.43 T
+([]) 118.79 548.43 T
+(else) 134.96 548.43 T
+(->) 161.93 548.43 T
+(WinSetFont\050mywin,) 129.57 537.43 T
+(ft\051) 226.63 537.43 T
+(f) 118.79 526.43 T
+(i) 124.18 526.43 T
+(# interact with the user) 118.79 515.43 T
+(do) 118.79 504.43 T
+(true) 134.96 504.43 T
+(->) 161.93 504.43 T
+(var) 129.57 493.43 T
+(ev:) 151.14 493.43 T
+(winEvent) 172.71 493.43 T
+(receive) 129.57 482.43 T
+(evchan\050ev\051) 172.71 482.43 T
+(if) 129.57 471.43 T
+(ev.event_type) 145.75 471.43 T
+(=) 221.24 471.43 T
+(Ev_PointerMove) 232.03 471.43 T
+(or) 312.91 471.43 T
+(ev.event_type) 329.09 471.43 T
+(=) 404.58 471.43 T
+(Ev_EnterWindow) 415.37 471.43 T
+(->) 496.26 471.43 T
+(var) 140.35 460.43 T
+(str:) 161.93 460.43 T
+(string[100]) 188.89 460.43 T
+(sprintf\050str,) 140.35 449.43 T
+(") 210.46 449.43 T
+(Pointer) 221.24 449.43 T
+(is) 264.38 449.43 T
+(at:) 280.56 449.43 T
+(\050%3d,) 302.13 449.43 T
+(%3d\051) 334.48 449.43 T
+(",) 361.45 449.43 T
+(ev.x,) 377.62 449.43 T
+(ev.y\051) 409.98 449.43 T
+(var) 140.35 438.43 T
+(strWidth:) 161.93 438.43 T
+(int) 215.85 438.43 T
+(:=) 237.42 438.43 T
+(WinTextWidth\050ft,) 253.6 438.43 T
+(str\051) 345.27 438.43 T
+(WinDrawImageString\050mywin,) 140.35 427.43 T
+(winPoint\050\050W) 280.56 427.43 T
+(-) 345.27 427.43 T
+(strWidth\051) 356.05 427.43 T
+(/) 409.98 427.43 T
+(2,) 420.76 427.43 T
+(H) 436.94 427.43 T
+(/) 447.73 427.43 T
+(2\051,) 458.51 427.43 T
+(str\051) 480.08 427.43 T
+([]) 129.57 416.43 T
+(ev.event_type) 145.75 416.43 T
+(=) 221.24 416.43 T
+(Ev_ExitWindow) 232.03 416.43 T
+(->) 307.52 416.43 T
+(WinEraseArea\050mywin,) 140.35 405.43 T
+(winRectangle\0500,) 248.2 405.43 T
+(0,) 334.48 405.43 T
+(W,) 350.66 405.43 T
+(H\051\051) 366.84 405.43 T
+([]) 129.57 394.43 T
+(ev.event_type) 145.75 394.43 T
+(=) 221.24 394.43 T
+(Ev_DeleteWindow) 232.03 394.43 T
+(or) 318.31 394.43 T
+(\050ev.event_type) 156.53 383.43 T
+(=) 237.42 383.43 T
+(Ev_KeyUp) 248.2 383.43 T
+(and) 296.74 383.43 T
+(char\050ev.data\051) 318.31 383.43 T
+(=) 393.8 383.43 T
+(\325q\325\051) 404.58 383.43 T
+(->) 431.55 383.43 T
+(exit) 140.35 372.43 T
+(f) 129.57 361.43 T
+(i) 134.96 361.43 T
+(WinFlush\050mywin\051) 129.57 350.43 T
+(od) 118.79 339.43 T
+(WinClose\050mywin\051) 118.79 328.43 T
+(end) 108 317.43 T
+(pointer) 129.57 317.43 T
+72 717.43 540 717.43 2 L
+0.25 H
+2 Z
+N
+72 285.43 540 285.43 2 L
+N
+72 294.43 540 303.43 R
+7 X
+V
+2 F
+0 X
+(Figure 3. The Pointer T) 221.97 297.43 T
+(racking Example) 319.29 297.43 T
+72 63 540 720 C
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "5" 6
+%%Page: "4" 6
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 4 -) 298.75 42.62 T
+2 10 Q
+0.54 (The goal of the program is to keep track of the pointer position in a window it opens and let the) 90 713.33 P
+(user know where the pointer points to. This can be outlined as:) 72 701.33 T
+4 9 Q
+(open window) 108 684 T
+1 F
+(do true ->) 108 673 T
+4 F
+(read event) 144 662 T
+1 F
+(if) 144 651 T
+4 F
+(pointer enters the window or pointer moves) 157.28 651 T
+1 F
+(->) 336.66 651 T
+4 F
+(write the coordinates of the pointer in the center of the window) 180 640 T
+1 F
+([]) 144 629 T
+4 F
+(pointer leaves the window) 157.28 629 T
+1 F
+(->) 266.45 629 T
+4 F
+(clear the window) 180 618 T
+1 F
+([]) 144 607 T
+4 F
+(should quit) 157.28 607 T
+1 F
+(->) 206.88 607 T
+(exit) 180 596 T
+(f) 144 585 T
+(i) 149.39 585 T
+(od) 108 574 T
+4 F
+(close the window) 108 563 T
+2 10 Q
+0.88 (Opening a window) 90 545.33 P
+0.88 (, reading events, and closing the window are similar to those in the previous) 176.73 545.33 P
+(sections.) 72 533.33 T
+0.64 (Event types) 90 515.33 P
+3 9 Q
+1.24 (Ev_PointerMove) 149.03 515.33 P
+2 10 Q
+0.64 (,) 224.52 515.33 P
+3 9 Q
+1.24 (Ev_EnterWindow) 230.72 515.33 P
+2 10 Q
+0.64 (, and) 305.3 515.33 P
+3 9 Q
+1.24 (Ev_ExitWindow) 332.31 515.33 P
+2 10 Q
+0.64 ( indicate state changes of the) 402.41 515.33 P
+-0.02 (pointer) 72 503.33 P
+-0.02 (. The) 104.57 503.33 P
+4 F
+-0.02 (x) 130.63 503.33 P
+2 F
+-0.02 ( and) 135.63 503.33 P
+4 F
+-0.02 (y) 158.54 503.33 P
+2 F
+-0.02 ( \336elds in the event record give the coordinates of the pointer at the time the event) 163.53 503.33 P
+(occurs:) 72 491.33 T
+1 9 Q
+(var ev: winEvent) 108 474 T
+(# read event ... it is Ev_PointerMove or Ev_EnterWindow) 108 463 T
+(var str: string[100]) 108 452 T
+(sprintf\050str, "Pointer is at: \050%d, %d\051", ev.x, ev.y\051) 108 441 T
+(# write string \322str\323 in the center of the window ...) 108 430 T
+2 10 Q
+0.58 (One way to center the string in the window is to compute the width in pixels of the string, then) 90 412.33 P
+1.11 (calculate how far the string would be from the left edge of the window) 72 400.33 P
+6 14 Q
+1.39 (\320) 412.71 400.33 P
+2 10 Q
+1.11 ( that is, where the string) 419.7 400.33 P
+-0.16 (should start. The width of the string depends on the window\325) 72 388.33 P
+-0.16 (s current font. The same string displayed) 350.67 388.33 P
+(in different fonts may have different widths.) 72 376.33 T
+0.63 (Fonts are usually represented by bitmap data stored in \336les. A program may have several fonts) 90 358.33 P
+4 F
+0.13 (loaded) 72 346.33 P
+2 F
+0.13 (, so that when it needs a particular font for displaying characters, it can quickly switch to that) 102.71 346.33 P
+-0.21 (font. There are some standard X W) 72 334.33 P
+-0.21 (indow utilities, such as) 232.35 334.33 P
+3 9 Q
+-0.4 (xlsfonts) 340.74 334.33 P
+2 10 Q
+-0.21 (,) 383.88 334.33 P
+3 9 Q
+-0.4 (xfontsel) 389.23 334.33 P
+2 10 Q
+-0.21 (, etc., which list or view) 432.37 334.33 P
+(various fonts. The SR) 72 322.33 T
+(W) 171.21 322.33 T
+(in function) 180.65 322.33 T
+3 9 Q
+(WinLoadFont\050\051) 233.58 322.33 T
+2 10 Q
+( loads a font:) 303.68 322.33 T
+1 9 Q
+(var ft: winFont := WinLoadFont\050mywin, "lucidasanstypewriter-14"\051) 108 305 T
+2 10 Q
+-0.11 (If the speci\336ed font cannot be loaded,) 90 287.33 P
+3 9 Q
+-0.22 (WinLoadFont\050\051) 263.75 287.33 P
+2 10 Q
+-0.11 ( returns) 333.86 287.33 P
+1 9 Q
+-0.22 (null) 373.79 287.33 P
+2 10 Q
+-0.11 (. Since a window starts up with) 395.36 287.33 P
+(a default font, a program can always use) 72 275.33 T
+3 9 Q
+(WinDefaultFont\050\051) 262.48 275.33 T
+2 10 Q
+( to \336nd out the default font:) 348.77 275.33 T
+1 9 Q
+(if ft = null ->) 108 258 T
+(ft := WinDefaultFont\050mywin\051) 118.79 247 T
+(# will always get the font) 324 247 T
+(fi) 108 236 T
+2 10 Q
+(T) 90 218.33 T
+(o set a font on a window for subsequent text output, a program calls) 95.75 218.33 T
+3 9 Q
+(WinSetFont\050\051) 412.1 218.33 T
+2 10 Q
+(:) 476.81 218.33 T
+1 9 Q
+(WinSetFont\050mywin, ft\051) 108 201 T
+2 10 Q
+0.18 (Once a font is loaded,) 90 183.33 P
+3 9 Q
+0.34 (WinTextWidth\050\051) 192.69 183.33 P
+2 10 Q
+0.18 ( will give the width of a string in a speci\336c font, which will) 268.19 183.33 P
+(help, for example, to center a string:) 72 171.33 T
+1 9 Q
+(var strWidth: int := WinTextWidth\050ft, str\051) 108 154 T
+(# suppose \322W\323 is the width of the window, \322H\323 is the height of the window) 108 143 T
+(WinDrawString\050mywin, winPoint\050\050W - strWidth\051 / 2, H / 2\051, str\051) 108 132 T
+2 10 Q
+-0.13 (The complete program for the \322pointer tracking\323 example is listed in Figure) 90 114.33 P
+-0.13 (3. On some con\336gura-) 439.89 114.33 P
+-0.02 (tions of the X W) 72 102.33 P
+-0.02 (indow System, an) 145.59 102.33 P
+3 9 Q
+-0.04 (Ev_DeleteWindow) 230.13 102.33 P
+2 10 Q
+-0.02 ( event is generated when the user chooses \322Close\323) 311.02 102.33 P
+0.36 (or \322Quit\323 entry from a window manager menu. The example program presented here uses this infor-) 72 90.33 P
+(mation with keyboard input \322q\323 to decide when it is about to exit.) 72 78.33 T
+FMENDPAGE
+%%EndPage: "4" 5
+%%Page: "3" 5
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 3 -) 298.75 42.62 T
+1 9 Q
+(op evchan: winEventChannel) 108 505 T
+(var mywin: winWindow := WinOpen\050"", "Test", evchan, UseDefault, 100, 50\051) 108 494 T
+2 10 Q
+-0.27 (Upon successful creation of a window) 90 476.33 P
+-0.27 (, a process is set up to poll and dispatch window events to the) 260.06 476.33 P
+0.9 (message channel using asynchronous message passing. The event polling process is called an) 72 464.33 P
+4 F
+0.9 (event) 516.31 464.33 P
+2.57 (handler) 72 452.33 P
+2 F
+2.57 (. The message channel is called an) 107.52 452.33 P
+4 F
+2.57 (event channel) 287.52 452.33 P
+2 F
+2.57 (. An event is represented by a record) 352.82 452.33 P
+3 9 Q
+1.93 (winEvent) 72 440.33 P
+2 10 Q
+0.99 (. A program can determine whether there is an event pending by checking the number of) 115.14 440.33 P
+(messages in the event channel:) 72 428.33 T
+1 9 Q
+(if ?evchan > 0 ->) 108 411 T
+(write\050"Something happened on that window"\051) 118.79 400 T
+(fi) 108 389 T
+2 10 Q
+(Or the program can wait on the event channel until an event happens:) 90 371.33 T
+1 9 Q
+(var ev: winEvent) 108 354 T
+(receive evchan\050ev\051) 108 343 T
+2 10 Q
+-0.26 (Upon receiving an event, a program can check the) 90 325.33 P
+7 9 Q
+-0.51 (event_type) 321.41 325.33 P
+2 10 Q
+-0.26 ( \336eld of the event record to see what) 375.33 325.33 P
+-0.11 (kind of event has just happened. For example, there are event types) 72 313.33 P
+3 9 Q
+-0.22 (Ev_KeyDown) 387.18 313.33 P
+2 10 Q
+-0.11 ( and) 441.11 313.33 P
+3 9 Q
+-0.22 (Ev_KeyUp) 463.84 313.33 P
+2 10 Q
+-0.11 (, which) 506.98 313.33 P
+1.4 (stand for key press and key release events respectively) 72 301.33 P
+1.4 (. In these cases the) 335.33 301.33 P
+7 9 Q
+2.72 (data) 433.04 301.33 P
+2 10 Q
+1.4 ( \336eld of the event) 454.61 301.33 P
+(record is the ASCII code of the key:) 72 289.33 T
+1 9 Q
+(var ev: winEvent) 108 272 T
+(# ... get event ...) 108 261 T
+(if ev.event_type = Ev_KeyDown ->) 108 250 T
+(write\050"Key pressed: ", char\050ev.data\051\051) 118.79 239 T
+([] ev.event_type = Ev_KeyUp ->) 108 228 T
+(write\050"Key released: ", char\050ev.data\051\051) 118.79 217 T
+(fi) 108 206 T
+2 10 Q
+(More uses of event channels are shown in the next section with an example program.) 90 188.33 T
+0 14 Q
+(5. Programming Models) 72 149.67 T
+2 10 Q
+0.77 (One common way to build an interactive graphics program is the) 72 124.33 P
+4 F
+0.77 (event-driven) 382.8 124.33 P
+2 F
+0.77 ( programming model.) 439.42 124.33 P
+0.95 (An event-reading loop is the primary control mechanism driving the program) 72 112.33 P
+6 14 Q
+1.19 (\320) 442.06 112.33 P
+2 10 Q
+0.95 ( the program reads) 449.05 112.33 P
+-0.19 (some input, does some processing and drawing, then comes back to read input. It can be illustrated by) 72 100.33 P
+(the following example program.) 72 88.33 T
+72 63 540 720 C
+72 511 540 720 C
+274.57 585 400.57 675 R
+7 X
+0 K
+V
+3 100 Q
+0 X
+(Rg) 274.57 608.33 T
+72 711 540 711 2 L
+0.25 H
+2 Z
+N
+189 607.29 423 607.29 2 L
+0.5 H
+3 X
+N
+225 587.14 423 587.14 2 L
+N
+225 667.43 423 667.43 2 L
+N
+153 558 468 693 R
+0 X
+N
+72 531 540 540 R
+7 X
+V
+2 9 Q
+0 X
+(Figure 2. Position of a string drawn at) 188.98 534 T
+4 F
+(\050x, y\051) 350.28 534 T
+2 F
+( in a window) 370.25 534 T
+72 522 540 522 2 L
+0.25 H
+N
+275.29 684 275.29 566 2 L
+0.5 H
+3 X
+N
+158.77 571.49 153 573.14 158.77 574.8 158.17 573.14 4 Y
+0 X
+V
+269.23 574.8 275 573.14 269.23 571.49 269.84 573.14 4 Y
+V
+158.17 573.14 269.84 573.14 2 L
+0.25 H
+0 Z
+N
+241.06 661.66 242.71 667.43 244.37 661.66 242.71 662.26 4 Y
+V
+244.37 612.48 242.71 606.71 241.06 612.48 242.71 611.88 4 Y
+V
+242.71 662.26 242.71 611.88 2 L
+N
+241.2 600.8 242.86 606.57 244.51 600.8 242.86 601.41 4 Y
+V
+244.51 593.2 242.86 587.43 241.2 593.2 242.86 592.59 4 Y
+V
+242.86 601.41 242.86 592.59 2 L
+N
+205.71 568.14 226 577.43 R
+7 X
+V
+7 F
+0 X
+(x) 213.16 571.43 T
+224.71 593.29 260.71 600.86 R
+7 X
+V
+2 F
+0 X
+(descent) 227.07 594.86 T
+220 634 265 643 R
+7 X
+V
+0 X
+(ascent) 229.18 637 T
+200.06 686.52 201.71 692.29 203.37 686.52 201.71 687.12 4 Y
+V
+203.37 613.2 201.71 607.43 200.06 613.2 201.71 612.59 4 Y
+V
+201.71 687.12 201.71 612.59 2 L
+N
+414 603 459 612 R
+7 X
+V
+0 X
+(baseline) 419.35 606 T
+191.43 643.57 214.57 653.14 R
+7 X
+V
+7 F
+0 X
+(y) 200.3 647.14 T
+72 63 540 720 C
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "3" 4
+%%Page: "2" 4
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 2 -) 298.75 42.62 T
+2 10 Q
+0.31 (and the) 72 713.33 P
+4 F
+0.31 (Y) 110.57 713.33 P
+2 F
+0.31 ( axis pointing down. The) 117.42 713.33 P
+3 9 Q
+0.61 (WinDrawString\050\051) 235.23 713.33 P
+2 10 Q
+0.31 ( statement draws the string close to the bottom-) 316.12 713.33 P
+(left corner of the window) 72 701.33 T
+(.) 185.83 701.33 T
+0.57 (After the program \336nishes processing, it calls) 90 683.33 P
+3 9 Q
+1.1 (WinClose\050\051) 306.63 683.33 P
+2 10 Q
+0.57 ( to clean up. This concludes this small) 360.55 683.33 P
+(working SR) 72 671.33 T
+(W) 125.68 671.33 T
+(in program.) 135.12 671.33 T
+0 14 Q
+(3. Output) 72 632.67 T
+2 10 Q
+-0.25 (The \322Hello W) 72 607.33 P
+-0.25 (orld\323 program illustrates the SR) 132.58 607.33 P
+-0.25 (W) 280.01 607.33 P
+-0.25 (in conventions for naming and syntax of its data struc-) 289.45 607.33 P
+0.01 (tures and routines. All SR) 72 595.33 P
+0.01 (W) 192.37 595.33 P
+0.01 (in functions begin with \322) 201.81 595.33 P
+3 9 Q
+0.03 (Win) 314.96 595.33 P
+2 10 Q
+0.01 (\323 followed by compound words constructed by) 331.14 595.33 P
+-0.09 (capitalizing the \336rst letter of each word \050e.g.) 72 583.33 P
+3 9 Q
+-0.18 (WinOpen\050\051) 278.55 583.33 P
+2 10 Q
+-0.09 (,) 327.09 583.33 P
+3 9 Q
+-0.18 (WinFlush\050\051) 332.55 583.33 P
+2 10 Q
+-0.09 (\051; data types are constructed sim-) 386.47 583.33 P
+(ilarly except that they begin with \322) 72 571.33 T
+3 9 Q
+(win) 232.68 571.33 T
+2 10 Q
+(\323 \050e.g.) 248.86 571.33 T
+3 9 Q
+(winWindow) 277.55 571.33 T
+2 10 Q
+(,) 325.17 571.33 T
+3 9 Q
+(winPoint) 330.72 571.33 T
+2 10 Q
+(\051.) 373.86 571.33 T
+0.5 (Usually) 90 553.33 P
+0.5 (,) 124.99 553.33 P
+3 9 Q
+0.98 (WinOpen\050\051) 131.05 553.33 P
+2 10 Q
+0.5 ( is the \336rst SR) 179.58 553.33 P
+0.5 (W) 247.68 553.33 P
+0.5 (in routine that a program invokes. It returns a window han-) 257.12 553.33 P
+0.68 (dle, which then can be used as the \336rst argument to many drawing routines. A program calls those) 72 541.33 P
+0.61 (drawing routines to display information on the window) 72 529.33 P
+0.61 (. For example, a statement that draws a line) 329.65 529.33 P
+(would look like:) 72 517.33 T
+1 9 Q
+(WinDrawLine\050mywin, winPoint\0500, 100\051, winPoint\050100, 0\051\051) 108 500 T
+2 10 Q
+(The type) 90 482.33 T
+3 9 Q
+(winPoint) 133.32 482.33 T
+2 10 Q
+( converts the) 176.46 482.33 T
+4 F
+(x) 238.64 482.33 T
+2 F
+( and) 243.64 482.33 T
+4 F
+(y) 266.6 482.33 T
+2 F
+( coordinates to a point.) 271.59 482.33 T
+0.23 (SR) 90 464.33 P
+0.23 (W) 103.14 464.33 P
+0.23 (in provides a set of routines to draw lines, ellipses, texts, and individual pixels inside a win-) 112.58 464.33 P
+0.62 (dow) 72 452.33 P
+0.62 (. Some routines can do \336lling. Multiple characteristics of drawing and \336lling, such as) 89.59 452.33 P
+4 F
+0.62 (line width) 492.56 452.33 P
+2 F
+0.34 (and) 72 440.33 P
+4 F
+0.34 (\336ll style) 92.51 440.33 P
+2 F
+0.34 (, can be controlled. T) 129.11 440.33 P
+0.34 (aking lines as an example,) 225.72 440.33 P
+4 F
+0.34 (line style) 352.73 440.33 P
+2 F
+0.34 ( speci\336es whether a line should) 393.76 440.33 P
+0.49 (be drawn solid or dotted, etc.) 72 428.33 P
+4 F
+0.49 (Cap style) 211 428.33 P
+2 F
+0.49 ( tells whether the endings of a line should be rounded or not.) 253.68 428.33 P
+4 F
+-0.12 (Join style) 72 416.33 P
+2 F
+-0.12 ( sets whether the joint of two segments in a polyline should be rounded or not. The following) 115.92 416.33 P
+(two statements draw a 20 by 10 rectangle with dashed lines:) 72 404.33 T
+1 9 Q
+(WinSetLineAttr\050mywin, 0, LineDoubleDash, CapButt, JoinMiter\051) 108 387 T
+(WinDrawRectangle\050mywin, winRectangle\0501, 1, 20, 10\051\051) 108 376 T
+2 10 Q
+0.38 (Here the line width is set to zero in order to use a fast algorithm for line drawing, while the line) 90 358.33 P
+1.14 (actually being drawn has width 1 in pixels. If the line width is greater than zero, a more general,) 72 346.33 P
+(hence slower) 72 334.33 T
+(, algorithm will be used.) 130.67 334.33 T
+0.2 (Drawing is not limited to only one window for a program. Multiple windows can be created using) 90 316.33 P
+3 9 Q
+0.39 (WinOpen\050\051) 72 304.33 P
+2 10 Q
+0.2 (. W) 120.53 304.33 P
+0.2 (indows can be opened on different machines by explicitly specifying the machine as the) 135.73 304.33 P
+(host part of the display parameter:) 72 292.33 T
+1 9 Q
+(var mywin1: winWindow := WinOpen\050"can:0", "1", null, UseDefault, 100, 50\051) 108 275 T
+(var mywin2: winWindow := WinOpen\050"gly:0", "2", null, UseDefault, 100, 50\051) 108 264 T
+2 10 Q
+0.47 ( A string of characters is positioned as depicted in Figure) 90 246.33 P
+0.47 (2.) 360.82 246.33 P
+3 9 Q
+0.9 (WinDrawString\050\051) 372.39 246.33 P
+2 10 Q
+0.47 ( draws the charac-) 453.28 246.33 P
+0.16 (ters.) 72 234.33 P
+3 9 Q
+0.31 (WinDrawImageString\050\051) 95.67 234.33 P
+2 10 Q
+0.16 ( clears the extent of the string \336rst, then draws it. In this way the string) 203.51 234.33 P
+(will not be cluttered by previous drawing at the same location.) 72 222.33 T
+0.85 (Sometimes when a region of a window becomes obscured by other windows, the contents inside) 90 204.33 P
+0.3 (that region are lost. When the obscured region becomes visible again, the X application must redraw) 72 192.33 P
+0.82 (that part of the window) 72 180.33 P
+0.82 (. SR) 183.4 180.33 P
+0.82 (W) 202.93 180.33 P
+0.82 (in, however) 212.36 180.33 P
+0.82 (, handles this automatically) 265.93 180.33 P
+0.82 (, refreshing the display from a) 396.14 180.33 P
+(backup copy of window contents.) 72 168.33 T
+0 14 Q
+(4. Input) 72 129.67 T
+2 10 Q
+0.6 (A window is not only capable of displaying output, it is also capable of reading input. Inputs from a) 72 104.33 P
+-0.09 (window are modeled as) 72 92.33 P
+4 F
+-0.09 (events) 181.96 92.33 P
+2 F
+-0.09 (. The) 210.09 92.33 P
+3 9 Q
+-0.18 (SRWin) 236.01 92.33 P
+2 10 Q
+-0.09 ( global exports an optype) 262.97 92.33 P
+3 9 Q
+-0.18 (winEventChannel) 380.62 92.33 P
+2 10 Q
+-0.09 ( which is used by) 461.51 92.33 P
+0.94 (an application program to declare a message channel for accepting events. The SR program passes) 72 80.33 P
+(this when opening the window:) 72 68.33 T
+FMENDPAGE
+%%EndPage: "2" 3
+%%Page: "1" 3
+612 792 0 FMBEGINPAGE
+0 8 Q
+0 X
+0 K
+(- 1 -) 298.75 42.62 T
+0 14 Q
+(1. Introduction) 72 710.67 T
+2 10 Q
+1.52 (This document is intended for programmers writing graphics programs using SR) 72 685.33 P
+1.52 (W) 460.11 685.33 P
+1.52 (in, a library of) 469.55 685.33 P
+0.6 (graphics facilities for the SR programming language [AnOl93]. It describes the library and presents) 72 673.33 P
+1.39 (some examples of its use. Appendix) 72 661.33 P
+1.39 (A gives some details about the implementation of SR) 244.99 661.33 P
+1.39 (W) 499.74 661.33 P
+1.39 (in and) 509.17 661.33 P
+0.27 (some thoughts for further development. Appendix) 72 649.33 P
+0.27 (B gives a program that demonstrates window but-) 306.36 649.33 P
+(tons. Appendix) 72 637.33 T
+(C lists a program that visualizes a parallel Quicksort algorithm.) 144 637.33 T
+0.16 (SR) 90 619.33 P
+0.16 (W) 103.14 619.33 P
+0.16 (in adds an interface to graphics primitives provided by the X W) 112.58 619.33 P
+0.16 (indow System [ScGe86]. It is) 406.63 619.33 P
+1.42 (based on Xlib [NyeA92, ScGe92], the low-level C interface for X W) 72 607.33 P
+1.42 (indow programming. Given the) 391.55 607.33 P
+0.93 (availability of the underlying X W) 72 595.33 P
+0.93 (indow System, SR) 233.44 595.33 P
+0.93 (W) 318.6 595.33 P
+0.93 (in can run on many platforms. Given the SR) 328.03 595.33 P
+0.47 (concurrent programming environment, and a few abstractions for user) 72 583.33 P
+0.47 (-computer interaction, SR) 401.36 583.33 P
+0.47 (W) 521.31 583.33 P
+0.47 (in) 530.74 583.33 P
+2.28 (becomes simple, easy to program, and effective in the sense that even naive programmers may) 72 571.33 P
+(develop fairly ef\336cient graphics applications.) 72 559.33 T
+0 14 Q
+(2. A \322Hello W) 72 520.67 T
+(orld\323 Program) 164.88 520.67 T
+2 10 Q
+(W) 72 495.33 T
+(riting graphics programs in SR is not too complex. A simple SR) 81.25 495.33 T
+(W) 372.05 495.33 T
+(in program might look like this:) 381.48 495.33 T
+0.21 (This program imports a global) 90 282.33 P
+3 9 Q
+0.4 (SRWin) 233.95 282.33 P
+2 10 Q
+0.21 ( and is linked with a \336le of associated C functions and the X) 260.92 282.33 P
+-0.24 (library) 72 270.33 P
+-0.24 (. During execution, it simply opens a window on the default display) 102.54 270.33 P
+-0.24 (, writes \322Hello W) 409.59 270.33 P
+-0.24 (orld\323 in yel-) 486.62 270.33 P
+(low) 72 258.33 T
+(, waits for ten seconds, then exits.) 87 258.33 T
+0.14 (There is an analogy between a window in SR) 90 240.33 P
+0.14 (W) 297.91 240.33 P
+0.14 (in and a \336le in SR. SR) 307.35 240.33 P
+0.14 (W) 410.02 240.33 P
+0.14 (in uses) 419.45 240.33 P
+3 9 Q
+0.27 (WinOpen\050\051) 454.9 240.33 P
+2 10 Q
+0.14 ( to open) 503.44 240.33 P
+0.17 (a window) 72 228.33 P
+0.17 (, which in turn returns a window handle. SR uses) 115.13 228.33 P
+3 9 Q
+0.33 (open\050\051) 348.76 228.33 P
+2 10 Q
+0.17 ( to open a \336le, which returns a \336le) 381.11 228.33 P
+0.51 (handle. Like its counterpart for \336le access,) 72 216.33 P
+3 9 Q
+1 (WinOpen\050\051) 274.95 216.33 P
+2 10 Q
+0.51 ( returns) 323.48 216.33 P
+1 9 Q
+1 (null) 364.67 216.33 P
+2 10 Q
+0.51 ( if the window cannot be opened.) 386.24 216.33 P
+0.02 (SR) 72 204.33 P
+0.02 (W) 85.14 204.33 P
+0.02 (in also uses buffered I/O. While) 94.58 204.33 P
+3 9 Q
+0.03 (WinDrawString\050\051) 242.39 204.33 P
+2 10 Q
+0.02 ( writes to the window just as) 323.28 204.33 P
+3 9 Q
+0.03 (write\050\051) 458.9 204.33 P
+2 10 Q
+0.02 ( writes to) 496.65 204.33 P
+0.14 (a \336le, the result may not appear immediately in the window) 72 192.33 P
+0.14 (.) 349.38 192.33 P
+3 9 Q
+0.26 (WinFlush\050\051) 355.08 192.33 P
+2 10 Q
+0.14 ( acts similarly to) 409 192.33 P
+3 9 Q
+0.26 (f) 489.52 192.33 P
+0.26 (lush\050\051) 494.92 192.33 P
+2 10 Q
+0.14 (: it) 527.27 192.33 P
+-0.2 (\337ushes the output buffers of the window) 72 180.33 P
+-0.2 (. Finally) 256.1 180.33 P
+-0.2 (,) 293.49 180.33 P
+3 9 Q
+-0.38 (WinClose\050\051) 298.85 180.33 P
+2 10 Q
+-0.2 ( closes a window just as) 352.78 180.33 P
+3 9 Q
+-0.38 (close\050\051) 463.97 180.33 P
+2 10 Q
+-0.2 ( does for) 501.71 180.33 P
+(a \336le.) 72 168.33 T
+0.36 (Speci\336cally) 90 150.33 P
+0.36 (,) 141.27 150.33 P
+3 9 Q
+0.69 (WinOpen\050\051) 147.18 150.33 P
+2 10 Q
+0.36 ( \336rst tries to establish a connection to the display named by its \336rst argu-) 195.72 150.33 P
+1.29 (ment. In the above example the display parameter is an empty string, so the default speci\336cation) 72 138.33 P
+0.81 (stored in UNIX environment variable) 72 126.33 P
+1 9 Q
+1.57 (DISPLAY) 252.07 126.33 P
+2 10 Q
+0.81 ( is used. Then the function opens a window and uses) 289.82 126.33 P
+-0.17 (the second argument as its title. The width and height of the window must be provided as the last two) 72 114.33 P
+(parameters. The other parameters will be discussed later) 72 102.33 T
+(.) 335.77 102.33 T
+0.16 (Once the window is created, the program can call SR) 90 84.33 P
+0.16 (W) 334.88 84.33 P
+0.16 (in functions to draw on the window) 344.31 84.33 P
+0.16 (. There) 507.07 84.33 P
+0.64 (is an integer coordinate system on each window with the origin at the top-left corner of the window) 72 72.33 P
+72 63 540 720 C
+72 297 540 492 C
+1 9 Q
+0 X
+0 K
+(resource hello\050\051) 108 468.14 T
+(import SRWin) 118.79 457.14 T
+(var mywin: winWindow := WinOpen\050"", "Hello", null, UseDefault, 100, 30\051) 118.79 446.14 T
+(if mywin = null ->) 118.79 435.14 T
+(write\050"Sorry, no window."\051) 129.57 424.14 T
+(stop\0501\051) 129.57 413.14 T
+(fi) 118.79 402.14 T
+(WinSetForeground\050mywin, "yellow"\051) 118.79 391.14 T
+(WinDrawString\050mywin, winPoint\05010, 20\051, "Hello World"\051) 118.79 380.14 T
+(WinFlush\050mywin\051) 118.79 369.14 T
+(nap\05010000\051) 118.79 358.14 T
+(WinClose\050mywin\051) 118.79 347.14 T
+(end hello) 108 336.14 T
+2 F
+(Figure 1. The \322Hello W) 229.1 315 T
+(orld\323 Program) 324.15 315 T
+72 303 540 303 2 L
+0.25 H
+2 Z
+N
+72 483 540 483 2 L
+N
+72 63 540 720 C
+0 0 612 792 C
+FMENDPAGE
+%%EndPage: "1" 2
+%%Page: "1" 2
+612 792 0 FMBEGINPAGE
+2 24 Q
+0 X
+0 K
+(SR) 267.8 556 T
+(W) 299.34 556 T
+(in) 321.99 556 T
+2 18 Q
+(A Graphics Library for SR) 196.56 534 T
+2 12 Q
+(Qiang Alex Zhao) 259.8 486 T
+(TR-93-14) 280.34 454 T
+8 14 Q
+(Abstract) 279.97 324.67 T
+2 12 Q
+1.86 (This document describes the calling interface and usage conventions of SR) 72 298 P
+1.86 (W) 502.38 298 P
+1.86 (in, a) 513.7 298 P
+1.87 (graphics library for the SR concurrent programming language. SR) 72 284 P
+1.87 (W) 453.64 284 P
+1.87 (in provides a) 464.96 284 P
+1.65 (simple environment for building interactive graphics system. It currently runs on) 72 270 P
+(UNIX under V) 72 256 T
+(ersion 1) 151.96 256 T
+(1 of the X W) 195.28 256 T
+(indow System.) 263.03 256 T
+(May 1, 1993) 272.11 184 T
+(Department of Computer Science) 213.83 152 T
+(The University of Arizona) 234.04 136 T
+(T) 256.99 120 T
+(ucson, AZ 85721) 264.14 120 T
+FMENDPAGE
+%%EndPage: "1" 1
+%%Page: "1" 1
+612 792 0 FMBEGINPAGE
+0 X
+0 K
+0 72 63 -72 -63 468 657 BEGINPRINTCODE
+
+
+ENDPRINTCODE
+0 130 181 481 684 351 503 130.5 144.5 FMBEGINEPSF
+%%BeginDocument: /tmp_mnt/R/cas/cas/usr1/azhao/SRdoc/Tutorial/TR-cover.troff.epsi
+%!PS-Adobe-2.0 EPSF-1.2
+%%BoundingBox: 130 181 481 684
+%!PS-Adobe-3.0
+%%Creator: psdit
+%%For: optima:azhao (Qiang Alex Zhao)
+%%Title: stdin (ditroff)
+%%CreationDate: Sat May  1 14:17:24 1993
+%%DocumentNeededResources: (atend)
+%%DocumentSuppliedResources: DIThacks
+%%Pages: (atend)
+%%EndComments
+% Start of psdit.pro -- prolog for ditroff translator
+% Copyright (c) 1985,1987 Adobe Systems Incorporated. All Rights Reserved. 
+% GOVERNMENT END USERS: See Notice file in TranScript library directory
+% -- probably /usr/lib/ps/Notice
+% [[ RCS Headers removed ]]
+
+/$DITroff 180 dict def $DITroff begin
+
+/DocumentInitState [ matrix currentmatrix currentlinewidth currentlinecap
+currentlinejoin currentdash currentgray currentmiterlimit ] cvx def
+
+%% Psfig additions
+/startFig {
+        /SavedState save def
+        userdict maxlength dict begin
+        currentpoint transform
+
+        DocumentInitState setmiterlimit setgray setdash setlinejoin setlinecap
+                setlinewidth setmatrix
+
+        itransform moveto
+
+        /ury exch def
+        /urx exch def
+        /lly exch def
+        /llx exch def
+        /y exch 72 mul resolution div def
+        /x exch 72 mul resolution div def
+
+        currentpoint /cy exch def /cx exch def
+
+        /sx x urx llx sub div def       % scaling for x
+        /sy y ury lly sub div def       % scaling for y
+
+        sx sy scale                     % scale by (sx,sy)
+
+        cx sx div llx sub
+        cy sy div ury sub translate
+
+        /DefFigCTM matrix currentmatrix def
+
+        /initmatrix {
+                DefFigCTM setmatrix
+        } def
+        /defaultmatrix {
+                DefFigCTM exch copy
+        } def
+
+        /initgraphics {
+                DocumentInitState setmiterlimit setgray setdash
+                        setlinejoin setlinecap setlinewidth setmatrix
+                DefFigCTM setmatrix
+        } def
+
+        /showpage {
+                initgraphics
+        } def
+
+} def
+% Args are llx lly urx ury (in figure coordinates)
+/clipFig {
+        currentpoint 6 2 roll
+        newpath 4 copy
+        4 2 roll moveto
+        6 -1 roll exch lineto
+        exch lineto
+        exch lineto
+        closepath clip
+        newpath
+        moveto
+} def
+% doclip, if called, will always be just after a `startfig'
+/doclip { llx lly urx ury clipFig } def
+/endFig {
+        end SavedState restore
+} def
+/globalstart {
+        % Push details about the enviornment on the stack.
+        fontnum fontsize fontslant fontheight
+        % firstpage
+        mh my resolution slotno currentpoint
+        pagesave restore gsave
+} def
+/globalend {
+        grestore moveto
+        /slotno exch def /resolution exch def /my exch def
+        /mh exch def
+        % /firstpage exch def
+        /fontheight exch def
+        /fontslant exch def /fontsize exch def /fontnum exch def
+        F
+        /pagesave save def
+} def
+
+%% end XMOD additions
+
+/fontnum 1 def /fontsize 10 def /fontheight 10 def /fontslant 0 def
+/xi {72 mul 0 exch translate 72 resolution div dup neg scale 0 0 moveto
+  /fontnum 1 def /fontsize 10 def /fontheight 10 def /fontslant 0 def F
+  /pagesave save def}def
+/PB{save /psv exch def currentpoint translate
+  resolution 72 div dup neg scale 0 0 moveto}def
+/PE{psv restore}def
+/m1 matrix def /m2 matrix def /m3 matrix def /oldmat matrix def
+/tan{dup sin exch cos div}bind def
+/point{resolution 72 div mul}bind def
+/dround	{transform round exch round exch itransform}bind def
+/xT{/devname exch def}def
+/xr{/mh exch def /my exch def /resolution exch def}def
+/xp{}def
+/xs{docsave restore end}def
+/xt{}def
+/xf{/fontname exch def /slotno exch def fontnames slotno get fontname eq not
+ {fonts slotno fontname findfont put fontnames slotno fontname put}if}def
+/xH{/fontheight exch def F}bind def
+/xS{/fontslant exch def F}bind def
+/s{/fontsize exch def /fontheight fontsize def F}bind def
+/f{/fontnum exch def F}bind def
+/F{fontheight 0 le {/fontheight fontsize def}if
+   fonts fontnum get fontsize point 0 0 fontheight point neg 0 0 m1 astore
+   fontslant 0 ne{1 0 fontslant neg tan 1 0 0 m2 astore m3 concatmatrix}if
+   makefont setfont .04 fontsize point mul 0 dround pop setlinewidth}bind def
+/X{exch currentpoint exch pop moveto show}bind def
+/N{3 1 roll moveto show}bind def
+/Y{exch currentpoint pop exch moveto show}bind def
+/S /show load def
+/ditpush{}def/ditpop{}def
+/AX{3 -1 roll currentpoint exch pop moveto 0 exch ashow}bind def
+/AN{4 2 roll moveto 0 exch ashow}bind def
+/AY{3 -1 roll currentpoint pop exch moveto 0 exch ashow}bind def
+/AS{0 exch ashow}bind def
+/MX{currentpoint exch pop moveto}bind def
+/MY{currentpoint pop exch moveto}bind def
+/MXY /moveto load def
+/cb{pop}def	% action on unknown char -- nothing for now
+/n{}def/w{}def
+/p{pop showpage pagesave restore /pagesave save def}def
+/abspoint{currentpoint exch pop add exch currentpoint pop add exch}def
+/dstroke{currentpoint stroke moveto}bind def
+/Dl{2 copy gsave rlineto stroke grestore rmoveto}bind def
+/arcellipse{oldmat currentmatrix pop
+ currentpoint translate 1 diamv diamh div scale /rad diamh 2 div def
+ rad 0 rad -180 180 arc oldmat setmatrix}def
+/Dc{gsave dup /diamv exch def /diamh exch def arcellipse dstroke 
+    grestore diamh 0 rmoveto}def
+/De{gsave /diamv exch def /diamh exch def arcellipse dstroke
+    grestore diamh 0 rmoveto}def
+/Da{currentpoint /by exch def /bx exch def /fy exch def /fx exch def
+   /cy exch def /cx exch def /rad cx cx mul cy cy mul add sqrt def
+   /ang1 cy neg cx neg atan def /ang2 fy fx atan def cx bx add cy by add
+   2 copy rad ang1 ang2 arcn stroke exch fx add exch fy add moveto}def
+/Barray 200 array def % 200 values in a wiggle
+/D~{mark}def
+/D~~{counttomark Barray exch 0 exch getinterval astore /Bcontrol exch def pop
+ /Blen Bcontrol length def Blen 4 ge Blen 2 mod 0 eq and
+ {Bcontrol 0 get Bcontrol 1 get abspoint /Ycont exch def /Xcont exch def
+  Bcontrol 0 2 copy get 2 mul put Bcontrol 1 2 copy get 2 mul put
+  Bcontrol Blen 2 sub 2 copy get 2 mul put
+  Bcontrol Blen 1 sub 2 copy get 2 mul put
+  /Ybi /Xbi currentpoint 3 1 roll def def 0 2 Blen 4 sub
+  {/i exch def
+   Bcontrol i get 3 div Bcontrol i 1 add get 3 div
+   Bcontrol i get 3 mul Bcontrol i 2 add get add 6 div
+   Bcontrol i 1 add get 3 mul Bcontrol i 3 add get add 6 div
+   /Xbi Xcont Bcontrol i 2 add get 2 div add def
+   /Ybi Ycont Bcontrol i 3 add get 2 div add def
+   /Xcont Xcont Bcontrol i 2 add get add def
+   /Ycont Ycont Bcontrol i 3 add get add def
+   Xbi currentpoint pop sub Ybi currentpoint exch pop sub rcurveto
+  }for dstroke}if}def
+end
+/ditstart{$DITroff begin
+ /nfonts 60 def			% NFONTS makedev/ditroff dependent!
+ /fonts[nfonts{0}repeat]def
+ /fontnames[nfonts{()}repeat]def
+/docsave save def
+}def
+
+% character outcalls
+/oc {/pswid exch def /cc exch def /name exch def
+   /ditwid pswid fontsize mul resolution mul 72000 div def
+   /ditsiz fontsize resolution mul 72 div def
+   ocprocs name known{ocprocs name get exec}{name cb}
+   ifelse}def
+/fractm [.65 0 0 .6 0 0] def
+/fraction
+ {/fden exch def /fnum exch def gsave /cf currentfont def
+  cf fractm makefont setfont 0 .3 dm 2 copy neg rmoveto
+  fnum show rmoveto currentfont cf setfont(\244)show setfont fden show 
+  grestore ditwid 0 rmoveto} def
+/oce {grestore ditwid 0 rmoveto}def
+/dm {ditsiz mul}def
+/ocprocs 50 dict def ocprocs begin
+(14){(1)(4)fraction}def
+(12){(1)(2)fraction}def
+(34){(3)(4)fraction}def
+(13){(1)(3)fraction}def
+(23){(2)(3)fraction}def
+(18){(1)(8)fraction}def
+(38){(3)(8)fraction}def
+(58){(5)(8)fraction}def
+(78){(7)(8)fraction}def
+(sr){gsave .05 dm .16 dm rmoveto(\326)show oce}def
+(is){gsave 0 .15 dm rmoveto(\362)show oce}def
+(->){gsave 0 .02 dm rmoveto(\256)show oce}def
+(<-){gsave 0 .02 dm rmoveto(\254)show oce}def
+(==){gsave 0 .05 dm rmoveto(\272)show oce}def
+end
+%%BeginResource: font DIThacks
+% DIThacks fonts for some special chars
+50 dict dup begin
+/FontType 3 def
+/FontName /DIThacks def
+/FontMatrix [.001 0.0 0.0 .001 0.0 0.0] def
+/FontBBox [-220 -280 900 900] def% a lie but ...
+/Encoding 256 array def
+0 1 255{Encoding exch /.notdef put}for
+Encoding
+ dup 8#040/space put %space
+ dup 8#110/rc put %right ceil
+ dup 8#111/lt put %left  top curl
+ dup 8#112/bv put %bold vert
+ dup 8#113/lk put %left  mid curl
+ dup 8#114/lb put %left  bot curl
+ dup 8#115/rt put %right top curl
+ dup 8#116/rk put %right mid curl
+ dup 8#117/rb put %right bot curl
+ dup 8#120/rf put %right floor
+ dup 8#121/lf put %left  floor
+ dup 8#122/lc put %left  ceil
+ dup 8#140/sq put %square
+ dup 8#141/bx put %box
+ dup 8#142/ci put %circle
+ dup 8#143/br put %box rule
+ dup 8#144/rn put %root extender
+ dup 8#145/vr put %vertical rule
+ dup 8#146/ob put %outline bullet
+ dup 8#147/bu put %bullet
+ dup 8#150/ru put %rule
+ dup 8#151/ul put %underline
+ pop
+/DITfd 100 dict def
+/BuildChar{0 begin
+ /cc exch def /fd exch def
+ /charname fd /Encoding get cc get def
+ /charwid fd /Metrics get charname get def
+ /charproc fd /CharProcs get charname get def
+ charwid 0 fd /FontBBox get aload pop setcachedevice
+ 40 setlinewidth
+ newpath 0 0 moveto gsave charproc grestore
+ end}def
+/BuildChar load 0 DITfd put
+%/UniqueID 5 def
+/CharProcs 50 dict def
+CharProcs begin
+/space{}def
+/.notdef{}def
+/ru{500 0 rls}def
+/rn{0 750 moveto 500 0 rls}def
+/vr{20 800 moveto 0 -770 rls}def
+/bv{20 800 moveto 0 -1000 rls}def
+/br{20 770 moveto 0 -1040 rls}def
+/ul{0 -250 moveto 500 0 rls}def
+/ob{200 250 rmoveto currentpoint newpath 200 0 360 arc closepath stroke}def
+/bu{200 250 rmoveto currentpoint newpath 200 0 360 arc closepath fill}def
+/sq{80 0 rmoveto currentpoint dround newpath moveto
+    640 0 rlineto 0 640 rlineto -640 0 rlineto closepath stroke}def
+/bx{80 0 rmoveto currentpoint dround newpath moveto
+    640 0 rlineto 0 640 rlineto -640 0 rlineto closepath fill}def
+/ci{355 333 rmoveto currentpoint newpath 333 0 360 arc
+    50 setlinewidth stroke}def
+
+/lt{20 -200 moveto 0 550 rlineto currx 800 2cx s4 add exch s4 a4p stroke}def
+/lb{20 800 moveto 0 -550 rlineto currx -200 2cx s4 add exch s4 a4p stroke}def
+/rt{20 -200 moveto 0 550 rlineto currx 800 2cx s4 sub exch s4 a4p stroke}def
+/rb{20 800 moveto 0 -500 rlineto currx -200 2cx s4 sub exch s4 a4p stroke}def
+/lk{20 800 moveto 20 300 -280 300 s4 arcto pop pop 1000 sub
+    currentpoint stroke moveto
+    20 300 4 2 roll s4 a4p 20 -200 lineto stroke}def
+/rk{20 800 moveto 20 300 320 300 s4 arcto pop pop 1000 sub
+    currentpoint stroke moveto
+    20 300 4 2 roll s4 a4p 20 -200 lineto stroke}def
+/lf{20 800 moveto 0 -1000 rlineto s4 0 rls}def
+/rf{20 800 moveto 0 -1000 rlineto s4 neg 0 rls}def
+/lc{20 -200 moveto 0 1000 rlineto s4 0 rls}def
+/rc{20 -200 moveto 0 1000 rlineto s4 neg 0 rls}def
+end
+
+/Metrics 50 dict def Metrics begin
+/.notdef 0 def
+/space 500 def
+/ru 500 def
+/br 0 def
+/lt 250 def
+/lb 250 def
+/rt 250 def
+/rb 250 def
+/lk 250 def
+/rk 250 def
+/rc 250 def
+/lc 250 def
+/rf 250 def
+/lf 250 def
+/bv 250 def
+/ob 350 def
+/bu 350 def
+/ci 750 def
+/bx 750 def
+/sq 750 def
+/rn 500 def
+/ul 500 def
+/vr 0 def
+end
+
+DITfd begin
+/s2 500 def /s4 250 def /s3 333 def
+/a4p{arcto pop pop pop pop}def
+/2cx{2 copy exch}def
+/rls{rlineto stroke}def
+/currx{currentpoint pop}def
+/dround{transform round exch round exch itransform} def
+end
+end
+/DIThacks exch definefont pop
+%%EndResource 
+%%EndProlog
+%%BeginSetup
+ditstart
+(psc)xT
+576 1 1 xr
+%%IncludeResource: font NewCenturySchlbk-Roman
+1(NewCenturySchlbk-Roman)xf 1 f
+%%IncludeResource: font NewCenturySchlbk-Italic
+2(NewCenturySchlbk-Italic)xf 2 f
+%%IncludeResource: font NewCenturySchlbk-Bold
+3(NewCenturySchlbk-Bold)xf 3 f
+%%IncludeResource: font NewCenturySchlbk-BoldItalic
+4(NewCenturySchlbk-BoldItalic)xf 4 f
+%%IncludeResource: font Helvetica
+5(Helvetica)xf 5 f
+%%IncludeResource: font Helvetica-Bold
+6(Helvetica-Bold)xf 6 f
+%%IncludeResource: font Courier
+7(Courier)xf 7 f
+%%IncludeResource: font Courier-Bold
+8(Courier-Bold)xf 8 f
+%%IncludeResource: font Symbol
+9(Symbol)xf 9 f
+10(DIThacks)xf 10 f
+10 s
+1 f
+11.00 xi
+%%EndSetup
+
+%%Page: 1 1
+10 s 10 xH 0 xS 1 f
+576 192 MXY
+ 0 0 MXY 
+ PB 
+ 130 -108 moveto 351 0 rlineto 0 -234 rlineto -351 0 rlineto closepath  
+ 1 setlinewidth stroke % draw box outline  
+ /ctext { 3 1 roll moveto dup stringwidth pop -2 div 0 rmoveto show } def  
+ /Times-Roman findfont 18 scalefont setfont  
+ 306 -450 (DEPARTMENT OF COMPUTER SCIENCE) ctext  
+ 192 -612 translate  % position for wordmark  
+ -187 -638 translate % cancel wordmark coordinate system  
+%!PS-Adobe-3.0 EPSF-3.0
+%%%Creator: Adobe Illustrator(TM) 3.0
+%%%For: (Pat Crowe) (PPSS)
+%%%Title: (wm)
+%%%CreationDate: (1/2/91) (8:53 AM)
+%%%DocumentProcessColors: Black
+%%%DocumentSuppliedResources: procset Adobe_packedarray 2.0 0
+%%%+ procset Adobe_cmykcolor 1.1 0
+%%%+ procset Adobe_cshow 1.1 0
+%%%+ procset Adobe_customcolor 1.0 0
+%%%+ procset Adobe_IllustratorA_AI3 1.0 0
+%%%BoundingBox: 187 638 416 733
+%%AI3_ColorUsage: Black&White
+%%AI3_TemplateBox: 306 396 306 396
+%%AI3_TileBox: -522 761 30 1491
+%%AI3_DocumentPreview: Macintosh_Pic
+%%%EndComments
+%%%BeginProlog
+%%%BeginResource: procset Adobe_packedarray 2.0 0
+%%%Title: (Packed Array Operators)
+%%%Version: 2.0 
+%%%CreationDate: (8/2/90) ()
+%%%Copyright: ((C) 1987-1990 Adobe Systems Incorporated All Rights Reserved)
+userdict /Adobe_packedarray 5 dict dup begin put
+/initialize			% - initialize -
+{
+/packedarray where
+	{
+	pop
+	}
+	{
+	Adobe_packedarray begin
+	Adobe_packedarray
+		{
+		dup xcheck
+			{
+			bind
+			} if
+		userdict 3 1 roll put
+		} forall
+	end
+	} ifelse
+} def
+/terminate			% - terminate -
+{
+} def
+/packedarray		% arguments count packedarray array
+{
+array astore readonly
+} def
+/setpacking			% boolean setpacking -
+{
+pop
+} def
+/currentpacking		% - setpacking boolean
+{
+false
+} def
+currentdict readonly pop end
+%%%EndResource
+Adobe_packedarray /initialize get exec
+%%%BeginResource: procset Adobe_cmykcolor 1.1 0
+%%%Title: (CMYK Color Operators)
+%%%Version: 1.1 
+%%%CreationDate: (1/23/89) ()
+%%%Copyright: ((C) 1987-1990 Adobe Systems Incorporated All Rights Reserved)
+currentpacking true setpacking
+userdict /Adobe_cmykcolor 4 dict dup begin put
+/initialize			% - initialize -
+{
+/setcmykcolor where
+	{
+	pop
+	}
+	{
+	userdict /Adobe_cmykcolor_vars 2 dict dup begin put
+	/_setrgbcolor
+		/setrgbcolor load def
+	/_currentrgbcolor
+		/currentrgbcolor load def
+	Adobe_cmykcolor begin
+	Adobe_cmykcolor
+		{
+		dup xcheck
+			{
+			bind
+			} if
+		pop pop
+		} forall
+	end
+	end
+	Adobe_cmykcolor begin
+	} ifelse
+} def
+/terminate			% - terminate -
+{
+currentdict Adobe_cmykcolor eq
+	{
+	end
+	} if
+} def
+/setcmykcolor		% cyan magenta yellow black setcmykcolor -
+{
+1 sub 4 1 roll
+3
+	{
+	3 index add neg dup 0 lt
+		{
+		pop 0
+		} if
+	3 1 roll
+	} repeat
+Adobe_cmykcolor_vars /_setrgbcolor get exec
+pop
+} def 
+/currentcmykcolor	% - currentcmykcolor cyan magenta yellow black
+{
+Adobe_cmykcolor_vars /_currentrgbcolor get exec
+3
+	{
+	1 sub neg 3 1 roll
+	} repeat
+0
+} def
+currentdict readonly pop end
+setpacking
+%%%EndResource
+%%%BeginResource: procset Adobe_cshow 1.1 0
+%%%Title: (cshow Operator)
+%%%Version: 1.1 
+%%%CreationDate: (1/23/89) ()
+%%%Copyright: ((C) 1987-1990 Adobe Systems Incorporated All Rights Reserved)
+currentpacking true setpacking
+userdict /Adobe_cshow 3 dict dup begin put
+/initialize			% - initialize -
+{
+/cshow where
+	{
+	pop
+	}
+	{
+	userdict /Adobe_cshow_vars 1 dict dup begin put
+	/_cshow		% - _cshow proc
+		{} def
+	Adobe_cshow begin
+	Adobe_cshow
+		{
+		dup xcheck
+			{
+			bind
+			} if
+		userdict 3 1 roll put
+		} forall
+	end
+	end
+	} ifelse
+} def
+/terminate			% - terminate -
+{
+} def
+/cshow				% proc string cshow -
+{
+exch
+Adobe_cshow_vars
+	exch /_cshow
+	exch put
+	{
+	0 0 Adobe_cshow_vars /_cshow get exec
+	} forall
+} def
+currentdict readonly pop end
+setpacking
+%%%EndResource
+%%%BeginResource: procset Adobe_customcolor 1.0 0
+%%%Title: (Custom Color Operators)
+%%%Version: 1.0 
+%%%CreationDate: (5/9/88) ()
+%%%Copyright: ((C) 1987-1990 Adobe Systems Incorporated All Rights Reserved)
+currentpacking true setpacking
+userdict /Adobe_customcolor 5 dict dup begin put
+/initialize			% - initialize -
+{
+/setcustomcolor where
+	{
+	pop
+	}
+	{
+	Adobe_customcolor begin
+	Adobe_customcolor
+		{
+		dup xcheck
+			{
+			bind
+			} if
+		pop pop
+		} forall
+	end
+	Adobe_customcolor begin
+	} ifelse
+} def
+/terminate			% - terminate -
+{
+currentdict Adobe_customcolor eq
+	{
+	end
+	} if
+} def
+/findcmykcustomcolor	% cyan magenta yellow black name findcmykcustomcolor object
+{
+5 packedarray
+}  def
+/setcustomcolor		% object tint setcustomcolor -
+{
+exch
+aload pop pop
+4
+	{
+	4 index mul 4 1 roll
+	} repeat
+5 -1 roll pop
+setcmykcolor
+} def
+/setoverprint		% boolean setoverprint -
+{
+pop
+} def
+currentdict readonly pop end
+setpacking
+%%%EndResource
+%%%BeginResource: procset Adobe_IllustratorA_AI3 1.0 0
+%%%Title: (Adobe Illustrator (R) Version 3.0 Abbreviated Prolog)
+%%%Version: 1.0 
+%%%CreationDate: (7/22/89) ()
+%%%Copyright: ((C) 1987-1990 Adobe Systems Incorporated All Rights Reserved)
+currentpacking true setpacking
+userdict /Adobe_IllustratorA_AI3 61 dict dup begin put
+%% initialization
+/initialize				% - initialize -
+{
+userdict /Adobe_IllustratorA_AI3_vars 46 dict dup begin put
+%% paint operands
+/_lp /none def
+/_pf {} def
+/_ps {} def
+/_psf {} def
+/_pss {} def
+/_pjsf {} def
+/_pjss {} def
+/_pola 0 def
+/_doClip 0 def
+%% paint operators
+/cf	currentflat def	% - cf flatness
+%% typography operands
+/_tm matrix def
+/_renderStart [/e0 /r0 /a0 /o0 /i0 /i0 /i0 /i0] def 
+/_renderEnd [null null null null /e1 /r1 /a1 /clip] def
+/_render -1 def
+/_rise 0 def
+/_ax 0 def			% x character spacing	(_ax, _ay, _cx, _cy follows awidthshow naming convention)
+/_ay 0 def			% y character spacing
+/_cx 0 def			% x word spacing
+/_cy 0 def			% y word spacing
+/_leading [0 0] def
+/_ctm matrix def
+/_mtx matrix def
+/_sp 16#020 def
+/_hyphen (-) def
+/_fScl 0 def
+/_cnt 0 def
+/_hs 1 def
+/_nativeEncoding 0 def
+/_useNativeEncoding 0 def
+/_tempEncode 0 def
+/_pntr 0 def
+%% typography operators
+/Tx {} def
+/Tj {} def
+%% compound path operators
+/CRender {} def
+%% printing
+/_AI3_savepage {} def
+%% color operands
+/_gf null def
+/_cf 4 array def
+/_if null def
+/_of false def
+/_fc {} def
+/_gs null def
+/_cs 4 array def
+/_is null def
+/_os false def
+/_sc {} def
+/_i null def
+Adobe_IllustratorA_AI3 begin
+Adobe_IllustratorA_AI3
+	{
+	dup xcheck
+		{
+		bind
+		} if
+	pop pop
+	} forall
+end
+end
+Adobe_IllustratorA_AI3 begin
+Adobe_IllustratorA_AI3_vars begin
+newpath
+} def
+/terminate				% - terminate -
+{
+end
+end
+} def
+%% definition operators
+/_					% - _ null
+null def
+/ddef				% key value ddef -
+{
+Adobe_IllustratorA_AI3_vars 3 1 roll put
+} def
+/xput				% key value literal xput -
+{
+dup load dup length exch maxlength eq
+	{
+	dup dup load dup
+	length 2 mul dict copy def
+	} if
+load begin def end
+} def
+/npop				% integer npop -
+{
+	{
+	pop
+	} repeat
+} def
+%% marking operators
+/sw					% ax ay string sw x y 
+{
+dup length exch stringwidth
+exch 5 -1 roll 3 index 1 sub mul add
+4 1 roll 3 1 roll 1 sub mul add
+} def
+/swj				% cx cy fillchar ax ay string swj x y
+{
+dup 4 1 roll
+dup length exch stringwidth 
+exch 5 -1 roll 3 index 1 sub mul add
+4 1 roll 3 1 roll 1 sub mul add 
+6 2 roll /_cnt 0 ddef
+{1 index eq {/_cnt _cnt 1 add ddef} if} forall pop
+exch _cnt mul exch _cnt mul 2 index add 4 1 roll 2 index add 4 1 roll pop pop
+} def
+/ss					% ax ay string matrix ss -
+{
+4 1 roll
+	{				% matrix ax ay char 0 0 {proc} -
+	2 npop 
+	(0) exch 2 copy 0 exch put pop
+	gsave
+	false charpath currentpoint
+	4 index setmatrix
+	stroke
+	grestore
+	moveto
+	2 copy rmoveto
+	} exch cshow
+3 npop
+} def
+/jss				% cx cy fillchar ax ay string matrix jss -
+{
+4 1 roll
+	{				% cx cy fillchar matrix ax ay char 0 0 {proc} -   
+	2 npop 
+	(0) exch 2 copy 0 exch put 
+	gsave
+	_sp eq 
+		{
+		exch 6 index 6 index 6 index 5 -1 roll widthshow  
+		currentpoint
+		}
+		{
+		false charpath currentpoint
+		4 index setmatrix stroke
+		}ifelse
+	grestore
+	moveto
+	2 copy rmoveto
+	} exch cshow
+6 npop
+} def
+%% path operators
+/sp					% ax ay string sp -
+{
+	{
+	2 npop (0) exch
+	2 copy 0 exch put pop
+	false charpath
+	2 copy rmoveto
+	} exch cshow
+2 npop
+} def
+/jsp					% cx cy fillchar ax ay string jsp -
+{
+	{					% cx cy fillchar ax ay char 0 0 {proc} -
+	2 npop 
+	(0) exch 2 copy 0 exch put 
+	_sp eq 
+		{
+		exch 5 index 5 index 5 index 5 -1 roll widthshow  
+		}
+		{
+		false charpath
+		}ifelse
+	2 copy rmoveto
+	} exch cshow
+5 npop
+} def
+%% path construction operators
+/pl				% x y pl x y
+{
+transform
+0.25 sub round 0.25 add exch
+0.25 sub round 0.25 add exch
+itransform
+} def
+/setstrokeadjust where
+	{
+	pop true setstrokeadjust
+	/c				% x1 y1 x2 y2 x3 y3 c -
+	{
+	curveto
+	} def
+	/C
+	/c load def
+	/v				% x2 y2 x3 y3 v -
+	{
+	currentpoint 6 2 roll curveto
+	} def
+	/V
+	/v load def
+	/y				% x1 y1 x2 y2 y -
+	{
+	2 copy curveto
+	} def
+	/Y
+	/y load def
+	/l				% x y l -
+	{
+	lineto
+	} def
+	/L
+	/l load def
+	/m				% x y m -
+	{
+	moveto
+	} def
+	}
+	{%else
+	/c
+	{
+	pl curveto
+	} def
+	/C
+	/c load def
+	/v
+	{
+	currentpoint 6 2 roll pl curveto
+	} def
+	/V
+	/v load def
+	/y
+	{
+	pl 2 copy curveto
+	} def
+	/Y
+	/y load def
+	/l
+	{
+	pl lineto
+	} def
+	/L
+	/l load def
+	/m
+	{
+	pl moveto
+	} def
+	}ifelse
+%% graphic state operators
+/d					% array phase d -
+{
+setdash
+} def
+/cf	{} def			% - cf flatness
+/i					% flatness i -
+{
+dup 0 eq
+	{
+	pop cf
+	} if
+setflat
+} def
+/j					% linejoin j -
+{
+setlinejoin
+} def
+/J					% linecap J -
+{
+setlinecap
+} def
+/M					% miterlimit M -
+{
+setmiterlimit
+} def
+/w					% linewidth w -
+{
+setlinewidth
+} def
+%% path painting operators
+/H					% - H -
+{} def
+/h					% - h -
+{
+closepath
+} def
+/N					% - N -
+{
+_pola 0 eq 
+	{
+	_doClip 1 eq {clip /_doClip 0 ddef} if 
+	newpath
+	} 
+	{
+	/CRender {N} ddef
+	}ifelse
+} def
+/n					% - n -
+{N} def
+/F					% - F -
+{
+_pola 0 eq 
+	{
+	_doClip 1 eq 
+		{
+		gsave _pf grestore clip newpath /_lp /none ddef _fc 
+		/_doClip 0 ddef
+		}
+		{
+		_pf
+		}ifelse
+	} 
+	{
+	/CRender {F} ddef
+	}ifelse
+} def
+/f					% - f -
+{
+closepath
+F
+} def
+/S					% - S -
+{
+_pola 0 eq 
+	{
+	_doClip 1 eq 
+		{
+		gsave _ps grestore clip newpath /_lp /none ddef _sc 
+		/_doClip 0 ddef
+		}
+		{
+		_ps
+		}ifelse
+	} 
+	{
+	/CRender {S} ddef
+	}ifelse
+} def
+/s					% - s -
+{
+closepath
+S
+} def
+/B					% - B -
+{
+_pola 0 eq 
+	{
+	_doClip 1 eq 	% F clears _doClip
+	gsave F grestore 
+		{
+		gsave S grestore clip newpath /_lp /none ddef _sc
+		/_doClip 0 ddef
+		} 
+		{
+		S
+		}ifelse
+	}
+	{
+	/CRender {B} ddef
+	}ifelse
+} def
+/b					% - b -
+{
+closepath
+B
+} def
+/W					% - W -
+{
+/_doClip 1 ddef
+} def
+/*					% - [string] * -
+{
+count 0 ne 
+	{
+	dup type (stringtype) eq {pop} if
+	} if 
+_pola 0 eq {newpath} if
+} def
+%% group operators
+/u					% - u -
+{} def
+/U					% - U -
+{} def
+/q					% - q -
+{
+_pola 0 eq {gsave} if
+} def
+/Q					% - Q -
+{
+_pola 0 eq {grestore} if
+} def
+/*u					% - *u -
+{
+_pola 1 add /_pola exch ddef
+} def
+/*U					% - *U -
+{
+_pola 1 sub /_pola exch ddef 
+_pola 0 eq {CRender} if
+} def
+/D					% polarized D -
+{pop} def
+/*w					% - *w -
+{} def
+/*W					% - *W -
+{} def
+%% place operators
+/`					% matrix llx lly urx ury string ` -
+{
+/_i save ddef
+6 1 roll 4 npop
+concat
+userdict begin
+/showpage {} def
+false setoverprint
+pop
+} def
+/~					% - ~ -
+{
+end
+_i restore
+} def
+%% color operators
+/O					% flag O -
+{
+0 ne
+/_of exch ddef
+/_lp /none ddef
+} def
+/R					% flag R -
+{
+0 ne
+/_os exch ddef
+/_lp /none ddef
+} def
+/g					% gray g -
+{
+/_gf exch ddef
+/_fc
+{ 
+_lp /fill ne
+	{
+	_of setoverprint
+	_gf setgray
+	/_lp /fill ddef
+	} if
+} ddef
+/_pf
+{
+_fc
+fill
+} ddef
+/_psf
+{
+_fc
+ashow
+} ddef
+/_pjsf
+{
+_fc
+awidthshow
+} ddef
+/_lp /none ddef
+} def
+/G					% gray G -
+{
+/_gs exch ddef
+/_sc
+{
+_lp /stroke ne
+	{
+	_os setoverprint
+	_gs setgray
+	/_lp /stroke ddef
+	} if
+} ddef
+/_ps
+{
+_sc
+stroke
+} ddef
+/_pss
+{
+_sc
+ss
+} ddef
+/_pjss
+{
+_sc
+jss
+} ddef
+/_lp /none ddef
+} def
+/k					% cyan magenta yellow black k -
+{
+_cf astore pop
+/_fc
+{
+_lp /fill ne
+	{
+	_of setoverprint
+	_cf aload pop setcmykcolor
+	/_lp /fill ddef
+	} if
+} ddef
+/_pf
+{
+_fc
+fill
+} ddef
+/_psf
+{
+_fc
+ashow
+} ddef
+/_pjsf
+{
+_fc
+awidthshow
+} ddef
+/_lp /none ddef
+} def
+/K					% cyan magenta yellow black K -
+{
+_cs astore pop
+/_sc
+{
+_lp /stroke ne
+	{
+	_os setoverprint
+	_cs aload pop setcmykcolor
+	/_lp /stroke ddef
+	} if
+} ddef
+/_ps
+{
+_sc
+stroke
+} ddef
+/_pss
+{
+_sc
+ss
+} ddef
+/_pjss
+{
+_sc
+jss
+} ddef
+/_lp /none ddef
+} def
+/x					% cyan magenta yellow black name gray x -
+{
+/_gf exch ddef
+findcmykcustomcolor
+/_if exch ddef
+/_fc
+{ 
+_lp /fill ne
+	{
+	_of setoverprint
+	_if _gf 1 exch sub setcustomcolor
+	/_lp /fill ddef
+	} if
+} ddef
+/_pf
+{
+_fc
+fill
+} ddef
+/_psf
+{
+_fc
+ashow
+} ddef
+/_pjsf
+{
+_fc
+awidthshow
+} ddef
+/_lp /none ddef
+} def
+/X					% cyan magenta yellow black name gray X -
+{
+/_gs exch ddef
+findcmykcustomcolor
+/_is exch ddef
+/_sc
+{
+_lp /stroke ne
+	{
+	_os setoverprint
+	_is _gs 1 exch sub setcustomcolor
+	/_lp /stroke ddef
+	} if
+} ddef
+/_ps
+{
+_sc
+stroke
+} ddef
+/_pss
+{
+_sc
+ss
+} ddef
+/_pjss
+{
+_sc
+jss
+} ddef
+/_lp /none ddef
+} def
+%% locked object operator
+/A					% value A -
+{
+pop
+} def
+currentdict readonly pop end
+setpacking
+%% annotate page operator
+/annotatepage
+{
+} def
+%%%EndResource
+%%%EndProlog
+%%%BeginSetup
+Adobe_cmykcolor /initialize get exec
+Adobe_cshow /initialize get exec
+Adobe_customcolor /initialize get exec
+Adobe_IllustratorA_AI3 /initialize get exec
+%%%EndSetup
+0 A
+u
+0 O
+0 g
+0 i 0 J 0 j 1 w 4 M []0 d
+%%AI3_Note:
+0 D
+236.1606 721.7052 m
+236.1606 720.565 236.1406 719.7848 237.2008 719.1647 c
+237.2008 719.1047 L
+233.24 719.1047 L
+233.24 719.1647 L
+234.2402 719.5448 234.1201 721.0051 234.1201 721.9053 c
+234.1201 730.8272 L
+232.3598 730.8272 L
+231.4996 730.8272 230.5994 730.6071 229.9793 730.027 c
+229.9192 730.027 L
+230.6194 732.4075 L
+230.6794 732.4075 L
+230.9195 732.3075 231.1795 732.3075 231.4396 732.2675 c
+231.9397 732.2675 L
+239.4013 732.2675 L
+239.7413 732.2675 240.0614 732.2875 240.3215 732.4075 c
+240.3815 732.4075 L
+239.7413 730.027 L
+239.6813 730.027 L
+239.4213 730.7272 238.6211 730.8272 237.961 730.8272 c
+236.1606 730.8272 L
+236.1606 721.7052 l
+f
+242.7238 724.2428 m
+242.7238 721.3456 L
+242.7238 720.6253 242.6277 719.4568 243.4281 719.1527 c
+243.4281 719.1047 L
+240.3868 719.1047 L
+240.3868 719.1527 L
+241.1872 719.4568 241.0911 720.6253 241.0911 721.3456 c
+241.0911 727.396 L
+241.0911 728.1163 241.2032 729.2848 240.3868 729.5889 c
+240.3868 729.6369 L
+243.4281 729.6369 L
+243.4281 729.5889 L
+242.6277 729.2848 242.7238 728.1163 242.7238 727.38 c
+242.7238 725.3952 L
+248.5021 725.3952 L
+248.5021 727.38 L
+248.5021 728.1163 248.6142 729.2848 247.7978 729.5889 c
+247.7978 729.6369 L
+250.8551 729.6369 L
+250.8551 729.5889 L
+250.0387 729.2848 250.1348 728.1163 250.1348 727.396 c
+250.1348 721.3456 L
+250.1348 720.6253 250.0387 719.4568 250.8551 719.1527 c
+250.8551 719.1047 L
+247.7978 719.1047 L
+247.7978 719.1527 L
+248.6142 719.4568 248.5021 720.6253 248.5021 721.3456 c
+248.5021 724.2428 L
+242.7238 724.2428 l
+f
+254.4034 720.4492 m
+256.4362 720.2572 L
+257.4926 720.1611 258.5971 720.4972 259.3974 721.2015 c
+259.4454 721.2015 L
+258.7251 719.1047 L
+252.0504 719.1047 L
+252.0504 719.1527 L
+252.8668 719.4408 252.7707 720.6253 252.7707 721.3456 c
+252.7707 727.38 L
+252.7707 728.1163 252.8668 729.2848 252.0504 729.5889 c
+252.0504 729.6369 L
+257.1725 729.6369 L
+257.4446 729.6369 257.7167 729.6049 257.9248 729.717 c
+257.9728 729.717 L
+257.9728 727.8442 L
+257.9248 727.8442 L
+257.4286 728.4205 256.7723 728.4845 256.036 728.4845 c
+255.4758 728.4845 254.9156 728.4685 254.4034 728.3724 c
+254.4034 725.3952 L
+256.3081 725.3952 L
+256.5643 725.3952 256.8204 725.3952 257.0124 725.4913 c
+257.0605 725.4913 L
+257.0605 723.7946 L
+257.0124 723.7946 L
+256.7563 724.2588 256.0841 724.2428 255.5879 724.2428 c
+254.4034 724.2428 L
+254.4034 720.4492 l
+f
+274.0932 720.425 m
+273.2131 719.2647 271.5727 718.7846 270.1724 718.7846 c
+268.8521 718.7846 267.4518 719.2047 266.5516 720.1849 c
+265.4914 721.3452 265.5314 722.6855 265.5314 724.1258 c
+265.5314 729.4669 L
+265.5314 730.3671 265.6714 731.8274 264.6512 732.2075 c
+264.6512 732.2675 L
+268.452 732.2675 L
+268.452 732.2075 L
+267.4518 731.8274 267.5718 730.3671 267.5718 729.4669 c
+267.5718 724.1258 L
+267.5718 721.4652 268.6921 720.2249 270.7525 720.2249 c
+271.8728 720.2249 273.013 720.685 273.6732 721.6252 c
+274.1132 722.2254 274.0932 722.7255 274.0932 723.4456 c
+274.0932 729.4669 L
+274.0932 730.3671 274.2133 731.8274 273.2131 732.2075 c
+273.2131 732.2675 L
+277.0139 732.2675 L
+277.0339 732.2075 L
+276.0137 731.8274 276.1337 730.3671 276.1337 729.4469 c
+276.1337 721.9053 L
+276.1337 721.0051 276.0137 719.5448 277.0339 719.1647 c
+277.0339 719.1047 L
+274.0932 719.1047 L
+274.0932 720.425 l
+f
+280.2988 721.1855 m
+280.2988 720.2892 280.2828 719.6489 281.1311 719.1527 c
+281.1311 719.1047 L
+278.298 719.1047 L
+278.298 719.1527 L
+279.1463 719.6489 279.1463 720.2892 279.1463 721.1855 c
+279.1463 727.5721 L
+279.1463 728.4685 279.1463 729.1087 278.314 729.5889 c
+278.314 729.6369 L
+280.6509 729.6369 L
+280.6509 729.6209 L
+280.7149 729.4289 280.779 729.3488 280.891 729.2208 c
+281.1151 728.9006 L
+286.9735 721.5057 L
+286.9735 727.5721 L
+286.9735 728.4685 286.9895 729.1087 286.1411 729.5889 c
+286.1411 729.6369 L
+288.9583 729.6369 L
+288.9583 729.5889 L
+288.1259 729.1087 288.1259 728.4685 288.1259 727.5721 c
+288.1259 718.5925 L
+286.9895 718.9766 286.4933 719.5048 285.789 720.4172 c
+280.2988 727.38 L
+280.2988 721.1855 l
+f
+290.5858 727.38 m
+290.5858 728.1163 290.6979 729.2848 289.8815 729.5889 c
+289.8815 729.6369 L
+292.9228 729.6369 L
+292.9228 729.5889 L
+292.1224 729.2848 292.2185 728.1003 292.2185 727.38 c
+292.2185 721.3456 L
+292.2185 720.6253 292.1224 719.4568 292.9228 719.1527 c
+292.9228 719.1047 L
+289.8815 719.1047 L
+289.8815 719.1527 L
+290.6819 719.4408 290.5858 720.6253 290.5858 721.3456 C
+290.5858 727.38 l
+f
+300.6645 726.7398 m
+301.0966 727.8762 301.6408 729.1888 300.6484 729.5889 c
+300.6484 729.6369 L
+303.0334 729.6369 L
+298.8077 718.6245 L
+297.6873 719.3608 297.3191 719.4888 296.8549 720.7534 c
+294.4379 727.3 L
+294.1338 728.1163 293.8937 729.0447 293.1894 729.5889 c
+293.1894 729.6369 L
+295.5264 729.6369 L
+295.5104 729.4449 L
+295.5104 729.0927 295.8145 728.3084 295.9425 727.9563 c
+298.4876 720.9934 L
+300.6645 726.7398 l
+f
+306.0684 720.4492 m
+308.1012 720.2572 L
+309.1577 720.1611 310.2621 720.4972 311.0624 721.2015 c
+311.1105 721.2015 L
+310.3902 719.1047 L
+303.7155 719.1047 L
+303.7155 719.1527 L
+304.5318 719.4408 304.4358 720.6253 304.4358 721.3456 c
+304.4358 727.38 L
+304.4358 728.1163 304.5318 729.2848 303.7155 729.5889 c
+303.7155 729.6369 L
+308.8375 729.6369 L
+309.1096 729.6369 309.3818 729.6049 309.5898 729.717 c
+309.6379 729.717 L
+309.6379 727.8442 L
+309.5898 727.8442 L
+309.0936 728.4205 308.4374 728.4845 307.7011 728.4845 c
+307.1408 728.4845 306.5806 728.4685 306.0684 728.3724 c
+306.0684 725.3952 L
+307.9732 725.3952 L
+308.2293 725.3952 308.4854 725.3952 308.6775 725.4913 c
+308.7255 725.4913 L
+308.7255 723.7946 L
+308.6775 723.7946 L
+308.4214 724.2588 307.7491 724.2428 307.2529 724.2428 c
+306.0684 724.2428 L
+306.0684 720.4492 l
+f
+315.7934 729.6369 m
+317.9383 729.6369 319.1067 728.5165 319.1067 727.0599 c
+319.1067 725.6513 317.8742 724.5469 316.5617 724.2428 c
+318.8666 721.3456 L
+319.5389 720.5133 320.5473 719.6809 321.4597 719.1047 c
+319.9871 719.1047 L
+319.1387 719.1047 318.6105 719.3128 318.1303 719.905 c
+316.1775 722.322 L
+314.705 724.5789 L
+315.9855 724.771 317.4741 725.3632 317.4741 726.8678 c
+317.4741 728.0203 316.4817 728.6926 315.4092 728.6445 c
+315.0411 728.6285 314.6889 728.5805 314.3208 728.5165 c
+314.3208 721.3456 L
+314.3208 720.6093 314.2248 719.4408 315.0411 719.1527 c
+315.0411 719.1047 L
+311.9839 719.1047 L
+311.9839 719.1527 L
+312.8002 719.4408 312.6881 720.6253 312.6881 721.3456 c
+312.6881 727.38 L
+312.6881 728.1163 312.8002 729.2848 311.9839 729.5889 c
+311.9839 729.6369 L
+315.7934 729.6369 l
+f
+326.8471 727.7322 m
+326.2228 728.3724 325.2304 728.7406 324.3341 728.7406 c
+323.4217 728.7406 322.2692 728.3884 322.2692 727.284 c
+322.2692 725.0911 327.7755 725.1231 327.7755 722.1619 c
+327.7755 720.4492 325.9827 718.8486 323.4857 718.8486 c
+322.5093 718.8486 321.5329 718.9926 320.6206 719.3288 c
+320.1564 721.3296 L
+321.1008 720.5133 322.4133 720.001 323.6618 720.001 c
+324.5742 720.001 325.9507 720.5453 325.9507 721.6657 c
+325.9507 724.1627 320.4445 723.7145 320.4445 727.1079 c
+320.4445 729.1247 322.5093 729.893 324.4621 729.893 c
+325.2624 729.893 326.0788 729.781 326.8471 729.5409 C
+326.8471 727.7322 l
+f
+329.6092 727.38 m
+329.6092 728.1163 329.7213 729.2848 328.905 729.5889 c
+328.905 729.6369 L
+331.9462 729.6369 L
+331.9462 729.5889 L
+331.1459 729.2848 331.2419 728.1003 331.2419 727.38 c
+331.2419 721.3456 L
+331.2419 720.6253 331.1459 719.4568 331.9462 719.1527 c
+331.9462 719.1047 L
+328.905 719.1047 L
+328.905 719.1527 L
+329.7053 719.4408 329.6092 720.6253 329.6092 721.3456 C
+329.6092 727.38 l
+f
+336.8708 721.1855 m
+336.8708 720.2732 336.8547 719.6489 337.7031 719.1527 c
+337.7031 719.1047 L
+334.5338 719.1047 L
+334.5338 719.1527 L
+335.3341 719.4568 335.2381 720.6253 335.2381 721.3456 c
+335.2381 728.4845 L
+333.8295 728.4845 L
+333.1412 728.4845 332.421 728.3084 331.9248 727.8442 c
+331.8767 727.8442 L
+332.437 729.749 L
+332.485 729.749 L
+332.6771 729.669 332.8851 729.669 333.0932 729.6369 c
+333.4934 729.6369 L
+339.4638 729.6369 L
+339.7359 729.6369 339.992 729.6529 340.2001 729.749 c
+340.2481 729.749 L
+339.7359 727.8442 L
+339.6879 727.8442 L
+339.4798 728.4044 338.8395 728.4845 338.3113 728.4845 c
+336.8708 728.4845 L
+336.8708 721.1855 l
+f
+345.1265 721.1855 m
+345.1265 720.2251 345.1265 719.7449 345.9428 719.1527 c
+345.9428 719.1047 L
+342.8216 719.1047 L
+342.8216 719.1527 L
+343.6059 719.5529 343.4938 720.5933 343.4938 721.3456 c
+343.4938 723.7145 L
+340.8368 727.9883 L
+340.4046 728.6926 340.0845 729.2208 339.3161 729.6369 c
+340.7727 729.6369 L
+341.2849 729.6369 341.7651 729.5249 341.9732 729.1888 c
+344.5343 725.0111 L
+346.5191 727.9883 L
+346.7912 728.3884 347.1593 729.1567 346.263 729.5889 c
+346.263 729.6369 L
+349.0641 729.6369 L
+345.1265 723.7145 L
+345.1265 721.1855 l
+f
+365.0425 724.4829 m
+365.0425 721.2175 362.3374 718.8486 359.1521 718.8486 c
+355.9829 718.8486 353.3098 721.1215 353.3098 724.4028 c
+353.3098 727.4441 355.9508 729.9891 359.3122 729.9091 c
+362.6736 729.9251 365.0425 727.364 365.0425 724.4829 c
+f
+1 g
+359.2002 728.7566 m
+361.7292 728.7566 363.2178 726.4997 363.2178 724.1627 c
+363.2178 721.7778 361.6652 720.001 359.2322 720.001 c
+356.7192 720.001 355.1345 722.306 355.1345 724.5469 c
+355.1345 726.9639 356.7192 728.7566 359.2002 728.7566 c
+f
+0 g
+368.3314 721.3456 m
+368.3314 720.6253 368.2033 719.4568 369.0036 719.1527 c
+369.0036 719.1047 L
+365.9784 719.1047 L
+365.9784 719.1527 L
+366.7947 719.4408 366.6987 720.6253 366.6987 721.3456 c
+366.6987 727.38 L
+366.6987 728.1163 366.7947 729.2848 365.9784 729.5889 c
+365.9784 729.6369 L
+371.1005 729.6369 L
+371.3726 729.6369 371.6447 729.6049 371.8528 729.717 c
+371.9008 729.717 L
+371.9008 727.8602 L
+371.8528 727.8602 L
+371.3566 728.4205 370.7003 728.4845 369.964 728.4845 c
+369.4038 728.4845 368.8436 728.4685 368.3314 728.3724 c
+368.3314 725.3952 L
+370.2521 725.3952 L
+370.4922 725.3952 370.7483 725.3952 370.9404 725.4913 c
+370.9884 725.4913 L
+370.9884 723.7946 L
+370.9404 723.7946 L
+370.6843 724.2748 370.0121 724.2428 369.5158 724.2428 c
+368.3314 724.2428 L
+368.3314 721.3456 l
+f
+213.3082 708.0982 m
+225.5802 677.8043 L
+226.7732 673.7297 228.8982 670.9797 230.96 669.2847 c
+230.96 669.1047 L
+218.6605 669.1047 L
+218.6605 669.2847 L
+221.6003 670.6046 221.1204 671.2646 219.5004 675.4644 c
+216.2606 683.9241 L
+201.1412 683.9241 l
+198.0213 675.4644 L
+196.7613 672.1046 196.3414 670.3646 199.2212 669.2847 c
+199.2212 669.1047 L
+188.1817 669.1047 L
+188.1817 669.2847 L
+191.6616 671.0246 192.6815 674.3845 194.0015 677.8043 c
+204.0211 702.8233 L
+204.6491 704.4382 205.5119 706.858 205.9074 707.9764 C
+209.3357 717.8547 l
+213.3082 708.0982 L
+213.3082 708.0982 L
+f
+1 g
+214.5206 688.3639 m
+202.7011 688.3639 L
+208.6409 703.4833 l
+214.5206 688.3639 L
+f
+0 g
+246.0102 702.0067 m
+252.7106 702.0067 256.3608 698.5065 256.3608 693.9562 c
+256.3608 689.5559 252.5106 686.1057 248.4104 685.1557 c
+255.6108 676.1051 L
+257.7109 673.505 260.8611 670.9048 263.7113 669.1047 c
+259.111 669.1047 L
+256.4608 669.1047 254.8107 669.7547 253.3106 671.6048 c
+247.2103 679.1553 L
+242.61 686.2057 L
+246.6102 686.8058 251.2605 688.6559 251.2605 693.3562 c
+251.2605 696.9564 248.1603 699.0565 244.8101 698.9065 c
+243.6601 698.8565 242.56 698.7065 241.4099 698.5065 c
+241.4099 676.1051 L
+241.4099 673.805 241.1099 670.1548 243.6601 669.2547 c
+243.6601 669.1047 L
+234.1095 669.1047 L
+234.1095 669.2547 L
+236.6596 670.1548 236.3096 673.855 236.3096 676.1051 c
+236.3096 694.9563 L
+236.3096 697.2564 236.6596 700.9066 234.1095 701.8567 c
+234.1095 702.0067 L
+246.0102 702.0067 l
+f
+265.5988 694.9563 m
+265.5988 697.2564 265.9488 700.9066 263.3987 701.8567 c
+263.3987 702.0067 L
+272.8992 702.0067 L
+272.8992 701.8567 L
+270.3991 700.9066 270.6991 697.2064 270.6991 694.9563 c
+270.6991 676.1051 L
+270.6991 673.855 270.3991 670.2048 272.8992 669.2547 c
+272.8992 669.1047 L
+263.3987 669.1047 L
+263.3987 669.2547 L
+265.8988 670.1548 265.5988 673.855 265.5988 676.1051 C
+265.5988 694.9563 l
+f
+275.8864 669.1047 m
+293.9875 697.9064 L
+285.4869 698.4065 L
+282.3868 698.6065 280.5867 697.9564 277.9865 696.2563 c
+277.8365 696.2563 L
+280.3866 702.0067 L
+302.488 702.0067 L
+284.4869 673.3049 L
+294.9875 672.7049 L
+298.6378 672.5049 301.7879 673.605 304.8881 675.4551 c
+305.0381 675.4551 L
+302.238 669.1047 L
+275.8864 669.1047 l
+f
+342.1312 685.9057 m
+342.1312 675.7051 333.6806 668.3046 323.73 668.3046 c
+313.8294 668.3046 305.4789 675.4051 305.4789 685.6557 c
+305.4789 695.1563 313.7294 703.1068 324.2301 702.8567 c
+334.7307 702.9067 342.1312 694.9063 342.1312 685.9057 c
+f
+1 g
+323.88 699.2565 m
+331.7805 699.2565 336.4308 692.2061 336.4308 684.9057 c
+336.4308 677.4552 331.5805 671.9049 323.9801 671.9049 c
+316.1296 671.9049 311.1793 679.1053 311.1793 686.1057 c
+311.1793 693.6562 316.1296 699.2565 323.88 699.2565 c
+f
+0 g
+349.9185 675.6051 m
+349.9185 672.8049 349.8685 670.8048 352.5187 669.2547 c
+352.5187 669.1047 L
+343.6682 669.1047 L
+343.6682 669.2547 L
+346.3183 670.8048 346.3183 672.8049 346.3183 675.6051 c
+346.3183 695.5563 L
+346.3183 698.3565 346.3183 700.3566 343.7182 701.8567 c
+343.7182 702.0067 L
+351.0186 702.0067 L
+351.0186 701.9567 L
+351.2186 701.3567 351.4186 701.1066 351.7687 700.7066 c
+352.4687 699.7066 L
+370.7698 676.6051 L
+370.7698 695.5563 L
+370.7698 698.3565 370.8198 700.3566 368.1697 701.8567 c
+368.1697 702.0067 L
+376.9702 702.0067 L
+376.9702 701.8567 L
+374.37 700.3566 374.37 698.3565 374.37 695.5563 c
+374.37 667.5046 L
+370.8198 668.7047 369.2697 670.3548 367.0696 673.2049 c
+349.9185 694.9563 L
+349.9185 675.6051 l
+f
+389.9668 681.4554 m
+387.3666 674.405 L
+386.3166 671.6048 385.9665 670.1548 388.3667 669.2547 c
+388.3667 669.1047 L
+379.1661 669.1047 L
+379.1661 669.2547 L
+382.0663 670.7048 382.9163 673.505 384.0164 676.3551 c
+392.3669 697.2064 L
+393.067 699.0065 394.017 701.1066 391.6169 701.8567 c
+391.6169 702.0067 L
+399.5174 702.0067 L
+409.918 676.3551 L
+411.0681 673.505 411.9681 670.7048 414.8183 669.2547 c
+414.8183 669.1047 L
+404.5677 669.1047 L
+404.5677 669.2547 L
+407.0178 670.3548 406.6178 670.9048 405.2677 674.405 c
+402.5675 681.4554 L
+389.9668 681.4554 l
+f
+1 g
+401.1175 685.1557 m
+391.2669 685.1557 L
+396.2172 697.7564 l
+401.1175 685.1557 L
+f
+0 g
+237.3542 641.7052 m
+237.3542 640.565 237.3342 639.7848 238.3944 639.1647 c
+238.3944 639.1047 L
+234.4336 639.1047 L
+234.4336 639.1647 L
+235.4338 639.5448 235.3137 641.0051 235.3137 641.9053 c
+235.3137 650.8272 L
+233.5534 650.8272 L
+232.6932 650.8272 231.793 650.6071 231.1729 650.027 c
+231.1128 650.027 L
+231.813 652.4075 L
+231.873 652.4075 L
+232.1131 652.3075 232.3731 652.3075 232.6332 652.2675 c
+233.1333 652.2675 L
+240.5949 652.2675 L
+240.9349 652.2675 241.255 652.2875 241.5151 652.4075 c
+241.5751 652.4075 L
+240.9349 650.027 L
+240.8749 650.027 L
+240.6149 650.7272 239.8147 650.8272 239.1546 650.8272 c
+237.3542 650.8272 L
+237.3542 641.7052 l
+f
+248.9914 640.1611 m
+248.2872 639.2327 246.9746 638.8486 245.8542 638.8486 c
+244.7977 638.8486 243.6773 639.1847 242.957 639.969 c
+242.1087 640.8974 242.1407 641.9698 242.1407 643.1223 c
+242.1407 647.396 L
+242.1407 648.1163 242.2527 649.2848 241.4364 649.5889 c
+241.4364 649.6369 L
+244.4776 649.6369 L
+244.4776 649.5889 L
+243.6773 649.2848 243.7733 648.1163 243.7733 647.396 c
+243.7733 643.1223 L
+243.7733 640.9934 244.6697 640.001 246.3184 640.001 c
+247.2147 640.001 248.1271 640.3692 248.6553 641.1215 c
+249.0074 641.6017 248.9914 642.0019 248.9914 642.5781 c
+248.9914 647.396 L
+248.9914 648.1163 249.0875 649.2848 248.2872 649.5889 c
+248.2872 649.6369 L
+251.3284 649.6369 L
+251.3444 649.5889 L
+250.5281 649.2848 250.6241 648.1163 250.6241 647.38 c
+250.6241 641.3456 L
+250.6241 640.6253 250.5281 639.4568 251.3444 639.1527 c
+251.3444 639.1047 L
+248.9914 639.1047 L
+248.9914 640.1611 l
+f
+260.7827 647.6521 m
+259.9024 648.2124 258.8779 648.5645 257.8215 648.5645 c
+255.6126 648.5645 254.076 646.9479 254.076 644.6269 c
+254.076 642.274 255.6766 640.1771 258.1416 640.1771 c
+259.3421 640.1771 260.5426 640.6093 261.551 641.1855 c
+261.599 641.1855 L
+260.7827 639.3288 L
+260.0304 638.9766 259.1981 638.8486 258.3657 638.8486 c
+254.5882 638.8486 252.2513 640.9614 252.2513 644.3868 c
+252.2513 647.7002 254.5882 649.893 257.8695 649.893 c
+258.8459 649.893 259.8383 649.717 260.7827 649.4929 C
+260.7827 647.6521 l
+f
+268.3796 647.7322 m
+267.7553 648.3724 266.7629 648.7406 265.8665 648.7406 c
+264.9542 648.7406 263.8017 648.3884 263.8017 647.284 c
+263.8017 645.0911 269.3079 645.1231 269.3079 642.1619 c
+269.3079 640.4492 267.5152 638.8486 265.0182 638.8486 c
+264.0418 638.8486 263.0654 638.9926 262.153 639.3288 c
+261.6889 641.3296 L
+262.6332 640.5133 263.9458 640.001 265.1943 640.001 c
+266.1066 640.001 267.4832 640.5453 267.4832 641.6657 c
+267.4832 644.1627 261.977 643.7145 261.977 647.1079 c
+261.977 649.1247 264.0418 649.893 265.9946 649.893 c
+266.7949 649.893 267.6112 649.781 268.3796 649.5409 C
+268.3796 647.7322 l
+f
+281.9461 644.4829 m
+281.9461 641.2175 279.241 638.8486 276.0557 638.8486 c
+272.8864 638.8486 270.2133 641.1215 270.2133 644.4028 c
+270.2133 647.4441 272.8544 649.9891 276.2158 649.9091 c
+279.5771 649.9251 281.9461 647.364 281.9461 644.4829 c
+f
+1 g
+276.1037 648.7566 m
+278.6327 648.7566 280.1213 646.4997 280.1213 644.1627 c
+280.1213 641.7778 278.5687 640.001 276.1357 640.001 c
+273.6227 640.001 272.0381 642.306 272.0381 644.5469 c
+272.0381 646.9639 273.6227 648.7566 276.1037 648.7566 c
+f
+0 g
+284.8508 641.1855 m
+284.8508 640.2892 284.8348 639.6489 285.6831 639.1527 c
+285.6831 639.1047 L
+282.85 639.1047 L
+282.85 639.1527 L
+283.6983 639.6489 283.6983 640.2892 283.6983 641.1855 c
+283.6983 647.5721 L
+283.6983 648.4685 283.6983 649.1087 282.866 649.5889 c
+282.866 649.6369 L
+285.2029 649.6369 L
+285.2029 649.6209 L
+285.2669 649.4289 285.331 649.3488 285.443 649.2208 c
+285.6671 648.9006 L
+291.5255 641.5057 L
+291.5255 647.5721 L
+291.5255 648.4685 291.5415 649.1087 290.6931 649.5889 c
+290.6931 649.6369 L
+293.5103 649.6369 L
+293.5103 649.5889 L
+292.6779 649.1087 292.6779 648.4685 292.6779 647.5721 c
+292.6779 638.5925 L
+291.5415 638.9766 291.0453 639.5048 290.341 640.4172 c
+284.8508 647.38 L
+284.8508 641.1855 l
+f
+306.5596 652.2675 m
+310.7205 642.0053 L
+311.1806 640.8651 311.5407 639.7448 312.6809 639.1647 c
+312.6809 639.1047 L
+308.58 639.1047 L
+308.58 639.1647 L
+309.5603 639.6048 309.4002 639.8248 308.8601 641.2251 c
+307.7799 644.0457 L
+302.7388 644.0457 l
+301.6986 641.2251 L
+301.2785 640.1049 301.1385 639.5248 302.0987 639.1647 c
+302.0987 639.1047 L
+298.4179 639.1047 L
+298.4179 639.1647 L
+299.5781 639.7448 299.9182 640.8651 300.3583 642.0053 c
+303.699 650.3471 L
+305.4607 655.1672 l
+306.5596 652.2675 L
+f
+1 g
+307.1997 645.5261 m
+303.2589 645.5261 L
+305.2393 650.5671 l
+307.1997 645.5261 L
+f
+0 g
+317.1511 649.6369 m
+319.2959 649.6369 320.4644 648.5165 320.4644 647.0599 c
+320.4644 645.6513 319.2319 644.5469 317.9194 644.2428 c
+320.2243 641.3456 L
+320.8966 640.5133 321.905 639.6809 322.8173 639.1047 c
+321.3448 639.1047 L
+320.4964 639.1047 319.9682 639.3128 319.488 639.905 c
+317.5352 642.322 L
+316.0626 644.5789 L
+317.3431 644.771 318.8317 645.3632 318.8317 646.8678 c
+318.8317 648.0203 317.8393 648.6926 316.7669 648.6445 c
+316.3988 648.6285 316.0466 648.5805 315.6785 648.5165 c
+315.6785 641.3456 L
+315.6785 640.6093 315.5824 639.4408 316.3988 639.1527 c
+316.3988 639.1047 L
+313.3415 639.1047 L
+313.3415 639.1527 L
+314.1578 639.4408 314.0458 640.6253 314.0458 641.3456 c
+314.0458 647.38 L
+314.0458 648.1163 314.1578 649.2848 313.3415 649.5889 c
+313.3415 649.6369 L
+317.1511 649.6369 l
+f
+322.9703 647.38 m
+322.9703 648.1163 323.0824 649.2848 322.266 649.5889 c
+322.266 649.6369 L
+325.3073 649.6369 L
+325.3073 649.5889 L
+324.507 649.2848 324.603 648.1003 324.603 647.38 c
+324.603 641.3456 L
+324.603 640.6253 324.507 639.4568 325.3073 639.1527 c
+325.3073 639.1047 L
+322.266 639.1047 L
+322.266 639.1527 L
+323.0664 639.4408 322.9703 640.6253 322.9703 641.3456 C
+322.9703 647.38 l
+f
+325.9741 639.1047 m
+331.7685 648.3244 L
+329.0474 648.4845 L
+328.055 648.5485 327.4787 648.3404 326.6464 647.7962 c
+326.5984 647.7962 L
+327.4147 649.6369 L
+334.4896 649.6369 L
+328.7272 640.4492 L
+332.0886 640.2572 L
+333.2571 640.1931 334.2655 640.5453 335.2579 641.1375 c
+335.3059 641.1375 L
+334.4095 639.1047 L
+325.9741 639.1047 l
+f
+347.5286 644.4829 m
+347.5286 641.2175 344.8235 638.8486 341.6382 638.8486 c
+338.4689 638.8486 335.7959 641.1215 335.7959 644.4028 c
+335.7959 647.4441 338.4369 649.9891 341.7983 649.9091 c
+345.1596 649.9251 347.5286 647.364 347.5286 644.4829 c
+f
+1 g
+341.6862 648.7566 m
+344.2153 648.7566 345.7039 646.4997 345.7039 644.1627 c
+345.7039 641.7778 344.1512 640.001 341.7183 640.001 c
+339.2052 640.001 337.6206 642.306 337.6206 644.5469 c
+337.6206 646.9639 339.2052 648.7566 341.6862 648.7566 c
+f
+0 g
+350.4333 641.1855 m
+350.4333 640.2892 350.4173 639.6489 351.2656 639.1527 c
+351.2656 639.1047 L
+348.4325 639.1047 L
+348.4325 639.1527 L
+349.2808 639.6489 349.2808 640.2892 349.2808 641.1855 c
+349.2808 647.5721 L
+349.2808 648.4685 349.2808 649.1087 348.4485 649.5889 c
+348.4485 649.6369 L
+350.7854 649.6369 L
+350.7854 649.6209 L
+350.8495 649.4289 350.9135 649.3488 351.0255 649.2208 c
+351.2496 648.9006 L
+357.108 641.5057 L
+357.108 647.5721 L
+357.108 648.4685 357.124 649.1087 356.2757 649.5889 c
+356.2757 649.6369 L
+359.0928 649.6369 L
+359.0928 649.5889 L
+358.2605 649.1087 358.2605 648.4685 358.2605 647.5721 c
+358.2605 638.5925 L
+357.124 638.9766 356.6278 639.5048 355.9235 640.4172 c
+350.4333 647.38 L
+350.4333 641.1855 l
+f
+362.9612 643.0583 m
+362.1289 640.8014 L
+361.7928 639.905 361.6807 639.4408 362.449 639.1527 c
+362.449 639.1047 L
+359.5038 639.1047 L
+359.5038 639.1527 L
+360.4322 639.6169 360.7043 640.5133 361.0565 641.4256 c
+363.7295 648.1003 L
+363.9536 648.6766 364.2578 649.3488 363.4895 649.5889 c
+363.4895 649.6369 L
+366.0185 649.6369 L
+369.3478 641.4256 L
+369.716 640.5133 370.0041 639.6169 370.9165 639.1527 c
+370.9165 639.1047 L
+367.6351 639.1047 L
+367.6351 639.1527 L
+368.4194 639.5048 368.2914 639.6809 367.8592 640.8014 c
+366.9949 643.0583 L
+362.9612 643.0583 l
+f
+1 g
+366.5307 644.2428 m
+363.3774 644.2428 L
+364.962 648.2764 l
+366.5307 644.2428 L
+f
+U
+%%%PageTrailer
+gsave annotatepage grestore
+%% showpage
+%%%Trailer
+Adobe_IllustratorA_AI3 /terminate get exec
+Adobe_customcolor /terminate get exec
+Adobe_cshow /terminate get exec
+Adobe_cmykcolor /terminate get exec
+Adobe_packedarray /terminate get exec
+%%%EOF
+ PE 
+3 f
+18 s
+2195 1536(SR)N
+2408(W)X
+2549(in)X
+14 s
+1687 1728(A)N
+1803(Graphics)X
+2364(Library)X
+2842(for)X
+3043(SR)X
+1 f
+12 s
+2078 2016(Qiang)N
+2373(Alex)X
+2598(Zhao)X
+2246 2304(TR)N
+2406(93-14)X
+
+1 p
+%%Trailer
+xt
+%%Pages: 1
+%%DocumentNeededResources: font NewCenturySchlbk-Roman NewCenturySchlbk-Italic 
+%%+ NewCenturySchlbk-Bold NewCenturySchlbk-BoldItalic Helvetica Helvetica-Bold Courier Courier-Bold 
+%%+ Symbol 
+
+xs
+
+%%EndDocument
+FMENDEPSF
+FMENDPAGE
+%%EndPage: "1" 0
+%%Trailer
+%%BoundingBox: 0 0 612 792
+%%Pages: 22 -1
+%%DocumentFonts: NewCenturySchlbk-Bold
+%%+ Courier
+%%+ NewCenturySchlbk-Roman
+%%+ Courier-Bold
+%%+ NewCenturySchlbk-Italic
+%%+ Times-Italic
+%%+ Times-Roman
+%%+ Courier-Oblique
+%%+ Times-Bold

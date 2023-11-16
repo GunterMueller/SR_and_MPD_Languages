@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage{srlatex}
+\begin{document}
+\raggedbottom
+\begin{flushleft}
+\begin{srTeXprogram}
+\srTeXcm{\#}\\
+\srTeXcm{\#}\srTeXsp{1}{\bf\large This is a test program for {\em srlatex}.}\\
+\srTeXcm{\#}\\
+\srTeXcm{\#}\srTeXsp{1}\srTeXcm{Check}\srTeXsp{1}\srTeXcm{handling}\srTeXsp{1}\srTeXcm{of}\srTeXsp{1}\srTeXcm{special}\srTeXsp{1}\srTeXcm{characters}\srTeXsp{1}\srTeXcm{in}\srTeXsp{1}\srTeXcm{comment$:$}\\
+\srTeXcm{\#}\\
+\srTeXcm{\#}\srTeXsp{1}\srTeXcm{$\backslash \lbrace \rbrace \sim *><\char`\^ $"\$\&}\srTeXcm{\#}\srTeXcm{\%\_$->[]>=<=!=://$}\\
+\srTeXcm{\#}\\
+\srTeXmb{8}{\srTeXcm{\#}\srTeXcm{wwwwww}}\srTeXcm{world$!$}\\
+\srTeXcm{\#}\\
+\srTeXmb{8}{\srTeXcm{\#}}\srTeXcm{An}\srTeXsp{1}\srTeXcm{indented}\srTeXsp{1}\srTeXcm{comment.}\\
+\srTeXcm{\#}\\
+\srTeXkw{resource}\srTeXsp{1}\srTeXid{foo}\\
+\srTeXkw{body}\srTeXsp{1}\srTeXid{foo}$($\srTeXkw{var}\srTeXsp{1}\srTeXid{a$1$}\,:\,\srTeXsp{1}\srTeXkw{int}$)$\\
+\srTeXsp{3}\srTeXkw{var}\srTeXsp{1}\srTeXid{i}$,$\srTeXsp{1}\srTeXid{j}\,:\,\srTeXsp{1}\srTeXkw{int}\\
+\vskip1\baselineskip
+\srTeXsp{3}\srTeXkw{op}\srTeXsp{1}\srTeXid{a}$();$\srTeXsp{1}\srTeXid{b}$();$\srTeXsp{1}\srTeXid{c}$();$\\
+\vskip1\baselineskip
+\srTeXsp{3}\srTeXkw{fa}\srTeXsp{1}\srTeXid{i}\srTeXsp{1}$:=$\srTeXsp{1}$1$\srTeXsp{1}\srTeXkw{to}\srTeXsp{1}\srTeXid{n}\srTeXsp{1}$\rightarrow $\\
+\srTeXsp{6}\srTeXkw{if}\srTeXsp{1}\srTeXid{i}\srTeXsp{1}$=$\srTeXsp{1}$1$\srTeXsp{1}$\rightarrow $\\
+\srTeXsp{11}\srTeXid{a}$($\srTeXid{i}$);$\srTeXsp{1}\srTeXid{b}$($\srTeXid{i}$)$\\
+\srTeXsp{6}$\srTeXbx $\srTeXsp{1}\srTeXid{i}\srTeXsp{1}$=$\srTeXsp{1}$2$\srTeXsp{1}$\rightarrow $\\
+\srTeXsp{11}\srTeXid{c}$($\srTeXid{i}$)$\\
+\srTeXsp{6}$\srTeXbx $\srTeXsp{1}\srTeXid{i}\srTeXsp{1}$>$\srTeXsp{1}$3$\srTeXsp{1}\srTeXkw{and}\srTeXsp{1}\srTeXid{i}\srTeXsp{1}$\leq $\srTeXsp{1}$100$\srTeXsp{1}$\rightarrow $\\
+\srTeXsp{11}\srTeXkw{co}\srTeXsp{1}\srTeXid{p$1$}$($\srTeXid{i}$)$\\
+\srTeXsp{11}$\srTeXpl $\srTeXsp{1}\srTeXid{p$2$}$($\srTeXid{i}$)$\\
+\srTeXsp{11}$\srTeXpl $\srTeXsp{1}\srTeXid{p$3$}$($\srTeXid{i}$)$\\
+\srTeXsp{11}\srTeXkw{oc}\\
+\srTeXsp{11}\srTeXid{write}$($\srTeXst{"}\srTeXst{parallel}\srTeXsp{1}\srTeXst{stuff}\srTeXsp{1}\srTeXst{done}\srTeXst{"}$)$\\
+\srTeXsp{6}\srTeXkw{fi}\\
+\srTeXsp{3}\srTeXkw{af}\\
+\srTeXsp{3}\srTeXmb{21}{\srTeXkw{do}\srTeXsp{1}\srTeXid{tas}$($\srTeXid{locked}$)$}\srTeXmb{8}{$\rightarrow $}\srTeXkw{skip}\srTeXsp{1}\srTeXkw{od}\\
+\srTeXkw{end}\srTeXsp{1}\srTeXid{foo}\\
+\goodbreak
+\vskip1\baselineskip
+\srTeXcm{\#}\srTeXsp{1}\srTeXcm{test}\srTeXsp{1}\srTeXcm{FT$-$SR}\srTeXsp{1}\srTeXcm{stuff$:$}\\
+\srTeXid{persistent}\srTeXsp{1}\srTeXkw{resource}\srTeXsp{1}\srTeXid{ftsr}\\
+\srTeXsp{3}\srTeXkw{op}\srTeXsp{1}\srTeXid{doit}$($\srTeXid{args}$)$\srTeXsp{1}$\lbrace $\srTeXid{primary}$\rbrace $\\
+\srTeXsp{3}\srTeXkw{var}\srTeXsp{1}\srTeXid{pcap}\,:\,\srTeXsp{1}\srTeXid{private}\srTeXsp{1}\srTeXkw{cap}\srTeXsp{1}\srTeXid{foo}\\
+\srTeXkw{body}\srTeXsp{1}\srTeXid{ftsr}$()$\\
+\srTeXsp{3}\srTeXid{monitor}\srTeXsp{1}\srTeXid{foo}\srTeXsp{1}\srTeXkw{send}\srTeXsp{1}\srTeXkw{op}$($\srTeXid{args}$)$\\
+\srTeXsp{3}\srTeXid{monitorend}\srTeXsp{1}\srTeXid{foo}\\
+\srTeXsp{3}\srTeXkw{create}\srTeXsp{1}$($\srTeXid{i}\srTeXsp{1}$:=$\srTeXsp{1}$1$\srTeXsp{1}\srTeXkw{to}\srTeXsp{1}\srTeXid{n}$)$\srTeXsp{1}\srTeXid{foo}$($\srTeXid{args}$)$\srTeXsp{1}\srTeXkw{on}\srTeXsp{1}\srTeXid{vmlist}\\
+\srTeXsp{3}\srTeXid{restart}\srTeXsp{1}$($\srTeXid{i}\srTeXsp{1}$:=$\srTeXsp{1}$1$\srTeXsp{1}\srTeXkw{to}\srTeXsp{1}\srTeXid{n}$)$\srTeXsp{1}\srTeXid{foo}$($\srTeXid{args}$)$\srTeXsp{1}\srTeXkw{on}\srTeXsp{1}\srTeXid{vmlist}\\
+\srTeXsp{3}\srTeXkw{call}\srTeXsp{1}$\lbrace $\srTeXid{doit}$,$\srTeXid{failure}$\rbrace ($\srTeXid{args}$)$\\
+\srTeXkw{end}\srTeXsp{1}\srTeXid{ftsr}\\
+\goodbreak
+\hspace{0pt}\\
+\end{srTeXprogram}
+\end{flushleft}
+\vfill
+\end{document}

@@ -1,0 +1,5 @@
+resource b
+	import c
+	type X = rec( z1,z2:c.Y )
+body b()
+end

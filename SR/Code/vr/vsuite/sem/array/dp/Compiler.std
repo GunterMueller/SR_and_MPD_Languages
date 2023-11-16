@@ -1,0 +1,6 @@
+
+===============  main  ===============
+
+ops:
+   Rs  SYM2 fork: K_OP [1:]T_OP(){send}:T_VOID
+   Rp  SYM2 dp: K_OP T_OP(T_INT){send}:T_VOID

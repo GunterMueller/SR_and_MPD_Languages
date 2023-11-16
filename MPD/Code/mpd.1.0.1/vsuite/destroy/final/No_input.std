@@ -1,0 +1,6 @@
+hi
+x called from initial
+bye
+x called from final
+bye after x
+RTS warning: body process destroyed

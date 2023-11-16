@@ -1,0 +1,4 @@
+argtype: 1
+format: '%1234567890123456789012345678901234567890123456789012345i%i'
+RTS abort: file scan.sr, line 45:
+   field width specifier too long

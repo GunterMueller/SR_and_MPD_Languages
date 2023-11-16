@@ -1,0 +1,4 @@
+0 sr -c clone.sr
+0 srl clone
+0 run input1
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,36 @@
+# test recursive imports (new for SR v2) and import scope
+
+resource A
+    const u := 100
+    import B
+    const v := B.x + 10
+    import g
+body A ()
+end A
+
+
+resource B
+    const x := 200
+    import A
+    const y := A.v + 20
+body B ()
+    write (x, y)
+    import g
+end B
+
+
+resource C ()
+    begin
+	import B
+	write (u+2, x+2)	# both imported
+    end
+    const x := 300
+    begin
+	write ("   ", x+3)	# no u, x local
+	import B
+	write (u+4, x+4)	# imported u, still x local
+	const u := 400
+	const x := 500
+	write (u+5, x+5)	# new u & x local
+    end
+end

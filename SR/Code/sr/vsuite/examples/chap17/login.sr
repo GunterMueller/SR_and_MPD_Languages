@@ -1,0 +1,29 @@
+# login server; one per terminal device
+resource Login
+  import Defs, DirServer, CmdInterpreter
+body Login(myhost: int; device, host[*]: name;
+           dscap[*]: cap DirServer)
+
+  var ttyin, ttyout: file
+  ttyin := open("/dev/" || device, READ)
+  ttyout := open("/dev/" || device, WRITE)
+  op done()
+
+  process prompt
+    write(ttyout, "Welcome to DFS\n")
+    do true ->
+      writes(ttyout, "login: ")
+      var user: name
+      read(ttyin, user)
+      if not dscap[myhost].check(user) ->
+        write(ttyout, "invalid login"); next
+      fi
+      var cicap: cap CmdInterpreter
+      cicap := create CmdInterpreter(user, myhost,
+            ttyin, ttyout, host, dscap, done)
+      receive done()
+      destroy cicap
+    od
+  end
+
+end Login

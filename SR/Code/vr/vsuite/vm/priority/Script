@@ -1,0 +1,4 @@
+0 sr -c priority2.sr
+0 srl defs res2 priority2
+0 run 
+0 rm -rf Interfaces core *.out

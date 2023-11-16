@@ -1,0 +1,20 @@
+#  used to get segmentation fault from missizing of
+#  string array passed as resource param
+
+#  the string[2] wasn't getting aligned up to 16 bytes,
+#  so the array was too small
+
+resource foo(string[2] s[100])
+  write("howdy from foo")
+  int n = 0
+  for [ i = 1 to ub(s) ] { n += length(s[i]) }
+  write ("total lengths:", n)
+end
+
+resource main()
+  import foo
+  string[2] s[100]
+  for [ i = 1 to 100 ] { s[i] = string (([i % 3] 'x')) }
+  create foo(s)
+  write ("done")
+end

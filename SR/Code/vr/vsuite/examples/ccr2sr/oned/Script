@@ -1,0 +1,6 @@
+# From olsson@cs.ucdavis.edu Sat Oct 19 10:53:08 1996
+0 ccr2sr bb.ccr
+0 sr bb.sr
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out bb.sr

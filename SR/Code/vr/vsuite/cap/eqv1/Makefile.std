@@ -1,0 +1,46 @@
+#	Makefile created by SRM
+
+
+SR = sr
+SRFLAGS = 
+I = ./Interfaces
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/b.o $I/main.o
+	srl  -o a.out b main
+
+compile: $I/b.o $I/main.o
+
+run: link
+	a.out 
+
+$I/a.spec: a.sr
+	$(SR) $(SRFLAGS) -s a.sr
+
+$I/b.o: $I/a.spec $I/b.spec a.sr
+	$(SR) $(SRFLAGS) -b a.sr
+
+$I/b.spec: a.sr
+	$(SR) $(SRFLAGS) -s a.sr
+
+$I/main.o: $I/a.spec $I/b.spec $I/main.spec a.sr
+	$(SR) $(SRFLAGS) -b a.sr
+
+$I/main.spec: a.sr
+	$(SR) $(SRFLAGS) -s a.sr
+
+clean:
+	rm -rf $I 
+
+cleanx: clean
+	rm -f core a.out
+
+ls:
+	@echo a.sr
+
+make:
+	srm a.sr
+

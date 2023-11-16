@@ -1,0 +1,4 @@
+resource c
+	type Y = rec(int a,b)
+body c()
+end

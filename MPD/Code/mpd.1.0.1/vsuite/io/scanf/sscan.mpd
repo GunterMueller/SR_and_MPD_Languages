@@ -1,0 +1,107 @@
+# sscanf test
+
+resource sscan ()
+   string[50] s, t
+   string[100] format
+   string[100] input = ""
+
+   process main  {
+      int  i, j, k, l, n 
+      real  x, y, z 
+      ptr any  p 
+      int  argtype = 0
+      string[50] u
+      bool  b = false
+      bool  b1 = false
+      char  c, ch, ca[1:10] 
+      file  f 
+      string[50] fname
+
+      for [ i = 1 to 10 ] { ca[i] = '*' }
+
+      if (getarg(1, fname) == EOF) { write("scan  usage<filename>"); stop }
+
+      f = open(fname, READ)
+      if (f == null) { write("couldn't open file"); stop }
+      format = ""
+
+      while (true) {
+	   n = scanf(f, "%1s", ch)
+	   if (n == EOF) { write("end"); stop }
+
+	   if (ch == '$') {
+		n = scanf(f, "%1s", ch)
+		if (n == EOF) { write("error"); stop }
+
+		if (ch == 'a') {
+		     read(f, argtype)
+#                    printf("argtype: %d %s\n", argtype, argstring[argtype])
+		     printf("argtype: %d\n", argtype)
+		} else if (ch == 'f' ) {
+		     read(f, format)
+		     printf("format: '%s'\n", format)
+		} else if (ch == 'd' ) {
+		     if (argtype == 1) {
+			  i = j = -1
+			  read(f, input)
+			  n = sscanf(input, format, i, j)
+			  printf("%3d <%2d>: %d %d\n", argtype, n, i, j)
+		     } else if (argtype == 2 ) {
+			  s = "uh-oh"
+			  read(f, input)
+			  n = sscanf(input, format, s)
+			  printf("%3d <%2d>: '%s'\n", argtype, n, s)
+		     } else if (argtype == 3 ) {
+			  s = "arf!"
+			  t = "boo!"
+			  read(f, input)
+			  n = sscanf(input, format, s, t)
+			  printf("%3d <%2d>: '%s','%s'\n", argtype, n, s, t)
+		     } else if (argtype == 4 ) {
+			  c = '*'
+			  s = "beef"
+			  read(f, input)
+			  n = sscanf(input, format, c, s)
+			  printf("%3d <%2d>: %c, '%s'\n", argtype, n, c, s)
+		     } else if (argtype == 5 ) {
+			  read(f, input)
+			  n = sscanf(input, format, b)
+			  printf("%3d <%2d>: %b\n", argtype, n, b)
+		     } else if (argtype == 6 ) {
+			  read(f, input)
+			  n = sscanf(input, format, b, b1)
+			  printf("%3d <%2d>: %b, %b\n", argtype, n, b, b1)
+		     } else if (argtype == 7 ) {
+			  ca = ([10] '*')
+			  read(f, input)
+			  n = sscanf(input, format, ca)
+			  printf("%3d <%2d>: '%s'\n", argtype, n, ca)
+		     } else if (argtype == 8 ) {
+			  x = y = z = -1.0
+			  read(f, input)
+			  n = sscanf(input, format, x, y);
+			  printf("%3d <%2d>: %g, %g\n",argtype,n,x,y)
+		     } else if (argtype == 9 ) {
+#                         p := 0deadbeefX
+			  read(f, input)
+			  n = sscanf(input, format, p)
+			  printf("%3d <%2d>: %p\n",argtype,n,p)
+		     } else if (argtype == 10 ) {
+			  x = -1.0
+			  s = "hurl!"
+			  read(f, input)
+			  n = sscanf(input, format, x, s);
+			  printf("%3d <%2d>: %g, '%s'\n",argtype,n,x,s)
+		     } else {
+			  write("invalid argtype")
+		     }
+
+		     if (n == EOF) { write("EOF reached"); stop }
+		} else { write("error"); stop
+		}
+	   } else if (ch == '#' ) { write("finished"); stop
+	   }
+      }
+   }
+end
+

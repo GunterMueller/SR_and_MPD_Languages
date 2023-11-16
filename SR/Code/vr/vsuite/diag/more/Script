@@ -1,0 +1,6 @@
+#  test for miscellaneous compiler error messages
+
+0 sh ../mkscript.sh more.sr | tee sh.tmp | sr=$sr sh >more.out
+1 grep -v ok: more.out
+0 cmp -s more.std more.out
+0 rm -rf Interfaces core *.out *.tmp test*.sr

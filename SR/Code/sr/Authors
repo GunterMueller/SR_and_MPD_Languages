@@ -1,0 +1,55 @@
+SR Version 2.3 includes the work of many people.
+
+At the University of Arizona:
+
+    Gregory Andrews
+    Dave Bakken
+    Michael Coffin
+    Irving Elshoff
+    Dawson Engler
+    Vincent Freeh
+    Ke George Hong
+    Phil Kaslo
+    Tom Lofgren
+    Amy Morgenstern
+    David Mosberger
+    Kelvin Nilsen
+    A. Prasad
+    Titus Purdin
+    Anissa Shiu
+    Leo WaiChung So
+    Oliver Spatscheck
+    Vicraj Thomas
+    Gregg Townsend
+    Kevin Wong
+    Qiang Alex Zhao
+
+At the University of California at Davis:
+
+    Gregory Benson
+    Eugene Frederick Fodor
+    Doug Mayfield
+    Carole McNamee
+    Ronald Olsson
+    John Wagner
+    Gregory Whitehead
+
+Also:
+
+    Stephen Hartley, Drexel University
+    Edgar Greuter, Saarbrücken, Germany
+
+These people helped with context switch code and other porting issues:
+
+    David Jacobson, Ulrike Glavitsch, Joe Park, Luigi Semenzato
+	Hewlett-Packard Laboratories, Palo Alto
+    David Choong, Execmail Inc.
+    Charles Calkins, Washington University (St. Louis)
+    Jon Crowcroft, University College London
+    Pedro de las Heras Quiros, Universidad Carlos III
+    Eric Hildum, Northern Telecom, Mountain View
+    Stephen Hocking, University of Queensland
+    Sergey Kosyakov, Landau Institute for Theoretical Physics (Moscow)
+    Chris Metcalf, MIT Laboratory for Computer Science
+    Stephen Russell, University of New South Wales
+    Don Stewart, University of New South Wales

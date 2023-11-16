@@ -1,0 +1,9 @@
+resource b ()
+    op main ( c : cap () )
+
+    send main (null)
+
+    proc main (c)
+	  write("main called")
+    end
+end

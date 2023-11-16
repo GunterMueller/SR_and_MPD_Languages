@@ -1,0 +1,56 @@
+# test of string arguments to predefined functions
+
+resource predef()
+
+    var s: string[20]
+    var c[1:7]: char
+    var n: int
+    var f: file
+
+    fa i := 0 to numargs() ->
+	n := getarg(i,s)
+	write("arg",i,": ",s," (",n,")")
+    af
+
+    s := "Philadelphia"
+    write("len:",length(s)," max:",maxlength(s)," val:",s)
+    c := chars("Oshkosh")
+    write("len:",ub(c)," max:",ub(c)," val:",c)
+    write("len:",length("Ajo")," max:",maxlength("Ajo")," val:","Ajo")
+    s := ""
+    write("len:",length(s)," max:",maxlength(s)," val:",s)
+
+    s := "/tmp/sr.predef.test1"
+    f := open(s,WRITE)
+    if f ~= null ->
+	write("opened:",s)
+	close(f)
+	if remove(s) ->
+		write("removed:",s)
+	fi
+    fi
+
+    f := open("/tmp/sr.predef.test2",WRITE)
+    if f != null ->
+	write("opened:","/tmp/sr.predef.test2")
+	close(f)
+	if remove("/tmp/sr.predef.test2") ->
+		write("removed:","/tmp/sr.predef.test2")
+	fi
+    fi
+
+    writes(char(43))
+    writes(char(45))
+    write(char(42))
+
+    writes("Beautiful Downtown")
+    write(" Burbank")
+
+    get(s)
+    put(s)
+    put("\n")
+
+    do read(s) != EOF ->
+	write(s)
+    od
+end

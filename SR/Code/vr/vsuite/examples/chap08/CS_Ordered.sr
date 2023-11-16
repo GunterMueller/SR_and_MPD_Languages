@@ -1,0 +1,14 @@
+resource CS_Ordered()
+  const N := 20  # number of processes
+  sem mutex[N] := (1, [N-1] 0)
+  process p(i := 1 to N)
+    # non-critical section
+      ...
+    # critical section
+    P(mutex[i])            # enter critical section
+     ...                   # actual critical section
+    V(mutex[(i mod N)+1])  # exit critical section
+    # non-critical section
+      ...
+  end
+end

@@ -1,0 +1,4 @@
+#  ron  Fri Oct  1 11:13:01 MST 1999
+0 mpd cosem.mpd
+0 run
+0 rm -rf MPDinter core *.out

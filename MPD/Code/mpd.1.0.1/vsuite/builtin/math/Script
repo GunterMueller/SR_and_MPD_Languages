@@ -1,0 +1,7 @@
+# aprasad  Jun 91
+
+0 mpd -c realarr.mpd
+0 mpdl -o a.out realarr
+0 a.out 3.14159 6.28319 9.42478 <Input1 > Input1.out 2>&1
+0 cmp -s Input1.out Input1.std
+0 rm -rf MPDinter core *.out

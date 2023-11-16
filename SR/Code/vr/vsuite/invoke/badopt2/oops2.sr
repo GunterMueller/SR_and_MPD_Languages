@@ -1,0 +1,31 @@
+# the run-time had problems with this
+# because of procedure call optimization.
+# note that done is just to make sure that resource not destroyed
+# before done.
+
+resource a1(done:cap(){send})
+	op q(y:int)
+	process p
+		write("in p")
+		call q(1000)
+		send done()
+	end
+	proc q(y)
+		write("in q",y)
+	end
+end
+
+resource a2
+	import a1
+body a2()
+	op done() {send}
+
+	var c:cap a1
+	write("before create")
+	c := create a1(done)
+	receive done()
+	write("after create")
+	destroy c
+	write("a2 initial done")
+
+end

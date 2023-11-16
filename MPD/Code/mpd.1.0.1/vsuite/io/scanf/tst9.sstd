@@ -1,0 +1,8 @@
+argtype: 9
+format: '%p'
+  9 < 1>: ==null==
+  9 < 1>: 000ACDEF
+  9 < 1>: DEADBEEF
+  9 < 1>: 00000213
+  9 < 0>: 00000213
+finished

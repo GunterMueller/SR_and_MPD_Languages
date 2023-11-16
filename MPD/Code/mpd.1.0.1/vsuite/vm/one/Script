@@ -1,0 +1,5 @@
+#  gmt  Tue Apr  7 15:09:30 MST 1992
+0 mpd -c loc.mpd
+0 mpdl l
+0 run
+0 rm -rf MPDinter core *.out

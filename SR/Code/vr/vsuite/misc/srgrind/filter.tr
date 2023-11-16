@@ -1,0 +1,40 @@
+.\" a simple test of "srgrind -f"
+.\" (text from the SR overview paper)
+.sp 1i
+.ps 10
+.fi
+.de vS
+.in +5n
+.nf
+.sp 1
+..
+.de vE
+.in
+.fi
+.sp 1
+..
+SR also provides a novel iterative statement, \fBfa\fP (for all),
+that employs quantifiers introduced earlier with the \fBco\fP statement.
+The form of \fBfa\fP is
+.vS
+fa quantifier , ..., quantifier -> block af
+.vE
+where quantifiers have the general form
+.vS
+bound_variable  :=  initial_value  direction  final_value  st  boolean_expression
+.vE
+For example, the single statement
+.vS
+fa i := lb(a) to ub(a)-1,
+        j := i+1 to ub(a) st a[i]>a[j] ->
+                a[i] :=: a[j]		# swap statement
+af
+.vE
+sorts array \fIa\fP into ascending order.
+This statement employs the builtin array lower-bound (`lb')
+and upper-bound (`ub') functions.
+Note how the range of values for the second bound variable \fIj\fP depends
+on \fIi\fP.
+Also note the use of \fBst\fP (such that), which is used to
+limit execution of the body of \fBfa\fP to those values of
+\fIi\fP and \fIj\fP for which \fIa\fP[\fIi\fP]>\fIa\fP[\fIj\fP].

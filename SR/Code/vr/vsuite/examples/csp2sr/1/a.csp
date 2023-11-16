@@ -1,0 +1,30 @@
+_program(a)
+
+  _specs
+    _process_spec(A)
+      /* don't put spaces around op or process names */
+      _port(A,o1, (x: int))
+
+    _process_spec(B)
+      _port(B,o2, (x: int) )
+  _specs_end
+
+  _process_body(A)
+    var x: int
+    write("start of A", A, B)
+    _stmt_i(B,o1,(x))
+    write("in middle of A")
+    _stmt_o(B,o2,(17))
+    write(x)
+  _process_end
+
+  _process_body(B)
+    var x: int
+    write("start of B", B, A)
+    _stmt_o(A,o1,(3))
+    write("in middle of B")
+    _stmt_i(A,o2,(x))
+    write(x)
+  _process_end
+
+_program_end

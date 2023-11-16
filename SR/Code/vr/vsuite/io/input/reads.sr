@@ -1,0 +1,71 @@
+# test return values from various read calls
+#
+# there are many input files in order to present EOF
+# at various points
+#
+# by convention the first line of each input file explains what it's
+# trying to test.
+
+resource r ()
+op aedit (var a: [*]char)
+op sedit (var s: string[*])
+
+    var i: int := 0
+    var b: bool := false
+    var c: char := 'x'
+    var a[10] : char := ([10] 'z')
+    var s: string [10] := "--"
+    var l: string [100] := ""
+    var n: int
+
+# echo the comment line.
+
+    n := read (l)
+    writes (n, ":  ", l, "\n")
+
+# test read(); various inputs have various bad formats
+
+    n := read (i, c, b, a, s)
+    aedit(a)
+    sedit(s)
+    writes (n, ":  ", i, " '", c, "' ", b, " '", a, "'", " \"", s, "\"\n")
+
+# test read and get for char array and string
+# sometimes use stdin explicitly, sometimes implicitly
+
+    n := read (a)
+    aedit(a)
+    writes (n, ":  '", a, "'\n")
+
+    n := read (stdin, s)
+    sedit(s)
+    writes (n, ":  \"", s, "\"\n")
+
+    n := get (stdin, a)
+    aedit(a)
+    writes (n, ":  '", a, "'\n")
+
+    n := get (s)
+    sedit(s)
+    writes (n, ":  \"", s, "\"\n")
+
+
+# change newlines into vertical bars
+
+proc aedit (a)
+    fa i := 1 to ub(a) ->
+	if a[i] = '\n' ->
+	    a[i] := '|'
+	fi
+    af
+end aedit
+
+proc sedit (s)
+    fa i := 1 to length(s) ->
+	if s[i] = '\n' ->
+	    s[i] := '|'
+	fi
+    af
+end sedit
+
+end r

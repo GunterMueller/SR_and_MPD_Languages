@@ -1,0 +1,51 @@
+# try to crash the co statement
+
+resource cokiller()
+    var a: int := -3
+    var b: int := -4
+    op p1(arg1,arg2,arg3,arg4: int)	# prints third argument
+    op p2(a,b: int) returns sum:int	# returns sum of arguments
+    op p3(a: int)			# prints argument
+    op p4(a: int)			# prints -1000 + argument
+
+	var x: int := -1
+	var y: int := -2
+	var z: int := -3
+	fa i := 1 to 5 ->
+	    var ii: int := 1000 * i
+	    co call p1(a,b,ii,y) ->
+		write(-4)
+	    // z := p2(-1,-4) ->
+		write(z)		# -5
+		co call p3(2 * ii) ->
+		    co call p3(3 * ii) ->
+			write (-6)
+		    // (j:= 10 to 13) call p4(4 * ii + j) ->
+			write(-7)
+		    // call p1(-100, -101, 5 * ii, -103) ->
+			write(-8)
+		    oc
+		//  a := p2(y,x) ->
+			write(-9)
+		oc
+	    oc
+	af
+
+    proc p1 (arg1, arg2, arg3, arg4)
+	write(arg3)
+    end
+
+    proc p2(a,b) returns sum
+	sum := a + b
+    end
+
+    proc p3 (a)
+	write(a)
+    end
+
+    proc p4(a)
+	write(-1000 + a)
+    end
+end
+
+

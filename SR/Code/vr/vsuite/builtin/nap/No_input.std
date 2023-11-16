@@ -1,0 +1,45 @@
+maximum eagerness: 20 msec early
+maximum tardiness: 1000 msec late
+begin timing test
+nap(-479652):
+nap(0):
+nap(1):
+nap(2):
+nap(5):
+nap(10):
+nap(22):
+nap(47):
+nap(100):
+nap(220):
+nap(470):
+nap(1000):
+nap(2200):
+nap(4700):
+nap(12000):
+nap(0):
+nap(1):
+nap(2):
+nap(5):
+nap(10):
+nap(22):
+nap(47):
+nap(100):
+nap(220):
+nap(470):
+nap(1000):
+nap(0):
+nap(0):
+nap(0):
+nap(0):
+nap(0):
+nap(1):
+nap(1):
+nap(1):
+nap(1):
+nap(1):
+nap(1234):
+checking overall times
+checking starvation
+   napping
+   awakened
+end timing test

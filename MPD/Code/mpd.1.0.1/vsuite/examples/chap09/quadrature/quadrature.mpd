@@ -1,0 +1,48 @@
+resource main()
+  op bag(real a, real b, real fofa, real fofb)
+  op result(real a, real b, real area)
+  real  area = 0.0
+
+  procedure f(real x) returns real fx {
+    fx = x*x + 2*x
+    printf ("f(%.3f) = %.3f\n", x+.000001, fx+.00001)
+				    # +.00001 ensures consistent rounding
+  }
+
+  process administrator  {
+    real  l, r, part
+    l = 1.0
+    r = 9.0
+    send bag(l, r, f(l), f(r))
+    while (true) {
+      receive result(l, r, part)
+      area += part
+      printf ("area(%.3f:%.3f) = %.3f\n", l, r, part)
+    }
+  }
+
+  const int N = 20  # number of worker processes
+  process worker [ i = 1 to N ] {
+    real  a, b, m, fofa, fofb, fofm
+    real  larea, rarea, tarea, diff
+    while (true) {
+      receive bag(a, b, fofa, fofb)
+      m = (a+b)/2
+      fofm = f(m)
+      larea = (m - a) * (fofa + fofm) / 2
+      rarea = (b - m) * (fofm + fofb) / 2
+      tarea = (b - a) * (fofa + fofb) / 2
+      diff = abs(tarea - (larea + rarea))
+      if (diff <= 0.001 /* diff small enough */) {
+	  send result(a, b, larea + rarea)
+      } else if (diff > 0.001 /* diff too large */ ) {
+	  send bag(a, m, fofa, fofm)
+	  send bag(m, b, fofm, fofb)
+      }
+    }
+  }
+
+  final {  # once program terminates, print results
+    write("total area is:", area)
+  }
+end

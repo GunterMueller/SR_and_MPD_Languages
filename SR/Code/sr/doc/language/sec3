@@ -1,0 +1,131 @@
+.sh 1 "Language Support"
+.lp
+This section describes how synchronization, sharing, and distribution
+are supported in SR.
+The examples in Section 4
+will illustrate these points in the context of specific programming situations.
+.sh 2 "Support for Synchronization"
+.lp
+SR is rich in the functionality
+it provides for concurrent programming:
+dynamic process creation,
+semaphores,
+message passing,
+remote procedure call,
+and rendezvous.
+However,
+these are all provided through
+a single mechanism: the operation.
+.pp
+The key idea is that
+operations can be invoked in two ways,
+synchronously (@call@) or asynchronously (@send@),
+and can be serviced in one of two ways,
+by procs or by input statements (@in@).
+This yields the following four combinations:
+.(b L
+.(c
+.TS
+box;
+l |l |l.
+#Invoke	#Service	#Effect
+_
+@call@	@proc@	(possibly remote) procedure call
+@call@	@in@	rendezvous
+@send@	@proc@	dynamic process creation
+@send@	@in@	asynchronous message passing
+.TE
+.)c
+.)b
+One virtue of this approach is
+that it allows the declaration of an operation to be separated
+from the code
+that services it
+(i.e., proc or input statements).
+This allows resource and global specifications to be written and used
+without concern as to how an operation is serviced.
+.pp
+SR provides abbreviations of the above basic mechanisms to simplify
+the most common usages
+such as background process creation,
+semaphores,
+and simple asynchronous message passing.
+Briefly:
+a @process@ is an abbreviation for a proc
+and an implicit send to it when the
+enclosing resource or global is created;
+a @sem@ declaration is an abbreviation for an operation declaration,
+a @P@ is an abbreviation for an input statement,
+and a @V@ is an abbreviation for a send;
+and
+a @receive@ statement is an abbreviation for a simple form of input statement.
+.pp
+SR also provides three
+statements\(emforward, return, and reply\(em\
+that provide additional flexibility
+in servicing invocations.
+(However, none of these statements are used in the examples in this paper.)
+A process executing a reply statement causes
+the invocation being serviced to complete;
+result parameters and return values are immediately passed back
+to the caller.
+The process that executes a reply statement
+then continues execution with the statement following the reply.
+.sh 2 "Support for Sharing"
+.lp
+SR provides support for sharing on several levels.
+First,
+processes within a resource instance
+can share variables.
+They can coordinate access to shared variables
+through shared semaphores or other operations declared within
+the resource.
+Second,
+processes that execute in possibly different resource instances
+but on the same virtual machine
+can share variables and operations declared in the spec of globals.
+.pp
+Consider, for example,
+a program that is to be written for execution
+on a shared-memory multiprocessor.
+It might be written as a single resource program,
+with processes sharing variables and operations declared
+at the resource level.
+For a program of any complexity,
+though,
+splitting the program into multiple resources is desirable.
+This kind of structure is possible, too.
+Resources can be created on a single virtual machine,
+with shared variables and operations declared in one or more globals.
+.sh 2 "Support for Distribution"
+.lp
+As suggested in Section 2,
+virtual machines are the unit for program distribution.
+They can be created (or destroyed) dynamically as needed
+in response to program execution.
+Instances of resources and globals can then be created on virtual
+machines.
+Processes in different virtual machines communicate
+with other processes by invoking operations.
+.ig
+via resource capabilities or operation capabilities.
+Such communication is transparent,
+with respect to its syntax and semantics,
+as mentioned earlier.
+..
+.pp
+Operation invocations
+exhibit two kinds of transparency.
+First,
+an operation is invoked
+in the same way regardless of
+how a program is distributed.
+The invocations by the client of the operations in the server remain
+the same regardless of whether the client and server are located on
+the same virtual or physical machine.
+Second,
+an operation is invoked
+in the same way regardless of
+how the operation is serviced,
+i.e.,
+by an input statement or by a proc.

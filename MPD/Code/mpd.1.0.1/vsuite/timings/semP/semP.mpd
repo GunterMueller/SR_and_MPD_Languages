@@ -1,0 +1,28 @@
+# semaphore P only.  A semaphore is V'd first.  Then inside a fa loop,
+# the semaphore is P'd.
+
+resource semaphore()
+
+  int  limit, base, factor, trials 
+
+  sem dummy
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit = factor * base
+
+  for [ i = 1 to limit * trials ] { V(dummy) }    # insure no blocking
+
+  process test  {
+    int  start, finish 
+
+    for [ t = 1 to trials ] {
+	start = age()
+	for [ i = 1 to limit ] { P(dummy) }
+	finish = age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    }
+  }
+
+end

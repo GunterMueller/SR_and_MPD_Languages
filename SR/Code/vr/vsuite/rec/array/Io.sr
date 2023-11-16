@@ -1,0 +1,9 @@
+global Io
+   optype Read (res buf[1:*]: char; count: int) returns num_read: int
+   optype Write (buf[1:*]: char; count: int) returns num_written: int
+   optype Seek (kind: int; offset: int)
+   optype Close ()
+   type IoDesc = rec(read: cap Read; write: cap Write; seek: cap Seek;
+      close: cap Close)
+   type Access_Type = enum(RD, WR, RW)
+end

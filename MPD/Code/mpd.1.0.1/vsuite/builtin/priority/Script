@@ -1,0 +1,5 @@
+0 mpd ptest.mpd
+# run single threaded else test is pointless
+0 (MPD_PARALLEL=0 a.out >No_input.out 2>&1)
+0 cmp -s No_input.std No_input.out
+0 rm -rf MPDinter core *.out

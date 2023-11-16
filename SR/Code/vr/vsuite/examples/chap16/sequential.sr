@@ -1,0 +1,69 @@
+global Arguments
+  var n: int, fname: string[20]
+body Arguments
+  getarg(1, n); getarg(2, fname)
+end
+
+global Shared
+  import Arguments
+  var dist[1:n,1:n]: int                # distances
+  var shortest: int := 2**30            # best so far
+  op update(path[1:*], length: int)     # update shortest
+body Shared
+  var fd: file; fd := open(fname, READ)
+  fa i := 1 to n, j := 1 to n -> read(fd, dist[i,j]) af
+  var shortest_path[1:n]: int
+
+  # update shortest length and path, if necessary
+  proc update(path, length)
+    if length < shortest ->
+      shortest := length; shortest_path := path
+    fi
+  end
+
+  final
+    write("the shortest path has length", shortest)
+    write("the cities on the shortest path are:")
+    writes("  ")
+    fa i := 1 to n -> writes(shortest_path[i], " ") af
+    write()
+  end
+end
+
+resource Main()
+  import Arguments, Shared
+
+  # if city is not in path, add it and return true;
+  # otherwise return false
+  procedure visit(path[1:*], city: int) returns ok: bool
+      fa i := 2 to ub(path) st path[i] = city ->
+        ok := false; return
+      af
+      ok := true
+  end
+
+  # using recursion and backtracking, examine all paths that
+  # could be the shortest
+  procedure tsp(path[1:*], length: int)
+    var hops := ub(path)
+    if hops = n ->    # complete tour, see if best
+        length +:= dist[path[n],1]
+        update(path, length)
+    [] hops < n ->    # visit all cities not yet in path
+        fa city := 2 to n st visit(path, city) ->
+          var newpath[1:hops+1], newlength: int
+          newpath[1:hops] := path
+          newpath[hops+1] := city
+          newlength := length + dist[newpath[hops],newpath[hops+1]]
+          # recurse again if newpath possibly the best
+          if newlength < shortest -> tsp(newpath, newlength) fi
+        af
+    fi
+  end
+
+  var path[1:2] := (1, 0)
+  fa i := 2 to n ->
+    path[2] := i; tsp(path, dist[1,i])
+  af
+
+end Main

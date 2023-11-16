@@ -1,0 +1,25 @@
+resource casts()
+
+    var a: int := 63
+    var b: char := 'z'
+    var t: bool := true
+    var f: bool := false
+    type ctype = enum(c1, c2, c3, c4)
+    var c: ctype := c2
+    var s: string[100] := "\0 09azAZ\100\200\300"
+
+    # first just the values
+	write ("v:", a, b, t, f)
+    # cast everything to int
+	write ("i:", int(a), int(b), int(c), int(t), int(f))
+    # now char
+	write ("c:", char(a), char(b), int(char(c)), int(char(t)), int(char(f)))
+	writes ("s:")
+	fa i := 1 to length(s) ->
+	    writes (" ", int(s[i]))
+	af
+	write ()
+    # now enum
+	c := ctype(2)
+	write ("e:", int(c))
+end

@@ -1,0 +1,28 @@
+global CS
+  op CSenter(int id) {call}    # must be called
+  op CSexit()                  # may be invoked by call or send
+  int numusers = 5
+  int rounds = 5
+body CS
+  process arbitrator  {
+    for [ i = 1 to numusers * rounds ] {
+      in CSenter(id) by id ->
+	  write("user", id, "in its CS")
+      ni
+      receive CSexit()
+    }
+  }
+end
+
+resource main()
+  import CS
+
+  process user [ i = 1 to numusers ] {
+    for [ j = 1 to rounds ] {
+      call CSenter(i)
+      nap(int(random()*100))
+      send CSexit()
+      nap(int(random()*1000))
+    }
+  }
+end

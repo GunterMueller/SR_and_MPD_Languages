@@ -1,0 +1,33 @@
+# test slicing of arrays of chars and strings
+
+resource cslice ()
+    var v := chars ("12345")
+    var g := ((
+	chars("abcde"),
+	chars("fghij"),
+	chars("klmno"),
+	chars("prstu"),
+	chars("vwxyz")))
+
+    write (g[5])
+    write (g[*,2])
+    g[*,3] := v
+    write (g[4])
+    write ()
+
+    var s[5,5], t[5] : string[5]
+    fa i := 1 to 5 ->
+	fa j := 1 to 5 ->
+	    s[i,j] := "<" || string(100*i+j) || ">"
+	af
+    af
+
+    t := s[*,2]
+    s[*,4] := t
+
+    fa i := 1 to 5 ->
+	fa j := 1 to 5 ->
+	    printf ("s[%d,%d] = %s\n", i, j, s[i,j])
+	af
+    af
+end

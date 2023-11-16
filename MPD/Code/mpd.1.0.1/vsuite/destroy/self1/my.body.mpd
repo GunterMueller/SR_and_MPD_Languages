@@ -1,0 +1,10 @@
+body my
+	write(-9999)
+	# commit suicide
+		 destroy myresource()
+	write(9999)
+
+	final {
+		write(8888)
+	}
+end

@@ -1,0 +1,16 @@
+# gives different output when run with sc than with sw, su, or sx
+# demonstrates effect of different signal discipline
+# (of course, could be just scheduler, though; but it is not.)
+# (output from sw and su is the same)
+resource main()
+    import foo
+    process p(i:=1 to 10)
+        write( i, "before" )
+        foo.enter()
+        write( i, "in" )
+        nap(1)
+        write( i, "leaves" )
+        foo.xexit()
+        write( i, "after" )
+    end
+end

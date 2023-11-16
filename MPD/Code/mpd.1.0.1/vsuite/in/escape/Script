@@ -1,0 +1,5 @@
+# ron Mon Apr 17 12:06:26 1989
+0 mpd -c escape.mpd
+0 mpdl escape
+0 run
+0 rm -rf MPDinter core *.out

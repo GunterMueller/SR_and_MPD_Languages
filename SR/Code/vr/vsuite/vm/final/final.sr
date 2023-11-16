@@ -1,0 +1,25 @@
+global g
+  var i := 0
+body g
+  final
+    write ("final g, sum = ", i)
+  end
+end
+
+resource foo (j: int)
+  import g
+  write("foo", j, "sum =", i +:= j)
+  final write("final foo", j) end
+end
+
+resource main()
+  import foo
+  var vc: cap vm
+  vc := create vm()
+  create foo(1)
+  create foo(2) on vc
+  create foo(4) on vc
+  create foo(8) on vc
+  destroy vc
+  write ("done")
+end

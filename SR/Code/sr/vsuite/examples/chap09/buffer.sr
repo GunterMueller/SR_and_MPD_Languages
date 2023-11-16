@@ -1,0 +1,14 @@
+resource main()
+  op pool(index: int)
+  const B := 20       # number of buffers
+  const N := 10       # number of processes
+  var buffer[1:B]: T  # T is the buffer type
+  fa i := 1 to B -> send pool(i) af
+  process p(i := 1 to N)
+     ...
+    receive pool(x)   # request a buffer
+    # use buffer[x]
+    send pool(x)      # release the buffer
+     ...
+  end
+end

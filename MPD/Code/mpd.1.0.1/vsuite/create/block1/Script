@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 mpd -c resource.mpd
+0 mpdl global_sem A callee
+0 run 
+0 rm -rf MPDinter core *.out

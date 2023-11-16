@@ -1,0 +1,98 @@
+resource reader
+   import server, SRanimator
+body reader(i : int; scap : cap server; naptime : int)
+   write("reader", i, "is alive, naptime =", naptime)
+   reply
+   var napping : int
+   do true ->
+      napping := int(random(1000*naptime))
+      write("age=", age(), "reader", i, "napping for", napping)
+      nap(napping)
+      write("age=", age(), "reader", i, "wants to read")
+
+# Change a wants-to-read reader's symbol to be solid blue.
+      call A_color(3000+i, "blue")
+      call A_fill(3000+i, "solid")
+
+      scap.Start_Read(i)
+      napping := int(random(1000*naptime))
+      write("age=", age(), "reader", i, "begins reading for", napping)
+      nap(napping)
+      scap.End_Read(i)
+      write("age=", age(), "reader", i, "finished reading")
+   od
+end reader
+
+resource writer
+   import server, SRanimator
+body writer(i : int; scap : cap server; naptime : int)
+   write("WRITER", i, "is alive, naptime =", naptime)
+   reply
+   var napping : int
+   do true ->
+      napping := int(random(1000*naptime))
+      write("age=", age(), "WRITER", i, "napping for", napping)
+      nap(napping)
+      write("age=", age(), "WRITER", i, "wants to write")
+
+# Change a wants-to-write writer's symbol to be solid green.
+      call A_color(2000+i, "green")
+      call A_fill(2000+i, "solid")
+
+      scap.Start_Write(i)
+      napping := int(random(1000*naptime))
+      write("age=", age(), "WRITER", i, "is writing for", napping)
+      nap(napping)
+      write("age=", age(), "WRITER", i, "is finished writing")
+      scap.End_Write(i)
+   od
+end writer
+
+resource start
+   import writer, reader, server, SRanimator
+body start()
+   var scap : cap server
+   var readers := 15, writers := 5, naptime := 3, runtime := 60
+   getarg(1, readers); getarg(2, writers)
+   getarg(3, naptime); getarg(4, runtime)
+   write(readers, "readers and", writers, "writers starting with nap time",
+      naptime, "and runtime", runtime)
+   scap := create server()
+
+# Change coordinates so 0,0 is the center, then create a big black outline
+# circle to be the database.
+   call A_coords(-1.7, -1.7, 1.7, 1.7)
+   call A_circle(1001, 0.0, 0.0, 1.0, "black", "outline")
+   call A_text(1002, 0.0, 0.0, 1, "black", "DATABASE")
+# Put some annotated symbols on the screen.
+   call A_circle(1003, -1.6, 1.6, 0.05, "blue",  "solid")
+   call A_text(1004, -1.5, 1.575, 0, "black", "reader wants to read")
+   call A_circle(1005, -1.6, 1.4, 0.05, "green", "solid")
+   call A_text(1006, -1.5, 1.375, 0, "black", "writer wants to write")
+# Put some writers, small black outline circles, near the database.
+# Also put a point for each writer to move back to after writing.
+   call A_text(1016, -1.6+0.12*(writers+1), -1.61, 0, "black", "writers")
+   fa i := 1 to writers ->
+      call A_circle(2000+i, -1.6+0.12*i, -1.6, 0.05, "black", "outline")
+      call A_circle(4000+i, -1.6+0.12*i, -1.6, 0.001, "black", "outline")
+   af
+# Put some readers, small black outline circles, near the database.
+# Also put a point for each reader to move back to after reading.
+   call A_text(1017, -1.6+0.12*(readers+1), -1.41, 0, "black", "readers")
+   fa i := 1 to readers ->
+      call A_circle(3000+i, -1.6+0.12*i, -1.4, 0.05, "black", "outline")
+      call A_circle(5000+i, -1.6+0.12*i, -1.4, 0.001, "black", "outline")
+   af
+# Put nearly invisible circles (points) to be places the readers and writers
+# can be moved to when they read or write the database.
+   const TWO_PI := 2.0*acos(-1.0)
+   var slots := max(readers, writers)
+   fa i := 1 to slots ->
+      call A_circle(7000+i, 0.85*sin(i*(TWO_PI/slots)),
+         0.85*cos(i*(TWO_PI/slots)), 0.001, "black", "outline")
+   af
+
+   fa i := 1 to readers -> create reader(i, scap, naptime) af
+   fa i := 1 to writers -> create writer(i, scap, naptime) af
+   nap(1000*runtime); write("must stop now"); call A_end(); stop
+end start

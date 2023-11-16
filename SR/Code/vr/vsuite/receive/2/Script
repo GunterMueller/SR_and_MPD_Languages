@@ -1,0 +1,7 @@
+0 sr -c rcv2.sr
+0 srl rcv2
+0 run input1
+0 run input2
+0 run input3
+0 run input4
+0 rm -rf Interfaces core *.out

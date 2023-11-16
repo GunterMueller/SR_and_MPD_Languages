@@ -1,0 +1,17 @@
+c7:  t z tuvwxyz tuvwxyz uvw xyz tuvw
+wrs: t z tuvwxyz tuvwxyz uvw xyz tuvw
+wr0: t z tuvwxyz tuvwxyz uvw xyz tuvw
+wr1: t z tuvwxyz tuvwxyz uvw xyz tuvw
+wr2: t z tuvwxyz tuvwxyz uvw xyz tuvw
+
+s9:  a g abcdefg abcdefg bcd efg abcd
+wrs: a g abcdefg abcdefg bcd efg abcd
+wr0: a g abcdefg abcdefg bcd efg abcd
+wr1: a g abcdefg abcdefg bcd efg abcd
+wr2: a g abcdefg abcdefg bcd efg abcd
+
+lit: k q klmnopq ...
+wrs: k q klmnopq klmnopq lmn opq klmn
+wr0: k q klmnopq klmnopq lmn opq klmn
+wr1: k q klmnopq klmnopq lmn opq klmn
+wr2: k q klmnopq klmnopq lmn opq klmn

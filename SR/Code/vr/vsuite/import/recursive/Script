@@ -1,0 +1,18 @@
+#  gmt  Mar 6 1990
+0 rm -rf Interfaces core *.out
+
+# test makefile facility
+0 sr -M recursive.sr
+0 cmp -s Compiler.std Compiler.out
+0 rm -rf Interfaces core *.out
+
+# test separate compilation
+0 sr -s recursive.sr
+0 sr -b recursive.sr
+0 srl A B C D
+0 run
+
+# test single-command compile
+0 sr recursive.sr
+0 run
+0 rm -rf Interfaces core *.out

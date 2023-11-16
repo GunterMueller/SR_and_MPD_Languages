@@ -1,0 +1,4 @@
+0 sr -c purge.sr
+0 srl purge
+0 run
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,7 @@
+
+===============  semtest  ===============
+
+ops:
+   Rs  SYM2 done: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 go: K_OP [0:9]T_OP(){send}:T_VOID
+   Rp* SYM2 spin: K_OP T_OP(T_INT):T_VOID

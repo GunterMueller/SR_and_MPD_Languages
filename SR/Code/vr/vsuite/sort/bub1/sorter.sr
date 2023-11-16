@@ -1,0 +1,37 @@
+# simple program that does some sorting.
+resource sorter()
+
+	op print(a[1:*]:int)
+	op sort(var a[1:*]:int)
+
+
+	var n: int
+	writes("number of numbers?")
+	read(n)
+	var nums[1:n] : int
+	# read in numbers
+		fa i := lb(nums) to ub(nums) ->
+			put("?")
+			read(n)
+			nums[i] := n
+		af
+	writes("before sorting\n")
+	print(nums)
+	sort(nums)
+	writes("after sorting\n")
+	print(nums)
+
+
+	proc print(a)
+		fa i := lb(a) to ub(a) ->
+			write(a[i])
+		af
+	end
+
+	proc sort(a)
+		fa i := lb(a) to ub(a)-1,
+		   j := i+1 to ub(a) st a[i] > a[j] ->
+			a[i] :=: a[j]
+		af
+	end
+end

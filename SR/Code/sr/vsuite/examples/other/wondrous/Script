@@ -1,0 +1,5 @@
+#  gmt  Wed Oct 14 11:31:24 MST 1987
+0 sr -c wondrous.sr
+0 srl wondrous
+0 run
+0 rm -rf Interfaces core *.out

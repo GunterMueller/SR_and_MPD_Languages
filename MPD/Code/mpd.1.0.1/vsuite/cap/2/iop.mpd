@@ -1,0 +1,39 @@
+# imported operation in a cap def
+
+resource iop1
+	op foo(int x) returns int  y
+body iop1()
+	proc foo(x) returns y  {
+		write(x)
+		y = x * 200
+	}
+end
+
+resource iop2
+	import iop1
+body iop2()
+	op poo(int x) returns int  y
+	proc poo(x) returns y  {
+		y = -x
+	}
+
+	int  x
+	cap iop1  c
+	cap iop1.foo f
+	cap (int x) returns int y g
+	write(9999)
+	f = g = poo
+	x = f(8)
+	write(x)
+	x = g(9)
+	write(x)
+	c = create iop1();
+	x = c.foo(3)
+	write(x)
+	write(8888)
+	f = c.foo
+	x = f(44)
+	write(x)
+	write(7777)
+
+end

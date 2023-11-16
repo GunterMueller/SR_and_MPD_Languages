@@ -1,0 +1,9 @@
+resource fact( n: int; ans:int)
+	var b: cap fact
+
+	write(n); write(ans)
+	if n != 0 ->
+		b := create fact(n-1,ans*n)
+	fi
+	write(n); write(ans)
+end

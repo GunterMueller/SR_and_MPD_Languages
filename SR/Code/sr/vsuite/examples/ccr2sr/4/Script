@@ -1,0 +1,4 @@
+0 ccr2sr a.ccr
+1 sr -C a.sr
+0 grep 'undefined identifier: xfree' Compiler.out >/dev/null
+0 rm -rf Interfaces core *.out a.sr

@@ -1,0 +1,41 @@
+# basic forwarding test
+
+resource fwd1
+	op p1(res int) returns int  result
+	op p2(res int) returns int  result
+	sem p2wait = 0
+
+body fwd1()
+	proc p2(j )  returns result  {
+		j = 2222
+		P(p2wait)
+		result = 2000
+	}
+
+	proc p1( j) returns result  {
+		forward p2(j)
+		j = 1111 # should not be copied out to "j" which is a res param
+		result = 1000 # this should not be returned to the caller
+		V(p2wait)
+	}
+
+	int i = 0
+	write(p1(i))    # Should print 2000
+	write(i)        # Should print 2222
+
+	op seven () returns int
+	proc seven () returns n {;  n = 7;  }
+
+	op prime () returns int
+	process p  {
+	    # test forwarding of input op
+	    in prime () returns j ->
+		j = 3
+		forward seven ()
+		j = 11
+	    ni
+	}
+
+	write (prime()) # should print 7
+
+end fwd1

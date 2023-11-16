@@ -1,0 +1,59 @@
+# test recursive imports (new for MPD v2) and import scope
+
+
+resource A
+    const int u = 100
+    import B
+    const int v = B.x + 10
+body A ()
+    write ("A: ", u, v)
+end A
+
+
+resource B
+    const int x = 200
+    import A
+    const int y = A.u + 20
+body B () separate
+
+body B
+    write ("B: ", x, y)
+end B
+
+
+resource C ()
+    begin {
+	import B, A
+	write ("C1:", v+1, y+1)         # both imported
+	write ("C2:", u+2, x+2)         # both imported
+    }
+    const int x = 300
+    begin {
+	write ("C3:", "   ", x+3)       # no u, x local
+	import B, A
+	write ("C4:", u+4, x+4)         # imported u, still x local
+	const int u = 400
+	const int x = 500
+	write ("C5:", u+5, x+5)         # new u & x local
+    }
+
+    procedure B ()  {
+	write ("procedure B here in resource C")
+    }
+
+    B()
+    import B
+    write ("C6:", x, y)
+end
+
+
+resource D ()
+    import A
+    import B
+    import C
+    write ("D: ", u + 30, v + 40, x + 50, y + 60)
+    create A ()
+    create B ()
+    create C ()
+    write ("Done.")
+end D

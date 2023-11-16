@@ -1,0 +1,10 @@
+# test receive statement
+resource rcv1()
+	op p(int x)
+	int  z
+	write(1111)
+	send p(3333)
+	write(2222)
+	receive p(z)
+	write(z)
+end

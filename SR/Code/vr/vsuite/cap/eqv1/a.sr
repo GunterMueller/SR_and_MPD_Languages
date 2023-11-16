@@ -1,0 +1,28 @@
+# test cap for abstract resource
+resource a
+	op f(x:int)
+	op g() returns x:int
+end
+resource b
+	extend a
+body b(z:int)
+	op h()
+
+	write("b",z)
+	write(g()); h()
+
+	proc f(x)  write("b's f",x,z) end
+	proc g() returns x  write("g",z); x := 87654 end
+	proc h()  write("h",z) end
+end
+resource main
+	import a, b
+body main()
+	write("main starts")
+	var cb:cap b
+	cb := create b(56)
+	cb.f(87)
+	var ca:cap a
+	ca := cb
+	ca.f(999)
+end

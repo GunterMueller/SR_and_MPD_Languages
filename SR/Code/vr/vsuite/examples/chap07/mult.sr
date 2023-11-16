@@ -1,0 +1,19 @@
+resource mult()
+  const N := 20
+  var a[N,N], b[N,N], c[N,N]: real
+  # read in some initial values for a and b
+   ...
+  # multiply a and b in parallel
+  # place result in matrix c
+  process multiply(i := 1 to N, j := 1 to N)
+      var inner_prod := 0.0
+      fa k := 1 to N ->
+          inner_prod +:= a[i,k]*b[k,j]
+      af
+      c[i,j] := inner_prod
+  end
+  final
+      # output values from c
+       ...
+  end
+end

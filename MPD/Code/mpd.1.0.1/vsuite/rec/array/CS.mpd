@@ -1,0 +1,17 @@
+body ChServer
+   op lclose (int port)
+   rec (int i; char c) ports[0:read_ports]
+
+   process channel  {
+      while (true) {
+	  in copen(port) returns io_desc -> ni
+      }
+   }
+
+   proc lclose (port)  {
+   }
+
+   proc done ()  {
+   }
+
+end

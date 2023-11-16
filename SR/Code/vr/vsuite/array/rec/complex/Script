@@ -1,0 +1,4 @@
+0 sr -c arr8.sr
+0 srl arr8 main
+0 run
+0 rm -rf Interfaces core *.out

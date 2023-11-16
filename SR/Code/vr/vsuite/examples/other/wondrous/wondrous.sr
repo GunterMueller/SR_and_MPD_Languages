@@ -1,0 +1,43 @@
+#   A simple sequential program illustrating the "3n+1" problem,
+#   called "wondrous numbers" in Hofstadter's "Godel Escher Bach".
+#
+#   usage:    a.out n       to trace the integer n
+#             a.out m n     to trace all integers from m to n
+#   default:  a.out 2 25
+#
+#   Given a positive integer n, halve it if even, or replace by 3n+1 if odd.
+#   Stop at 1.  The sequences are interesting, and nobody has proved that all
+#   initial values lead to termination.
+#
+#   Try "a.out 27".
+#
+#   For full details see Jeffrey Lagarias, The 3x+1 Problem and Generalizations,
+#   American Mathematical Monthly, vol.92 no.1 (January, 1986), pp. 3-25.
+
+
+resource wondrous()
+
+    var lb: int := 2		# lower bound defaults to 2
+    var ub: int := 25		# upper bound defaults to 25
+    var n: int			# n is the working value
+
+    if getarg(1,lb) = 1 ->	# if one argument set as lower and upper bounds
+	ub := lb
+	fi
+    getarg(2,ub)		# reset upper bound to second argument if given
+
+    fa i := lb to ub ->		# for each integer in selected range:
+	writes(i,":")		# print it
+	n := i
+	do n > 1 ->		# iterate until we hit 1
+	    if n % 2 = 1 ->
+		n := 3 * n + 1	# 3n+1 if odd
+	    [] else ->
+		n := n / 2	# n/2 if even
+	    fi
+	    writes(" ",n)	# write new value
+	    od
+	write()			# terminate line at end of sequence
+    af
+
+end

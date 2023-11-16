@@ -1,0 +1,4 @@
+#  gmt  Thu May 27 11:09:57 MST 1993
+0 sr oparr.sr
+0 run
+0 rm -rf Interfaces core *.out

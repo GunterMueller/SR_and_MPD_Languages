@@ -1,0 +1,17 @@
+#  bad free after short-circuit eval of boolean expression
+#  led to a segmentation fault
+
+resource a()
+    op signal() returns b:bool
+
+    process p
+        in signal() returns b -> b := false ni
+    end
+
+    var pin := 0,  bout := 0
+    if (bout + 1) <= pin and signal() ->
+	skip
+    [] else ->
+	write ("looks okay")
+    fi
+end

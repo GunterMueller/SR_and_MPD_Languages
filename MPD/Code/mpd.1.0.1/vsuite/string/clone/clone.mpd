@@ -1,0 +1,30 @@
+
+resource r ()
+
+    int n = 10
+    char x[n] = ([n] '*')
+    string[n] y
+    y = string(x)      # <== error here in SR v1 (using implicit conversion)
+    write(x,y)
+
+    string[10] s
+    s = "abcdefg"
+    write(s)
+    s = string(([3] '.'))   # <== signature mismatch err in v1 (implicit conv)
+    write(s)
+
+#  double evaluation of clone count
+#  (function called twice when should be called just once)
+
+    op howmany() returns int  n
+
+    write("cloning characters")
+    char  c[5] = ([howmany()] 'x')
+    write(c)
+
+    proc howmany () returns n  {
+	write(" howmany() returning 5")
+	n = 5
+	return
+    }
+end

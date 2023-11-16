@@ -1,0 +1,33 @@
+# process create/destroy
+# This tests how long it takes to create a proc.  The proc is
+# created by a send.  The main process then blocks until the
+# proc finishes. 
+
+resource rpcfork()
+
+  sem done
+  op server()
+
+  int trials = 10
+  int  limit, factor, base 
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit = factor * base
+
+  proc server()  {
+    V(done)
+  }
+
+  process caller  {
+    int  start, finish 
+    for [ i = 1 to trials ] {
+	start = age()
+	for [ i = 1 to limit ] { send server(); P(done) }
+	finish = age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    }
+  }
+
+end

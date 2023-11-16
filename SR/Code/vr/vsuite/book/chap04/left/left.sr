@@ -1,0 +1,19 @@
+# Compute left neighbor of philosopher i.
+
+resource main()
+  op left(int) returns int
+
+  proc left(i) returns lft
+    lft := (i-2) mod 5 + 1
+  end
+
+  var phil := 1
+  var neighbor : int
+  do phil <= 5 ->
+    neighbor := left(phil)
+    write(neighbor," is left of ",phil)
+    phil++
+  od
+ 
+end
+    

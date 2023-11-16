@@ -1,0 +1,18 @@
+# arrays with enum indices.
+resource e()
+	type color = enum( blue,green,orange,red )
+	int  x[blue:red] = (1,2,3,4)
+	op print(int x[1:*])
+
+	x[orange] = 15
+	x[green] = -11
+	x[red] = 73
+	print(x[green:orange])
+	print(x)
+
+	proc print(x)  {
+		write(-9999)
+		for [ i = lb(x) to ub(x) ] { write(x[i]) }
+		write(9999)
+	}
+end

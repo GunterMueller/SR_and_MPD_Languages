@@ -1,0 +1,4 @@
+#  gmt  Thu Dec 12 19:32:18 MST 1991
+0 mpd rcap.mpd
+0 run
+0 rm -rf MPDinter core *.out

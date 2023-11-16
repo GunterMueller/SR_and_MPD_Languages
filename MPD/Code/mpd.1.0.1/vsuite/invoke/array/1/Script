@@ -1,0 +1,4 @@
+0 mpd -c array1.mpd
+0 mpdl array1
+0 run
+0 rm -rf MPDinter core *.out

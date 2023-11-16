@@ -1,0 +1,13 @@
+resource test_fonts()
+   import SRanimator
+   call A_bg("azure")
+   call A_fonttext(1, 0.1, 0.1, 0, "black", "variable", "Hello, world!")
+   call A_fonttext(2, 0.2, 0.2, 0, "black", "12x24", "Hello, world!")
+   call A_fonttext(3, 0.3, 0.3, 0, "black", "helvR24", "Hello, world!")
+   call A_fonttext(4, 0.4, 0.4, 0, "black", "charB24", "Hello, world!")
+   call A_fonttext(5, 0.5, 0.5, 0, "black", "5x8", "Hello, world!")
+   call A_fonttext(6, 0.6, 0.6, 0, "black", "timB10", "Hello, world!")
+   call A_text(1001, 0.1, 0.9, 0, "black", "Hello, world!")
+   call A_bigtext(1002, 0.1, 0.8, 0, "black", "Hello, world!")
+   call A_end()
+end test_fonts

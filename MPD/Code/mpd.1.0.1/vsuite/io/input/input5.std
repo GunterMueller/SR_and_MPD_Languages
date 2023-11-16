@@ -1,0 +1,6 @@
+1:  # DON'T EDIT THIS FILE -- contains EOF in middle of line (no newline)
+0:  0 'x' false 'zzzzzzzzzz' "--"
+1:  'EOF       '
+-1:  "--"
+-1:  'EOF       '
+-1:  "--"

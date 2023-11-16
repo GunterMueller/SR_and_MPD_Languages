@@ -1,0 +1,4 @@
+argtype: 8
+format: '%e%e'
+  8 < 0>: -1, -1
+finished

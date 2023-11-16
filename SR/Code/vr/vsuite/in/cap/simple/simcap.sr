@@ -1,0 +1,132 @@
+#  input from capability, single arm, local VM, no arrays
+
+global g
+   var gcap := new (op (int))
+end
+
+resource simcap ()
+    import g
+    op q (int)
+    optype t = (int)
+    var c := q
+    var j : int
+
+    # a: test without using cap
+    send q (1)
+    receive q (j)
+    write ("a:", j)
+
+    # b: receive using cap
+    send q (2)
+    receive c (j)
+    write ("b:", j)
+
+    # c: send cap; dequeue using input stmt
+    send c (3)
+    in c (j) -> write ("c:", j) ni
+
+    # d: test st with by
+    send q (6)
+    send q (7)
+    send c (5)
+    send c (4)
+    send c (9)
+    send q (8)
+    printf ("d: [%d;%d]", ?q, ?c)
+    fa i := 1 to 4 ->
+	in c (j) st (j % 2) = 1 by j ->
+	    printf (" %d", j)
+	[] else ->
+	    printf (" 0")
+	ni
+    af
+    # remainder s/b in FIFO order
+    fa i := 1 to 3 ->
+	in c (j) ->
+	    printf (" %d", j)
+	ni
+    af
+    write()
+
+    # e: (not used)
+
+    # f: new op via prototype, simple test incl destroy
+    c := new (op (int))
+    send c (11)
+    receive c (j)
+    write ("f:", j)
+    destroy (c)
+
+    # g: new op via optype, more complex test
+    c := new (t)
+    printf ("g: [%d;%d]", ?q, ?c)
+    send c (21)
+    send c (22)
+    send c (23)
+    send c (24)
+    send c (98)
+    send c (99)
+    printf (" [%d;%d]", ?q, ?c)
+    fa i := 1 to 4 ->
+	in c (j) -> printf (" %d", j) ni
+    af
+    printf (" [%d;%d]\n", ?q, ?c)
+    destroy c	# with some on queue
+
+    # h: another one.  should have clean queue.
+    c := new (t)
+    printf ("h: [%d;%d]", ?q, ?c)
+    send c (31)
+    send c (32)
+    send c (33)
+    send c (34)
+    send c (35)
+    printf (" [%d;%d]", ?q, ?c)
+    do ?c > 0 ->
+	in c (j) -> printf (" %d", j) ni
+    od
+    printf (" [%d;%d]\n", ?q, ?c)
+    # not destroyed; only wastes memory, no other problem
+
+    # i: op created in inner block should survive outside
+    procedure inner ()
+	begin
+	    c := new (t)
+	end
+	send c(41)
+    end
+
+    inner()		# creates c, sends 41
+    receive c(j)
+    write ("i:", j) 
+    destroy c
+
+    # j: test "cap sem" and "new (sem)"
+    var d : cap sem
+    d := new (sem)
+    fa i := 1 to 10 -> V(d) af
+    printf ("j: [%d]", ?d)
+    P(d)
+    printf (" [%d]", ?d)
+    do true ->
+        in d() st ?d > 2 ->
+	    printf (" [%d]", ?d)
+	[] else ->
+	    printf (" <else>")
+	    exit
+	ni
+    od
+    printf (" [%d]", ?d)
+    P(d)
+    P(d)
+    printf (" [%d]\n", ?d)
+    destroy d
+
+    # k: dynamic op lives in a global
+    send gcap (52)
+    receive gcap (j)
+    write ("k:", j)
+
+    # that's all, folks
+    write ("done")
+end

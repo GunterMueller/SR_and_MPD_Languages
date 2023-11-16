@@ -1,0 +1,4 @@
+0 sr -c do7.sr
+0 srl do7
+0 run
+0 rm -rf Interfaces core *.out

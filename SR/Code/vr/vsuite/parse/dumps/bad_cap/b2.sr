@@ -1,0 +1,4 @@
+# seg fault
+resource b2()
+	var c:cap b2
+end

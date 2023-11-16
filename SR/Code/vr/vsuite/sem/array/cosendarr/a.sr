@@ -1,0 +1,12 @@
+# the cosend should make x a regular op, not a semaphore
+resource a()
+
+  sem x[2] := (1,1)
+
+  V(x[1])
+  P(x[1])
+
+  co send x[1]() // send x[1]() oc
+
+  write (?x[1], ?x[2])
+end

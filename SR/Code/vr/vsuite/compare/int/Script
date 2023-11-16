@@ -1,0 +1,4 @@
+0 sr -c tint.sr
+0 srl tint
+0 run
+0 rm -rf Interfaces core *.out

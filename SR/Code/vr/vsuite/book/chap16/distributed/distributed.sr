@@ -1,0 +1,96 @@
+resource Worker
+  import Manager
+  op updatemin(length: int)
+body Worker(n, dist[*,*]: int; cm: cap Manager)
+
+  # extend path to include city if city has not yet been visited
+  procedure extend_path(city: int; var path[1:*]: int; hops: int;
+                        length: int) returns newlength: int
+    fa i := 2 to hops st path[i] = city -> newlength := 0; return af
+    newlength := length + dist[path[hops], city]; path[hops+1] := city
+  end
+
+  process worker
+    var path[1:n], hops, length, newlength: int
+    var shortest := 2**30    # shortest known about
+    do true ->
+      # see if there is a better global minimum length tour
+      do ?updatemin > 0 ->
+        receive updatemin(length)
+        shortest := min(length, shortest)
+      od
+      # get a job and process it
+      cm.getjob(path, hops, length)
+      fa city := 2 to n ->
+        newlength := extend_path(city, path, hops, length)
+        if newlength = 0 -> next fi    # city has been visited
+        if hops+1 < n and newlength < shortest ->
+            # put partial tour back into bag for further processing
+            send cm.bag(path, hops+1, newlength)
+        [] hops+1 = n ->
+            # add distance back to city 1
+            newlength := newlength + dist[path[n],1]
+            if newlength < shortest ->
+              # this tour possibly best; let manager know
+              send cm.newmin(path, newlength)
+              shortest := newlength
+            fi
+        fi
+      af
+    od
+  end
+end Worker
+
+resource Manager
+  import Worker
+  op bag(path[1:*], hops, length: int)  # partial tours
+  op getjob(var path[1:*], hops, length: int)
+  op newmin(path[1:*], length: int)
+body Manager()
+
+  var n, w: int, fname: string[20]
+  getarg(1, n); getarg(2, w); getarg(3, fname)
+  var dist[1:n, 1:n]: int       # distances
+  var shortest: int := 2**30     # best so far
+  var shortest_path[1:n]: int
+  var fd: file; fd := open(fname, READ)
+  fa i := 1 to n, j := 1 to n -> read(fd, dist[i,j]) af
+
+  # create worker resources
+  var cw[1:w]: cap Worker
+  fa i := 1 to w ->
+    cw[i] := create Worker(n, dist, myresource())
+  af
+
+  proc getjob(path, hops, length)
+    receive bag(path, hops, length)
+  end
+
+  process manager
+    # generate first set of partial tours and put them into bag
+    var path[1:n]: int := (1, [n-1] 0)
+    fa i := 2 to n ->
+      path[2] := i
+      send bag(path, 2, dist[1,i])
+    af
+    do true ->
+      # wait for candidate for shortest path
+      in newmin(path, length) by length ->
+        if length < shortest ->
+          shortest := length
+          shortest_path := path
+          # broadcast new minimum to all workers
+          co (i := 1 to w) send cw[i].updatemin(shortest) oc
+        fi
+      ni
+    od
+  end
+
+  final
+    write("the shortest path has length", shortest)
+    write("the cities on the shortest path are:")
+    writes("  ")
+    fa i := 1 to n -> writes(shortest_path[i], " ") af
+    write()
+  end
+end Manager

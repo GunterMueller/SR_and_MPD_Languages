@@ -1,0 +1,15 @@
+SC=1
+SW=2
+SU=3
+SX=4
+
+case $OPTION in
+    -sc) signaldisc=$SC;;
+    -sw) signaldisc=$SW;;
+    -su) signaldisc=$SU;;
+    -sx) signaldisc=$SX;;
+    *)   signaldisc=$SC;;
+esac
+
+$CCPATH -DSIGNALDISC=$signaldisc -DSC=$SC -DSW=$SW -DSU=$SU -DSX=$SX \
+   -E $TMPFILE | sed "$SCRIPT" >>$SRFILE

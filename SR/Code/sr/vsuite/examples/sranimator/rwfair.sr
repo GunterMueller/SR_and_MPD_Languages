@@ -1,0 +1,106 @@
+# Fair (to both) readers and writers.
+#
+# Fair in the sense that as soon as a writer arrives (while database is
+# being read, say) then no more newly arriving readers are allowed to
+# start reading.  Instead the newly arriving readers must wait until
+# after that writer has written.  That writer will then sweep into
+# reading the database those readers that had to wait.
+# However a finishing writer will sweep into reading the
+# database ALL waiting readers, even those readers that arrived after
+# a writer that arrived after the current writer that is just finishing.
+#
+resource server
+   import SRanimator
+   op Start_Read(i : int), End_Read(i : int)
+   op Start_Write(i : int), End_Write(i : int)
+body server()
+   write("readers and writers server is alive")
+   var Readers : int := 0
+   var Writers : int := 0
+   var Waiting_Readers : int := 0
+   var Waiting_Writers : int := 0
+   sem OK_to_read := 0
+   sem OK_to_write := 0
+   sem mutex := 1
+
+   proc Start_Read(i)
+      P(mutex)
+      if Waiting_Writers = 0 and Writers = 0 ->
+         Readers++
+         write("  age=", age(), "reader", i,
+            "has begun reading, Readers=", Readers)
+         V(mutex)
+      [] else ->
+         Waiting_Readers++
+         write("age=", age(), "reader", i,
+            "waiting to read, Waiting_Readers=", Waiting_Readers)
+         V(mutex)
+         P(OK_to_read)
+      fi
+
+# Move the reader to be inside the database.
+      call A_stepjumpto(3000+i, 7000+i, 3, 100)
+
+   end Start_Read
+
+   proc End_Read(i)
+      P(mutex)
+      Readers--
+      write("   age=", age(), "reader", i, "finished reading, Readers=",
+         Readers)
+      if Readers = 0 and Waiting_Writers > 0 ->
+         V(OK_to_write)
+         Writers++
+         Waiting_Writers--
+      fi
+      V(mutex)
+
+# Move the reader back to its original position.
+# Change consumers's symbol to an outline black circle.
+      call A_stepjumpto(3000+i, 5000+i, 3, 100)
+      call A_fill(3000+i, "outline")
+      call A_color(3000+i, "black")
+
+   end End_Read
+
+   proc Start_Write(i)
+      P(mutex)
+      if Readers = 0 and Writers = 0 ->
+         Writers++
+         write("      age=", age(), "WRITER", i,
+            "has begun Writing, Writers=", Writers, "(better be 1)")
+         V(mutex)
+      [] else ->
+         Waiting_Writers++
+         write("age=", age(), "WRITER", i,
+            "waiting to Write, Waiting_Writers=", Waiting_Writers)
+         V(mutex)
+         P(OK_to_write)
+      fi
+
+# Move the writer to be inside the database.
+      call A_stepjumpto(2000+i, 7000+i, 3, 100)
+
+   end Start_Write
+
+   proc End_Write(i)
+      Writers--
+      write("   age=", age(), "WRITER", i, "has finished Writing, Writers=",
+         Writers, "(better be 0)")
+
+# Move the writer back to its original position.
+# Change the writer's symbol to an outline black circle.
+      call A_stepjumpto(2000+i, 4000+i, 3, 100)
+      call A_fill(2000+i, "outline")
+      call A_color(2000+i, "black")
+
+      if Waiting_Readers > 0 ->
+         write("  age=", age(), "cascading in", Waiting_Readers, "readers")
+         do Waiting_Readers > 0 ->
+            V(OK_to_read)
+            Readers++
+            Waiting_Readers--
+         od
+      fi
+   end End_Write
+end server

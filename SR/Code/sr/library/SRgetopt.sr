@@ -1,0 +1,224 @@
+# OVERVIEW:
+#
+# SRgetopt provides a general means for an SR program to parse command
+# line arguments in accordance with the standard Unix conventions;
+# it is analogous to, and based on, getopt(3) for C programs.
+# (The following documentation is based on the man page for getopt(3).)
+
+# DESCRIPTION:
+#
+# SRgetopt is an SR global that provides one procedure, getopt,
+# and some variables that control behavior of or return additional
+# information from getopt.
+#
+# getopt interprets command arguments in accordance with the standard
+# Unix conventions: option arguments of a command are introduced by "-"
+# followed by a key character, and a non-option argument terminates
+# the processing of options.  getopt's option interpretation is controlled
+# by its parameter optstring, which specifies what characters designate
+# legal options and which of them require associated values.
+#
+# getopt returns the next, moving left to right, option letter
+# in the command line arguments that matches a letter in optstring.
+# optstring must contain the option letters the command using getopt
+# will recognize.  For example, getopt("ab") specifies that the command
+# line should contain no options, only "-a", only "-b", or both "-a" and
+# "-b" in either order.  (The command line can also contain non-option
+# arguments after any option arguments.)  Multiple options per argument
+# are allowed, e.g., "-ab" for the last case above.
+#
+# If a letter in optstring is followed by a colon, the option is expected
+# to have an argument.  The argument may or may not be separated by
+# whitespace from the option letter.  For example, getopt("w:") allows
+# either "-w 80" or "-w80".  The variable optarg is set to the option
+# argument, e.g., "80" in either of the previous examples.  Predefined
+# conversion functions such as int, char, etc. can then be applied to
+# optarg.  (Use optarg[1] instead of char(optarg) if the first blank or
+# non-blank character is wanted.)  The constant optMAXLEN defines the
+# length of the longest string that getopt can read from the command line
+# (extra characters are truncated silently) or will return in optarg.
+#
+# getopt places in the variable optind the index of the next command
+# line argument to be processed; optind is automatically initialized
+# to 1 before the first call to getopt.
+#
+# When all options have been processed (that is, up to the first
+# non-option argument), getopt returns optEOF.  getopt recognizes the
+# command line argument "--" (i.e., two dashes) to delimit the end of
+# the options; getopt returns optEOF and skips "--".  Subsequent,
+# non-option arguments can be retrieved using the predefined
+# function getarg, beginning with argument number optind.
+
+# DIAGNOSTICS:
+#
+# getopt prints an error message on stderr and returns a question mark
+# ('?') when it encounters an option letter in a command line argument
+# that is not included in optstring.  Setting the variable opterr to
+# false disables this error message.
+
+# NOTES:
+#
+# The following notes describe SRgetopt's behavior in a few interesting
+# or special cases; these behaviors are consistent with getopt(3)'s behaviors.
+#
+# -- A '-' by itself is treated as a non-option argument.
+# -- If optstring is "a:" and the command line arguments are "-a -x",
+#    then "-x" is treated as the argument associated with the "-a".
+# -- Duplicate command line options are allowed; it is up to user to
+#    deal with them as appropriate.
+# -- A command line option like "-b-" is considered as the two options
+#    "b" and "-" (so "-" should appear in option string); this differs
+#    from "-b --".
+# -- Sun and DEC getopt(3)'s differ w.r.t. how "---" is handled.
+#    Sun treats "---" (or anything starting with "--") the same as "--"
+#    DEC treats "---" as two separate "-" options
+#    (so "-" should appear in option string).
+#    SRgetopt follows the DEC convention.
+# -- An option `letter' can be a letter, number, or most special character.
+#    Like getopt(3), SRgetopt disallows a colon as an option letter.
+
+# EXAMPLE:
+#
+# The following code fragment shows how to use SRgetopt to
+# process a command that takes the options 'a', 'f', and 'w'
+# where 'f' is followed by a file name and 'w' is followed by an integer.
+
+/****
+  resource main()
+      import SRgetopt
+      var ch: char
+      # command line arguments
+      var aflg := 0
+      var filename: string[optMAXLEN] := "out"
+      var width := 80
+      do (ch := getopt("abf:w:")) != optEOF ->
+         if ch = 'a' ->
+            aflg++
+         [] ch = 'f' ->
+            filename := optarg
+         [] ch = 'w' ->
+            width := int(optarg)
+         [] else ->
+            stop(1)
+         fi
+      od
+      write("-a", aflg)
+      write("-f", filename)
+      write("-w", width)
+      fa k := optind to numargs() ->
+         var xx: string[40]
+         getarg(k,xx)
+         write("normal argument", k, "is", xx)
+      af
+   end
+****/
+
+# SEE ALSO:
+#
+# getopt(3)
+
+# WARNINGS:
+#
+# Changing the value of the variable optind may lead to unexpected behavior.
+# getopt, like the predefined functions numargs and getarg, is valid only
+# from the main virtual machine.
+
+
+global SRgetopt
+
+   var optind := 1
+   var opterr := true
+
+   # maximum length of an argument
+   # (it is a const, not a var, so not redefinable by user,
+   # because optarg declaration must be here in spec.)
+   const optMAXLEN := 256
+
+   var optarg: string[optMAXLEN]
+
+   # optEOF is a var so user can redefine it if desired.
+   # (also, as a const, it uncovered a bug in 2.2.1
+   # which requires a patch to fold.c (94-04-06)).
+   var optEOF := char(EOF)
+
+   op getopt(optstring: string[*]) returns char
+
+body SRgetopt
+
+   procedure write_error(msg: string[*]; ch: char)
+      var cmd: string[optMAXLEN]
+      getarg(0, cmd)
+      writes(stderr, cmd, ": ", msg, " -- ", ch, "\n")
+   end
+
+   const argc := numargs()
+   var optpos := 2
+
+   proc getopt(optstring) returns ch
+      optarg := ""
+      if optind < 1 | optind > argc ->
+         ch := optEOF
+         return
+      fi
+      var thisarg: string[optMAXLEN]
+      getarg(optind, thisarg)
+      var len := length(thisarg)
+      # handle special cases
+      if len <= 1 | thisarg[1] != '-' ->
+         # e.g., "", "a", "abc", or just "-"
+         ch := optEOF
+         return
+      [] thisarg = "--" ->
+         # end of non-option args
+         ch := optEOF
+	 optind++
+         return
+      fi
+      # get next "letter" from option argument
+      ch := thisarg[optpos]
+      # find this option in optstring
+      var found := false
+      var pos: int
+      fa x := 1 to length(optstring) ->
+         if optstring[x] = ch ->
+            found := true
+            pos := x
+            exit
+         fi
+      af
+      if not found | ch = ':' ->
+         if opterr ->
+            write_error("illegal option", ch)
+         fi
+         ch := '?'
+      [] else ->
+         # handle colon, if present
+         if pos < length(optstring) & optstring[pos+1] = ':' ->
+            if optpos != len ->
+               # take rest of current arg as optarg
+               optarg := thisarg[optpos+1:*]
+               optpos := len # to force advance to next arg below
+            [] else ->
+               # take next arg as optarg
+               optind++
+               if optind <= argc ->
+                  getarg(optind,optarg)
+               [] else ->
+                  if opterr ->
+                     write_error("option requires an argument", ch)
+                  fi
+                  ch := '?'
+               fi
+            fi 
+         fi
+      fi
+      # advance to next option argument,
+      # which might be in thisarg or next arg
+      optpos++
+      if optpos > len ->
+         optind++
+         optpos := 2
+      fi
+   end
+
+end

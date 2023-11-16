@@ -1,0 +1,5 @@
+resource ChServer
+   import Io
+   op copen (int port_number) returns IoDesc io_desc
+   op done ()
+body ChServer (int read_ports) separate

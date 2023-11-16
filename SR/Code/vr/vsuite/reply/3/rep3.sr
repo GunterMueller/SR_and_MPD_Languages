@@ -1,0 +1,33 @@
+# test multiple replies and return values.
+# output nondeterminstic.
+resource rep3()
+	op p1(var x: int) returns z:int
+	op p2(var x:int) returns z:int
+
+
+	var a,b:int
+	a := 1; b := 2; a := p1(b); write("after p1",a,b)
+	a := 7; b := 8; a := p2(b); write("after p2",a,b)
+
+
+	proc p1(x) returns z
+		write(x)
+		x:= x+100
+		z := 99999
+		reply
+		write(777)
+		z := 44444
+		reply
+	 	in p2(y) returns z ->
+			write(y)
+			y := y+200
+			z := 88888888
+			reply
+			write(888)
+			reply
+			z := 5555555
+			write(999)
+			write(-y)
+		ni
+	end
+end

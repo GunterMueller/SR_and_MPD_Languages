@@ -1,0 +1,60 @@
+# transpose a matrix
+resource trans4()
+	const int N = 10
+	const int W = 5
+	int  a[1:N,1:N] 
+	op init()
+	op print()
+	op transpose()
+
+	init()
+	print()
+	transpose()
+	print()
+
+	proc init()  {
+		int  count = 0
+		for [ r = 1 to N ] {
+			for [ c = 1 to N ] {
+				count ++
+				a[r,c] = count
+			}
+		}
+	}
+	# handles only positive numbers of size with at most W digits.
+	op itoa(int x) returns char s[1:W]
+	proc itoa(x) returns s  {
+		for [ p = 1 to W ] { s[p] = ' ' }
+		if (x == 0) {
+			s[W] = '0'
+		} else {
+			int  p = W
+			while (x != 0 & p > 0) {
+				s[p] = char(48+x%10)
+				x = x/10; p--
+			}
+		}
+	}
+
+	proc print()  {
+		write("----",N)
+		for [ r = 1 to N ] {
+			for [ c = 1 to N ] {
+				put (" "); put( itoa( a[r,c] ) )
+			}
+			write()
+		}
+	}
+
+	proc transpose()  {
+		if (N == 10) {
+		    for [ r = 1 to 10 ] {
+			    for [ c = 1 to r-1 ] {
+				    a[r,c] :=: a[c,r]
+			    }
+		    }
+		} else {
+			put("K")
+		}
+	}
+end

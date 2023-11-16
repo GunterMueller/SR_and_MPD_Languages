@@ -1,0 +1,5 @@
+#  gmt  Tue Sep 17 10:41:31 MST 1991
+0 mpd -c reffer.mpd
+0 mpdl reffer
+0 run
+0 rm -rf MPDinter core *.out

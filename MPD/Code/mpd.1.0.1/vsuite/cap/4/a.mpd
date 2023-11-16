@@ -1,0 +1,21 @@
+global glob
+	type ops = rec (cap (int x) f; cap (char c) g)
+end
+
+resource r
+	import glob
+body r(ops x, int y)
+	write("in r",y); x.f(y*100); x.g('E')
+end
+
+resource s
+	import glob, r
+	op f(int x); op g(char c)
+body s()
+	cap s  ss = myresource()
+	ops oo
+	oo.f = ss.f; oo.g = ss.g
+	cap r c; c = create r(oo,37)
+
+	proc f(x) { write(x) }; proc g(x) { write(x) }
+end

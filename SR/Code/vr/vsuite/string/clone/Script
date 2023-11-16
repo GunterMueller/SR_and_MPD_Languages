@@ -1,0 +1,4 @@
+# gmt 19-jul-91
+0 sr clone.sr
+0 run
+0 rm -rf Interfaces core *.out

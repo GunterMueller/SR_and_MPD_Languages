@@ -1,0 +1,71 @@
+# test return values from various read calls
+#
+# there are many input files in order to present EOF
+# at various points
+#
+# by convention the first line of each input file explains what it's
+# trying to test.
+
+resource r ()
+op aedit (var char a[*])
+op sedit (var string[*] s)
+
+    int  i = 0
+    bool  b = false
+    char  c = 'x'
+    char  a[10] = ([10] 'z')
+    string [10] s = "--"
+    string [100] l = ""
+    int  n
+
+# echo the comment line.
+
+    n = read (l)
+    writes (n, ":  ", l, "\n")
+
+# test read(); various inputs have various bad formats
+
+    n = read (i, c, b, a, s)
+    aedit(a)
+    sedit(s)
+    writes (n, ":  ", i, " '", c, "' ", b, " '", a, "'", " \"", s, "\"\n")
+
+# test read and get for char array and string
+# sometimes use stdin explicitly, sometimes implicitly
+
+    n = read (a)
+    aedit(a)
+    writes (n, ":  '", a, "'\n")
+
+    n = read (stdin, s)
+    sedit(s)
+    writes (n, ":  \"", s, "\"\n")
+
+    n = get (stdin, a)
+    aedit(a)
+    writes (n, ":  '", a, "'\n")
+
+    n = get (s)
+    sedit(s)
+    writes (n, ":  \"", s, "\"\n")
+
+
+# change newlines into vertical bars
+
+proc aedit (a)  {
+    for [ i = 1 to ub(a) ] {
+	if (a[i] == '\n') {
+	    a[i] = '|'
+	}
+    }
+}
+
+proc sedit (s)  {
+    for [ i = 1 to length(s) ] {
+	if (s[i] == '\n') {
+	    s[i] = '|'
+	}
+    }
+}
+
+end r

@@ -1,0 +1,63 @@
+resource node
+  import printer
+  op neighbors(cap node links[1:*], int indices[1:*])
+  op start()
+  op update(int who, int topology[1:*])
+  op done(int who )
+body node(int n, myid, cap printer pr ) separate
+
+body node
+
+  cap node  links[1:n] 
+  int  indices[1:n] 
+
+  proc neighbors(Links,Indices)  {
+    links = Links; indices = Indices
+    writes("neighbors of node ", myid, ":  ")
+    for [ i = 1 to n st indices[i]~= 0 ] { writes(indices[i]," ") }
+    write()
+  }
+
+  proc start()  {
+    write("started node", myid)
+    int mytop[1:n,1:n] = ([n*n] 0)
+    mytop[myid,1:*] = indices
+    bool  need_answer[1:n] = ([n] false)
+    int  active = 0
+    bool  change 
+
+    while (true) {
+	for [ k = 1 to n st indices[k]~=0 ] {      # send update to active nodes
+	    send links[k].update(myid,mytop)
+	    need_answer[k] = true; active++
+	}
+	change = false
+	while (active>0) {
+	    in update(who,othertop) and need_answer[who] ->
+		int ot[1:n,1:n] = othertop
+		for [ i = 1 to n, j = 1 to n st mytop[i,j]==0 and ot[i,j]~=0 ] {
+		       mytop[i,j] = ot[i,j]; change = true
+		}
+		need_answer[who] = false
+	    [] done(who) and need_answer[who] ->
+		indices[who] = 0
+		need_answer[who] = false
+	    ni
+	    active--
+	}
+	if (~change) {
+		for [ i = 1 to n st indices[i]~=0 ] {
+		    send links[i].done(myid)
+		}
+		exit
+	}
+    }
+
+    # send final topology to printer
+    send pr.print(myid,mytop)
+
+    write("node", myid, "has terminated")
+
+  }
+
+end

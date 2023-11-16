@@ -1,0 +1,29 @@
+# access a user file; one instance per open file
+resource FileServer
+  import Defs
+  op fopen(name user, name fname, accessmode m) returns file_descriptor  fd
+body FileServer()
+
+  proc fopen(user, fname, m) returns fd  {
+    op fread rd
+    op fwrite wr
+    op fclose cl		# local operations
+    file f = open("dfs/" || user || "/" || fname, m)
+    if (f == null) {    # cannot open file
+      fd = file_descriptor(null, null, null)
+      reply
+      destroy myresource()
+    }
+    fd = file_descriptor(rd, wr, cl)
+    reply    # return result to invoker
+    while (true) {
+      in rd(ln) returns status ->
+	  ln = ""    # to handle EOF properly
+	  status = read(f, ln)
+      [] wr(ln) -> write(f, ln)
+      [] cl() -> close(f); exit
+      ni
+    }
+    destroy myresource()
+  }
+end FileServer

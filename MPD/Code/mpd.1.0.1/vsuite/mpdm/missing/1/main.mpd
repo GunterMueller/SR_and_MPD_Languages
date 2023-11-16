@@ -1,0 +1,8 @@
+resource a
+   import b
+end
+body a
+end a
+
+body b
+end

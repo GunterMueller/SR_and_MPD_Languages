@@ -1,0 +1,28 @@
+#  test separate body for global
+
+global g
+   op incr (var x : int) returns y : int
+   var v := 42
+body g separate
+
+body g
+   proc incr (x) returns y
+       y := ++x
+   end
+
+   write ("g here")
+   incr (v)
+end
+
+resource r ()
+    import g
+    var z := 5
+
+    write (v)
+    write (incr(v))
+    write (v)
+
+    write (z)
+    write (incr(z))
+    write (z)
+end

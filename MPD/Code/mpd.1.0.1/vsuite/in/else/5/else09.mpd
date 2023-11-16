@@ -1,0 +1,24 @@
+# multiple process test of else
+resource a()
+   op f(int x, int y)
+   process p1  {
+      in f(x,y) ->
+      [] else -> write("p1 else")
+      ni
+      send f(100,2345)
+   }
+   process p2  {
+      in f(x,y) -> write("f2",x,y)
+      ni
+      send f(999,88)
+   }
+   process p3  {
+      in f(x,y) st x == 999 -> write("f3",x,y)
+      ni
+      send f(998,87)
+   }
+   process p4  {
+      in f(x,y) and x == 998 -> write("f4",x,y)
+      ni
+   }
+end

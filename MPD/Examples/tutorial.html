@@ -1,0 +1,1423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<link rel="StyleSheet" type="text/css" href="/style/simple.css">
+<TITLE> The MPD Programming Language -- Tutorial </TITLE>
+</HEAD>
+<BODY BGCOLOR="#F7FFFF">
+
+
+<!-- /style/csbanner.ssi: included to render CS header with links -->
+<!-- compatible with /style/simple.css, but does not require it -->
+
+<img src="/style/elements/genheader.gif" width="760" height="148"
+ alt="The University of Arizona / Computer Science / UAScience"
+ style="position:absolute; top:0px; left:10px;">
+
+<div style="position:absolute; top:0px; left:10px; width:493px; height:42px;">
+<a title="The University of Arizona" href="http://www.arizona.edu/">
+<img border="0" alt="The University of Arizona"
+ src="/style/elements/42blu493.gif"></a></div>
+
+<div style="position:absolute; top:56px; left:516px; width:150px; height:43px;">
+<a title="Computer Science" href="http://www.cs.arizona.edu/">
+<img border="0" alt="ComputerScience"
+ src="/style/elements/tplDept.gif" width="150" height="43"></a></div>
+
+<div style="position:absolute; top:99px; left:516px; width:150px; height:23px;">
+<a title="UAScience" href="http://cos.arizona.edu/">
+<img border="0" alt="UAScience"
+ src="/style/elements/tplCollg.gif" width="150" height="23"></a></div>
+
+<div style="position:absolute; top:0px; left:760px; width:10px; height:42px;">
+<a title="Validate" href="http://validator.w3.org/check?uri=referer&amp;ss=1">
+<img border="0" alt=""
+ src="/style/elements/42blu10.gif" width="10" height="42"></a></div>
+
+<div style="padding: 150px 0 0 0;"></div>
+<div class="up150"></div>
+
+<!-- /style/csbanner.ssi: end inclusion -->
+
+
+
+
+<IMG SRC="../cairn.jpg" ALT="" ALIGN=right WIDTH=120 HEIGHT=120>
+
+<H1> MPD Tutorial and Sample Programs </H1>
+
+This page contains a tutorial on the MPD language.
+We start with an overview of the main components of the language
+and a few general guidelines for its syntax and semantics.
+Then we introduce the language mechanisms by means of a series of examples.
+Every example is a complete program; if you save it in a file, then you can
+compile and execute it on your local installation of MPD.
+
+<p>
+"Hello world." <a href="#hello">Description</a>.
+        <a href="hello.mpd">Program</a>.
+<br> Summing the elements of an array.
+        <a href="#sum">Description</a>. <a href="sum.mpd">Program</a>.
+<br> Quadrature.  <a href="#quad">Description</a>.
+        <a href="quad.iter.mpd">Iterative program</a>.
+        <a href="quad.recurse.mpd">Recursive program</a>.
+        <a href="quad.co.mpd">Parallel recursive program</a>.
+<br> Quicksort.  <a href="#quick">Description</a>.
+        <a href="quick.mpd">Program</a>.
+<br> Matrix multiplication. <a href="#mm">Description</a>.
+        <a href="mm.seq.mpd">Sequential program</a>.
+     <a href="mm.co.mpd">Using <tt>co</tt> statements</a>.
+     <a href="mm.process.mpd">Using processes</a>.
+<br> Distributed matrix multiplication.
+        <a href="#distmm">Description</a>.
+        <a href="mm.dist.mpd">Program using message passing</a>.
+<br> Finding patterns in a file.
+        <a href="#find">Description</a>.
+        <a href="find.mpd">Program</a>.
+<br> Concurrent file search.  <a href="#cgrep">Description</a>.
+        <a href="cgrep.mpd">Program</a>.
+        <a href="cgrep.vm.mpd">Using virtual machines</a>.
+<br> Critical section simulation using rendezvous.
+        <a href="#CS"> Description</a>.
+        <a href="cs.simulation.mpd">Program</a>.
+<br> Readers/writers simulation using "monitors" and semaphores.
+        <a href="#RW">Description</a>.
+        <a href="rw.simulation.mpd">Program</a>.
+<br> Programming graphical user interfaces.
+        <a href="#windows">Description</a>.
+        <a href="window.hello.mpd">Program to draw a simple window</a>.
+
+<p> Many of these applications are also discussed in the MPD book.
+Section references are given below.
+
+<h3> The Big Picture </h3>
+
+<p> The most general MPD program consists of multiple
+virtual machines, each of which contains resources and globals.
+A <i>virtual machine</i> is an address space.
+A <i>resource</i> is similar to a Java class:  It declares a
+pattern for a class of objects, each is of which is created dynamically.
+A resource exports <i>operations</i>; its body contains variables,
+procedures, and processes that implement the operations and/or perform
+background tasks.
+A <i>global</i> is a collection of variables and operations
+that are shared by all resources (and other globals) in the same
+virtual machine (address space).
+
+<p> Virtual machines are created dynamically and placed on physical machines,
+such as those in a local-area network.
+An MPD program that uses virtual machines is called a distributed program.
+Instances of resources (i.e., objects) are also created dynamically;
+they are placed on virtual machines.
+A global is created once when it is first imported.
+
+<p> Every MPD program contains at least one resource.
+The simplest MPD program consists of a single resource.
+One resource in every program is treated as the "main" resource.
+The main resource can have any name the programmer chooses;
+it does not have to be named <tt>main</tt>.
+The main resource is typically the last one that is compiled
+and must be the last one linked.
+It may not be imported by any other resource nor have any parameters.
+
+<p> Before an MPD program is executed, the MPD runtime system
+automatically creates one virtual machine and one instance of the main
+resource.
+The virtual machine is located on the physical machine
+that is used to start the MPD program.
+The instance of the main resource is placed in that virtual machine.
+The MPD program is then executed beginning with the first declaration
+or statement in the body of the main resource.
+After the program terminates, the final block in the main resource
+is executed, if there is one.
+(See the Matrix Multiplication section below for an example.)
+
+<p> Operations are the most important mechanism in MPD (and
+its predecessor SR).
+They give the language its power and uniqueness.
+An operation can be invoked synchronously by means of the call statement
+or asynchronously by means of the send statement.
+An operation can be implemented by a proc (procedure) or by
+an input statement.
+The four combinations of these mechanisms provide the following
+functionality:
+
+<p>
+<table border align=center>
+<tr> <th> Invocation </th> <th>Implementation</th> <th>Effect</th>
+</tr> <tr>
+   <td><tt>call</tt></td> <td>proc (procedure)</td> <td>Procedure call</td>
+</tr> <tr>
+ <td> <tt>send</tt></td> <td>proc (procedure)</td> <td>Fork a new process</td>
+</tr> <tr>
+   <td><tt>call</tt></td> <td>input statement</td> <td>Rendezvous</td>
+</tr> <tr>
+   <td><tt>send</tt></td> <td>input statement</td> <td>Message passing</td>
+</tr>
+</table>
+
+<p> MPD also provides several mechanisms that are abbreviations
+of common combinations of the above mechanisms.
+A procedure declaration is simply an operation plus a proc.
+The fork statement is an abbreviation for send.
+The receive statement is an abbreviation for an input statement
+that merely receives a message.
+A semaphore is an abbreviation for a parameterless operation.
+Finally, the <tt>V()</tt> and <tt>P()</tt> operations on semaphores are
+abbreviations for parameterless send and receive statements, respectively.
+The example programs in this tutorial illustrate all of these
+language mechanisms.
+
+<h3> General Guidelines </h3>
+
+<p> The syntax and semantics of MPD are based on a few simple principles,
+which help make it easy to read or to write MPD programs.
+
+<ul>
+
+<li> The main components, resources and globals, begin with
+<tt>resource identifier</tt> and <tt>global identifier</tt>, respectively.
+Both components end with <tt>end identifier</tt>.
+The ending identifier is optional (and often omitted).
+
+<p> <li> Semicolons are required to separate declarations or statements
+that appear on the same line, but semicolons can <i>always</i>
+be replaced by newline characters.
+
+<p> <li> Names (identifiers) must be declared before they are used.
+
+<p> <li> Declarations and statements may be intermixed.
+Thus, declarations can appear close to where the declared variables
+are used and they can appear inside any block.
+
+<p> <li> Declarations and statements are executed in the order
+they appear.  Even declarations are executed in the sense that
+the space for a variable is allocated and initialized
+when the variable's declaration is encountered.
+
+<p> <li> Blocks of declarations and statements are
+<i>always</i> enclosed by braces <tt>{ ... }</tt>.
+This applies to the bodies of procedures, procs, and processes;
+the arms of if/else statements; the bodies of loops;
+and the bodies of final blocks.
+Unlike C or Java, MPD does <i>not</i> allow braces to be omitted when
+an arm of an if or else statement or the body of a loop consists of
+a single statement.
+
+<p> <li> If a component may have parameters,
+then parentheses are required, even if the parameter list is empty.
+This applies to resources, procedures, and procs.
+
+<p> <li> Commas are used uniformly as list separators in conjunction with
+formal parameters, actual parameters, declarations, subscripts,
+and quantifiers.
+
+<p> <li> Array subscripts are enclosed by brackets, as in <tt>a[i]</tt>.
+Matrices (and other multiple-dimension arrays) can use either matrix
+notation, as in <tt>a[i,j]</tt>, or vector-of-vector notation,
+as in <tt>a[i][j]</tt>.
+
+<p> <li> Quantifiers are also enclosed by brackets,
+as in <tt>[i = 1 to 100]</tt>,
+because they are normally used in conjunction with arrays.
+Quantifiers are used in for loops and (optionally) in process
+declarations and co statements.
+
+</ul>
+
+<a name="hello"></a>
+<h3> A Simple Example </h3>
+
+<p> The program below and in <a href="hello.mpd">hello.mpd</a>
+illustrates a single-resource program:
+
+<pre>
+   # a simple MPD program with a single resource
+   # it prints a string followed by a newline character
+
+   resource hello()
+     write("Hello world.")
+   end
+</pre>
+
+The first two lines are comments.
+The resource is named <tt>hello</tt>.
+The body of the resource contains a single statement that calls the
+pre-defined <tt>write()</tt> function.
+
+<p> The name of the resource is followed by parentheses,
+<tt>hello()</tt>, because in general resources can have parameters.
+MPD employs the consistent rule that whenever a component <i>can</i>
+have parameters, then the declaration contains parentheses, even if
+the parameter list is empty.
+
+<p> When the above program is executed, the MPD runtime system creates
+one instance of <tt>hello</tt>.
+The body of that instance writes the string <tt>"Hello world."</tt>
+(without quote marks) followed by a newline character;
+then the program terminates.
+In general <tt>write</tt> converts its arguments to strings,
+prints them on one line separated by blanks, and appends
+a newline.
+
+<p> MPD also provides C's <tt>printf</tt> statement, so the
+above program would have the exact same effect if the
+<tt>write</tt> statement were replaced by 
+
+<pre>
+   printf("Hello world.\n")
+</pre>
+
+Notice that the <tt>write</tt> and <tt>printf</tt> statements
+above are not followed by semicolons.
+This is because semicolons are for the most part optional in MPD.
+The exact rule is that they are required to separate declarations
+and statements,
+but they can <i>always</i> be replaced by newline characters.
+Hence, semicolons are optional except when there
+is more than one declaration or statement on the same line, as in:
+
+<pre>
+   writes("Hello "); write("world.")
+</pre>
+
+The above line produces <i>exactly</i> the same output
+as the single <tt>write</tt> or <tt>printf</tt> statements above.
+Like <tt>write</tt>, <tt>writes</tt> converts its arguments to strings and
+prints them on one line; however, <tt>writes</tt> does not insert
+blanks between arguments and does not append a newline character.
+
+<a name="sum"></a>
+<h3> Sequential Array Summation </h3>
+
+<p> The program below, and in file <a href="sum.mpd">sum.mpd</a>, illustrates
+command-line arguments, intermixed declarations and statements,
+dynamic arrays, and simple for loops.
+
+<pre>
+  # iterative program to sum elements of an array
+
+  # store in a file such as "sum.mpd"
+  # compile by executing "mpd sum.mpd"
+  # run by executing "a.out size"
+
+  resource sum()
+    # declare and read first command-line argument
+    int size; getarg(1,size);
+
+    # declare and initialize array a
+    int a[1:size];         # same as int a[size]
+    for [i = 1 to size] {
+      a[i] = i;
+    }
+
+    # calculate then print a[1] + ... + a[size]
+    int total = 0;
+    for [i = 1 to size] {
+      total = total + a[i];   # same as total += a[i]
+    }
+    write("the sum of 1 ...", size, "is", total);
+
+  end
+</pre>
+
+The comments at the start of the program indicate how to compile
+and execute it.
+The comments inside the "main" resource, <tt>sum()</tt>, describe
+the purpose of each component of the program.
+Here we have put a semicolon at the end of each declaration and statement,
+as in C; as described earlier, these could be replaced by newlines.
+
+<p> Declarations and statements can appear in any order in MPD.
+The only requirement is that an identifier be declared
+before it is used.  By allowing declarations to follow statements,
+it is possible to have array sizes depend on input values.
+Above, the upper bound for array <tt>a</tt> is the value
+<tt>size</tt> of the first command-line argument.
+This value must be an integer, because the declared type
+of <tt>size</tt> is <tt>int</tt>.
+
+<p> The declaration of an array can specify both the lower and
+upper bounds for subscripts, as in <tt>a[1:size]</tt> above.
+The bounds can be values of any ordered type, such as <tt>int</tt>.
+The lower bound is optional; the default is 1, not 0 as in C.
+Hence, <tt>int a[1:size]</tt> is equivalent to <tt>int a[size]</tt>.
+
+<p> The <tt>for</tt> statements in the above program are also different
+than those in C.
+In particular, an MPD <tt>for</tt> statement uses what is called
+a <i>quantifier</i> to specify a bound variable and the range
+of values over which to iterate.
+Above, the single quantifier <tt>[i = 1 to size]</tt> is used to
+iterate over all elements of array <tt>a</tt>.
+The bound variable, <tt>i</tt> above, is a new variable that
+is declared implicitly; its scope extends to the end of the <tt>for</tt>
+statement.
+Quantifiers are enclosed in brackets <tt>[ ... ]</tt> rather than
+parentheses because they are most commonly used in conjunction with arrays.
+In general, quantifiers can specify more than one bound variable
+and associated range, as in
+
+<pre>
+  for [i = 1 to N, j = 1 to N] ...
+</pre> 
+
+<p> The <tt>write</tt> statement in the above program prints
+four items.  These are written on the same line separated
+by single blank characters, and followed by a newline character.
+The same effect could be achieved using the <tt>printf</tt>
+function as follows:
+
+<pre>
+  printf("the sum of 1 ... %d is %d\n", size, total);
+</pre>
+
+<a name="quad"></a>
+<h3> The Quadrature Problem </h3>
+
+<p> Now consider the quadrature problem described in Section 1.5
+of the MPD book.
+The goal is to approximate the integral of a function <tt>f(x)</tt>
+from <tt>a</tt> to <tt>b</tt>, namely to approximate the area
+between <tt>f(x)</tt> and the <tt>x</tt> axis from <tt>x</tt> equals
+<tt>a</tt> to <tt>x</tt> equals <tt>b</tt>.
+Below we describe three programs that solve the problem in different
+ways, then we discuss the tradeoffs between the programs.
+
+<p> <b>Iterative Program.</b>
+The first program, <a href="quad.iter.mpd">quad.iter.mpd</a>,
+uses an iterative algorithm.
+In particular, the program uses a fixed number of subintervals,
+approximates the area of each using a trapezoid, then sums the
+areas to approximate the total area.
+
+<p> The first two lines in the resource declare and read
+three command-line arguments, as follows:
+
+<pre>
+  int intervals; getarg(1, intervals);
+  real a, b; getarg(2, a); getarg(3, b);
+</pre>
+
+Variables <tt>a</tt> and <tt>b</tt> are of type real, which
+is equivalent to C's type double.
+
+<p> Next, we have the declaration of the function to integrate.
+
+<pre>
+  procedure f(real x) returns real fx {
+    fx = sin(x) * exp(x);
+  }
+</pre>
+
+The formal parameter is declared as in C.
+However, the name and type of the function's return value
+follow the parameters, as in SR.
+Hence there is no need for a return statement; the function's
+value, <tt>fx</tt>, is returned automatically at the end of the
+function body.
+The body of the function calls two of MPD's predefined functions:
+<tt>sin(x)</tt> and <tt>exp(x)</tt>.
+
+<p> The main part of the resource calculates the area as follows using
+the trapezoidal rule:
+
+<pre>
+  real width = (b-a)/intervals;    # distance between intervals
+  real fleft = f(a), fright, area = 0.0;
+      # fleft is used to compute f(x) just once per value of x
+
+  int start = age();    # start time, in milliseconds
+  for [x = (a + width) to b by width ] {
+      fright = f(x);
+      area += (fleft + fright) * width / 2;  # trapezoidal rule
+      fleft = fright;
+  }
+  int finish = age();   # finish time, in milliseconds
+</pre>
+
+This code also illustrates how to use MPD's <tt>age()</tt>
+function to calculate the execution time of the main loop
+of the program.
+(Each call of <tt>age()</tt> returns the number of milliseconds
+since the MPD program started execution; this time includes
+the time taken by the MPD runtime system to initialize key
+data structures and to create an instance of the main resource.)
+
+<p> Finally, the resource writes two lines.
+The first contains the command-line arguments,
+the second contains the calculated area and elapsed time.
+
+<pre>
+  write("intervals =", intervals," a =", a, " b = ", b);
+  write(" area =", area, " time = ",finish-start);
+</pre>
+
+<p> <b>Recursive Program.</b>
+The second program, <a href="quad.recurse.mpd">quad.recurse.mpd</a>,
+uses recursion.
+It implements the adaptive quadrature algorithm using the
+divide-and-conquer paradigm as described in the MPD book.
+
+<p> The command-line arguments and function <tt>f(x)</tt> are
+declared as in the first program.
+However, the area is computed using the following recursive function:
+
+<pre>
+  procedure quad(real left, real right, real fleft, real fright, real lrarea)
+                          returns real area {
+    real mid = (left+right)/ 2;
+    real fmid = f(mid);
+    real larea = (fleft + fmid) * (mid-left) / 2;     # left area
+    real rarea = (fmid + fright) * (right-mid) / 2;   # right area
+    if (abs((larea+rarea) - lrarea) > epsilon) {
+      # recurse to integrate both halves
+      larea = quad(left, mid, fleft, fmid, larea);
+      rarea = quad(mid, right, fmid, fright, rarea);
+    }
+    area = larea + rarea;
+  }
+</pre>
+
+The remainder of the resource makes the first call to <tt>quad()</tt>,
+calculates the elapsed time, and prints the results:
+
+<pre>
+  int start = age();    # start time, in milliseconds
+  real area = quad(a, b, f(a), f(b), (f(a)+f(b))*(b-a)/2);
+  int finish = age();   # finish time, in milliseconds
+
+  write("epsilon =", epsilon," a =", a, " b = ", b);
+  write(" area =", area, " time = ",finish-start);
+</pre>
+
+<p> <b>Parallel Recursive Program.</b>
+The third program, <a href="quad.co.mpd">quad.co.mpd</a>,
+uses recursive parallelism.
+It uses <i>same</i> algorithm as the second program, but the
+recursive calls are executed in parallel because they
+are independent.
+For this it uses the <tt>co</tt> statement as follows:
+
+<pre>
+  co larea = quad(left, mid, fleft, fmid, larea)
+  // rarea = quad(mid, right, fmid, fright, rarea)
+  oc;
+</pre>
+
+<p> <b>Performance and Accuracy Tradeoffs.</b>
+The iterative program will execute faster than the recursive program
+for the same input -- unless the function is smooth -- because for loops
+are faster than function calls.
+However, the recursive program will in general compute a better result
+because it adapts to the shape of the curve defined by <tt>f(x)</tt>.
+
+<p> On a single processor, the recursive program will be faster
+than the parallel recursive program,
+because it takes longer to fork a process than to call a function.
+Moreover, the parallel program might cause the MPD runtime system
+to run out of memory and hence to abort the program.
+This is because the parallel recursive program can create
+a large number of processes, each process needs its own stack,
+and the default stack size is 40,000 bytes.
+(Execute the MPD linker command "<tt>mpdl -l</tt>" to see the MPD
+runtime defaults for the maximum number of processes
+and the size of process stacks.
+These limits can be changed;
+see the <tt>mpdl</tt> man page for how to do so.)
+
+<p> Despite these limitations, the third program <i>can</i> run
+faster than the second program on a shared-memory multiprocessor.
+Or one could use a combination of the three programs.
+For example, try dividing the problem into a fixed number of
+intervals -- one per processor -- and using the recursive
+algorithm (program two) for each interval.
+Exercises 1.7 and 1.8 in the MPD book explore these tradeoffs
+and describe how to limit the number of processes in the parallel
+recursive program.
+
+<a name="quick"></a>
+<h3> Quicksort </h3>
+
+<p> Quicksort is a classic sorting algorithm.
+It can be implemented in MPD by the recursive program
+in <a href="quick.mpd">quick.mpd</a>.
+That program also illustrates several additional features of MPD:
+operation headers, <tt>proc</tt> declarations, <tt>var</tt> parameters,
+file access, string variables, and string comparison.
+
+<p> The first line in the body of the resource declares two
+"constants", using the C convention of upper-case identifiers.
+The next line contains what is called an <tt>op</tt> declaration:
+
+<pre>
+  op sort(var string[*] a[1:*])  # forward declaration for sort()
+</pre>
+
+An <tt>op</tt> declaration specifies the header of a function
+(or of a message  queue, as we shall see).
+The body is declared later using a <tt>proc</tt> declaration,
+as described below.
+The <tt>sort</tt> operation above has one formal parameter, which is
+an array of string arguments.
+The parameter is passed by value/result, which is indicated by
+the <tt>var</tt> keyword.
+(The other options are value (the default), result, and reference;
+these are denoted by <tt>val</tt>, <tt>res</tt>, and <tt>ref</tt>,
+respectively.)
+
+<p> In the <tt>op</tt> declaration above,
+the maximum size of the strings and the upper bound for the array are
+both unspecified, which is denoted by <tt>*</tt>;
+Each time <tt>sort</tt> is called, these will take on actual values
+as determined by the type of the actual parameter in a call.
+
+<p> The next few lines read the name of an input file and then
+open the file:
+
+<pre>
+  # read input file name, then open the file
+  string[20] fname; getarg(1,fname);
+  file fd = open(fname, READ);
+  if (fd == null)
+    { write("cannot open file", fname); stop(1); }
+</pre>
+
+A string variable has a maximum length and a current length.
+The maximum length of <tt>fname</tt> above is 20.
+The default initial value of a string is the empty string <tt>""</tt>,
+so the initial length of <tt>fname</tt> is zero.
+The current length of a string changes every time it is assigned
+a new value, so after <tt>getarg</tt> is called above, the length
+of <tt>fname</tt> will be the number of characters in the first
+command-line argument.
+An MPD program aborts if a string is assigned too long a value.
+The predefined function <tt>length(s)</tt> returns the current
+length of string <tt>s</tt>.
+
+<p> After reading the filename, the above code attempts to open
+the file in <tt>READ</tt> mode.
+The <tt>open()</tt> function returns a file pointer (descriptor)
+or a <tt>null</tt> pointer if the file cannot be opened.
+Assuming the file could be opened, it is read as shown in the
+third line of the following code:
+
+<pre>
+  # declare input array and read input file
+  int size = 1;
+  string[MAXLINE] data[MAXFILE];
+  while(size <= MAXFILE & read(fd, data[size]) != EOF) { size++ }
+  if (size > 10000)
+    { write("input file is longer than", MAXFILE, "lines"); stop(1); }
+  size--;
+</pre>
+
+The while loop reads the input file into array <tt>data</tt>,
+assuming the file is not too long.
+Boolean expressions in MPD use what is called "short circuit" evaluation;
+this means that the above while loop will terminate if
+<tt>size <= MAXFILE</tt> is false without evaluating the
+second condition.
+Stated differently, the condition in the above while loop ensures that
+there is space for the next line in array <tt>data</tt>
+before reading that line.
+The first argument to <tt>read</tt> above is the file pointer <tt>fd</tt>;
+<tt>read</tt> returns the predefined constant value <tt>EOF</tt> when
+the end of file is reached.
+
+<p> The next few lines in the program call the <tt>sort()</tt>
+procedure and then write the results to standard output:
+
+<pre>
+  # sort the file, then print the result
+  sort(data[1:size]);
+  for [i = 1 to size] {
+    write(data[i]);
+  }
+</pre>
+
+The actual parameter to <tt>sort</tt> is specified using what is called
+an array slice, <tt>data[1:size]</tt>.
+These are all the entries in array <tt>data</tt> that contain
+lines from the input file.
+
+The final part of the program is the quicksort procedure itself.
+This is written using a <tt>proc</tt> declaration, because the header
+of the procedure has already been declared (using an <tt>op</tt>
+declaration.
+Only the names of formal parameters are given in a <tt>proc</tt>
+declaration; their types and modes (<tt>var</tt> in this case)
+come from the <tt>op</tt> declaration.
+
+<pre>
+  proc sort(a) {
+    if (ub(a) <= 1) { return; }   # base case
+    string[MAXLINE] pivot = a[1];
+    int lx = 2, rx = ub(a);
+    while(lx <= rx) {    # partition the array based on the pivot
+      if (a[lx] <= pivot) { lx++ }
+      else { a[lx] :=: a[rx]; rx-- }
+    }
+    a[rx] :=: a[1];      # swap pivot line into place
+    sort(a[1:rx-1]);     # sort "left" half
+    sort(a[lx:ub(a)]);   # sort "right" half
+  }
+</pre>
+
+The body of <tt>sort</tt> partitions the array based on
+the first (pivot) line, then recursively sorts the left and right halves.
+The call of predefined function <tt>ub(a)</tt> returns the upper bound
+of array <tt>a</tt> for the current call of <tt>sort</tt>.
+Strings in MPD can be directly compared, the same as "normal" values.
+Above, <tt>a[lx] <= pivot</tt> is true if string <tt>a[lx]</tt>
+occurs earlier than string <tt>pivot</tt> in lexicographic order
+based on ASCII values of characters from left to right in the
+two strings.
+Notice that array slices have again been used in the calls of <tt>sort</tt>.
+
+<p> Procedure declarations are closely related to <tt>op</tt>
+and <tt>proc</tt> declarations.
+In particular, a procedure in MPD is simply an abbreviation
+for an <tt>op</tt> immediately followed by a <tt>proc</tt>.
+
+<a name="mm"></a>
+<h3> Matrix Multiplication </h3>
+
+Section 1.4 of the MPD book defines the matrix multiplication
+problem and describes sequential and parallel programs for solving it.
+Here we present three programs:  a sequential program using for statements,
+a parallel program using co statements, and a parallel program using
+process declarations.
+The programs illustrate both similarities and differences
+between for loops, co statements, and process declarations.
+The third process also illustrates the use of a final block,
+which prints results after the main part of the program has terminated.
+
+<p> <b> Sequential Program</b>.
+File <a href="mm.seq.mpd">mm.seq.mpd</a> contains a complete
+sequential program for multiplying two n by n matrices.
+After reading a command-line argument for the size <tt>n</tt> of
+the matrices, the program declares and initializes the matrices as follows:
+
+<pre>
+  real a[n,n] = ([n] ([n] 1.0)),
+       b[n,n] = ([n] ([n] 1.0)),
+       c[n,n];
+</pre>
+
+The initializers for <tt>a</tt> and <tt>b</tt> each specify n&sup2;
+values of 1.0.
+In particular, they specify n vectors, each having n values of 1.0.
+We have initialized both source matrices to ones so that it is easy
+to verify that the output is correct (every element of <tt>c</tt>
+will be <tt>n</tt>).
+
+<p> Matrices can be declared and referenced as above, or
+they can be declared and referenced as vectors of vectors,
+as in C.
+For example, the following declaration is also legal in MPD:
+<pre>
+  real m[n][n];         # same as:  real m[1:n][1:n]
+</pre>
+
+However, recall that the default lower bounds in MPD are one, not zero,
+as specified in the above comment.
+
+<p> The next part of the program performs the computation proper:
+
+<pre>
+  for [i = 1 to n, j = 1 to n] {  # compute n**2 inner products
+    real sum = 0.0;
+    for [k = 1 to n]
+      { sum += a[i,k]*b[k,j]; }
+    c[i,j] = sum;
+  }
+</pre>
+
+The outer for loop uses a double quantifier, which declares two new
+variables <tt>i</tt> and <tt>j</tt> and assigns each of them values
+from 1 to n.
+The values are assigned in row-major order, which means that <tt>j</tt>
+varies more rapidly than <tt>i</tt>.
+
+<p> The body of the outer for loop declares and initializes <tt>sum</tt>.
+The declaration could be placed outside the loop, but the initialization
+has to occur each time the loop body is entered.
+The inner for loop computes the inner product of row <tt>a[i,*]</tt>
+and column <tt>b[*,j]</tt>.
+
+<p> The last piece of code in the program prints the results
+on the standard output file.
+It uses <tt>writes()</tt> to print a row on one line, then uses
+<tt>write()</tt> with no parameters to append a newline.
+
+<pre>
+  # print result, by rows
+  for [i = 1 to n] {
+    for [j = 1 to n] { writes(c[i,j], " "); }  # one line per row
+    write();   # append a newline
+  }
+</pre>
+
+<p> <b>Parallel Program Using co Statements</b>.
+File <a href="mm.co.mpd">mm.co.mpd</a> contains a parallel
+program that computes each inner product in parallel using
+a co statement.
+The first and last parts of the program are identical to those
+for the sequential program.
+The difference between the two programs is that the nested
+for loops in the sequential program are replaced by a procedure
+declaration and a co statement, as follows:
+
+<pre>
+  # compute inner product of a[i,*] * b[*,j]
+  procedure inner(int i, int j) {
+    real sum = 0.0;
+    for [k = 1 to n]
+      { sum += a[i,k] * b[k,j] }
+    c[i,j] = sum;
+  }
+
+  # compute n**2 inner products concurrently
+  co [i = 1 to n, j = 1 to n] inner(i,j) oc
+</pre>
+
+The procedure computes one inner product.
+Its body is <i>exactly</i> the same as the body of the
+of the outer for loop in the sequential program.
+
+<p> The co statement calls the procedure n&sup2; times, in parallel.
+The quantifier in the co statement is <i>exactly</i> the same
+as the quantifier on the outer for loop in the sequential program.
+
+<p> The co statement causes n&sup2; processes to be created.
+Each gets a different pair of values for <tt>i</tt> and <tt>j</tt>
+and each executes one call <tt>inner(i,j)</tt>.
+When the processes all quit, the co statement terminates, and
+the results are printed.
+
+<p> <b> Parallel Program Using Processes</b>.
+The third program, in <a href="mm.process.mpd">mm.process.mpd</a>,
+also computes n&sup2; inner products in parallel.
+However, it uses a process declaration that combines the procedure
+declaration and co statement of the previous program.
+
+<pre>
+  process inner[i = 1 to n, j = 1 to n] {
+    real sum = 0.0;
+    for [k = 1 to n]
+      { sum += a[i,k] * b[k,j] }
+    c[i,j] = sum;
+  }
+</pre>
+
+This specifies an array of n&sup2; fine-grained processes:
+<tt>inner[1,1]</tt>, <tt>inner[1,2]</tt>, ..., <tt>inner[n,n]</tt>.
+The quantifier in the process heading is <i>exactly</i> the same as
+the quantifier with the co statement in the previous program.
+The body of the process is <i>exactly</i> the same as the body
+of procedure <tt>inner</tt> in the previous program.
+
+<p> Although an array of processes is very similar to a co statement
+plus the procedure called by the co statement, there is an
+important semantic difference.
+A process is a declaration.
+When the declaration is processed, the new processes are created
+and started, then the main process (the one which processes the declaration)
+<i>continues to execute</i>.
+In particular, the above process declaration is implemented
+essentially as follows:
+
+<pre>
+  for [i = 1 to n, j = 1 to n] {
+    fork inner(i,j);  # fork a new instance of procedure inner()
+  }
+</pre>
+
+Thus, if the code to print the results were to appear immediately
+after the process declaration, the printing would start while
+results are being computed!
+(Try this out to see what happens; the result in general is
+nondeterministic.)
+
+<p> If there is something to be done <i>after</i> all processes
+have been terminated, you can can either program synchronization
+code to have the outer process wait for all the new processes to
+terminate, or better yet, you can use a final block as in the
+third matrix multiplication program.
+
+<pre>
+  # wait for processes to terminate, then print result, by rows
+  final {
+    for [i = 1 to n] {
+      for [j = 1 to n] { writes(c[i,j], " "); }  # one line per row
+      write();   # append a newline
+    }
+  }
+</pre>
+A final block in the main resource is not executed until all processes
+in the program have terminated (or blocked).
+It is easy for the MPD runtime system to detect when this has occurred;
+it is hard for the programmer to do so.
+Hence, final blocks are often very useful.
+
+<p> In general, any resource may have a final block.
+That block is executed when the resource is destroyed.
+In fact, this is what happens for the main resource.
+Recall that the MPD runtime system implicitly creates an instance
+of the main resource.
+The MPD runtime system also destroys that instance when the program
+terminates; that destroy causes the final code, if any, to be executed.
+When that code terminates, the program ceases to exist.
+
+<a name="distmm"></a>
+<h3> Distributed Matrix Multiplication </h3>
+
+Matrix multiplication can also be implemented by a distributed
+program in which processes do not share variables but instead
+communicate using message passing.
+Section 1.8 of the MPD book describes two programming styles
+that could be used.
+One has a coordinator process and several worker processes;
+the second uses a circular pipeline of worker processes.
+
+<p> File <a href="mm.dist.mpd">mm.dist.mpd</a> contains a
+distributed program that uses the coordinator/worker paradigm.
+The program illustrates the use of message passing in MPD.
+We have put all the processes in the same resource for convenience.
+This means that the program as listed can only be executed on a 
+single processor or a shared-memory multiprocessor.
+However, the program can readily be modified to use multiple resources
+and virtual machines and hence to execute on a distributed collection
+of machines, such as a cluster of workstations.
+We show how to construct a distributed program in the section below
+on <a href="#cgrep">concurrent file search</a>.
+
+<p> The header comment in <a href="mm.dist.mpd">mm.dist.mpd</a>
+uses MPD's multi-line comment <tt>/* ... */</tt>.
+The start of the resource declares and reads the command-line
+arguments; these values are global to the processes in the resource.
+
+<p> The message channels are created using op declarations as follows:
+
+<pre>
+  op data[numWorkers] (real m[*,*]);      # channels to Workers
+  op result[numWorkers] (real m[*,*]);    # channels to Coordinator
+</pre>
+
+Each channel is an array.  The messages sent to channels are matrices
+of reals having unspecified sizes; the actual size of each message
+is determined by the send statements in the program.
+
+<p> The program uses an array of Worker processes.  Each Worker
+computes a strip of the result matrix <tt>c</tt>.
+The Coordinator process first sends strips of matrix <tt>a</tt> and
+all of matrix <tt>b</tt> to each worker, then it receives results
+from each worker.
+We use an array of result channels to ensure that each strip
+of results is stored in the correct strip of matrix <tt>c</tt>.
+Notice the use of array slices and <tt>*</tt> in the send and
+receive statements.
+For example,
+
+<pre>
+  send data[w] (a[startRow:endRow,*]);
+</pre>
+
+sends <tt>stripSize</tt> rows of <tt>a</tt> to Worker <tt>w</tt>.
+Similarly,
+
+<pre>
+  receive result[w](c[startRow:endRow,*]);
+</pre>
+
+receives a strip of results from Worker <tt>w</tt> and stores
+them in the appropriate strip of matrix <tt>c</tt>.
+
+<p> The matrices in each Worker are declared to be just as big
+as necessary.
+Hence, the send and receive statements in the Workers transfer
+entire matrices.
+In the case of local matrices <tt>a</tt> and <tt>c</tt>,
+these are strips of the corresponding full matrices
+in the Coordinator.
+
+<a name="find"></a>
+<h3> Finding Patterns in a File </h3>
+
+Section 2.2 of the MPD book describes the problem of finding all
+instances of a pattern in a file.
+That section presents a sequential program and then
+discusses how to parallelize the program.
+File <a href="find.mpd">find.mpd</a> contains an MPD program
+that uses a co statement in the manner
+discussed on pages 46 and 47 of the MPD book.
+The program also illustrates the use of a global component,
+which declares three constants as follows:
+
+<pre>
+  global defs           # shared definitions
+    const int MAXPATTERN = 20
+    const int MAXFILENAME = 20
+    const int MAXLINE = 120
+  end
+</pre>
+
+A constant -- indicated by the <tt>const</tt> prefix on each
+declaration -- is initialized when it is declared;
+later assignments to a constant are not allowed.
+
+<p> Program execution begins, as usual, with the main resource
+(named <tt>grep</tt> in this case).
+The first thing that resource does is to import <tt>defs</tt>.
+This causes the constants in global <tt>def</tt> to be initialized
+and makes their names visible in the remainder of the resource.
+A subsequent import of <tt>defs</tt> (on the same virtual
+machine) will be ignored, because a global is only created once
+per virtual machine.
+In particular, a global is created the first time that it is imported
+by a resource or another global.
+
+<p> The <tt>find</tt> procedure uses several of MPD's
+string processing operations.
+
+<pre>
+  procedure find(string[*] pattern, string[*] line) {
+    # if line contains pattern, write out line
+    int i = 1, plen = length(pattern)
+    while (i <= (length(line) - plen + 1)) {
+      if (pattern == line[i:i+plen-1]) {
+          write(filename || ":", line); return
+      }
+      i++
+    }
+  }
+</pre>
+
+The <tt>length()</tt> function returns the length of a string.
+The expression <tt>line[i:i+plen-1]</tt> selects a substring,
+which in this case is compared to <tt>pattern</tt>.
+Finally, the write statement uses the
+string concatenation operator <tt>||</tt>.
+
+<p> The co statement in the resource is programmed as follows:
+
+<pre>
+  co find(pattern, line[ln])
+  // result = doread(3-ln)
+  oc
+</pre>
+
+Note that each arm calls a procedure in the resource.
+In MPD an arm of a co statement may only call a procedure or
+send to an operation.
+For implementation reasons, MPD does not allow arms to contain
+statement lists or to make direct calls of pre-defined functions.
+Hence, the above co statement calls the <tt>doread</tt> function,
+which in turn calls the pre-defined <tt>read()</tt> function.
+
+<a name="cgrep"></a>
+<h3> Concurrent File Search </h3>
+
+The previous program uses fine-grain concurrency to read a new
+line in parallel with searching for the pattern in the previous line.
+The program is correct but not very efficient, because the granularity
+of concurrency is too small to be employed effectively on most machines.
+Here we consider a related problem that is much more amenable to
+effective parallelization.
+
+<p> Suppose we want to search for a pattern in <i>multiple</i> files.
+The files are independent, so they can be searched in parallel
+by using one process for each file.
+File <a href="cgrep.mpd">cgrep.mpd</a> contains an MPD program
+that implements this strategy.
+The program contains a global component and two resources.
+The global component defines constants as in the previous example.
+
+<p>
+The first resource, <tt>grep</tt>, finds all occurrences of
+string <tt>pattern</tt> in file <tt>filename</tt>.
+These values are parameters to the resource, and hence they
+are declared in the resource header.
+
+<pre>
+  resource grep(string[*] pattern, string[*] filename)
+    import defs
+    file  fd = open(filename, READ)
+
+    procedure find(string[*] pattern, string[*] line)  {
+      # if line contains pattern, write out line
+      int i = 1
+      int plen = length(pattern)
+      while (i <= (length(line) - plen + 1)) {
+        if (pattern == line[i:i+plen-1]) {
+	    write(filename || ":", line); return
+        }
+        i++
+      }
+    }
+
+    process search  {
+      # find all instances of pattern in filename
+      string[MAXLINE] line
+      while (read(fd, line) != EOF) {
+        find(pattern, line)
+      }
+    }
+  end grep
+</pre>
+
+The resource body imports the global, opens <tt>filename</tt>,
+then starts process <tt>search</tt>.
+That process reads each line from the file and calls internal
+procedure <tt>find</tt> to determine if the line contains <tt>pattern</tt>.
+
+<p> The second resource, <tt>main</tt>, is the last one that is
+compiled (and linked), and hence it is the main resource in the program.
+
+<pre>
+  resource main()
+    import defs, grep
+    # read command line arguments and create instances
+    # of resource grep
+    string[MAXPATTERN] pattern; getarg(1, pattern)
+    string[MAXFILENAME] filename
+    for [i = 2 to numargs()] {
+        getarg(i, filename)
+        create grep(pattern, filename)
+    }
+  end
+</pre>
+
+The first line imports both <tt>defs</tt> and <tt>grep</tt>.
+The import of <tt>defs</tt> causes the global to be created
+and initialized.
+The import of <tt>grep</tt> makes its header visible in <tt>main</tt>.
+The for loop creates new instances of <tt>grep</tt>, passing each
+one the pattern and a file name.
+A create statement terminates as soon as the resource executes its
+top-level declarations and statements (or when the resource
+executes a return or reply statement).
+In this program, the top-level declarations and statements in
+<tt>grep</tt> are:  (1) the import clause (which has no effect, because
+<tt>main</tt> has already created <tt>defs</tt>), (2) the call of
+<tt>open</tt>, (3) the procedure declaration (which has no effect),
+and (4) the process declaration (which starts process <tt>search</tt>).
+Hence, the create statement above terminates when each new instance
+of <tt>grep</tt> has begun a new search.
+
+<p> Program <a href="cgrep.mpd">cgrep.mpd</a> can readily be
+extended to use virtual machines and hence to allow the
+different resources to execute on different processors.
+File <a href="cgrep.vm.mpd">cgrep.vm.mpd</a> contains
+a distributed version.
+
+<p> Only three changes are required to use virtual machines:
+(1) declare one or more capabilities for virtual machines,
+(2) create one or more virtual machines, and
+(3) create resources on those virtual machines.
+All three of these changes are in the main resource in program cgrep.vm.mpd.
+The first two are in the lines
+
+<pre>
+  cap vm vc
+  vc = create vm() on "paloverde"
+</pre>
+
+The effect of this create statement is to create a new
+virtual machine on the local host named "paloverde".
+The third change is in the resource creation statement in the for loop:
+
+<pre>
+   create grep(pattern, filename) on vc
+</pre>
+
+This now creates a new instance of <tt>grep</tt> on the virtual
+machine pointed to by capability variable <tt>vc</tt>; above
+that virtual machine is on host "paloverde".
+
+<p> The program in <a href="cgrep.vm.mpd">cgrep.vm.mpd</a> also
+illustrates the use of an <i>external</i> operation.
+In particular, we have added the following four lines to the
+top of resource <tt>grep</tt>:
+
+<pre>
+  external gethostname(res string[*] s, int namelen)
+  string[30] hname
+  gethostname(hname, maxlength(hname))
+  write("vm host:", hname)
+</pre>
+
+The external operation, <tt>gethostname</tt>, is a Unix system
+call that returns the name of the host on which the function is called.
+The above code calls this function and then prints the result.
+Consequently, the MPD program prints the name of each host on
+which virtual machines are created (only "paloverde" in this case).
+
+<p> External operations can be used to access many functions in
+libraries that are written in C and that are accessible to the MPD linker.
+These include the Unix system libraries and window systems.
+For example, <a href="#windows">MPDWin</a>
+is a very useful package for creating graphical user interfaces.
+
+<a name="CS"></a>
+<h3> Critical Section Simulation </h3>
+
+MPD can also be used to create interesting simulations.
+For example, students have used MPD's close relative SR to simulate
+bouncing balls, n-body problems, traffic flow, elevators,
+and many other physical systems.
+MPD can also be used to create simulations of synchronization protocols.
+We present a simple simulation of the critical section problem in
+this section.
+The next section presents a simulation of the readers/writers problem.
+The examples area of the MPD distribution contains solutions to the
+dining philosophers problem, as described in the SR book.
+
+<p> File <a href="cs.simulation.mpd">cs.simulation.mpd</a> contains
+a simulation of the critical section problem.
+(Figure 8.20 of the MPD book contains an SR version of the program.)
+The program illustrates one use of MPD's rendezvous primitives,
+operation restrictions, a global component with a body,
+and MPD's <tt>random()</tt> and <tt>nap()</tt> functions.
+
+<p> The global component exports two operations that are invoked
+when a "user" process enters and exits a critical section.
+The body of the global contains a background process that repeatedly
+waits for an invocation of <tt>CSenter()</tt> and then waits for
+an invocation of <tt>CSexit()</tt>.
+The operation restriction <tt>{call}</tt> indicates that
+<tt>CSenter()</tt> must be called.
+There is no restriction on the <tt>CSexit()</tt> operation,
+so it can be invoked by call or send statements.
+(The program uses send.)
+
+<pre>
+  global CS
+    op CSenter(int id) {call},    # must be called
+       CSexit()    # may be invoked by call or send
+  body CS
+    process arbitrator {
+      while (true) {
+        in CSenter(id) by id ->
+            write("user", id, "in its CS at", age())
+        ni
+        receive CSexit()
+      }
+    }
+  end
+</pre>
+
+The <tt>CSenter()</tt> operation is serviced by an input statement.
+The one above waits until there is at least one call; then the
+one that minimizes the value of parameter <tt>id</tt> is serviced.
+This gives preference to the lower numbered users.
+The <tt>CSexit()</tt> operation is serviced by a receive statement.
+Recall that receive is simply an abbreviation for a simple input
+statement, in this case <tt>in CSexit() -> skip ni</tt>.
+
+<p> The main resource reads the command line arguments, then
+forks an array of user processes.
+
+<pre>
+  resource main()
+    import CS
+    int numusers, rounds; getarg(1, numusers); getarg(2, rounds)
+
+    process user[i = 1 to numusers] {
+      for [j = 1 to rounds] {
+        call CSenter(i)
+        nap(int(random()*100))
+        send CSexit()
+        nap(int(random()*1000))
+      }
+    }
+  end
+</pre>
+
+Each user process executes repeatedly calls <tt>CSenter()</tt> and
+sends to <tt>CSexit()</tt>.
+Before these invocations, a user process goes to sleep for
+a random interval.
+For example, the call
+
+<pre>
+  nap(int(random()*100))
+</pre>
+
+delays the caller for a number of milliseconds that is
+a (pseudo-)random value between 0 and 100.
+The <tt>random()</tt> function returns a real, and the <tt>nap()</tt>
+function requires an int, so the <tt>int()</tt> conversion function
+is used to cast the real to an int.
+There is a conversion function for each MPD type; its name is the same
+as the type's name.
+(MPD implicitly converts ints to reals in expressions, but the programmer
+has to do other type conversion, as above.)
+
+<a name="RW"></a>
+<h3> Readers/Writers Simulation </h3>
+
+<p> File <a href="rw.simulation.mpd">rw.simulation.mpd</a> contains
+a simulation of the readers/writers problem.
+The program illustrates one way to implement a monitor in MPD,
+in this case using a global component and semaphores.
+
+<p> The global component encapsulates the "database" (here, simply an integer).
+The interface (spec) part of the global exports two operations.
+The body of the global implements these operations using proc declarations.
+The body also contains two internal procedures, <tt>startread()</tt>
+and <tt>endread()</tt>, which are called by the <tt>read()</tt> proc.
+Semaphores are used as shown in Figure 4.10 of the MPD book to
+synchronize reads and writes.
+
+<pre>
+global DataBase
+  op read(var int data)      # read a value
+  op write(val int data)     # write a value
+body DataBase
+  int database = 0     # the "value" of the database
+
+  sem rw = 1, mutexR = 1
+  int nr = 0
+
+  procedure startread() {
+    P(mutexR); nr++; if (nr == 1) { P(rw) }; V(mutexR)
+  }
+
+  procedure endread() {
+    P(mutexR); nr--; if (nr == 0) { V(rw) }; V(mutexR)
+  }
+
+  proc read(data) {
+    startread(); nap(500); data = database; endread()
+  }
+
+  proc write(data) {
+    P(rw); nap(1000); database = data; V(rw)
+  }
+end DataBase
+</pre>
+
+The <tt>read()</tt> and <tt>write()</tt> procedures above
+use MPD's predefined function <tt>nap()</tt> to simulate the
+passage of time while reading and writing.
+This makes for more interesting output.
+
+<p> The main resource in the program is similar to the one in the
+critical section program described above.
+The main difference is that there are two
+arrays of background processes, one for readers and one for writers.
+
+<pre>
+resource main()
+  import DataBase
+
+  int numReaders; getarg(1, numReaders)
+  int numWriters; getarg(2, numWriters)
+  int rounds; getarg(3, rounds)
+
+  process Reader[i = 1 to numReaders] {
+    int myvalue
+    nap(int(random()*1000))   # to let everybody get created
+    for [j = 1 to rounds] {
+      DataBase.read(myvalue)
+      write("reader", i, "read", myvalue)  
+      nap(int(random()*1000))
+    }
+  }
+
+  process Writer[i = 1 to numWriters] {
+    int myvalue = i
+    nap(int(random()*1000))   # to let everybody get created
+    for [j = 1 to rounds] {
+      DataBase.write(myvalue)
+      write("writer", i, "wrote", myvalue)  
+      nap(int(random()*1000))
+    }
+  }
+end
+</pre>
+
+<a name="windows"></a>
+<h3> Programming Graphical User Interfaces </h3>
+
+The MPD distribution contains two powerful packages that allow
+one to do graphics programming or to create algorithm animations.
+The MPDWin package, contributed by Alex Zhao, provides an interface
+to the X11 graphics library.
+The MPDanimator package, contributed by Stephen Hartley,
+provides an interface to the XTANGO animation library.
+The interface to each package is defined by means of an
+MPD global component, which in turn calls external C functions.
+The MPD distribution contains manual pages and example programs
+for each package.
+The <a href="http://www.cs.arizona.edu/sr/"> SR distribution</a> contains
+<a href="http://www.cs.arizona.edu/sr/doc.html"> reports</a>
+that describe the original SR versions of these packages;
+the MPD versions are functionally identical.
+
+<p> Here we describe a simple use of the MPDWin package.
+The program in file <a href="window.hello.mpd">window.hello.mpd</a>
+opens a small window on the programmer's workstation and writes
+the message "Hello World" in that window.
+The header comment indicates how to compile and link
+the package into an MPD program.
+
+<pre>
+  resource hello()
+    import MPDWin;      # access the global defining MPDWin
+
+    int interval; getarg(1, interval);   # seconds to display window
+
+    winWindow mywin = WinOpen("", "Hello", null, UseDefault, 100, 30);
+    if (mywin == null)
+      { write("Sorry, cannot open window"); stop(1); }
+
+    WinSetForeground(mywin, "yellow");   # set foreground color
+    WinDrawString(mywin, winPoint(10,20), "Hello World");
+    WinFlush(mywin);
+
+    nap(interval*1000);     # sleep for interval seconds
+    WinClose(mywin);
+  end
+</pre>
+
+The first line in the resource imports the global component
+that defines the interface to the MPDWin package.
+That global defines several types and operations.
+By convention, type names begin with <tt>win</tt> and operation
+names begin with <tt>Win</tt>.
+The above program opens a new window, sets the foreground
+color to yellow, draws the string "Hello World", flushes the window
+buffer so that the string gets printed, sleeps for <tt>interval</tt>
+seconds, and finally closes the window.
+The <tt>mpdwin</tt> man page describes each of these functions
+and their arguments.
+
+<p> The MPDWin package contains dozens of functions that support
+sophisticated graphics programming.
+The MPD distribution contains larger examples that illustrate
+the use of many of these.
+The implementation of MPDWin also has two interesting
+attributes that make it relatively easy to create complex
+interfaces.
+First, MPDWin makes the X11 library "thread safe", so that the MPD
+programmer can use multiple processes to control one or more windows.
+Second, MPDWin converts asynchronous external events,
+such as mouse button pushes, into a stream of messages;
+the MPD programmer services external events by receiving
+messages from the event channel.
+
+
+<BR> <BR> <BR>
+<SMALL>
+Last updated February 8, 2001
+</SMALL>
+
+<p>
+<a href="../">MPD home page</a>
+
+</BODY>
+</HTML>

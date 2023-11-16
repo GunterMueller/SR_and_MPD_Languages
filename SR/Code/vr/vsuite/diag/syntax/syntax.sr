@@ -1,0 +1,288 @@
+# test syntax and miscellaneous compile-time errors
+
+
+% missing parameter list for resource
+	resource r
+	body r
+	end
+
+
+% missing parameter list for resource
+	resource r
+	body r separate
+
+
+% a global cannot have a parameter list
+	global g (i:int)
+	end
+
+
+% a global cannot have a parameter list
+	global g
+	body g (a:char)
+	end
+
+
+% var decl in spec part of resource
+	resource r
+	var v := 12
+	body r ()
+	end
+
+
+% var decl in spec part of resource
+	resource a	# abstract
+	    var v : int
+	end
+	resource r ()
+	    import a
+	end
+
+
+% warning: reply in final ignored
+	resource r ()
+	    final
+		reply
+	    end
+	end
+
+
+% warning: suspicious comparison
+	resource r ()
+	   var a : int
+	   a = 1
+	end
+
+
+% illegal reference to formal parameter n
+	resource r (n, a[n] : int)
+	end
+
+
+% illegal reference to formal parameter b
+	resource a (b: cap b)
+	end
+
+
+% expected .end b.
+# end of resource
+	resource a()
+	end a
+	resource aa()
+	end
+	resource b()
+	end a		# bogus
+
+
+% expected .end q.
+# end of process
+	resource e()
+		process p end p
+		process q end xx	# bogus
+	end e
+
+
+% expected .end y.
+# end of proc
+	resource e()
+		proc y() end xxx    # bogus
+	end e
+
+
+% illegal context for array bound .\*.
+#   in array variable
+	resource a()
+	    var arr[*] : int
+	end a
+
+
+% illegal context for string bound .\*.
+#   in string variable
+	resource r ()
+	    var s : string[*]
+	end
+
+
+% illegal context for string bound .\*.
+#   in array of strings
+	resource r ()
+	    var a[12] : string[*]
+	end
+
+
+% illegal context for array bound .\*.
+#   in array return value
+	resource r ()
+	    op o () returns a[*]:char
+	    proc o () returns a end
+	end
+
+
+% illegal context for string bound .\*.
+#   in string return value
+	resource r ()
+	    op o () returns s : string[*]
+	    proc o () returns s end
+	end
+
+
+
+# we do not test a lot of different types of parsing errors;
+# we assume that Yacc works correctly
+
+
+% parse error at keyword .by.
+	resource r ()
+		fa i by 3 af
+	end
+
+
+% parse error at identifier .r.
+	resource r ()
+		fa i r af
+	end
+
+
+% parse error at token .:.
+	resource r ()
+		fa i : af
+	end
+
+
+% parse error at token .%.
+	resource r ()
+		fa i % af
+	end
+
+
+% parse error at token .;.
+	resource r ()
+		fa i ; af
+	end
+
+
+% parse error at literal .abcdefghijklmnop.
+	resource r ()
+		fa i "abcdefghijklmnopqrstuvwxyz"
+	end
+
+
+% parse error at literal .x.
+	resource r ()
+		fa i 'x' af
+	end
+
+
+% parse error at EOF
+	resource r ()
+	begin
+	end
+
+
+% unexpected newline
+	resource r ()
+		fa i
+	end
+
+
+
+
+% duplicate identifier: a
+# body repeats name used in spec
+global ggg
+	var a := 0
+body ggg
+	var a := 1.1
+end ggg
+
+
+% undefined identifier: count
+# typical undefined identifier
+resource t()
+	var a:int
+	a := 2+count	 # bogus
+end
+
+
+% undefined identifier: i
+# as arg to predefined function
+resource p()
+	min(i)
+end
+
+
+% undefined identifier: y
+# in type conversion
+	 resource dump()
+	    put(char(y))
+	 end
+
+
+% undefined identifier: i
+# reference to bound variable before it's defined
+	resource r ()
+	    fa i := 3 * i to 100 -> af
+	end
+
+
+% undefined identifier: i
+# reference to identifier during its own initialization
+	resource r ()
+	    var i := 3 + i
+	end
+
+
+% undefined identifier: bogus
+# undefined type name
+	resource bad2
+	    op f(x:bogus)
+	body bad2()
+	    proc f(x) end
+	end
+
+
+% undefined identifier: a2
+# due to scoping error
+	resource error()
+	    begin
+		var a2 := 100
+	    end
+	    write (a2)
+	end
+
+
+% undefined identifier: x
+# as op name for input stmt
+	resource r1()
+	    process p
+		in x() ->
+		ni
+	    end
+	end
+
+
+% undefined identifier: servant
+# as resource name
+	resource main()
+	    var s : cap servant
+	    fa i := 1 to 1 ->
+		s[i] := create servant()
+	    af
+	end
+
+
+% undefined identifier: chair
+# as resource name used in type
+	resource Main()
+	    var ch_proc[1:1] : cap chair        # chair processes
+	    process master
+		send ch_proc[1].stop_music()
+	    end master
+	end Main
+
+
+% undefined identifier: self
+# in tricky pointer decl
+	resource r ()
+	    var self : ptr r.self
+	end

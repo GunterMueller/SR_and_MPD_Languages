@@ -1,0 +1,40 @@
+resource Servant
+  op getfork(), relfork()
+body Servant(int id)
+  process server  {
+    while (true) {
+      receive getfork(); receive relfork()
+    }
+  }
+end
+
+resource Philosopher
+  import Servant
+body Philosopher(cap Servant l, cap Servant r, int id, int t)
+  process phil  {
+    for [ i = 1 to t ] {
+      l.getfork(); r.getfork()
+      write("Philosopher", id, "is eating")   # eat
+      l.relfork(); r.relfork()
+      write("Philosopher", id, "is thinking") # think
+    }
+  }
+end
+
+resource Main()
+  import Philosopher, Servant
+  int n= 5
+  int t= 5
+  cap Servant  s[1:n]
+  # create the Servants
+  for [ i = 1 to n ] {
+    s[i] = create Servant(i)
+  }
+  # create the Philosophers; to prevent deadlock,
+  # they are passed capabilities for their servants
+  # in an asymmetric fashion
+  for [ i = 1 to n-1 ] {
+    create Philosopher(s[i], s[i mod n + 1], i, t)
+  }
+  create Philosopher(s[1], s[n], n, t)
+end

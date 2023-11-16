@@ -1,0 +1,22 @@
+# test external calls and some command option & path searching features
+
+0 rm -rf tmp
+0 mkdir tmp
+0 sr -c e.sr
+0 mv Interfaces/e.* tmp
+0 cc -c -Dname=func3 -Dval=3 func.c
+0 mv func.o func3.o
+0 cc -c -Dname=func5 -Dval=5 func.c
+0 mv func.o tmp/func5.o
+0 cc -c -Dname=func7 -Dval=7 func.c
+0 mv func.o func7.o
+0 ar cr tmp/lib.a func3.o func7.o
+0 if [ -f /bin/ranlib -o -f /usr/bin/ranlib ]; then ranlib tmp/lib.a; fi
+# set and test SR_PATH; n.b. can't use subshell for this because can't find srl
+0 SR_PATH=tmp
+0 srl e func5.o lib.a
+0 SR_PATH=
+#  run with SR_PARALLEL=0 to avoid problems with mforked C library on Sequent
+0 (SR_PARALLEL=0 a.out >No_input.out 2>&1)
+0 cmp -s No_input.std No_input.out
+0 rm -rf Interfaces core tmp *.[ao] *.out

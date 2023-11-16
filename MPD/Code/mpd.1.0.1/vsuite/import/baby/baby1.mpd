@@ -1,0 +1,36 @@
+# no imports, just a simple record in the spec.
+resource baby1
+	type t = rec(int a,b)
+body baby1()
+	t  x
+
+	op init() returns t  x
+	int inita =1001
+	int initb =2001
+	proc init() returns x  {
+		x.a = inita
+		x.b = initb
+		inita++; initb++
+	}
+
+	op print(t x)
+	proc print(x)  {
+		write(x.a,x.b)
+	}
+
+	process p  {
+		t  y
+		rec (int c; int d) z
+		x.a = 3333
+		x.b = 4444
+		z = x
+		print(x); print(z)
+		y.a = x.a
+		y.b = z.c
+		print(y)
+		x = init(); print(x)
+		y = init(); print(y)
+		z = init(); print(z)
+		print(init())
+	}
+end

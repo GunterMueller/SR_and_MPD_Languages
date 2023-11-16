@@ -1,0 +1,5 @@
+0 mpd -c cap1.mpd
+0 mpdl cap1
+0 a.out >No_input.out
+0 scmp No_input.std No_input.out
+0 rm -rf MPDinter core *.out

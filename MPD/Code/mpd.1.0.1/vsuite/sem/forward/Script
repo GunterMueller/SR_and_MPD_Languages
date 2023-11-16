@@ -1,0 +1,4 @@
+#  ron  Wed Sep 29 17:21:49 MST 1999
+0 mpd fwdsem.mpd
+0 run
+0 rm -rf MPDinter core *.out

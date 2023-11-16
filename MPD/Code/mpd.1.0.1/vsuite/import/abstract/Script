@@ -1,0 +1,7 @@
+0 mpd -c oops.mpd
+0 mpdl o2
+0 run
+0 mpdm oops.mpd
+0 sed 's/mpdm -w -c [^ ]* /mpdm /' Makefile >Makefile.out
+0 cmp -s Makefile.std Makefile.out
+0 rm -rf MPDinter core *.out Makefile

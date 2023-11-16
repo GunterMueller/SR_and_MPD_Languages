@@ -1,0 +1,49 @@
+#  lots of different kinds of global ops,
+#  especially for testing optimized calls
+
+#  also miscellaneous other global stuff
+
+#  there are some unreferenced identifiers here.
+#  that is deliberate; they used to cause problems
+
+
+global g
+    op a (real)
+    external puts (string[*] s)
+body g
+    proc a (x) { write ("a", x) }
+
+    write ("g here")
+    a (1.1)
+end
+
+
+global h
+    import g
+    op b1 (string[*], int); op b2 (char)
+    type c = cap ()                             # unref, but caused problems
+    optype d ()
+    cap d  e 
+    op d f
+    sem s, t
+body h
+    proc b1 (s,i) { write ("b1",s,i) }          # can be optimized
+    proc b2 (c)   { write ("b2",c); reply }     # cannot
+
+    write ("h here")
+    a (2.2)
+    b1 ("from h", 3)
+    b2 ('h')
+    V(t)
+end
+
+
+resource r ()
+    import g, h
+    puts ("r here")
+    a (4.4)
+    b1 ("from r", 5)
+    b2 ('r')
+    P (t)
+    write ("done")
+end

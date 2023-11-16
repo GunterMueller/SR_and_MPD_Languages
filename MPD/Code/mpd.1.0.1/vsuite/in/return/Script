@@ -1,0 +1,2 @@
+0 mpd -c enumglob1.mpd
+0 rm -rf MPDinter core *.out

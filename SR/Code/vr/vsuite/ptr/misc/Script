@@ -1,0 +1,5 @@
+# gmt Wed Feb 26 15:52:52 MST 1992
+0 sr pmisc.sr
+0 run input1
+0 run input2
+0 rm -rf Interfaces core *.out

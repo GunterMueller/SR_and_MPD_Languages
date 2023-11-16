@@ -1,0 +1,31 @@
+The SR Termination Process
+13-Apr-92 / gmt
+
+
+1. Finalization
+
+    There is a finalization process that is spawned once only on the
+    main VM in response to either the first deadlock situation or the
+    first explicit `stop' if its exit code is zero.
+
+    Finalization first executes the final code of the main resource (if
+    it has not been destroyed).  Then it destroys all the globals on the
+    main VM, importers before importees, causing them to run any final
+    code.  After all this is accomplished the shutdown code is entered.
+
+2. Shutdown
+
+    Shutdown is initiated by completion of finalization;  by a second
+    occurrence of deadlock or `stop' during finalization; or by a
+    runtime abort.
+
+    Shutdown consists of diagnosing out-of-resource or deadlock
+    conditions, closing files, and exiting.
+
+3. If there are other virtual machines in addition to the main one:
+
+    They are not notified before final shutdown, and none of their
+    finalization code is initiated by the shutdown code.
+
+    A stop call on a VM is passed to the main VM, which
+    controls finalization and eventual shutdown.

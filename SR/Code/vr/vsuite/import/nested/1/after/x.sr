@@ -1,0 +1,21 @@
+# test order in which imports are done.
+# nested imports (e.g., importing filemanager before ts)
+# previously caused problems.
+
+resource mutex() end
+
+resource filemanager
+	import mutex
+body filemanager() end
+
+resource ts
+	import filemanager
+body ts() end
+
+resource branch
+	import ts,filemanager
+body branch() end
+
+resource bank
+	import branch
+body bank() end

@@ -1,0 +1,20 @@
+# program terminates in deadlock
+
+resource rw()
+    op write_request(x:int)
+    process a
+	do true ->
+	    in write_request(x)  ->
+		reply
+	    ni
+	od
+    end
+    process writer
+        var nowrites: int
+	nowrites := 500
+	write("number of writes", nowrites)
+	fa i := 1 to nowrites ->
+	   write_request(i)
+	af
+    end writer
+end rw

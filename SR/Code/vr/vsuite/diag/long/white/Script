@@ -1,0 +1,6 @@
+# gmt Wed Jun 26 14:37:09 MST 1991
+0 sh ../makelong.sh part1.sr "" "            " part2.sr >temp.sr
+0 sr -c temp.sr
+0 srl white
+0 run
+0 rm -rf Interfaces core *.out temp.sr

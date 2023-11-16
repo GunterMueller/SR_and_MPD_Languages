@@ -1,0 +1,12 @@
+resource arg1()
+    int a = 0, d = 0
+    bool  c = false;
+    char b[1:10]
+    write("number of args is", numargs());
+    a = getarg(0, b);
+    write("getarg returns", a, b[1:a]);
+    a = getarg(1, d);
+    write("getarg returns", a, d);
+    a = getarg(2, c);
+    write("getarg returns", a, c);
+end

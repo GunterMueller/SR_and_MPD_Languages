@@ -1,0 +1,5 @@
+
+===============  sem2  ===============
+
+ops:
+   Rs  SYM2 semop: K_OP T_OP(){send}:T_VOID

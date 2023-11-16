@@ -1,0 +1,19 @@
+resource test()
+
+  import barrier
+  var n, rounds : int
+
+#  writes("number of processes:  "); read(n)
+n := 4
+  barrier.setn(n)
+#  writes("number of iterations:  "); read(rounds)
+rounds := 10
+
+  process main(i := 1 to n)
+    fa j := 1 to rounds ->
+        nap(10*(n-i+1)*j)
+        barrier.arrive(i)
+    af
+  end
+
+end

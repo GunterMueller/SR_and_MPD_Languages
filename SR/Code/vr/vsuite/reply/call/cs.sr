@@ -1,0 +1,25 @@
+# call sends for reply
+resource cs()
+	op f(x:int) returns y:int {call,send}
+	op semop() {send}
+	op done() {send}
+	var c:int := 0 # number of f's done.
+
+	send semop()
+	send f(3)
+	write( f(5), f(7) )
+	send f(2)
+	fa i := 1 to 4 -> receive done(); af
+	write(c)
+
+	proc f(x) returns y
+		y := 0
+		fa i := 1 to x ->
+			y := y+i
+		af
+		reply
+		y := 99999999
+		receive semop(); c++; send semop()
+		send done()
+	end
+end

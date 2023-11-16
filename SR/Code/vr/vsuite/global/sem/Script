@@ -1,0 +1,5 @@
+#  gmt  Fri Nov  1 16:29:47 MST 1991
+0 sr -c globsem.sr
+0 srl g r
+0 run
+0 rm -rf Interfaces core *.out

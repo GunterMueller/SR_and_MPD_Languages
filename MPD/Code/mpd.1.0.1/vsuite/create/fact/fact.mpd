@@ -1,0 +1,9 @@
+resource fact( int n, int ans)
+	cap fact  b
+
+	write(n); write(ans)
+	if (n != 0) {
+		b = create fact(n-1,ans*n)
+	}
+	write(n); write(ans)
+end

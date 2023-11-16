@@ -1,0 +1,41 @@
+/* from CSP paper, but with explicit termination */
+_program(g)
+  _specs
+    _process_spec(WEST)
+    _process_spec(X)
+      _port(X,wch, (c: char))
+      _port(X,wdie, ())
+    _process_spec(EAST)
+      _port(EAST,ech, (c: char))
+      _port(EAST,edie, ())
+  _specs_end
+
+  _process_body(WEST)
+    write("start of WEST")
+    var c := 'a'
+    do c <= 'z' -> _stmt_o(X,wch, (c)); c++;  od
+    _stmt_o(X,wdie, ())
+  _process_end
+
+  _process_body(X)
+    write("start of X")
+    var c: char, more := true
+    _do
+      _guard_i(more, WEST,wch, (c)) ->
+        _stmt_o(EAST,ech, (c))
+      _guard_i(more, WEST,wdie, ()) ->
+        _stmt_o(EAST,edie, ()); more := false
+    _od
+  _process_end
+
+  _process_body(EAST)
+    write("start of EAST")
+    var c: char, cnt := 0, more := true
+    _do
+      _guard_i(more, X,ech, (c)) -> cnt++
+      _guard_i(more, X,edie, ()) -> more := false
+    _od
+    write(cnt)
+  _process_end
+
+_program_end

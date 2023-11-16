@@ -1,0 +1,36 @@
+resource a(char a1, int b[1:*], int c, string[*] d)
+    write("first arg is", a1)
+    write("second arg is:")
+    for [ i = 1 to ub(b) ] {
+	write(b[i])
+    }
+    write("third arg is", c)
+    write("fourth arg is", d)
+    write()
+end
+
+resource b (cap (int) c1, cap (int) c2,
+	rec (char c; int i) d1, rec (char c; int i) d2, real e)
+    write ("b: calling c1(12) and c2(47)")
+    c1(12)
+    c1(47)
+    write ("b: other args:", d1.c, d1.i, d2.c, d2.i, e)
+end
+
+resource foo
+    import a;
+body foo()
+    import b
+    cap a capa 
+    int bb[1:10]
+    type rtype = rec (char a ; int b )
+
+    procedure echo (int n ) { write ("hello number", n) }
+
+    for [ i = 1 to 10 ] {
+	bb[i] = 1000+i
+    }
+    capa = create a('z', bb[1:7], 249, "yippee!")
+
+    create b (echo, echo, rtype('q',17), rtype('r',55), 3.14159)
+end

@@ -1,0 +1,4 @@
+0 sr -c scope.sr
+0 srl scope
+0 run
+0 rm -rf Interfaces core *.out

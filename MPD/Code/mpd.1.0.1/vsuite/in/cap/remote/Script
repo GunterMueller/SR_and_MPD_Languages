@@ -1,0 +1,4 @@
+#  gmt  Tue Jun  1 10:42:44 MST 1993
+0 mpd rmtcap.mpd
+0 run
+0 rm -rf MPDinter core *.out

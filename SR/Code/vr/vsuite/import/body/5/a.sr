@@ -1,0 +1,24 @@
+global a
+	const x := 1234
+end
+
+global aa
+	const x := -654
+end
+
+resource b()
+
+	var x:int := 56
+	write("hi",x)
+	do x = 56 ->
+		import a
+		write(a.x,x)
+		x := 88
+	[] x = 88 ->
+		import aa
+		write(aa.x,x)
+		x := 98765
+	od
+	write("ih",x)
+
+end

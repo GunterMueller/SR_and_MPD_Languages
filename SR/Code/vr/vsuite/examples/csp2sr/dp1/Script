@@ -1,0 +1,15 @@
+0 csp2sr -te dp.csp
+0 sr -do dp.sr
+# just compare for -te output (could differ for -ti)
+0 cmp Compiler.std Compiler.out
+0 a.out >te.tmp 2>&1
+# need to edit output -- line numbers depend on particular cpp
+0 sed 's/line [0-9]*/line nnn/' <te.tmp >te.out
+0 scmp te.std te.out
+
+0 csp2sr -ti dp.csp
+0 sr dp.sr
+0 a.out >ti.out 2>&1
+0 scmp ti.std ti.out
+
+0 rm -rf Interfaces core *.tmp *.out dp.sr

@@ -1,0 +1,29 @@
+# semaphore V only.  A semaphore is V'd 'limit' times in a fa loop.
+
+resource semaphore()
+
+  int  limit, factor, base, trials 
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit = factor * base
+
+  sem dummy
+
+  process test  {
+    int  start, finish 
+    for [ t = 1 to trials ] {
+	start = age()
+	for [ i = 1 to limit ] { V(dummy) }
+	finish = age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    }
+  }
+
+  final {
+
+    P(dummy)                            # avoids compiler error
+  }
+
+end

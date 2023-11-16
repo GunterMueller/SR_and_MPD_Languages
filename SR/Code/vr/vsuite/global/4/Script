@@ -1,0 +1,5 @@
+# aprasad  Jul 91
+
+0 sr glob.sr
+0 run
+0 rm -rf Interfaces core *.out

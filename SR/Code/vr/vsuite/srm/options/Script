@@ -1,0 +1,21 @@
+# some simple options
+0 srm -f Try1.tmp -Idir -oexe -m main -C -O -L-T -R arg -Z clean.me *.sr test.c
+0 sed 's/srm -w -c [^ ]* /srm /' Try1.tmp >Try1.out
+0 cmp -s Try1.std Try1.out
+
+# try changing main resource
+# check warning "resource main not imported by any other resource"
+0 srm -f Try2.tmp -m node *.sr
+0 sed 's/srm -w -c [^ ]* /srm /' Try2.tmp >Try2.out
+0 cmp -s Try2.std Try2.out
+
+# try setting options with SRMOPTS
+# (builds some illegal commands.  don't try this at home, boys and girls.)
+0 export SRMOPTS
+0 SRMOPTS="-Camel -Lion -Rhinocerous -Impala -Zebra"
+0 srm -f Try3.tmp -Zoology *.sr
+0 sed 's/srm -w -c [^ ]* /srm /' Try3.tmp >Try3.out
+0 SRMOPTS=
+0 cmp -s Try3.std Try3.out
+
+0 rm -rf Interfaces core *.out *.tmp Makefile

@@ -1,0 +1,4 @@
+0 mpd cgrep.mpd
+0 a.out pattern cgrep.mpd >in.out 2>&1
+0 scmp in.out in.std
+0 rm -rf MPDinter core *.out

@@ -1,0 +1,8 @@
+"nl.sr", line 16: warning: old-style string declaration
+"nl.sr", line 16 (imported by a): warning: old-style string declaration
+"nl.sr", line 16 (imported by b): warning: old-style string declaration
+"nl.sr", line 16 (imported by c): warning: old-style string declaration
+"nl.sr", line 64: warning: old-style string declaration
+"nl.sr", line 82: warning: reply in final ignored
+"nl.sr", line 16 (imported by m): warning: old-style string declaration
+"nl.sr", line 115: warning: reply in final ignored

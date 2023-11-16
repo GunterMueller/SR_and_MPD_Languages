@@ -1,0 +1,3 @@
+0 mpd -c c.mpd b.mpd a.mpd
+0 mpd -c c.mpd a.mpd
+0 rm -rf MPDinter core *.out

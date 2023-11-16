@@ -1,0 +1,273 @@
+# test syntax and miscellaneous compile-time errors
+
+
+% missing parameter list for resource
+	resource r
+	body r
+	end
+
+
+% missing parameter list for resource
+	resource r
+	body r separate
+
+
+% a global cannot have a parameter list
+	global g (int i)
+	end
+
+
+% a global cannot have a parameter list
+	global g
+	body g (char a)
+	end
+
+
+% var decl in spec part of resource
+	resource r
+	int v = 12
+	body r ()
+	end
+
+
+% var decl in spec part of resource
+	resource a      # abstract
+	    int  v 
+	end
+	resource r ()
+	    import a
+	end
+
+
+% warning: reply in final ignored
+	resource r ()
+	    final {
+		reply
+	    }
+	end
+
+
+% warning: suspicious comparison
+	resource r ()
+	   int  a 
+	   a == 1
+	end
+
+
+% illegal reference to formal parameter n
+	resource r (int n, int a[n])
+	end
+
+
+% illegal reference to formal parameter b
+	resource a (cap b b)
+	end
+
+
+% expected .end b.
+# end of resource
+	resource a()
+	end a
+	resource aa()
+	end
+	resource b()
+	end a           # bogus
+
+
+% illegal context for array bound .\*.
+#   in array variable
+	resource a()
+	    int arr[*]
+	end a
+
+
+% illegal context for string bound .\*.
+#   in string variable
+	resource r ()
+	    string[*] s
+	end
+
+
+% illegal context for string bound .\*.
+#   in array of strings
+	resource r ()
+	    string[*] a[12]
+	end
+
+
+% illegal context for array bound .\*.
+#   in array return value
+	resource r ()
+	    op o () returns char a[*]
+	    proc o () returns a {}
+	end
+
+
+% illegal context for string bound .\*.
+#   in string return value
+	resource r ()
+	    op o () returns string[*] s
+	    proc o () returns s {}
+	end
+
+
+
+# we do not test a lot of different types of parsing errors;
+# we assume that Yacc works correctly
+
+
+% parse error at keyword .by.
+	resource r ()
+		fa i by 3 }
+	end
+
+
+% parse error at identifier .r.
+	resource r ()
+		fa i r }
+	end
+
+
+% parse error at token .:.
+	resource r ()
+		fa i : }
+	end
+
+
+% parse error at token .%.
+	resource r ()
+		fa i % }
+	end
+
+
+% parse error at token .].
+	resource r ()
+		for [ i ] }
+	end
+
+
+% parse error at literal .abcdefghijklmnop.
+	resource r ()
+		fa i "abcdefghijklmnopqrstuvwxyz"
+	end
+
+
+% parse error at literal .x.
+	resource r ()
+		fa i 'x' }
+	end
+
+
+% parse error at EOF
+	resource r ()
+	begin {
+	}
+
+
+% unexpected newline
+	resource r ()
+		for [ i
+	end
+
+
+
+
+% duplicate identifier: a
+# body repeats name used in spec
+global ggg
+	int a = 0
+body ggg
+	real a = 1.1
+end ggg
+
+
+% undefined identifier: count
+# typical undefined identifier
+resource t()
+	int  a
+	a = 2+count     # bogus
+end
+
+
+% undefined identifier: i
+# as arg to predefined function
+resource p()
+	min(i)
+end
+
+
+% undefined identifier: y
+# in type conversion
+	 resource dump()
+	    put(char(y))
+	 end
+
+
+% undefined identifier: i
+# reference to bound variable before it's defined
+	resource r ()
+	    for [ i = 3 * i to 100 ] { }
+	end
+
+
+% undefined identifier: i
+# reference to identifier during its own initialization
+	resource r ()
+	    int i = 3 + i
+	end
+
+
+% undefined identifier: bogus
+# undefined type name
+	resource bad2
+	    op f(bogus x)
+	body bad2()
+	    proc f(x) {}
+	end
+
+
+% undefined identifier: a2
+# due to scoping error
+	resource error()
+	    begin {
+		int a2 = 100
+	    }
+	    write (a2)
+	end
+
+
+% undefined identifier: x
+# as op name for input stmt
+	resource r1()
+	    process p  {
+		in x() ->
+		ni
+	    }
+	end
+
+
+% undefined identifier: servant
+# as resource name
+	resource main()
+	    cap servant  s 
+	    for [ i = 1 to 1 ] {
+		s[i] = create servant()
+	    }
+	end
+
+
+% undefined identifier: chair
+# as resource name used in type
+	resource Main()
+	    cap chair ch_proc[1:1]         # chair processes
+	    process master  {
+		send ch_proc[1].stop_music()
+	    }
+	end Main
+
+
+% .self. is not a type
+# in tricky pointer decl
+	resource r ()
+	    ptr self self
+	end

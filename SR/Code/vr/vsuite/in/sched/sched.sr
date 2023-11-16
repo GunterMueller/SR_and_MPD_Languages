@@ -1,0 +1,31 @@
+# some tricky scheduling stuff
+# simplified from a bug report
+
+resource Jacobi()
+   op terminate (n:int)
+   const blksize := 4
+   const nloops := 5
+
+   process sender(i := 1 to blksize)
+     fa h := 1 to nloops ->
+         call terminate(i)
+     af
+   end
+
+   process coordinator
+      do true ->
+         in terminate(delta) st ?terminate = blksize by -delta ->
+	    write ("begin inner loop; ?terminate =", ?terminate)
+            write("  delta =",delta)
+
+	     fa i := 2 to blksize ->
+	       in terminate(delta) -> 
+		  write("  delta =",delta)
+	       ni
+	     af
+
+         ni
+      od
+   end coordinator
+
+end Jacobi

@@ -1,0 +1,5 @@
+0 sr vm.sr
+0 echo $HOST1  >hosts
+0 echo $HOST2 >>hosts
+0 run
+0 rm -rf Interfaces core *.out hosts

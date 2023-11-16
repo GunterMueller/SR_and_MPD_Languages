@@ -1,0 +1,47 @@
+resource a
+    op f(x:int)
+body a(y:char)
+    write("a",y)
+    proc f(x)  write("a's f",x,y) end
+end
+
+resource b
+    op g()
+    extend a
+    op h()
+body b (y:char; z:int)
+    write("b",y)
+    g(); h()
+    proc f(x)  write("b's f",x,y,z) end
+    proc g()  write("g",y,z) end
+    proc h()  write("h",y,z) end
+end
+
+resource c
+    extend b
+    op i(s:char)
+body c (y:char; z:int; q:int)
+    write("c",y,z,q)
+    g(); h(); i('S');
+    proc f(x)  write("c's f",x,y,z,q) end
+    proc g()  write("c's g",y,z,q) end
+    proc h()  write("c's h",y,z,q) end
+    proc i(s)  write("c's i",s,y,z,q) end
+end
+
+resource main
+    import a, b, c
+body main()
+    write("main starts")
+    var ca:cap a
+    ca := create a('Z')
+    ca.f(999)
+    var cb:cap b
+    cb := create b('Y',56)
+    cb.f(87)
+    var cc:cap c
+    cc := create c('Q',11,-77)
+    cc.f(6)
+    write("main done")
+
+end

@@ -1,0 +1,6 @@
+#  gmt  Fri Jun 17 17:55:00 MST 1988
+#  gmt  Thu Mar  2 15:36:19 MST 1989
+0 sr -c timer.sr
+0 srl timer
+0 run
+0 rm -rf Interfaces core *.out

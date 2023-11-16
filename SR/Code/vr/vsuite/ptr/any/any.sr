@@ -1,0 +1,47 @@
+resource annie()
+    type t1 = rec (x, y: int; p: ptr any)
+    type t2 = rec (r, t: int; p: ptr any)
+    var r1: t1
+    var r2: t2
+    var p1: ptr t1
+    var p2: ptr t2
+
+    var a: ptr any
+    var c: ptr char
+    var i: ptr int
+
+    var s[4]: char := chars("noon")	# must be palindromic for portable test
+
+    a := null		# check that generic null turns into specific null
+    i := a
+    c := a
+    write(c,i,a)
+
+    i := null		# check that specific null turns into generic
+    a := i
+    c := a
+    write(c,i,a)
+
+    a := @s[1]		# turn char pointer to int pointer through ptr any
+    c := @s[1]
+    i := a
+    if a ~= c -> write("a ~= c") fi
+    write(c^, i^)
+
+    # construct a mutually recursive structure using ptr any
+    r1 := t1 (3, 5, @r2)
+    r2 := t2 (4, 7, @r1)
+    var v1 : ptr t1 := r2.p
+    var v2 : ptr t2 := r1.p
+    write (v1^.x, v1^.y, v2^.r, v2^.t)
+
+    # again, a little differently
+    p1 := @r1
+    p2 := @r2
+    r1 := t1 (3, 5, p1)
+    r2 := t2 (4, 7, p2)
+    v1 := r2.p
+    v2 := r1.p
+    write (v1^.x, v1^.y, v2^.r, v2^.t)
+
+end

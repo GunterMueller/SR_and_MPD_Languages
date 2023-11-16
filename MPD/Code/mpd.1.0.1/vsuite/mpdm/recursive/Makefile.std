@@ -1,0 +1,61 @@
+#	Makefile created by MPDM
+
+
+MPD = mpd
+MPDFLAGS = 
+I = ./MPDinter
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/D.o $I/A.o $I/B.o $I/C.o $I/g.o archive.a object.o source.o
+	mpdl  -o a.out A B C g D -llibrary archive.a object.o source.o
+
+compile: $I/D.o $I/A.o $I/B.o $I/C.o $I/g.o archive.a object.o source.o
+
+run: link
+	a.out 
+
+$I/D.o: $I/g.spec $I/g.o $I/D.spec $I/C.spec $I/B.spec $I/A.spec d.mpd
+	$(MPD) $(MPDFLAGS) -b d.mpd
+
+$I/D.spec: d.mpd
+	$(MPD) $(MPDFLAGS) -s d.mpd
+
+$I/A.o: $I/B.spec $I/g.spec $I/g.o $I/A.spec main.mpd
+	$(MPD) $(MPDFLAGS) -b main.mpd
+
+$I/A.spec: main.mpd
+	$(MPD) $(MPDFLAGS) -s main.mpd
+
+$I/B.o: $I/A.spec $I/B.spec $I/g.spec $I/g.o main.mpd
+	$(MPD) $(MPDFLAGS) -b main.mpd
+
+$I/B.spec: main.mpd
+	$(MPD) $(MPDFLAGS) -s main.mpd
+
+$I/C.o: $I/g.spec $I/g.o $I/A.spec $I/C.spec $I/B.spec main.mpd
+	$(MPD) $(MPDFLAGS) -b main.mpd
+
+$I/C.spec: main.mpd
+	$(MPD) $(MPDFLAGS) -s main.mpd
+
+$I/g.o: $I/g.spec d.mpd
+	$(MPD) $(MPDFLAGS) -b d.mpd
+
+$I/g.spec: d.mpd
+	$(MPD) $(MPDFLAGS) -s d.mpd
+
+clean:
+	rm -rf $I  source.o
+
+cleanx: clean
+	rm -f core a.out
+
+ls:
+	@echo d.mpd main.mpd source.c
+
+make:
+	mpdm -f Makefile d.mpd main.mpd -llibrary archive.a object.o source.c
+

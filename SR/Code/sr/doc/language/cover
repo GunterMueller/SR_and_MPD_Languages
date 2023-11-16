@@ -1,0 +1,20 @@
+.so /usr/local/pub/trcover
+.CV
+.ft B
+.ps 18
+SR
+.ps 14
+.sp
+A Language for Parallel 
+.sp .2
+and Distributed Programming
+.ft
+.ps 12
+.sp 2
+Ronald A. Olsson
+Gregory R. Andrews
+Michael H. Coffin
+Gregg M. Townsend
+.sp 2
+TR 92-09
+.EV

@@ -1,0 +1,30 @@
+#  used to get signature mismatch when compiling
+
+global TourneySpecs
+	type GOLFBALL = enum(Titliest, MaxfliDDH, ProStaff)
+end TourneySpecs
+
+resource Hole
+	import TourneySpecs
+	op get_ball() returns GOLFBALL               b {call}
+body Hole ()
+	GOLFBALL  ball 
+     process holemon  {
+       in get_ball() returns b ->
+	      b = ball
+       ni
+     }
+end Hole
+
+resource Player
+	import Hole
+	import TourneySpecs
+	op putt_out()
+body Player(cap Hole hole) separate
+
+body Player
+	GOLFBALL  ball 
+     proc putt_out()  {
+	ball = hole.get_ball()         # #%#%#%#% Signature mismatch
+     }
+end Player

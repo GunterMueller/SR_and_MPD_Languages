@@ -1,0 +1,41 @@
+# global ggg should be created only once in a vm
+global ggg
+	int I = 111
+	sem wait_abc = 0
+body ggg()
+	process globps  {
+		P(wait_abc)
+		write("This is globps")
+		I = I + 111
+		V(wait_abc)
+		V(wait_abc) # second V required as we create abc() twice
+	}
+
+	nap(1000) # make sure "This is globps" doesn't get printed
+	write("This is ggg initialisation code")
+
+	final {
+		write("ggg : Finalisation code")
+	}
+end ggg
+
+resource abc(int vmnum, int callnum )
+	import ggg
+	write(vmnum, callnum, "abc : before `import ggg', I is ", I)
+	V(wait_abc)
+	nap(1000) # let globps proceed
+	P(wait_abc)
+	write(vmnum, callnum, "abc : after `import ggg', I is ", I)
+end abc
+
+resource main()
+	import abc
+
+    process p {   # this process encapsulation caused problem once
+	cap vm mcap = create vm()
+	create abc(1, 1) on mcap
+	write("=====")
+	create abc(1, 2) on  mcap
+	destroy mcap
+    }
+end main

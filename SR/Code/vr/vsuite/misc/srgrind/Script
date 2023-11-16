@@ -1,0 +1,29 @@
+#  srgrind tests
+#
+#  "tricky.sr" is designed to challenge srgrind.  Unfortunately, the best tests
+#  can't be automated.  What's needed is to typeset the output of each of the
+#  sgrind runs below, checking the results manually.
+#
+#  What we can do here is check that the test program compiles and runs, and
+#  that srgrind can at least handle options and produce an output file without
+#  bombing.
+
+#  gmt  Aug 3, 1988; Mar 23, 1989
+
+0 sr -c tricky.sr
+0 srl empty main
+0 run
+
+0 srgrind tricky.sr
+0 grep 'test srgrind' Grinder.out >/dev/null
+0 rm -f Grinder.out
+
+0 srgrind -h challenger -n -s10 tricky.sr
+0 grep 'challenger' Grinder.out >/dev/null
+0 rm -f Grinder.out
+
+0 srgrind -f filter.tr
+0 grep 'novel' Grinder.out >/dev/null
+0 rm -f Grinder.out
+
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,23 @@
+resource r()
+    write ("r here")
+
+    final
+	write ("r final here")
+    end
+end
+
+resource main
+import r
+body main()
+    write ("begin main")
+    var c := create r()
+    write ("created r")
+    destroy c
+    write ("destroyed r")
+    destroy c
+    write ("destroyed it twice?!")
+
+    final
+	write ("main final here")
+    end
+end

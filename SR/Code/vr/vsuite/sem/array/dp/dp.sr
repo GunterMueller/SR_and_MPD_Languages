@@ -1,0 +1,24 @@
+resource main()
+
+   var N := 5
+
+   sem fork [N] := ([N] 1)
+
+   # just some fun with subscripting...
+   var l[N], r[N]: int
+   fa id := 1 to N-1 -> l[id] := id   af
+   fa id := 1 to N-1 -> r[id] := id+1 af
+   # asymmetry: r[N] gets what would have been l[N] and vice versa.
+   r[N] := N; l[N] := 1
+
+   process dp(id := 1 to N)
+      fa j := 1 to 10 ->
+	   #think
+	   P(fork[l[id]])
+	   P(fork[r[id]])
+	   #eat
+	   V(fork[l[id]])
+	   V(fork[r[id]])
+      af
+   end
+end

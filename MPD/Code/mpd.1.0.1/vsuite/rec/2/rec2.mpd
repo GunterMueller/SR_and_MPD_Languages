@@ -1,0 +1,40 @@
+# nested records.
+resource rec2()
+	type t = rec( int a; int b;  rec (char c1; char c2) c;  char  d)
+	op putty(t q)
+	t  a 
+	op change_ints(var t q)
+	op change_chars(var t q)
+
+	int  num = 1000
+	char  letter = 'A'
+	t  b
+	b.a = 6
+	b.b = 7
+	b.c.c2 = 'b'
+	b.c.c1 = 'a'
+	b.d = 'c'
+	call putty(b)
+	a = b
+	call putty(a)
+	rec (char a1; char a2) d
+	d.a1 = 'x'
+	d.a2 = 'y'
+	a.c = d
+	putty(a);change_ints(a);putty(a)
+	putty(b);change_ints(b);putty(b)
+	putty(a);change_chars(a);putty(a)
+	putty(b);change_chars(b);putty(b)
+
+	proc putty(z)  {
+		write(z.a,z.b,z.c.c1,z.c.c2,z.d)
+	}
+
+	proc change_ints(a)  {
+		a.a++; a.b = num; num++
+	}
+
+	proc change_chars(a)  {
+		a.c.c1++; a.c.c2--; a.d = succ(letter); letter++
+	}
+end

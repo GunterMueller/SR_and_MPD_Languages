@@ -1,0 +1,37 @@
+#  create several procs and context switch among them
+#  each proc loops, naps, loops again
+#
+#  usage:  a.out nprocs nloops naptime_in_msec
+#
+#  link with "mpdl -L1" to make it even more challenging
+
+resource r()
+    int nprocs = 10
+    int nloops = 500
+    int naptime = 10
+
+    getarg (1, nprocs)
+    getarg (2, nloops)
+    getarg (3, naptime)
+
+    write ("proc stress test")
+    write ("  nprocs =", nprocs)
+    write ("  nloops =", nloops)
+    write ("  naptime =", naptime)
+
+    process p  [ i = 1 to nprocs ] {
+	for [ j = 1 to nloops ] {
+	    skip
+	}
+	nap (naptime)
+	for [ j = 1 to nloops ] {
+	    skip
+	}
+	write ("proc", i, "done")
+    }
+
+    final {
+	write ("all done")
+    }
+
+end

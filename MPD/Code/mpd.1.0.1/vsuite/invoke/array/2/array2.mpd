@@ -1,0 +1,19 @@
+# arrays of operations
+# output nondeterministic.
+resource array2()
+	op a[1:10](int n) {send}
+
+	for [ i = 10 downto 1 ] {
+		# same effect as: send a[i](i*100)
+		cap a  c 
+		c = a[i]
+		send c(i*100)
+	}
+	# receive all of them
+	for [ i = 1 to 10 ] {
+		in [ k = 1 to 10 ] a[k](j) ->
+			write(i,j,k)
+		ni
+	}
+
+end

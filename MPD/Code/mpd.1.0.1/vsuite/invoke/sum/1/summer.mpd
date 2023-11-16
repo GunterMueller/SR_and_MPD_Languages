@@ -1,0 +1,24 @@
+# output nondeterministic.
+resource summer()
+	op sum (val int a) returns int result {call}
+	op sender (val int a) {send}
+
+
+	for [ i = 1 to 20 ] {
+	    send sender (i)
+	}
+
+
+	proc sender (a)  {
+		write(sum(a))
+	}
+
+	proc sum(a) returns result  {
+		if (a == 0) {
+			result = 0
+		} else {
+			result = a + sum(a-1)
+		}
+	}
+end
+

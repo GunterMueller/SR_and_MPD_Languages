@@ -1,0 +1,22 @@
+# output nondeterministic (shuffled).
+resource d5()
+	op worker( rep: cap (z:int); x:int )
+
+	op rep(z:int)
+	worker(rep, 33)
+	write("before rep")
+	in rep(z) ->
+		write("got",z)
+	ni
+
+
+	proc worker(rep,n)
+		var v : int
+		v := 7777
+		write("worker before reply",n,v)
+		reply
+		write("worker after reply",n,v)
+		send rep(n+v)
+		write("worker after send rep",n,v)
+	end
+end

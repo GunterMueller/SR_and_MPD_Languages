@@ -1,0 +1,69 @@
+# test arrays of strings
+
+resource array()
+
+procedure dump10 (s[*] : string[10])		# dump array of string[10]
+    fa i := 1 to ub(s) -> put(s[i]); put(" ") af
+    put("\n")
+end
+
+procedure dumpany (s: [*]string[*])		# dump array of any string size
+    write ("s [", lb(s), ":", ub(s), "] : string [", maxlength(s[1]), "]")
+    fa i := lb(s) to ub(s) -> write (" ", s[i]) af
+end
+
+    # test fixed bounds, array arguments, conversions to/from char arrays, etc.
+    var a, b, c, d[1:3]: string[10]
+    var e[3] : string[17]
+    var x[1:10]: char
+    a := "pepperoni "
+    b := "sausage   "
+    c := "mushrooms "
+    d := (a, b, c)
+    dump10(d)
+    d[2] := "linguisa  "
+    dump10(d)
+    x := chars("cappocolla")
+    d[1] := string(x)
+    dump10(d)
+    d := ("onions    ", "peppers   ", "olives    ")
+    dump10(d)
+    d := ([3] "anchovies ")
+    dump10(d)
+    dump10(([1] d[1]))
+    dump10(([2] "pizza!!!!!"))
+    dump10(("mozarrella", "provolone ", "parmesan  "))
+    x := ([10] 'z')
+    write(x)
+
+    # now test [*]string[*] formals
+    dumpany(d)
+    dumpany(("hi", "ho", "hi", "ho"))
+    dumpany(([1]"off to work we go"))
+    const n := 3
+    var s[n]: string[15]
+    fa i := 1 to n -> s[i] := "dig," af
+    fa i := 1 to n -> write(i,s[i]) af
+    dumpany(s)
+    fa i := 2 to n -> s[i] := s[i-1] || s[i] af
+    fa i := 1 to n -> write(i,s[i]) af
+
+    # test element-wise assignment of strings of dissimilar maxlength
+    dumpany(s)
+    e := d
+    dumpany(e)
+    e := s
+    dumpany (e)
+    d[2:3] := e[1:2] 	# and now... a slice assignment!
+    dumpany (d)
+
+    # test two-dimensional arrays, both variable and constant
+    var a1 := (("sleepy", "grumpy"), ("blinky", "sleazy"))
+    var v := 2
+    var l := 6
+    var a2[v,v] : string[l]
+    fa i := 1 to 2 -> fa j := 1 to 2 -> writes(" ", a1[i,j]) af af
+    a2 := a1
+    fa i := 1 to 2 -> fa j := 1 to 2 -> writes(" ", a2[i,j]) af af
+    write()
+end

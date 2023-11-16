@@ -1,0 +1,9 @@
+resource factmain
+    import fact
+body factmain()
+	cap fact  b
+	int  n 
+	n = 5
+	write(n)
+	b = create fact(n,1)
+end

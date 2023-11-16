@@ -1,0 +1,102 @@
+resource Servant
+  op getforks() {call},  # invoked by philosophers
+     relforks() {call}
+  op needL() {send},     # invoked by neighboring
+     needR() {send},     # servants.
+     passL() {send},
+     passR() {send}
+  op links(l, r: cap Servant)  # links to neighbors
+  op forks(haveL, dirtyL, haveR, dirtyR: bool)
+        # initial fork values passed from main
+body Servant(id: int)
+  var haveL, dirtyL, haveR, dirtyR: bool
+  var l, r: cap Servant
+  op hungry() {send}, eat() {send}
+
+  proc getforks()
+    send hungry() # tell server Philosopher is hungry
+    receive eat() # wait for permission to eat
+  end
+
+  process server
+    receive links(l, r)
+    receive forks(haveL, dirtyL, haveR, dirtyR)
+    do true ->
+      in hungry() ->
+          # ask for forks I don't have; I ask my
+          # right neighbor for his left fork,
+          # and my left neighbor for his right fork
+          if ~haveR -> send r.needL() fi
+          if ~haveL -> send l.needR() fi
+          # wait until I have both forks
+          do ~(haveL and haveR) ->
+            in passR() ->
+                haveR := true; dirtyR := false
+            [] passL() ->
+                haveL := true; dirtyL := false
+            [] needR() st dirtyR ->
+                haveR := false; dirtyR := false
+                send r.passL(); send r.needL()
+            [] needL() st dirtyL ->
+                haveL := false; dirtyL := false
+                send l.passR(); send l.needR()
+            ni
+          od
+          # let my Philosopher eat;
+          # then wait for it to finish
+          send eat(); dirtyL := true; dirtyR := true
+          receive relforks()
+      [] needR() ->   
+          # right neighbor needs his left fork,
+          # which is my right fork
+          haveR := false; dirtyR := false
+          send r.passL()
+      [] needL() ->
+          # left neighbor needs his right fork,
+          # which is my left fork
+          haveL := false; dirtyL := false
+          send l.passR()
+      ni
+    od
+  end
+end
+
+resource Philosopher
+  import Servant
+body Philosopher(s: cap Servant; id, t: int)
+  process phil
+    fa i := 1 to t ->
+      s.getforks()
+      write("Philosopher", id, "is eating")   # eat
+      s.relforks()
+      write("Philosopher", id, "is thinking") # think
+    af
+  end
+end
+
+resource Main()
+  import Philosopher, Servant
+  var n, t: int
+  writes("how many Philosophers? "); read(n)
+  writes("how many sessions per Philosopher? ")
+  read(t)
+  var s[1:n]: cap Servant
+  # create the Servants and Philosophers
+  fa i := 1 to n ->
+    s[i] := create Servant(i)
+    create Philosopher(s[i], i, t)
+  af
+  # give each Servant capabilities for
+  # its two neighboring Servants
+  fa i := 1 to n ->
+    send s[i].links(s[((i-2) mod n) + 1],
+                    s[(i mod n) + 1])
+  af
+  # initialize each Servant's forks;
+  # it is asymmetric to prevent deadlock
+  send s[1].forks(true, true, true, true)
+  fa i := 2 to n-1 ->
+    send s[i].forks(false, false, true, false)
+  af
+  send s[n].forks(false, false, false, false)
+end

@@ -1,0 +1,23 @@
+# A simple example of the use of the MPDWin graphics package.
+# This program opens a new window and writes "Hello world."
+
+# Usage:
+#    mpd hello.window.mpd mpdwin.o -lX11 (links in MPD and X11 libraries)
+#    a.out interval                      (executes the program)
+
+resource hello()
+  import MPDWin;      # access the global defining MPDWin
+
+  int interval; getarg(1, interval);   # seconds to display window
+
+  winWindow mywin = WinOpen("", "Hello", null, UseDefault, 100, 30);
+  if (mywin == null)
+    { write("Sorry, cannot open window"); stop(1); }
+
+  WinSetForeground(mywin, "yellow");   # set foreground color
+  WinDrawString(mywin, winPoint(10,20), "Hello World");
+  WinFlush(mywin);
+
+  nap(interval*1000);     # sleep for interval seconds
+  WinClose(mywin);
+end

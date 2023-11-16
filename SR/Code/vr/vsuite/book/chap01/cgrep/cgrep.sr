@@ -1,0 +1,41 @@
+global defs    # shared definitions
+  const MAXPATTERN := 20
+  const MAXFILENAME := 20
+  const MAXLINE := 120
+end
+
+resource grep(pattern, filename: string[*])
+  import defs
+  var fd: file := open(filename, READ)
+
+  procedure find(pattern, line: string[*])
+    # if line contains pattern, write out line
+    var i := 1, plen := length(pattern)
+    do i <= (length(line) - plen + 1) ->
+      if pattern = line[i:i+plen-1] ->
+          write(filename || ":", line); return
+      fi
+      i++
+    od
+  end
+
+  process search
+    # find all instances of pattern in filename
+    var line: string[MAXLINE]
+    do read(fd, line) != EOF ->
+      find(pattern, line)
+    od
+  end
+end grep
+
+resource main()
+  import defs, grep
+  # read command line arguments and create instances
+  # of resource grep
+  var pattern: string[MAXPATTERN]; getarg(1, pattern)
+  var filename: string[MAXFILENAME]
+  fa i := 2 to numargs() ->
+      getarg(i, filename)
+      create grep(pattern, filename)
+  af
+end

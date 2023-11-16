@@ -1,0 +1,14 @@
+# semicolons as declaration terminators
+resource a2()
+
+	var a,b,c:int
+	b := 2222
+	a := b; b := 90; c := 100; c := b;
+	write(a,b,c)
+
+	var x,y : int;
+	var z:char
+	var zz:char;
+	final
+	end;
+end;

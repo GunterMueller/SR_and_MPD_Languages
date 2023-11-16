@@ -1,0 +1,190 @@
+# Quadrature
+#
+# Vincent W. Freeh, Qiang A. Zhao, November 92
+#
+# Usage: winquad StartX EndX Delay
+
+resource winquad()
+
+  import MPDWin
+
+  const int JS = 4                 # number of job servers
+  const int W = 800, H = 400
+  const real EPS = 0.00001
+  const int DHGT = 10
+  real A = 0.0;          getarg(1, A)
+  real B = 2.0;          getarg(2, B)
+  int  D = 50;           getarg(3, D)
+  int  SW = 400
+
+  op getJob(real a, real b, real f_a, real f_b, real a3)
+  op ftn(real) returns real
+  op banner(winWindow win, string[*] str)
+  op DrawArea(winWindow w, real a, real b, real f_a, real f_b, bool fill)
+  op EraseArea(winWindow w, real a, real b, real f_a, real f_b)
+  op DrawDoneBar(winWindow w, real a, real b)
+  op winEventChannel ec
+  winWindow  mainwin
+  string[6] colors[1:JS]
+	colors[1] = "red"
+	colors[2] = "yellow"
+	colors[3] = "green"
+	colors[4] = "cyan"
+  winFont  ff 
+  real  sum[JS]
+  real  a3, f_a, f_b
+  real  wid, hgt
+
+  mainwin = WinOpen("", "Quadrature", ec, UseDefault, W, H+DHGT)
+  if (mainwin == null) {
+    write("Oops.  cannot open mainwin")
+    stop
+  }
+  WinSetEventMask(mainwin, Ev_KeyUp | Ev_ButtonUp)
+  WinSetForeground(mainwin, "YellowGreen")
+  ff = WinLoadFont(mainwin, "lucidasanstypewriter-bold-24")
+  if (ff != null) {
+    SW = WinTextWidth(ff, "Press SPACE to go")
+    WinSetFont(mainwin, ff)
+  }
+
+  ## the function
+  proc ftn(x) returns e  {
+    real i = 1.0
+    real rx = x
+
+    e = 1.0 + x
+    while (abs(rx) > 0.00001) {
+      i += 1.0
+      rx *= x/i
+      e += rx
+    }
+    return
+  }
+
+  proc banner(win, str)  {
+    WinClearArea(mainwin, winRectangle(0, 0, W, H+DHGT))
+    WinDrawString(win, winPoint((W-SW)/2, (H+DHGT)/2), str)
+  }
+
+  proc DrawDoneBar(w, a, b)  {
+    winRectangle  rect
+
+    rect.x = int(real(W) * (real(a)-A)/wid)
+    rect.y = 0
+    rect.w = int(real(W) * (real(b)-A)/wid) - rect.x
+    rect.h = DHGT
+
+    WinFillRectangle(w, rect)
+    WinSync(mainwin, false)
+  }
+
+  proc DrawArea(w, a, b, f_a, f_b, fill)  {
+    winPoint  pts[4]
+
+    pts[1].x = pts[4].x = int(real(W) * (real(a)-A)/wid)
+    pts[2].x = pts[3].x = int(real(W) * (real(b)-A)/wid)
+    pts[1].y = pts[2].y = H + DHGT
+    pts[3].y = H - int(real(H)*f_b/hgt) + DHGT
+    pts[4].y = H - int(real(H)*f_a/hgt) + DHGT
+
+    if (fill) {
+      WinFillPolygon(w, pts)
+    } else {
+      WinDrawPolygon(w, pts)
+    }
+    WinSync(mainwin, false)
+  }
+
+  proc EraseArea(w, a, b, f_a, f_b)  {
+    winRectangle  rect
+
+    rect.x = int(real(W) * (real(a)-A)/wid)
+    rect.y = DHGT
+    rect.w = int(real(W) * (real(b)-A)/wid) - rect.x
+    rect.h = H + DHGT
+
+    WinEraseArea(w, rect)
+    WinSync(mainwin, false)
+  }
+
+  process worker [ id = 1 to JS ] {
+    winWindow  mywin
+    real  a, b, c, f_a, f_b, f_c, a1, a2, a3
+    real  a1_2
+
+    mywin = WinNewContext(mainwin)
+    WinSetForeground(mywin, colors[id])
+
+    receive getJob(a, b, f_a, f_b, a3)
+
+    while (true) {
+      DrawArea(mywin, a, b, f_a, f_b, true)
+      nap(D)
+      c = (a+b)/2.0
+      f_c = ftn(c)
+
+      a1 = 0.5 * (c - a) * (f_a + f_c)         # area in interval [a,c]
+      a2 = 0.5 * (b - c) * (f_c + f_b)         # area in interval [c,b]
+      a1_2 = a1 + a2
+
+      if ((abs(a1_2 - a3)) < EPS) {
+	sum[id] += a1_2
+	DrawDoneBar(mywin, a, b)
+	receive getJob(a, b, f_a, f_b, a3)
+      } else {
+	EraseArea(mywin, a, b, f_a, f_b)
+	DrawArea(mywin, c, b, f_c, f_b, false)
+	send getJob(c, b, f_c, f_b, a2) # start job for right interval
+	b = c                          # continue working on left interval
+	f_b = f_c
+	a3 = a1
+      }
+    }
+  }
+
+  #################
+  int  got, tmp 
+  winEvent  ev 
+  bool started = false
+  banner(mainwin, "Press 'SPACE' to go")
+  while (true) {
+    in ec(ev) ->
+      if (ev.event_type == Ev_KeyUp) {
+	char ch = char(ev.data)
+	if (ch == 'q' | ch == 'Q' | ch == '\177' | ch == '\003') {
+	  stop
+	} else if (ch == ' ' and not started ) {
+	  ## insert a job
+	  banner(mainwin, "")
+	  started = true
+	  for [ i= 1 to JS ] {
+	    sum[i] = 0.0
+	  }
+	  wid = B-A
+	  hgt = ftn(B)
+	  f_a = ftn(A); f_b = hgt
+	  a3 = 0.5 * (wid) * (f_a + f_b)
+	  send getJob(A, B, f_a, f_b, a3)
+	} else if (ch == '-' ) {
+	  D += 50
+	} else if (ch == '+' ) {
+	  D = max(0, D-50)
+	} else if (ch >= '0' and ch <= '9' ) {
+	  D = (int(ch)-int('0')) * 100
+	} else if (ch == 'r' ) {
+	  started = false
+	  banner(mainwin, "Press 'SPACE' to go")
+	}
+
+      } else if (ev.event_type == Ev_DeleteWindow ) {
+	stop
+
+      }
+    ni
+  }
+
+  final {
+    WinClose(mainwin)
+  }
+end

@@ -1,0 +1,63 @@
+resource Bus
+  op seize(), release(), print()
+  import Scheduler
+body Bus(cap Scheduler sched)
+  op try_seize(cap () go_ahead)
+
+  process bus_manager  {
+    # nreq is number of bus requests from processors
+    # bus_time is total time bus is in use
+    # wait_time is total waiting time of processors
+    # free indicates whether the bus is free
+    int nreq = 0
+    real bus_time = 0.0
+    real wait_time = 0.0
+    bool free = true
+    # queue of processes blocked on seizing
+    op block_list(cap () go_ahead)
+    while (true) {
+      in try_seize(go_ahead) ->
+	  nreq++
+	  if (free) {
+	      free = false
+	      bus_time -= sched.time()
+	      send go_ahead()
+	  } else {
+	      wait_time -= sched.become_inactive()
+	      send block_list(go_ahead)
+	  }
+      [] release() ->
+	  if (?block_list > 0) {
+	      # awaken a waiting processor
+	      wait_time += sched.become_active()
+	      cap () go_ahead
+	      receive block_list(go_ahead)
+	      send go_ahead()
+	  } else {  # no processor waiting
+	      free = true
+	      bus_time += sched.time()
+	  }
+      [] print() -> # compute and output statistics
+	  real now = sched.time()
+	  # average wait time and percent bus use
+	  real  avg_wait, pct_bus
+	  avg_wait = (wait_time +
+		       now*?block_list) / nreq
+	  if (free) {
+	      pct_bus = 100*bus_time / now
+	  } else {
+	      pct_bus = 100*(bus_time + now) / now
+	  }
+	  # write("average wait = ",avg_wait)
+	  # write("precentage bus use = ",pct_bus)
+      ni
+    }
+  }
+
+  # provide a simple call interface for processors
+  proc seize()  {
+    op go_ahead()
+    send try_seize(go_ahead)
+    receive go_ahead()
+  }
+end Bus

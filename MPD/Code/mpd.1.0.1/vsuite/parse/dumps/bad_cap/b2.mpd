@@ -1,0 +1,4 @@
+# seg fault
+resource b2()
+	cap b2  c
+end

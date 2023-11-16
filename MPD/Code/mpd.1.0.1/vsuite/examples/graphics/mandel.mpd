@@ -1,0 +1,210 @@
+# Mandelbrot                            Qiang A. Zhao, November 92
+#
+# Usage: a.out Workers W H VX1 VX2 VY1 VY2 Threshold < Color-file
+#
+#        Color-file:
+#               <# of colors>
+#               <r> <g> <b>
+#               ...
+#               <from violet to red>
+#               ...
+
+resource mandel()
+
+  import MPDWin
+
+  const real PI = 3.14159265358979323846
+  const int MAXCV = 65535
+  const int MINS = 100
+  const int MINWK = 2
+  const int MINC = 2
+
+  ### Var declarations/initializations
+
+  int  WORKERS = MINWK;         getarg(1, WORKERS)
+  int  W = MINS;                getarg(2, W)
+  int  H = MINS;                getarg(3, H)
+  real  VX = -2.0;              getarg(4, VX)
+  real  VX2 = 1.0;              getarg(5, VX2)
+  real  VY = -1.4;              getarg(6, VY)
+  real  VY2 = 1.4;              getarg(7, VY2)
+  real  VW = VX2-VX;            # Width in virtual space
+  real  VH = VY2-VY;            # Height in virtual space
+  int  THR = 200;               getarg(8, THR)
+
+  if ((W < MINS) or (H < MINS) or (WORKERS < MINWK) or
+	(VW <= 0.0) or (VH <= 0.0) or (THR < 10)) {
+    write(stderr, "Invalid values.")
+    stop(1)
+  }
+
+  if (W mod WORKERS != 0) {
+    write(stderr, "Number of workers must evenly divide image width.")
+    stop(1)
+  }
+
+  const int  STRIP = W / WORKERS
+  const real  GAPX = VW / W
+  const real  GAPY = VH / H
+
+  winWindow  mainwin
+  winImage  image
+  op winEventChannel ec
+  winEvent  ev
+  bool stay[WORKERS] = ([WORKERS] true)
+  sem  done = 0, cont[WORKERS] = ([WORKERS] 0)
+
+  ### open a window, create an image
+
+  mainwin = WinOpen("", "Mandelbrot", ec, UseDefault, W, H)
+  if (mainwin == null) {
+    write(stderr, "Ouch, can't open window")
+    stop(1)
+  }
+  WinSetEventMask(mainwin, Ev_KeyUp | Ev_ButtonDown)
+  image = WinCreateImage(mainwin, UseDefault, W, H)
+  if (image == null) {
+    write(stderr, "Ouch, can't create image")
+    stop(1)
+  }
+  WinAddPixel(image, WinSetForeground(mainwin, "black"))
+  WinFlush(mainwin)
+
+  # how many colors?
+  int  COLORS = MINC;
+  read(COLORS)
+  if (COLORS < MINC) {
+    write(stderr, "Invalid number of colors")
+    stop(1)
+  }
+
+  const int OFF = COLORS - (COLORS/10)*2
+  const int CSTRIP = W/COLORS
+  winWindow cwins[0:COLORS-1]
+  winPixel  cpvs[0:COLORS-1]
+
+  # initialize colors
+  for [ i= 0 to COLORS-1 ] {
+    cwins[i] = WinNewContext(mainwin)
+    if (cwins[i] == null) {
+      write(stderr, "No enough memory... give up")
+      stop(0)
+    }
+  }
+
+  # Force discontinuous color distribution
+  for [ i= 0 to COLORS-1 ] {
+    int r, g, b
+    string[5] sr, sg, sb
+    read(r, g, b)
+    sprintf(sr, "%04x", r*255)
+    sprintf(sg, "%04x", g*255)
+    sprintf(sb, "%04x", b*255)
+    cpvs[i] = WinSetForeground(cwins[i], "#" || sr || sg || sb)
+    WinFillRectangle(cwins[i], winRectangle(CSTRIP*i, 0, CSTRIP, H))
+  }
+  WinFlush(mainwin)
+
+  ### Worker processes
+
+  process worker [ w = 1 to WORKERS ] {
+    const int R = (w - 1) * STRIP          # starting row of strip
+    const int T = THR + 1
+    int  count, ind 
+    real cr, ci
+    real zr, zi
+    real s
+    real tmp
+
+    # wait to go
+    P(cont[w])
+
+    for [ i= R to R+STRIP-1 ] {
+      for [ j= 0 to H-1 ] {
+	  count = 0
+	  cr = i*GAPX + VX;    ci = j*GAPY + VY
+	  zr = 0.0;            zi = 0.0
+	  s = 0.0
+	  while ((s <= 4.0) and (count < THR)) {
+	    tmp = 2*zr*zi + ci
+	    zr = zr*zr - zi*zi + cr
+	    zi = tmp
+	    s = zr*zr + zi*zi
+	    count ++
+	  }
+	  if (s > 4.0) {                 # different coloring styles
+
+	    ##0# Leveling
+	    #ind := count * COLORS/T
+
+	    ##1# Color Set
+	    #ind := int((s - floor(s)) * COLORS)
+
+	    ##2# Decomposition
+	    real  theta 
+	    int  ind 
+	    theta = atan(zi/zr) + PI/2
+	    ind = int(theta*COLORS/PI)
+
+	    ##3# Stalks
+
+	    ##4# Continuous Potential
+
+	    ##5# Distance Estimator
+
+	    ##6# Biomorphs
+
+	    ##7# Smurf
+
+	    ##8# Periodic
+
+	    ##9# Ratios
+	    #int vmax, vmin
+	    #int ind
+	    #zr := abs(zr)
+	    #zi := abs(zi)
+	    #vmax := max(zr, zi)
+	    #vmin := min(zr, zi)
+	    #ind := int(vmin*COLORS/(vmax+0.01/COLORS))
+
+	    #### OUTPUT
+	    WinPutPixel(image, winPoint(i, j), cpvs[ind])
+	  ## else draw "black" (already set)
+	  }
+      }
+    }
+
+    V(done)             # signal leave
+  }
+
+  int  end_time 
+  int  start_time 
+
+  ### starting point
+  writes(stderr, "Press a key in the window to start...")
+  receive ec(ev)
+  if (ev.event_type == Ev_DeleteWindow) { stop(0) }
+  write(stderr)
+  start_time = age()
+  for [ mm = 1 to WORKERS ] { V(cont[mm]) }
+
+  # wait to quit
+  for [ k = 1 to WORKERS ] { P(done) }
+  WinPutImage(mainwin, image, winRectangle(0, 0, W, H), winPoint(0, 0))
+  WinDestroyImage(image)
+  WinFlush(mainwin)
+  end_time = age()
+  write(stderr)
+  write(stderr, "Time = ", end_time - start_time)
+  writes(stderr, "Press a key in the window to quit...")
+  receive ec(ev)
+  stop(0)
+
+  # final code -- close connection...
+  final {
+    write(stderr)
+    WinClose(mainwin)
+  }
+
+end mandel
+

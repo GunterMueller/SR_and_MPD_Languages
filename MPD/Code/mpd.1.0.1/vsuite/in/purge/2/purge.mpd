@@ -1,0 +1,44 @@
+resource purge()
+   # first some globals for laziness
+   cap (int x) g1, g2
+   op go() {send} # make it a sem
+   op r(int x);  op s(int x)
+   process sigh  {
+      receive go()
+      send r(3)
+      send g1(-123)
+      send r(4)
+      send r(5)
+      send g2(99)
+      send s(101)
+      receive go()
+      send s(102)
+      send s(103)
+      send s(104)
+      in r(x) and x == 4 -> write("r",x) ni
+      while (?r + ?s > 0) {
+	   in r(x) -> write("r",x)
+	   [] s(x) -> write("s",x)
+	   ni
+      }
+   }
+   process ugh  {
+      # first, some simple tests with k invocations to be purged
+      for [ k = 0 to 3 ] {
+	   op f(int x)
+	   for [ i = 1 to k ] { send f(-i)  }
+	   in f(x) and x == 12345 /* never true */ -> write("oops",k)
+	   [] else -> write("ok",k,?f)
+	   ni
+      }
+      op f1(int x); op f2(int x)
+      g1 = f1; g2 = f2
+      send go()
+      in f1(x) and x == 12345 -> write("f1 can't happen", x)
+      [] f2(x) -> write("f2", x)
+      [] r(x) and x == 12345 -> write("r can't happen", x)
+      ni
+      send go()
+   }
+end
+

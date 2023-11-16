@@ -1,0 +1,8 @@
+0 csp2sr -te dp.csp
+0 sr -C dp.sr
+
+0 csp2sr -ti dp.csp
+0 sr -C -do dp.sr
+0 cmp Compiler.std Compiler.out
+
+0 rm -rf Interfaces core *.out dp.sr

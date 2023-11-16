@@ -1,0 +1,109 @@
+#====================
+#  trc.mpd
+#====================
+# test lots of different trace messages
+# also incidentally tests forward from within co-call, which got a segm fault
+
+global g ()
+#  BODY:1  ENDBODY:1
+   write ("g initializing")
+   process p  {
+   #  SEND:1  PROC:1  ENDPROC:1
+      write ("global g here")
+   }
+   final {
+      write ("g finalizing")
+      #  FINAL:1  ENDFINAL:1
+   }
+end
+
+resource h ()
+#  BODY:1  ENDBODY:1
+   write ("h initializing")
+   import g
+   #  CREATEG:1
+   write ("h here")
+   final {
+      write ("h finalizing")
+      #  FINAL:1  ENDFINAL:1
+   }
+end
+
+resource r ()
+#  BODY:1  ENDBODY:1
+   write ("r initializing")
+   import h
+   sem s = 5
+   #  CREATES:1  INITS:1
+   sem t
+   #  CREATES:1
+   int  n 
+
+   op o(int i); op p(int i); op q(int i)
+   proc p (i)  {
+   #  PROC:3  ENDPROC:3
+      write ("   p", i)
+   }
+   proc q(i)  {
+   #  PROC:4  ENDPROC:4
+      if (i == 4) { return }
+      #  RETURN:1
+      if (i == 5) { reply }
+      #  REPLY:1
+      if (i == 6) { forward p(i) }
+      #  FORWARD:1
+   }
+
+   P(s)
+   #  P:1  CONTP:1
+   V(t)
+   #  V:1
+   P(t)
+   #  P:1  CONTP:1
+   V(s)
+   #  V:1
+
+   send o(1)
+   #  SEND:1
+   receive o(n)
+   #  IN:1  ARM:1  NI:1
+   write("n =", n)
+   send o(2)
+   #  SEND:1
+   send o(-5)
+   #  SEND:1
+   for [ i = 1 to 3 ] {
+      in o(n) st n < 0 ->
+      #  IN:3  NI:3
+	 write (n, "< 0")
+	 #  ARM:1
+      [] o(n) st n > 0 ->
+	 write (n, "> 0")
+	 #  ARM:1
+      [] else ->
+	 write ("no n")
+	 #  ARM:1
+      ni
+   }
+
+   co [ i = 1 to 2 ]
+   #  CO:1  CALL:2  OC:1
+      p(i)
+   // [ i = 3 to 6 ]
+   #  CALL:4
+      q(i)
+   oc
+
+   cap h hcap = create h()
+   #  CREATER:1
+   destroy hcap
+   #  DESTROYR:1
+
+   destroy create vm()
+   #  CREATEV:1  DESTROYV:1
+
+   final {
+      write ("r finalizing")
+      #  FINAL:1  ENDFINAL:1
+   }
+end

@@ -1,0 +1,4 @@
+0 mpd -c my.spec.mpd my.body.mpd
+0 mpdl my
+0 run
+0 rm -rf MPDinter core *.out

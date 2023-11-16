@@ -1,0 +1,4 @@
+argtype: 2
+format: '%s'
+  2 < 1>: 'killer'
+end

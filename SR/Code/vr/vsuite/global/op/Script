@@ -1,0 +1,5 @@
+#  gmt  Fri Nov  1 16:29:13 MST 1991
+0 sr -c globops.sr
+0 srl g h r
+0 run
+0 rm -rf Interfaces core *.out

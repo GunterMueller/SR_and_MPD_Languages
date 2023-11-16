@@ -1,0 +1,8 @@
+#  gmt  Tue Feb  9 13:30:43 MST 1988
+0 sr -c manyvm.sr
+0 srl r manyvm
+0 a.out >10.1.out 2>&1
+0 cmp -s 10.1.std 10.1.out
+0 a.out 20 3 >20.3.out 2>&1
+0 cmp -s 20.3.std 20.3.out
+0 rm -rf Interfaces core *.out

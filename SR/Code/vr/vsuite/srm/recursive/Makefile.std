@@ -1,0 +1,61 @@
+#	Makefile created by SRM
+
+
+SR = sr
+SRFLAGS = 
+I = ./Interfaces
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/D.o $I/A.o $I/B.o $I/C.o $I/g.o archive.a object.o source.o
+	srl  -o a.out A B C g D -llibrary archive.a object.o source.o
+
+compile: $I/D.o $I/A.o $I/B.o $I/C.o $I/g.o archive.a object.o source.o
+
+run: link
+	a.out 
+
+$I/D.o: $I/g.spec $I/g.o $I/D.spec $I/C.spec $I/B.spec $I/A.spec d.sr
+	$(SR) $(SRFLAGS) -b d.sr
+
+$I/D.spec: d.sr
+	$(SR) $(SRFLAGS) -s d.sr
+
+$I/A.o: $I/B.spec $I/g.spec $I/g.o $I/A.spec main.sr
+	$(SR) $(SRFLAGS) -b main.sr
+
+$I/A.spec: main.sr
+	$(SR) $(SRFLAGS) -s main.sr
+
+$I/B.o: $I/A.spec $I/B.spec $I/g.spec $I/g.o main.sr
+	$(SR) $(SRFLAGS) -b main.sr
+
+$I/B.spec: main.sr
+	$(SR) $(SRFLAGS) -s main.sr
+
+$I/C.o: $I/g.spec $I/g.o $I/A.spec $I/C.spec $I/B.spec main.sr
+	$(SR) $(SRFLAGS) -b main.sr
+
+$I/C.spec: main.sr
+	$(SR) $(SRFLAGS) -s main.sr
+
+$I/g.o: $I/g.spec d.sr
+	$(SR) $(SRFLAGS) -b d.sr
+
+$I/g.spec: d.sr
+	$(SR) $(SRFLAGS) -s d.sr
+
+clean:
+	rm -rf $I  source.o
+
+cleanx: clean
+	rm -f core a.out
+
+ls:
+	@echo d.sr main.sr source.c
+
+make:
+	srm -f Makefile d.sr main.sr -llibrary archive.a object.o source.c
+

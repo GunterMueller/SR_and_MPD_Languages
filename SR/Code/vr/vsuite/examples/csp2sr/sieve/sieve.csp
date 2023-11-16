@@ -1,0 +1,27 @@
+/* Sieve of Eratosthenes: pipeline algorithm
+ */
+_program(sieve)
+  const L := 25, N := 100
+  _specs
+    _process_spec1(Sieve,1,L)
+      _port(Sieve,pass, (x: int))
+  _specs_end
+
+  _process_body1(Sieve, i)
+    if i = 1 ->
+      write(2)
+      fa k := 3 to N by 2 -> _stmt_o(Sieve[2],pass, (k))  af
+    [] else ->
+      var p, candidate: int
+      _stmt_i(Sieve[i-1],pass, (p))
+      write(p)
+      _do
+        _guard_i(true, Sieve[i-1],pass, (candidate)) ->
+          if candidate mod p != 0 ->
+            _stmt_o(Sieve[i+1],pass, (candidate))
+          fi
+      _od
+    fi
+  _process_end
+
+_program_end

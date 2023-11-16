@@ -1,0 +1,11 @@
+# return true if x is on list pointed at by head
+# type node is rec(value: int; ...; nxt: ptr node)
+procedure search(x: int) returns found: bool
+    var p: ptr node
+    p := head
+    do p != null ->
+        if p^.value = x -> found := true; return fi
+        p := p^.nxt
+    od
+    found := false
+end

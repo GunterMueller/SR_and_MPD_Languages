@@ -1,0 +1,4 @@
+0 mpd -c tenum.mpd
+0 mpdl tenum
+0 run
+0 rm -rf MPDinter core *.out

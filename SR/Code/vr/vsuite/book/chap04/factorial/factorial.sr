@@ -1,0 +1,16 @@
+resource main()
+  procedure factorial(x: int)
+      var fact := 1
+      fa i := 1 to x -> fact *:= i af
+      write(x, "factorial is", fact)
+  end
+  # find factorial for each positive number input
+  var x := 10
+  do true ->
+      if x = 0 -> exit
+      [] x < 0 -> write("number must be >= 0")
+      [] x > 0 -> call factorial(x)
+      fi
+      x--
+  od
+end

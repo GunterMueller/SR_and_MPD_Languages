@@ -1,0 +1,19 @@
+argtype: 6
+format: '%b %b'
+  6 < 2>: false, true
+  6 < 1>: false, true
+  6 < 1>: true, true
+format: '%b%b'
+  6 < 2>: true, false
+  6 < 2>: false, true
+  6 < 2>: true, false
+  6 < 2>: false, true
+format: '%1b%1b'
+  6 < 2>: false, true
+  6 < 2>: false, true
+  6 < 2>: true, true
+  6 < 2>: true, true
+  6 < 2>: false, true
+  6 < 1>: false, true
+  6 < 2>: false, true
+finished

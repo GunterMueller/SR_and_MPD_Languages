@@ -1,0 +1,10 @@
+resource umlaute ()
+    var c8: char := '\344' # <- this was the literal representation of
+    var cc: char := char (0E4x)
+    var c7: char := 'a'
+
+    write ("the following result should be:\nfalse true false false true true")
+    write (c8 < c7, c7 < c8, '\344' < c8, c8 < '\344', c8 = '\344', c8 = cc)
+# using the "signed char" convention it would be:
+#   true false false true false true
+end

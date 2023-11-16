@@ -1,0 +1,27 @@
+resource Processor()
+  import Scheduler, Bus
+  var NUM_PROCESSORS := 3  # processors, default 3
+  var TIME := 1000.0       # time to run simulation
+  var sched: cap Scheduler, bus: cap Bus
+
+  # get command-line arguments, if present
+  getarg(1, NUM_PROCESSORS); getarg(2, TIME)
+  # start up Scheduler, Bus, and processors
+  sched := create Scheduler(NUM_PROCESSORS+1)
+  bus := create Bus(sched)
+
+  process processor(i := 1 to NUM_PROCESSORS)
+    do true ->
+      bus.seize()                # grab the bus
+      sched.delay(random(10.0))  # use the bus
+      bus.release()              # release the bus
+      sched.delay(random(20.0))  # do something else
+    od
+  end
+
+  # run the simulation for TIME clock ticks
+  sched.delay(TIME)
+  # print usages from bus, then stop the simulation
+  bus.print()
+  stop
+end Processor

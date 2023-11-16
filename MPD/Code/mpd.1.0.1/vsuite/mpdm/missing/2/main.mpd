@@ -1,0 +1,9 @@
+resource a
+   import b
+end
+body a
+end a
+
+resource b
+   import a
+end

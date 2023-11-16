@@ -1,0 +1,4 @@
+# 21-Aug-91 gmt
+0 sr rec3.sr
+0 run
+0 rm -rf Interfaces core *.out

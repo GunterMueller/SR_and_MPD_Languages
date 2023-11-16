@@ -1,0 +1,16 @@
+global semaphores initialisation
+global printdecls initialisation
+Sharedprint started
+Mesg from a procedure imported via 4 recursive imports
+B: 3*PI is 9.42478
+A: 2*PI is 6.28319
+A: another 2*PI is 6.28319
+A: the color was red
+A: the color is blue
+callprint@Shared :  blue This callprint was called by A
+sendprint@Shared :  blue This sendprint mesg was from A
+B: after receive semb()
+B: the color was blue
+B: the color is red
+callprint@Shared :  red This callprint was called by B
+sendprint@Shared :  red This sendprint mesg was from B

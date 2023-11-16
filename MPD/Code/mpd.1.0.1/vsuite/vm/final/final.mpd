@@ -1,0 +1,25 @@
+global g
+  int i = 0
+body g
+  final {
+    write ("final g, sum = ", i)
+  }
+end
+
+resource foo (int j)
+  import g
+  write("foo", j, "sum =", i += j)
+  final { write("final foo", j) }
+end
+
+resource main()
+  import foo
+  cap vm  vc
+  vc = create vm()
+  create foo(1)
+  create foo(2) on vc
+  create foo(4) on vc
+  create foo(8) on vc
+  destroy vc
+  write ("done")
+end

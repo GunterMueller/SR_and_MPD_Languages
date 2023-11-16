@@ -1,0 +1,16 @@
+# question mark operator.
+# resource array of operations.
+resource qm6()
+	op f[1:10]() {send}
+
+	fa i := 1 to 10 ->
+		send f[i]()
+	af
+	fa i := 1 to 10 ->
+		write( i, ? f[i] )
+	af
+	fa i := 1 to 10 ->
+		receive f[i]()
+		write( i, ? f[i] )
+	af
+end

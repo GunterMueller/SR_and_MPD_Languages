@@ -1,0 +1,59 @@
+# test recursive imports (new for SR v2) and import scope
+
+
+resource A
+    const u := 100
+    import B
+    const v := B.x + 10
+body A ()
+    write ("A: ", u, v)
+end A
+
+
+resource B
+    const x := 200
+    import A
+    const y := A.u + 20
+body B () separate
+
+body B
+    write ("B: ", x, y)
+end B
+
+
+resource C ()
+    begin
+	import B, A
+	write ("C1:", v+1, y+1)		# both imported
+	write ("C2:", u+2, x+2)		# both imported
+    end
+    const x := 300
+    begin
+	write ("C3:", "   ", x+3)	# no u, x local
+	import B, A
+	write ("C4:", u+4, x+4)		# imported u, still x local
+	const u := 400
+	const x := 500
+	write ("C5:", u+5, x+5)		# new u & x local
+    end
+
+    procedure B ()
+	write ("procedure B here in resource C")
+    end
+
+    B()
+    import B
+    write ("C6:", x, y)
+end
+
+
+resource D ()
+    import A
+    import B
+    import C
+    write ("D: ", u + 30, v + 40, x + 50, y + 60)
+    create A ()
+    create B ()
+    create C ()
+    write ("Done.")
+end D

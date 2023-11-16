@@ -1,0 +1,1085 @@
+##  gmpdwin.mpd -- global MPDWin for interfacing MPD to X windows
+
+global	MPDWin
+
+    # default polling interval
+    const int	DefaultPoll	= 100
+    const int	UseDefault	= 0
+    const int	OffScreen	= 1
+
+    type winVoid	= ptr any
+    type winWindow	= winVoid
+    type winFont	= winVoid		# XFontStruct *
+    type winImage	= winVoid		# XImage *
+
+    type winInitialState	= int
+    type winError	= int
+
+    type winPoint	= rec ( int x; int y; )
+    type winRectangle	= rec ( int x; int y; int w; int h; )
+
+    #
+    # Note: the order of the items in each constant-lists must be exactly
+    #       the same as that of their counterparts in "MPDWin.h"
+    #
+
+    type winEventType	= int
+    const int	Ev_None			= 0
+    const int	Ev_ButtonDown		= 1
+    const int	Ev_ButtonUp		= 2
+    const int	Ev_KeyDown		= 4
+    const int	Ev_KeyUp		= 8
+    const int	Ev_PointerMove		= 16
+    const int	Ev_EnterWindow		= 32
+    const int	Ev_ExitWindow		= 64
+    const int	Ev_DeleteWindow		= 128
+    const int	Ev_All			= Ev_ButtonDown |
+					   Ev_ButtonUp |
+					   Ev_KeyDown |
+					   Ev_KeyUp |
+					   Ev_PointerMove |
+					   Ev_EnterWindow |
+					   Ev_ExitWindow |
+					   Ev_DeleteWindow
+
+    type winButtonKeyStatus = int
+    const int	BK_None		= 0
+    const int	BK_Button1	= 1
+    const int	BK_Button2	= 2
+    const int	BK_Button3	= 4
+    const int	BK_Button4	= 8
+    const int	BK_Button5	= 16
+    const int	BK_SHIFT	= 32
+    const int	BK_LOCK		= 64
+    const int	BK_CNTRL	= 128
+    const int	BK_Mod1		= 256
+    const int	BK_Mod2		= 512
+    const int	BK_Mod3		= 1024
+    const int	BK_Mod4		= 2048
+    const int	BK_Mod5		= 4096
+
+    type winLineStyle	= enum(	LineSolid,
+				LineDoubleDash,
+				LineOnOffDash )
+
+    type winCapStyle	= enum(	CapNotLast,
+				CapButt,
+				CapRound,
+				CapProjecting )
+
+    type winJoinStyle	= enum(	JoinMiter,
+				JoinRound,
+				JoinBevel )
+
+    type winFillStyle	= enum(	FillSolid,
+				FillTiled,
+				FillOpaqueStippled,
+				FillStippled )
+
+    type winFillRule	= enum(	FillEvenOddRule,
+				FillWindingRule )
+
+    type winArcMode	= enum(	ArcChord,
+				ArcPieSlice )
+
+    type winStdCursor	= enum(
+		XC_X_cursor,		XC_arrow,
+		XC_based_arrow_down,	XC_based_arrow_up,
+		XC_boat,		XC_bogosity,
+		XC_bottom_left_corner,	XC_bottom_right_corner,
+		XC_bottom_side,		XC_bottom_tee,
+		XC_box_spiral,		XC_center_ptr,
+		XC_circle,		XC_clock,
+		XC_coffee_mug,		XC_cross,
+		XC_cross_reverse,	XC_crosshair,
+		XC_diamond_cross,	XC_dot,
+		XC_dotbox,		XC_double_arrow,
+		XC_draft_large,		XC_draft_small,
+		XC_draped_box,		XC_exchange,
+		XC_fleur,		XC_gobbler,
+		XC_gumby,		XC_hand1,
+		XC_hand2,		XC_heart,
+		XC_icon,		XC_iron_cross,
+		XC_left_ptr,		XC_left_side,
+		XC_left_tee,		XC_leftbutton,
+		XC_ll_angle,		XC_lr_angle,
+		XC_man,			XC_middlebutton,
+		XC_mouse,		XC_pencil,
+		XC_pirate,		XC_plus,
+		XC_question_arrow,	XC_right_ptr,
+		XC_right_side,		XC_right_tee,
+		XC_rightbutton,		XC_rtl_logo,
+		XC_sailboat,		XC_sb_down_arrow,
+		XC_sb_h_double_arrow,	XC_sb_left_arrow,
+		XC_sb_right_arrow,	XC_sb_up_arrow,
+		XC_sb_v_double_arrow,	XC_shuttle,
+		XC_sizing,		XC_spider,
+		XC_spraycan,		XC_star,
+		XC_target,		XC_tcross,
+		XC_top_left_arrow,	XC_top_left_corner,
+		XC_top_right_corner,	XC_top_side,
+		XC_top_tee,		XC_trek,
+		XC_ul_angle,		XC_umbrella,
+		XC_ur_angle,		XC_watch,
+		XC_xterm,		XC_None )
+
+    type winCursor	= winVoid			# Cursor -> XID
+
+    type winColor	= string[*]
+    type winPixel	= winVoid
+
+    ## Draw-ops, used directly in C code, must be consistent with <X11/X.h>
+    type winDrawOp	= enum(	Op_Clear,		# 0x0
+				Op_And,			# 0x1
+				Op_AndReverse,		# 0x2
+				Op_Copy,		# 0x3
+				Op_AndInverted,		# 0x4
+				Op_Noop,		# 0x5
+				Op_Xor,			# 0x6
+				Op_Or,			# 0x7
+				Op_Nor,			# 0x8
+				Op_Equiv,		# 0x9
+				Op_Invert,		# 0xA
+				Op_OrReverse,		# 0xB
+				Op_CopyInverted,	# 0xC
+				Op_OrInverted,		# 0xD
+				Op_Nand,		# 0xE
+				Op_Set )		# 0xF
+
+    type winEvent	= rec ( winEventType	event_type
+				winWindow	window
+				int x, y		# the pointer
+				int bk_status		# buttons & keys
+				int data		# other
+				int keysym		# KeySym
+			)
+
+    optype winEventChannel(winEvent) {send}
+
+    ##
+    ## op declarations
+    ##
+
+    op	WinOpen(	string[*]	display,
+			string[*]	title,
+			cap winEventChannel evchannel,
+			winInitialState	state,
+			int w, int h
+		)	returns winWindow win
+
+    op	WinClose(winWindow win)
+
+    op  WinCreateSubwindow(winWindow oldwin,
+		cap winEventChannel evchannel,
+		winInitialState state,
+		int x, int y, int w, int h)
+	returns winWindow newwin
+
+    op	WinDestroyWindow(winWindow win)
+
+    op  WinSetBorder(winWindow win, int width, winColor color)
+	returns winPixel pv
+
+    op	WinNewContext(winWindow oldwin) returns winWindow newwin
+    op	WinCopyContext(winWindow srcwin, winWindow destwin)
+
+    op	WinFlush(winWindow win)
+    op	WinSync(winWindow win, bool discard)
+
+    op	WinBell(winWindow win, int percent)
+
+    op	WinDrawPixel(winWindow win, winPoint pt)
+
+    op	WinDrawLine(winWindow win, winPoint pt1, winPoint pt2)
+    op	WinDrawPolyline(winWindow win, winPoint pts[*])
+    op	WinDrawPolygon(winWindow win, winPoint pts[*])
+    op	WinFillPolygon(winWindow win, winPoint pts[*])
+
+    op	WinDrawRectangle(winWindow win, winRectangle rect)
+    op	WinFillRectangle(winWindow win, winRectangle rect)
+
+    op	WinDrawArc(winWindow win, winRectangle box, int a1, int a2)
+    op	WinFillArc(winWindow win, winRectangle box, int a1, int a2)
+
+    op	WinClearArea(winWindow win, winRectangle area)
+    op	WinEraseArea(winWindow win, winRectangle area)
+    op  WinCopyArea(winWindow srcw, winWindow destw,
+		winRectangle src_rect, winPoint destp)
+
+    op	WinSetLabels(winWindow win, string[*] wlab, string[*] ilab)
+
+    op	WinSetPoll(winWindow win, int ticks)
+    op	WinSetEventMask(winWindow win, int em)
+
+    op	WinMapWindow(winWindow win)
+    op	WinUnmapWindow(winWindow win)
+    op	WinMapSubwindows(winWindow win)
+    op	WinUnmapSubwindows(winWindow win)
+    op	WinRaiseWindow(winWindow win)
+    op	WinLowerWindow(winWindow win)
+    op	WinMoveWindow(winWindow win, winPoint pt)
+    op	WinEnableOutput(winWindow win)
+    op	WinDisableOutput(winWindow win)
+    op	WinUpdateWindow(winWindow win)
+
+    op	WinSetForeground(winWindow win, winColor fg) returns winPixel pv
+    op	WinSetBackground(winWindow win, winColor bg) returns winPixel pv
+    op	WinSetForegroundByPixel(winWindow win, winPixel pv)
+    op	WinSetBackgroundByPixel(winWindow win, winPixel pv)
+
+    op  WinSetClipRectangles(winWindow win, winPoint origin, 
+		winRectangle rects[*])
+
+    op  WinSetLineAttr(winWindow win, int line_width, winLineStyle line_style,
+		winCapStyle cap_style, winJoinStyle join_style)
+    op  WinSetFillAttr(winWindow win, winFillStyle fill_style,
+		winFillRule fill_rule)
+    op  WinSetDashes(winWindow win, int dash_offset, string[*] dash_list)
+    op	WinSetArcMode(winWindow win, winArcMode arc_mode)
+    op	WinSetDrawOp(winWindow win, winDrawOp dop)
+
+    op	WinDefaultFont(winWindow win) returns winFont font
+    op	WinLoadFont(winWindow win, string[*] fontname) returns winFont font
+    op	WinSetFont(winWindow win, winFont font)
+    op	WinFreeFont(winWindow win, winFont font)
+
+    op	WinTextWidth(winFont font, string[*] str) returns int width
+    external	WinFontAscent(winFont) returns int
+    external	WinFontDescent(winFont) returns int
+
+    op	WinDrawString(winWindow win, winPoint pt, string[*] str)
+    op	WinDrawImageString(winWindow win, winPoint pt, string[*] str)
+
+    op  WinCreateCursor(winWindow win, winStdCursor stdcursor)
+		returns winCursor cur
+    op  WinSetCursor(winWindow win, winCursor cursor, winColor fg, winColor bg)
+		returns winError err
+    op	WinFreeCursor(winWindow win, winCursor cursor)
+
+    op	WinCreateImage(winWindow win, int depth, int w, int h)		
+		returns winImage im
+    op	WinGetPixel(winImage im, winPoint pt) returns winPixel pv
+    op	WinPutPixel(winImage im, winPoint pt, winPixel pv)
+    op	WinAddPixel(winImage im, winPixel pv)
+    op	WinPutImage(winWindow win, winImage im, winRectangle src_rect,
+		winPoint dest)
+    op	WinGetImage(winWindow win, winImage im, winRectangle src_rect,
+		winPoint dest)
+    op	WinDestroyImage(winImage im)
+
+
+body	MPDWin
+
+    ##
+    ## private data structures for this global
+    ##
+
+    const int	CopyGCmasks	= 077777777Q
+
+    type xGC		= winVoid		# GC
+    type xPtDisplay	= winVoid		# *Display
+    type xColormap	= winVoid		# Colormap -> unsigned long
+    type xAtom		= winVoid		# Atom -> unsigned long
+    type xWindow	= winVoid		# Window -> unsigned long
+    type xPixmap	= winVoid		# Pixmap -> unsigned long
+
+    type winList	= rec (			# identical to C part
+				int			w, h
+				xWindow			xw
+				xWindow			parent
+				xPixmap			pm
+				winVoid			mpdw	# PtContextRec
+				cap winEventChannel	evchan
+				ptr winList		nextw
+			)
+    type PtWinList	= ptr winList
+
+    # note: don't use bool, use int, to correspond to C part's expectations
+    type winDispWinRec	= rec (			# identical to C part
+				xPtDisplay	display
+				int		poll
+				int		stay		# bool
+				xGC		blkgc
+				xColormap	cmap
+				xAtom		delw
+				int		enabled		# bool
+				int		mapped		# bool
+				int		draw2win	# bool
+				winList		wlist
+			)
+    type PtDispWinRec	= ptr winDispWinRec
+
+    type winContextRec	= rec (			# identical to C part
+				PtDispWinRec	dispw	# to core
+				xWindow		xw	# XID
+				xPixmap		pm	# XID
+				xGC		gc	# GC
+			)
+    type PtContextRec	= ptr winContextRec
+
+    sem update = 1				# mutual exclusion
+
+    ##
+    ## a bunch of externals, from "mpdwin_c.c" and Xlib
+    ##
+
+    # actually opens the display & window
+    external    MPDWin_Open(PtContextRec, string[*], int, int)
+		returns bool
+
+    # check to see whether there's anything pending
+    external	XPending(xPtDisplay) returns int
+
+    # create a subwindow
+    external	MPDWin_CreateSubwindow(PtContextRec, int, int, int, int, bool)
+		returns PtWinList
+
+    # window border
+    external	MPDWin_SetBorder(PtContextRec, int, winColor) returns winPixel
+
+    # create a GC for the opened window
+    external	MPDWin_NewGC(PtContextRec) returns xGC
+    external	XCopyGC(xPtDisplay, xGC, int, xGC)
+    external	XFreeGC(xPtDisplay, xGC)
+
+    # process events, refresh accordingly
+    external	MPDWin_NextEvent(PtDispWinRec, ptr winEvent) returns PtWinList
+
+    # destroy a subwindow
+    external	MPDWin_DestroyWindow(PtContextRec) returns bool
+
+    # close display & window
+    external	MPDWin_Close(PtContextRec)
+
+    # ring the bell
+    external	XBell(xPtDisplay, int)
+
+    # flush output buffer
+    external	XFlush(xPtDisplay)
+    external	XSync(xPtDisplay, bool)
+
+    # set color
+    external    MPDWin_SetColor(PtContextRec, winColor, bool) returns winPixel
+    external	XSetForeground(xPtDisplay, xGC, winPixel)
+    external	XSetBackground(xPtDisplay, xGC, winPixel)
+
+    # draw a single pixel at (x, y)
+    external    MPDWin_DrawPixel(PtContextRec, int, int)
+
+    # drawing line
+    external    MPDWin_DrawLine(PtContextRec, ptr winPoint, ptr winPoint)
+
+    # draw many lines. last arg: true if closed (polygon)
+    external    MPDWin_DrawPolyline(PtContextRec, ptr winPoint, int, bool)
+
+    # fill polygon
+    external    MPDWin_FillPolygon(PtContextRec, ptr winPoint, int)
+
+    # draw/fill polygon
+    external	MPDWin_Rectangle(PtContextRec, int, int, int, int, bool)
+
+    # draw/fill arc
+    external	MPDWin_Arc(PtContextRec, int, int, int, int, int, int, bool)
+
+    # clear area
+    external	MPDWin_ClearArea(PtContextRec, int, int, int, int)
+
+    # erase area
+    external	MPDWin_EraseArea(PtContextRec, int, int, int, int)
+
+    # copy area
+    external	MPDWin_CopyArea(PtContextRec, PtContextRec,
+		ptr winRectangle, ptr winPoint)
+
+    # set event mask
+    # be sure to include refreshing related...
+    external	MPDWin_SetEventMask(PtContextRec, winEventType)
+
+    # set labels, window and icon
+    external	MPDWin_SetLabels(PtDispWinRec, string[*], string[*])
+
+    # map/unmap window
+    external	XMapWindow(xPtDisplay, xWindow)
+    external	XUnmapWindow(xPtDisplay, xWindow)
+    external	XMapSubwindows(xPtDisplay, xWindow)
+    external	XUnmapSubwindows(xPtDisplay, xWindow)
+    external	XRaiseWindow(xPtDisplay, xWindow)
+    external	XLowerWindow(xPtDisplay, xWindow)
+    external	XMoveWindow(xPtDisplay, xWindow, int, int)
+    external	MPDWin_UpdateWindow(PtDispWinRec)
+
+    # set line attr
+    external    MPDWin_SetLineAttr(PtContextRec, int,
+		winLineStyle, winCapStyle, winJoinStyle)
+
+    # set filling attr
+    external    MPDWin_SetFillAttr(PtContextRec, winFillStyle, winFillRule)
+
+    # set dashes
+    external    MPDWin_SetDashes(PtContextRec, int, string[*], int)
+
+    # set arc mode
+    external	MPDWin_SetArcMode(PtContextRec, winArcMode)
+
+    # set GC function -- draw-op
+    external	MPDWin_SetDrawOp(PtContextRec, winDrawOp)
+
+    # set clip rectangles
+    external    MPDWin_SetClipRectangles(PtContextRec, int, int, ptr
+		winRectangle, int)
+
+    # fonts
+    external	MPDWin_DefaultFont(PtDispWinRec) returns winFont
+    external	MPDWin_LoadFont(PtDispWinRec, string[*]) returns winFont
+    external	MPDWin_SetFont(PtContextRec, winFont)
+    external	MPDWin_FreeFont(PtDispWinRec, winFont)
+
+    # string width
+    external	XTextWidth(winFont, string[*], int) returns int
+
+    # draw text string
+    external	MPDWin_DrawString(PtContextRec, int, int, string[*], int)
+    external	MPDWin_DrawImageString(PtContextRec, int, int, string[*], int)
+    # cursors
+    external	MPDWin_CreateCursor(PtDispWinRec,winStdCursor) returns winCursor
+    external    MPDWin_SetCursor(PtContextRec, winCursor, winColor, winColor)
+		returns winError
+    external	MPDWin_FreeCursor(PtDispWinRec, winCursor)
+
+    # Image manipulate functions
+    external	MPDWin_CreateImage(PtDispWinRec, int, int, int) returns winImage
+    external	XDestroyImage(winImage)
+    external	XPutPixel(winImage, int, int, winPixel)
+    external	XGetPixel(winImage, int, int) returns winPixel
+    external	XAddPixel(winImage, winPixel)
+    external	MPDWin_PutImage(PtContextRec, winImage, ptr winRectangle,
+		ptr winPoint)
+    external	MPDWin_GetImage(PtContextRec, winImage, ptr winRectangle,
+		ptr winPoint)
+
+    ##
+    ## op implementations
+    ##
+
+    # open and initialize a window
+    proc WinOpen(display, title, evchannel, state, w, h) returns win {
+	winDispWinRec ngcwin
+	winContextRec gcwin
+	winEvent ev
+	PtWinList wstruct
+
+	ngcwin.wlist.evchan = evchannel
+	ngcwin.poll = DefaultPoll
+	ngcwin.stay = int(true)
+	ngcwin.enabled = int(false)
+	ngcwin.draw2win = int(false)
+	gcwin.dispw = @ngcwin
+	win = @gcwin
+	P(update)
+	if (not MPDWin_Open(@gcwin, display, w, h)) {
+	    V(update)
+	    win = null				# error
+	    return
+	}
+	if ((gcwin.gc = MPDWin_NewGC(@gcwin)) == null) {
+	    V(update)
+	    win = null				# error
+	    return
+	}
+	MPDWin_SetLabels(@ngcwin, title, "MPDWin")
+	if (evchannel != null and state != OffScreen) {
+	    MPDWin_SetEventMask(@gcwin, Ev_All)
+	}
+	if (state != OffScreen) {
+	    XMapWindow(ngcwin.display, gcwin.xw)
+	    ngcwin.enabled = int(true)
+	}
+	V(update)
+	# return window pointer to user program
+	# stay as a hidden process to handle events
+	reply
+
+	# enter event handling loop
+	P(update)
+	while (bool(ngcwin.stay)) {
+	    # get event - call a C function, refresh when necessary
+	    # till no event pending
+	    while (XPending(ngcwin.display) > 0) {
+	      wstruct = MPDWin_NextEvent(@ngcwin, @ev)
+	      # if not refreshing-related, let MPD dispatch...
+	      if ((ev.event_type > Ev_None) and (wstruct^.evchan != null)) {
+	        send wstruct^.evchan(ev)
+	      }
+	    }
+	    V(update)
+	    # sleep for a while
+	    nap(ngcwin.poll)
+	    P(update)
+	}
+	V(update)
+	# if ngcwin.stay is false, someone must have called "winClose"
+	# all the related X resources have been deallocated...
+    }
+
+    # close a window, destroy/free associated X resources.
+    proc WinClose(win) {
+	# check whether win points to a legitimate structure?
+	P(update)
+	PtContextRec(win)^.dispw^.stay = int(false)
+	PtContextRec(win)^.dispw^.poll = DefaultPoll
+	MPDWin_Close(PtContextRec(win))
+	V(update)
+    }
+
+    # create a subwindow
+    proc WinCreateSubwindow(oldwin, ec, state, x, y, w, h) returns newwin {
+	PtWinList wstruct
+	xGC newgc
+
+	# check validity?
+	newwin = new(winContextRec)
+	PtContextRec(newwin)^.dispw = PtContextRec(oldwin)^.dispw
+	# pass old xw using newwin
+	PtContextRec(newwin)^.xw = PtContextRec(oldwin)^.xw
+	P(update)
+	wstruct = MPDWin_CreateSubwindow(PtContextRec(newwin),
+		x, y, w, h, (ec == null))
+	if (wstruct == null) {
+	    V(update)
+	    free(newwin)
+	    newwin = null			# error
+	    return
+	}
+	wstruct^.evchan = ec
+	newgc = MPDWin_NewGC(PtContextRec(oldwin))
+	V(update)
+	if (newgc == null) {
+	    P(update)
+	    MPDWin_DestroyWindow(PtContextRec(newwin))
+	    V(update)
+	    free(newwin)
+	    newwin = null			# error
+	    return
+	}
+	PtContextRec(newwin)^.gc = newgc
+	P(update)
+	XCopyGC(PtContextRec(oldwin)^.dispw^.display,
+		PtContextRec(oldwin)^.gc, CopyGCmasks, newgc)
+	if (ec != null and state != OffScreen) {
+	    MPDWin_SetEventMask(PtContextRec(newwin), Ev_All)
+	}
+	V(update)
+	if (state != OffScreen) {
+	    P(update)
+	    XMapWindow(PtContextRec(newwin)^.dispw^.display,
+		PtContextRec(newwin)^.xw)
+	    V(update)
+	}
+	return
+    }
+
+    # border
+    proc WinSetBorder(win, width, c) returns pv {
+	# check validity?
+	P(update)
+	pv = MPDWin_SetBorder(PtContextRec(win), width, c)
+	V(update)
+    }
+
+    # bind a new graphics context
+    proc WinNewContext(oldwin) returns newwin {
+	xGC newgc
+	# check validity?
+	P(update)
+	newgc = MPDWin_NewGC(PtContextRec(oldwin))
+	V(update)
+	if (newgc == null) {
+	    newwin = null			# error
+	    return
+	}
+	P(update)
+	XCopyGC(PtContextRec(oldwin)^.dispw^.display,
+		PtContextRec(oldwin)^.gc, CopyGCmasks, newgc)
+	V(update)
+	newwin = new(winContextRec)
+	PtContextRec(newwin)^.gc = newgc
+	PtContextRec(newwin)^.xw = PtContextRec(oldwin)^.xw
+	PtContextRec(newwin)^.pm = PtContextRec(oldwin)^.pm
+	PtContextRec(newwin)^.dispw = PtContextRec(oldwin)^.dispw
+	return
+    }
+
+    # copy GC from src to dest
+    proc WinCopyContext(srcwin, destwin) {
+	# check validity?
+	P(update)
+	XCopyGC(PtContextRec(destwin)^.dispw^.display,
+		PtContextRec(srcwin)^.gc, CopyGCmasks,
+		PtContextRec(destwin)^.gc)
+	V(update)
+    }
+
+    # destroy a subwindow
+    proc WinDestroyWindow(win) {
+	# check validity?
+	P(update)
+	if (MPDWin_DestroyWindow(PtContextRec(win))) {
+	    free(win)
+	}
+	V(update)
+    }
+
+    # flush the output buffer
+    proc WinFlush(win) {
+	# check validity?
+	P(update)
+	XFlush(PtContextRec(win)^.dispw^.display)
+	V(update)
+    }
+
+    # sync with the X server
+    proc WinSync(win, discard) {
+	# check validity?
+	P(update)
+	XSync(PtContextRec(win)^.dispw^.display, discard)
+	V(update)
+    }
+
+    # ring the bell
+    proc WinBell(win, percent) {
+	# check validity?
+	percent = max(percent, -100)
+	percent = min(percent,  100)
+	P(update)
+	XBell(PtContextRec(win)^.dispw^.display, percent)
+	V(update)
+    }
+
+    # draw a line from pt1 to pt2
+    proc WinDrawLine(win, pt1, pt2) {
+	# check validity?
+	P(update)
+	MPDWin_DrawLine(PtContextRec(win), @pt1, @pt2)
+	V(update)
+    }
+
+    # draw polyline
+    proc WinDrawPolyline(win, pts) {
+	# check validity?
+	P(update)
+	MPDWin_DrawPolyline(PtContextRec(win), @pts[1], ub(pts), false)
+	V(update)
+    }
+
+    # draw polygon
+    proc WinDrawPolygon(win, pts) {
+	# check validity?
+	P(update)
+	MPDWin_DrawPolyline(PtContextRec(win), @pts[1], ub(pts), true)
+	V(update)
+    }
+
+    # fill polygon
+    proc WinFillPolygon(win, pts) {
+	# check validity?
+	P(update)
+	MPDWin_FillPolygon(PtContextRec(win), @pts[1], ub(pts))
+	V(update)
+    }
+
+    # draw pixel
+    proc WinDrawPixel(win, pt) {
+	# check validity?
+	P(update)
+	MPDWin_DrawPixel(PtContextRec(win), pt.x, pt.y)
+	V(update)
+    }
+
+    # draw rectangle
+    proc WinDrawRectangle(win, rect) {
+	# check validity?
+	P(update)
+	MPDWin_Rectangle(PtContextRec(win),
+		rect.x, rect.y, rect.w, rect.h, false)
+	V(update)
+    }
+
+    # fill rectangle
+    proc WinFillRectangle(win, rect) {
+	# check validity?
+	P(update)
+	MPDWin_Rectangle(PtContextRec(win),
+		rect.x, rect.y, rect.w, rect.h, true)
+	V(update)
+    }
+
+    # draw arc
+    proc WinDrawArc(win, box, a1, a2) {
+	# check validity?
+	P(update)
+	MPDWin_Arc(PtContextRec(win),
+		box.x, box.y, box.w, box.h, a1, a2, false)
+	V(update)
+    }
+
+    # fill arc
+    proc WinFillArc(win, box, a1, a2) {
+	# check validity?
+	P(update)
+	MPDWin_Arc(PtContextRec(win),
+		box.x, box.y, box.w, box.h, a1, a2, true)
+	V(update)
+    }
+
+    # clear area
+    proc WinClearArea(win, area) {
+	# check validity?
+	P(update)
+	MPDWin_ClearArea(PtContextRec(win), area.x, area.y, area.w, area.h)
+	V(update)
+    }
+
+    # erase area
+    proc WinEraseArea(win, area) {
+	# check validity?
+	P(update)
+	MPDWin_EraseArea(PtContextRec(win), area.x, area.y, area.w, area.h)
+	V(update)
+    }
+
+    # copy area
+    proc WinCopyArea(srcw, destw, src_rect, destp) {
+	# check validity?
+	P(update)
+	MPDWin_CopyArea(PtContextRec(srcw), PtContextRec(destw),
+		@src_rect, @destp)
+	V(update)
+    }
+
+    # set labels of window/icon
+    proc WinSetLabels(win, wlab, ilab) {
+	# check validity?
+	P(update)
+	MPDWin_SetLabels(PtContextRec(win)^.dispw, wlab, ilab)
+	V(update)
+    }
+
+    # set polling interval
+    proc WinSetPoll(win, ticks) {
+	# check validity?
+	P(update)
+	PtContextRec(win)^.dispw^.poll = max(1, ticks)
+	V(update)
+    }
+
+    # set event mask for the window
+    proc WinSetEventMask(win, em) {
+	# check validity?
+	P(update)
+	MPDWin_SetEventMask(PtContextRec(win), em)
+	V(update)
+    }
+
+    # set foreground
+    proc WinSetForeground(win, fg) returns pv {
+	# check validity?
+	P(update)
+	pv = MPDWin_SetColor(PtContextRec(win), fg, true)
+	V(update)
+    }
+
+    # set background
+    proc WinSetBackground(win, bg) returns pv {
+	# check validity?
+	P(update)
+	pv = MPDWin_SetColor(PtContextRec(win), bg, false)
+	V(update)
+    }
+
+    # set foreground
+    proc WinSetForegroundByPixel(win, pv) {
+	P(update)
+	XSetForeground(PtContextRec(win)^.dispw^.display,
+	    PtContextRec(win)^.gc, pv)
+	V(update)
+    }
+
+    # set background
+    proc WinSetBackgroundByPixel(win, pv) {
+	P(update)
+	XSetBackground(PtContextRec(win)^.dispw^.display,
+	    PtContextRec(win)^.gc, pv)
+	V(update)
+    }
+
+    # map a window
+    proc WinMapWindow(win) {
+	# check validity?
+	P(update)
+	XMapWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    }
+
+    # unmap a window
+    proc WinUnmapWindow(win) {
+	# check validity?
+	P(update)
+	XUnmapWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    }
+
+    # map all subwindow
+    proc WinMapSubwindows(win) {
+	# check validity?
+	P(update)
+	XMapSubwindows(PtContextRec(win)^.dispw^.display,
+		PtContextRec(win)^.xw)
+	V(update)
+    }
+
+    # unmap all subwindow
+    proc WinUnmapSubwindows(win) {
+	# check validity?
+	P(update)
+	XUnmapSubwindows(PtContextRec(win)^.dispw^.display,
+		PtContextRec(win)^.xw)
+	V(update)
+    }
+
+    # raise window
+    proc WinRaiseWindow(win) {
+	# check validity?
+	P(update)
+	XRaiseWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    }
+
+    # lower window
+    proc WinLowerWindow(win) {
+	# check validity?
+	P(update)
+	XLowerWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    }
+
+    # move a window
+    proc WinMoveWindow(win, pt) {
+	# check validity?
+	P(update)
+	XMoveWindow(PtContextRec(win)^.dispw^.display,
+		PtContextRec(win)^.xw, pt.x, pt.y)
+	V(update)
+    }
+
+    # enable
+    proc WinEnableOutput(win) {
+	# check validity?
+	PtDispWinRec dispw = PtContextRec(win)^.dispw 
+	P(update)
+	dispw^.enabled = int(true)
+	dispw^.draw2win = dispw^.mapped
+	V(update)
+    }
+
+    # disable
+    proc WinDisableOutput(win) {
+	# check validity?
+	PtDispWinRec dispw = PtContextRec(win)^.dispw
+	P(update)
+	dispw^.enabled = int(false)
+	dispw^.draw2win = int(false)
+	V(update)
+    }
+
+    # update
+    proc WinUpdateWindow(win) {
+	# check validity?
+	P(update)
+	MPDWin_UpdateWindow(PtContextRec(win)^.dispw)
+	V(update)
+    }
+
+    # set dash-offset and dash-list for dashed line styles
+    proc WinSetDashes(win, dash_offset, dash_list) {
+	# check validity?
+	P(update)
+	MPDWin_SetDashes(PtContextRec(win), dash_offset, dash_list,
+		length(dash_list))
+	V(update)
+    }
+
+    # set line attributes
+    proc WinSetLineAttr(win, line_width, line_style, cap_style, join_style) {
+	# check validity?
+	P(update)
+	MPDWin_SetLineAttr(PtContextRec(win), line_width, line_style,
+		cap_style, join_style)
+	V(update)
+    }
+
+    # set filling attributes
+    proc WinSetFillAttr(win, fill_style, fill_rule) {
+	# check validity?
+	P(update)
+	MPDWin_SetFillAttr(PtContextRec(win), fill_style, fill_rule)
+	V(update)
+    }
+
+    # set clip rectangles
+    proc WinSetClipRectangles(win, origin, rects) {
+	# check validity?
+	P(update)
+	MPDWin_SetClipRectangles(PtContextRec(win),
+		origin.x, origin.y, @rects[1], ub(rects))
+	V(update)
+    }
+
+    # set arc mode
+    proc WinSetArcMode(win, arc_mode) {
+	# check validity?
+	P(update)
+	MPDWin_SetArcMode(PtContextRec(win), arc_mode)
+	V(update)
+    }
+
+    # set draw op
+    proc WinSetDrawOp(win, dop) {
+	# check validity?
+	P(update)
+	MPDWin_SetDrawOp(PtContextRec(win), dop)
+	V(update)
+    }
+
+    # load font
+    proc WinLoadFont(win, fontname) returns font {
+	# check validity?
+	P(update)
+	font = MPDWin_LoadFont(PtContextRec(win)^.dispw, fontname)
+	V(update)
+    }
+
+    # check default font
+    proc WinDefaultFont(win) returns font {
+	# check validity?
+	P(update)
+	font = MPDWin_DefaultFont(PtContextRec(win)^.dispw)
+	V(update)
+    }
+
+    # set font
+    proc WinSetFont(win, font) {
+	# check validity?
+	P(update)
+	MPDWin_SetFont(PtContextRec(win), font)
+	V(update)
+    }
+
+    # free font
+    proc WinFreeFont(win, font) {
+	# check validity?
+	P(update)
+	MPDWin_FreeFont(PtContextRec(win)^.dispw, font)
+	V(update)
+    }
+
+    # compute pixel-width
+    proc WinTextWidth(font, str) returns width {
+	# check validity?
+	width = XTextWidth(font, str, length(str))
+    }
+
+    # draw text string
+    proc WinDrawString(win, pt, str) {
+	# check validity?
+	P(update)
+	MPDWin_DrawString(PtContextRec(win), pt.x, pt.y, str, length(str))
+	V(update)
+    }
+
+    # draw text string
+    proc WinDrawImageString(win, pt, str) {
+	# check validity?
+	P(update)
+	MPDWin_DrawImageString(PtContextRec(win), pt.x, pt.y, str, length(str))
+	V(update)
+    }
+
+    # create std cursor
+    proc WinCreateCursor(win, stdcursor) returns cur {
+	# check validity?
+	P(update)
+	cur = MPDWin_CreateCursor(PtContextRec(win)^.dispw, stdcursor)
+	V(update)
+    }
+
+    # set cursor
+    proc WinSetCursor(win, cursor, fg, bg) returns err {
+	# check validity?
+	P(update)
+	err = MPDWin_SetCursor(PtContextRec(win), cursor, fg, bg)
+	V(update)
+    }
+
+    # free cursor
+    proc WinFreeCursor(win, cursor) {
+	# check validity?
+	P(update)
+	MPDWin_FreeCursor(PtContextRec(win)^.dispw, cursor)
+	V(update)
+    }
+
+    # create an image
+    proc WinCreateImage(win, depth, w, h) returns im {
+	# check validity?
+	P(update)
+	im = MPDWin_CreateImage(PtContextRec(win)^.dispw, depth, w, h)
+	V(update)
+    }
+
+    # destroy image
+    proc WinDestroyImage(im) {
+	# check validity?
+	P(update)
+	XDestroyImage(im)
+	V(update)
+    }
+
+    # set pixel value in an image
+    proc WinPutPixel(im, pt, pv) {
+	# check validity?
+	# non-locking: parallel.
+	XPutPixel(im, pt.x, pt.y, pv)
+    }
+
+    # get pixel value in an image
+    proc WinGetPixel(im, pt) returns pv {
+	# check validity?
+	# non-locking: parallel.
+	pv = XGetPixel(im, pt.x, pt.y)
+    }
+
+    # add pixel value in an image
+    proc WinAddPixel(im, pv) {
+	# check validity?
+	# non-locking: parallel.
+	XAddPixel(im, pv)
+    }
+
+    # get image from a rectangle area of a drawable
+    proc WinGetImage(win, im, src_rect, dest) {
+	# check validity?
+	P(update)
+	# winImage is a pointer to the X image, so im could get updated
+	MPDWin_GetImage(PtContextRec(win), im, @src_rect, @dest)
+	V(update)
+    }
+
+    # combine an image with a rectangle of a drawable on the display
+    proc WinPutImage(win, im, src_rect, dest) {
+	# check validity?
+	P(update)
+	MPDWin_PutImage(PtContextRec(win), im, @src_rect, @dest)
+	V(update)
+    }
+
+end

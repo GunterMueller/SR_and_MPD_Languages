@@ -1,0 +1,47 @@
+resource a
+    op f(int x)
+body a(char y)
+    write("a",y)
+    proc f(x)  { write("a's f",x,y) }
+end
+
+resource b
+    op g()
+    extend a
+    op h()
+body b (char y, int z)
+    write("b",y)
+    g(); h()
+    proc f(x) { write("b's f",x,y,z) }
+    proc g()  { write("g",y,z) }
+    proc h()  { write("h",y,z) }
+end
+
+resource c
+    extend b
+    op i(char s)
+body c (char y, int z, int q)
+    write("c",y,z,q)
+    g(); h(); i('S');
+    proc f(x) { write("c's f",x,y,z,q) }
+    proc g()  { write("c's g",y,z,q) }
+    proc h()  { write("c's h",y,z,q) }
+    proc i(s) { write("c's i",s,y,z,q) }
+end
+
+resource main
+    import a, b, c
+body main()
+    write("main starts")
+    cap a  ca
+    ca = create a('Z')
+    ca.f(999)
+    cap b  cb
+    cb = create b('Y',56)
+    cb.f(87)
+    cap c  cc
+    cc = create c('Q',11,-77)
+    cc.f(6)
+    write("main done")
+
+end

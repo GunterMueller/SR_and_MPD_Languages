@@ -1,0 +1,34 @@
+# this test combines previous tests 1, 2, 3, and 7, plus more
+
+resource decl()
+	var a : int := 99
+	var b : int := 222
+	var c, d, e : int
+	const f := 4703
+	var g: char := 'G'
+	var h:= 'H'
+	begin
+		var i :int := 1
+		var j :int := 5555
+		var k :int := a+1
+		var l, m : int
+		var p : char := 'P'
+		var q := 'Q'
+		var r : string[5] := "RrR"
+		var s := "SsssssS"
+		write(a,b,f,g,h)
+		write(i,j,k,p,q,r,s)
+		c := 303
+		d := 404
+		e := 505
+		l := 606
+		m := 707
+		write(c,d,e,l,m)
+		# hide previous variables
+		var a := 11, b, c: int, d : int := 44
+		b := 25
+		c := b + 8
+		const e := 55, g : int := e+22, h := g + 11
+		write(a,b,c,d,e,g,h)
+	end
+end

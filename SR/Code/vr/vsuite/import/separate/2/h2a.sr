@@ -1,0 +1,10 @@
+resource hh
+	import h1
+body hh()
+	var x:h1.a
+
+	x.b := 3
+	x.c := 4
+	write(x.b,x.c,x.b-x.c)
+
+end

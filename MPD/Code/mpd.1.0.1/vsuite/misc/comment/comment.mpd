@@ -1,0 +1,30 @@
+/* test of block comments */
+
+/* a /* b */ c */ /**/    /*/*/****/****//*/*****/*/****/
+
+resource comment ()
+
+    put("a");
+  /*
+    put("b");
+			   */
+    put("c");
+    put("d");
+/*
+    put("e");
+/*
+    put("f");
+*/
+    put("g");           /* (should not put, still in outer nested comment) */
+    /*put("h")*/
+*/
+    put("j");
+    put("k");
+/*
+    put("l");
+    put("m");
+*/
+    put("n");
+    put("\nacdjkn is correct\n");
+
+end

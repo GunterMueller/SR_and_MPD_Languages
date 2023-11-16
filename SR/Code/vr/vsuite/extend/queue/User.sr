@@ -1,0 +1,15 @@
+resource User
+	import ArrayQueue
+body User()
+
+	var q : cap ArrayQueue
+	q := create ArrayQueue(20)
+	fa i := 1 to 10 -> q.insert(1000+i) af
+	fa i := 1 to 5 -> write(q.remove()) af
+	fa i := 1 to 3 -> q.remove() af
+	fa i := 1 to 7 -> q.insert(2000+i) af
+	fa i := 1 to 9 -> write(q.remove()) af
+	# should give underflow
+	q.remove()
+
+end

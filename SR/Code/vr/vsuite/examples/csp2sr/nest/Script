@@ -1,0 +1,8 @@
+
+0 csp2sr -te nest.csp
+0 sr -C nest.sr
+
+0 csp2sr -ti nest.csp
+0 sr -C nest.sr
+
+0 rm -rf Interfaces core *.out nest.sr

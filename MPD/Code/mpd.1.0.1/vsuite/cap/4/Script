@@ -1,0 +1,7 @@
+0 mpd -c a.mpd
+0 mpdl glob r s
+0 run
+0 mpdm a.mpd
+0 sed 's/mpdm -w -c [^ ]* /mpdm /' Makefile >Makefile.out
+0 cmp -s Makefile.std Makefile.out
+0 rm -rf MPDinter core *.out Makefile

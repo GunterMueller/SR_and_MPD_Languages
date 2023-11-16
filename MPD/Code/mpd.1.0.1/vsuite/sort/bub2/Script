@@ -1,0 +1,6 @@
+0 mpd -c sorter1.mpd
+0 mpdl sorter1
+0 run input1
+0 run input2
+0 run input3
+0 rm -rf MPDinter core *.out

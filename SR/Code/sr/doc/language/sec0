@@ -1,0 +1,175 @@
+.de SZ
+.nr pp \\$1
+.nr tp \\$1
+.nr sp \\$1
+.nr qp \\$1-1
+.nr fp \\$1-2
+.nr $r \\$2p/\\$1u
+.\" for inter-line space within displays.
+.nr $R \\$2p/\\$1u
+.sz \\$1
+.nr ps 0.35v
+.nr bs 0.35v
+.nr ss 1v
+..
+.\"
+.\" macros and strings for choosing the typeface for setting program code:
+.\" these use Courier if it looks like psroff, otherwise standard boldface.
+.\"
+.\" \*C is a shift into program code typeface, analagous to \fB
+.\" \*F is the name of the typeface ("typewriter" or "bold")
+.\" .HV displays its argument in program code typeface
+.\" .PS/.PE start/end a display in program code typeface
+.\"
+.ie 1i=576u .ds C \\fC
+.el .ds C \\fB
+.ie 1i=576u .ds F typewriter
+.el .ds F bold
+.de HV		\" display argument in program font
+\\*C\\$1\\fP\\$2
+..
+.de PS          \" start display in program font
+.(b \\$1
+.\" .ta 4m
+\\*C\\
+..
+.de PE		\" end program display
+.ft R
+.)b
+..
+.de KS          \" start floating display in program font
+.(z \\$1
+.hl
+\\*C\\
+..
+.de KE		\" end floating program display
+.sp .25
+.ce 1
+\fP\\$1
+.ce 0
+.hl
+.)z
+..
+.\" drop space at top and bottom of floating keeps.
+.nr zs .25
+.\" went mainly by what mats showed
+.\" top -- says 3/4", but mats show 1"
+.m1 0
+.m2 .75i
+.\" bottom -- says 5/8", but mats indicate 1" (especially for page number)
+.m3 0.25i
+.m4 0.5i
+.\" left -- says 3/4", but mats indicate more; see calculations below
+.po 1.0i
+.\" right margin is same as left
+.ll 6.6i
+.\" each col = 3.25
+.\" gutter   =  .3125 (i.e., 5/16)
+.\" ll       = 2*3.25+.3125
+.\" page     = 8.5
+.\" thus, equal margins = (8.5-2*3.25-.3125)/2 = .84375
+.\"
+..
+.\" float keeps to top of page;
+.\" otherwise I can't get them to work in two-column mode.
+.\" .so float.me
+.\" debugging stuff
+.\" .de $H
+.\" ****hi mom**** \\n($c \\n($m
+.\" ..
+.\" probably doesn't work if two Z displays on same page.
+.\" in case you haven't noticed, this is a hack...
+.\" get table too wide errors, which can be ignored...
+.de (Z
+.(z
+.nr Z \\n($l
+.ll 6.8125i \" used above too
+.nr $m 1
+..
+.de )Z
+.ll \\nZu
+.nr $m 2
+.)z
+..
+.\" start first page 1-1/2" from top
+.\" (says 1-3/8" from top, but mats show 1.5")
+.\" simple .rs doesn't seem to work...
+.fo ''%''
+.(b
+
+.)b
+.sp |1.25i
+.SZ 14 16
+.ce 1000
+\fBSR:  A Language for Parallel and Distributed Programming\fP
+.SZ 12 14
+.sp .5
+March 9, 1992
+.ce 0
+.ce 1000
+.sp 1.5
+.2c
+Ronald A. Olsson
+.sp .5
+.SZ 11 13
+Department of Computer Science
+University of California, Davis
+Davis, CA  95616-8562  U.S.A.
+.sp .125
+olsson@cs.ucdavis.edu
+.SZ 12 14
+.bc
+Gregory R. Andrews
+.sp .5
+.SZ 11 13
+Department of Computer Science
+The University of Arizona
+Tucson, AZ  85721  U.S.A.
+.sp .125
+greg@cs.arizona.edu
+.SZ 12 14
+.1c
+.sp
+.2c
+Michael H. Coffin
+.sp .5
+.SZ 11 13
+Department of Computer Science
+University of Waterloo
+Waterloo, Ontario, Canada N2L 3G1
+.sp .125
+mhcoffin@watmsg.waterloo.edu
+.SZ 12 14
+.bc
+Gregg M. Townsend
+.sp .5
+.SZ 11 13
+Department of Computer Science
+The University of Arizona
+Tucson, AZ  85721  U.S.A.
+.sp .125
+gmt@cs.arizona.edu
+.SZ 12 14
+.1c
+.ce 0
+.SZ 10 12
+.\" .ls 2
+.sp 2
+.\" .nr $s .3125i
+.\" .nr $l 3.25i
+.\" .2c
+.\" **** <= 2.75 inches
+.sp
+.ce 1
+Abstract
+.ce 0
+.lp
+\fIThis paper introduces the newest version of the SR
+concurrent programming language
+and illustrates how it provides support
+for different execution environments,
+ranging from shared-memory multiprocessors to distributed systems.
+SR uses a few well-integrated mechanisms for concurrency
+to provide flexible, yet efficient,
+support for parallel and distributed programming.
+This paper gives several realistic examples to illustrate these language mechanisms.\fP

@@ -1,0 +1,14 @@
+# recurse.mpd -- test recursive op definitions
+# pretty silly, but should work...
+
+resource recurse()
+    op links (cap links neighbor )
+    op ulinks (cap ulinks uneighbor )
+
+    cap links  c
+    c = links
+    c = ulinks
+
+    proc links(n) {}
+    proc ulinks(n) {}
+end

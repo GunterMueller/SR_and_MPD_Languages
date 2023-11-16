@@ -1,0 +1,46 @@
+resource evaluator()
+  op expr() returns ans: int
+  op term() returns ans: int
+  op factor() returns ans: int
+  var s: string[100] # string to evaluate
+  var pos: int # position in s to evaluate
+
+  # read and evaluate expressions until end of input
+  do true ->
+      writes("enter expression: ")
+      if read(s) != EOF -> write(); exit fi
+      s := s || "$"  # append sentinel to s
+      pos := 1
+      write(expr())
+  od
+
+  proc expr() returns ans
+    ans := term()
+    do s[pos] = '+' ->
+        pos++
+        ans +:= term()
+    od
+  end
+
+  proc term() returns ans
+    ans := factor()
+    do s[pos] = '*' ->
+        pos++
+        ans *:= factor()
+    od
+  end
+
+  proc factor() returns ans
+    if s[pos] = '(' ->
+        pos++
+        ans := expr()
+        pos++ # skip over ')'
+    [] else -> # convert substring to integer
+        ans := 0
+        do '0' <= s[pos] & s[pos] <= '9' ->
+            ans := 10*ans + int(s[pos]) - int('0')
+            pos++
+        od
+    fi
+  end
+end evaluator

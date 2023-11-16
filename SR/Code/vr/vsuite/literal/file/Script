@@ -1,0 +1,5 @@
+#  gmt  Wed Oct 14 10:14:46 MST 1987
+0 sr -c file.sr
+0 srl filetest
+0 run
+0 rm -rf Interfaces core *.out

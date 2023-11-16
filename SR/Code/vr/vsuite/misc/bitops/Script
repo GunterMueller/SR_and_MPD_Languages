@@ -1,0 +1,4 @@
+0 sr -c bitops.sr
+0 srl bitops
+0 run
+0 rm -rf Interfaces core *.out

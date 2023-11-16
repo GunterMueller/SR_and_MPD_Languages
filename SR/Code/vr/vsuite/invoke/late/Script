@@ -1,0 +1,4 @@
+0 sr -c late.sr
+0 srl late
+1 run
+0 rm -rf Interfaces core *.out

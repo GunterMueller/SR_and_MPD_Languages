@@ -1,0 +1,11 @@
+#  gmt  Thu Jan 28 10:55:34 MST 1988
+0 mpd -c reads.mpd
+0 mpdl r
+0 run input0
+0 run input1
+0 run input2
+0 run input3
+0 run input4
+0 run input5
+0 run input6
+0 rm -rf MPDinter core *.out

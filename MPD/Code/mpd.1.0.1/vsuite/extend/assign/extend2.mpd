@@ -1,0 +1,15 @@
+
+resource ServOps
+   op passL (int x)
+end
+
+resource Servant
+   extend ServOps
+body Servant()
+      cap Servant  s 
+      cap ServOps  si 
+	 s = create Servant()
+	 si.passL = s.passL    # caused problem in v1
+      int  u 
+      receive passL(u)
+end

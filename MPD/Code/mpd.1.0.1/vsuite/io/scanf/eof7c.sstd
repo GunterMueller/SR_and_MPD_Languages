@@ -1,0 +1,4 @@
+argtype: 5
+format: '%b'
+  5 < 0>: false
+end

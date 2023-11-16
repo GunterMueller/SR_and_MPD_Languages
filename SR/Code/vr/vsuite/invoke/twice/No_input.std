@@ -1,0 +1,3 @@
+in quote(xyz)
+in quote('xyz')
+''xyz''

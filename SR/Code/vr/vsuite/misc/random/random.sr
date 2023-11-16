@@ -1,0 +1,23 @@
+# random(seed,n) -- generate n lines of random numbers, twice
+#
+# results should be the same on all architectures if the seed is not zero.
+
+resource r ()
+    var s := 1.0
+    var n := 10
+    getarg (1, s)
+    getarg (2, n)
+    seed (s)
+    fa i := 1 to n ->
+	printf ("%10.5f", random())
+	printf ("%12.2f", random(1000))
+	printf ("%12.1f\n", random (1200,1300))
+	af
+    write ("----")
+    seed (s)
+    fa i := 1 to n ->
+	printf ("%10.5f", random())
+	printf ("%12.2f", random(1000))
+	printf ("%12.1f\n", random (1200,1300))
+	af
+end

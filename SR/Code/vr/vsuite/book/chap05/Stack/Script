@@ -1,0 +1,3 @@
+0 sr Stack.sr Stack_User.sr
+0 run
+0 rm -rf Interfaces core *.out

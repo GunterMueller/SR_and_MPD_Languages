@@ -1,0 +1,20 @@
+# test assignments in co.
+# output nondeterministic.
+resource co7()
+	op sum(int a, int b) returns int  total
+
+	int t[1:4][2:3] = ([4]([2] 0))
+	int  x 
+
+	co [ i= 1 to 4,j=2 to 3 ] t[i,j] = sum(1000,i) ->
+		write(i,j,t[i,j])
+	// x = sum(5000,999) ->
+		write("// ", x)
+	oc
+
+	proc sum(a,b) returns t  {
+		t = a+b
+		if (a <= 1000) { return }
+		t = -t
+	}
+end

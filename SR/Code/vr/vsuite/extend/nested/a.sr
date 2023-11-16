@@ -1,0 +1,28 @@
+# nested extend
+
+resource a
+    op f(x:int)
+    op g()
+end
+
+resource b
+    op h(x:int)
+    extend a
+    op i()
+end
+
+resource c
+    op e()
+    extend b
+    op j()
+body c()
+    var x:int := 789
+    e(); f(12345); g(); h(6543); i()
+
+    proc e()  write("hi from e",x)  end
+    proc f(x)  write("hi from f",x)  end
+    proc g()  write("hi from g",-x)  end
+    proc h(y)  write("hi from h",x,y)  end
+    proc i()  write("hi from i",-x)  end
+    proc j()  write("hi from j",-x)  end
+end

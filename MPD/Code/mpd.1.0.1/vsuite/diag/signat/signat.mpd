@@ -1,0 +1,546 @@
+#  test signature errors and related problems
+
+
+% illegal use of predefined function
+	resource r ()
+	    write
+	end
+
+
+% resources can only have value parameters
+	resource r (var int i)
+	end
+
+
+% assignment target is not a variable
+	resource r ()
+	   const int k = 1
+	   k = 47
+	end
+
+
+% expr++: not a variable
+	resource r ()
+	   const int k = 2
+	   k++
+	end
+
+
+% expr--: not a variable
+	resource r ()
+	   const int k = 3
+	   k--
+	end
+
+
+% --expr: not a variable
+	resource r ()
+	   const int k = 4
+	   --k
+	end
+
+
+% ++expr: not a variable
+	resource r ()
+	   const int k = 5
+	   ++k
+	end
+
+
+% not a variable
+	resource r ()
+	   const int k = 7
+	   read (k)
+	end
+
+
+% not a variable
+	resource r ()
+	   const int k = 8
+	   scanf ("%d", k)
+	end
+
+
+% not a variable
+	resource r ()
+	   const string[*] s = "abcdefghi"
+	   sprintf (s, "%d", 12)
+	end
+
+
+% not a variable
+	resource r ()
+	   getarg (1, 47)
+	end
+
+
+% not a variable
+	resource r ()
+	    char  a[100] 
+	    read (a[10:90])
+	end
+
+
+% result arg must be a variable
+	resource r ()
+	    get ("abcdefghi")
+	end
+
+
+% not a variable
+	resource x ()
+	    type a = rec (int i )
+	    write (a.i)
+	end
+
+
+% object of .@. is not a variable
+	resource r ()
+	    @ 3
+	end
+
+
+% incompatible assignment
+# used to get segmentation fault checking ptr to imported type
+	resource ostk
+	    type otype = ptr rec(char value)
+	end
+
+	resource main()
+	  import ostk
+	  int btree = otype
+	  btree = new( otype )
+	end main
+
+
+% incompatible assignment
+# test cap for abstract resource
+	resource a
+	    op f(int x)
+	    op g()
+	end
+	resource b
+	    extend a
+	    op h()
+	body b(int z)
+	    proc f(x) {}
+	    proc g()  {}
+	    proc h()  {}
+	    cap a  ca
+	    cap b  cb
+	    cb = ca    # illegal since b has extra operation.
+	end
+
+
+% incompatible assignment
+# see if predef's can be bound to caps.
+# shouldn't be allowed
+	resource a()
+	    cap (int x) returns int ret c
+	    c = abs                # bogus
+	    write( c(-99) )
+	end
+
+
+% incompatible assignment
+	resource r()
+	    cap r  c
+	    c = r
+	end
+
+
+% incompatible assignment
+	resource r()
+	    type ta = rec(int a)
+	    type tb = rec(int a,b)
+	    ta  a
+	    tb  b
+	    a = b      # illegal.
+	end
+
+
+% incompatible semaphore initializer
+	resource r ()
+	    sem s = 3.141592
+	end
+
+
+% incompatible initialization
+	resource r ()
+	    int v = null
+	end
+
+
+% incompatible initialization
+	resource r ()
+	    op f ()
+	    int x = f()
+	    receive f()
+	end
+
+
+% incompatible initialization
+	resource a ()
+	    op f(int x)
+	    const int z = f(4)
+	    proc f(x)  {
+	    }
+	end
+
+
+% illegal conversion
+	resource x ()
+	    type t = int
+	    t()
+	end
+
+
+% illegal conversion
+	resource x ()
+	    type t = int
+	    t(1,2)
+	end
+
+
+% illegal conversion
+	resource x ()
+	    type t = int
+	    t(myresource())
+	end
+
+
+% p(): argument 2 is incompatible
+#      (however, arg 1 is a legal implicit conversion)
+	resource x ()
+		procedure p (real r , int i ) {}
+		p (7, 3.14159)
+	end
+
+
+% p(): argument 1 is incompatible
+	resource x ()
+		procedure p ([*]real a) {}
+		p (([3] 2))
+	end
+
+
+% wrong number of items for rec constructor
+	resource x ()
+	    type r = rec (int i )
+	    r()
+	end
+
+
+% wrong number of items for rec constructor
+	resource x ()
+	    type r = rec (int i )
+	    r(1,2)
+	end
+
+
+% item 1 of rec constructor is incompatible
+	resource x ()
+	    type r = rec (int i )
+	    r(myresource())
+	end
+
+
+% not a type
+	resource r ()
+	    char  c
+	    high(c)
+	end
+
+
+% not a type
+	resource r ()
+	    ptr r  p 
+	end
+
+
+% not a type
+	resource r ()
+	    ptr self  self 
+	end
+
+
+% not a type
+	resource r ()
+	    op p() returns r
+	end
+
+
+% not a type
+	resource r ()
+	    ptr r  p 
+	end
+
+
+% not a type
+	resource r ()
+	   int  btree 
+	   op foo (btree)
+	   proc foo (b) {}
+	end
+
+
+% not a type
+# an optype is not a type
+	resource r ()
+	    optype t ()
+	    procedure p (t a ) {}
+	end
+
+
+% not an optype
+	resource r ()
+	    type t = int
+	    op t o
+	end
+
+
+% incompatible initialization
+	resource b()
+	    int  i = .6
+	end b
+
+
+% incompatible initialization
+	global a
+	    real  r = 'a'
+	end a
+
+	resource b()
+	    import a
+	end b
+
+
+% incompatible assignment
+	resource x(int n)
+	    bool  created[1:n] = ([n] false)
+	    created = true
+	end
+
+
+% incompatible assignment
+	resource bug()
+	    int x; char y[1:20]
+	    y[1:x] = char(0)
+	end
+
+
+% cannot dereference a .ptr any.
+	resource r ()
+	    ptr any  s
+	    s^ = noop
+	end
+
+
+
+% illegal object of capability
+	resource Central()
+	    type Node_ops = rec ( cap () found )
+	    cap Node_ops other_nodes[1:4]	# bogus, should use ptr
+	end Central
+
+
+% illegal object of capability
+	resource Central()
+	    type Node_ops = rec ( cap ( ) found )
+	    cap Node_ops other_nodes[1:4]
+	    send other_nodes[ 3].found()
+	end Central
+
+
+% enum literal duplicates id .alpha.
+#%#% is this bogus?
+	resource a_stub
+	   type e_type = enum (alpha, beta, gamma)
+	end a_stub
+
+	resource other
+	   import a_stub
+	   op hello(cap a_stub a_cap, e_type x)
+	body other()
+	end other
+
+	resource a
+	   type e_type = enum (alpha, beta, gamma)
+	   import other
+	body a(cap other o_cap)
+	end a
+
+
+% incompatible comparison
+	resource a()
+	   string[10] s
+	   s = "abc"
+	   write (3 <= "ajk")
+	end
+
+
+% illegal comparison for unordered type
+	resource r ()
+	    cap r  a, b 
+	    a < b
+	end
+
+
+% illegal type for comparison
+	resource r ()
+	    rec (int i) a, b
+	    a == b
+	end
+
+
+% illegal type for comparison
+	resource r ()
+	    [12]int a, b
+	    a == b
+	end
+
+
+% illegal object of capability
+	resource test_random()
+	    cap random cr	# bogus
+	end
+
+
+% subscripted object is not an array
+	resource b()
+	    type t = enum(m0,m1,m2,m3,m4,m5,m6)
+	    t  x
+	    x[2] = m1
+	end
+
+
+% wrong subscript type
+	resource bug ()
+	    op backsub ([*]real b)
+	    proc backsub(b)  {
+		b[3.2]
+	    }
+	end bug
+
+
+% illegal bounds type
+# do decls require ordered type as subs?
+	resource d1()
+	    int tt[myresource():myresource()]
+	end
+
+
+% ub(), argument 1: not an array
+	resource a ()
+	    int  i 
+	    write(ub(i))
+	end a
+
+
+% ub(), argument 2: array does not have that many dimensions
+	resource a()
+	    int  arr1[1][2] 
+	    write(ub(arr1,3))
+	end a
+
+
+% ub(), argument 2: not integer literal
+	resource a()
+	    int  arr[1] 
+
+	    int i = ub(arr, 1+2)
+	    write(i)
+	end a
+
+
+% ub(), argument 2: value must be greater than zero
+	resource a ()
+	    int  arr[1] 
+	    write (ub(arr,0))
+	end a
+
+
+% subscripted object is not an array
+	resource Main ()
+	    type array = rec (char buf [1:10])
+	    array  buf
+	    buf[3] = char (17)
+	end
+
+
+% illegal quantifier type
+	resource r()
+	    for [ b = "soup" to "nuts"] { skip }
+	end
+
+
+% illegal quantifier increment
+	resource r()
+	    for [ a = 1 to 4 by true      ] { skip }
+	end
+
+
+% incompatible quantifier increment
+	resource r ()
+	    for [ i = 1 to 2 by 0.2 ] { skip }
+	end
+
+
+% incompatible quantifier limit
+	resource r()
+	    for [ c = true to 7   ] { skip }
+	end
+
+
+% incompatible quantifier limit
+	resource r()
+	    for [ d = 8 downto false      ] { skip }
+	end
+
+
+% incompatible quantifier limit
+	resource r()
+	    for [ e = 3 to 'a'    ] { skip }
+	end
+
+
+% .by. expression must be ordered type
+	resource r ()
+	    op foo (string[10] s)
+	    in foo (s) by s -> ni
+	end
+
+
+% .st. expression must be boolean
+	resource r ()
+	for [ i = 1 to 10 st 1952 ] { skip }
+	end
+
+
+% guard expression is not boolean
+# in "do": it's an int
+	resource do1()
+	    int  x 
+	    x = 4
+	    while (x) { write(9999)    # bogus
+	    }
+	end
+
+
+% guard expression is not boolean
+# in "do": it's a resource!
+	resource do2()
+	    cap do2  c 
+	    c = myresource()
+	    while (c) { write(9999)     # bogus
+	    }
+	end
+
+
+% guard expression is not boolean
+# in "if"
+	resource if1()
+	    int x = 4
+	    if (x) { write(9999)    # bogus
+	    }
+	end

@@ -1,0 +1,14 @@
+hello from main
+hello from a
+a done
+hello from b
+b done
+hello from c
+c done
+hello from d
+d done
+hello from e
+e done
+main done
+hello from final
+RTS warning: blocked process: deadlock.final : file deadlock.sr, line 49

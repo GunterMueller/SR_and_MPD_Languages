@@ -1,0 +1,28 @@
+# test interfaces, especially those things requiring special handling.
+
+global glob1
+	const a := -2222
+# test hex numbers
+	const x := 0abcdefX
+	const y := 03214X
+	const z := 03aX
+# test strings
+	const b := "hi"
+	const c := "hi\7whoam I\n\7Beats me"
+	const d := "hi\7who \"am\" I\n\7`Beats' me"
+	const e := "hi\7who \'am\' I\n\7\"Beats\" me"
+end
+
+resource imp1
+	const x := 333
+	import glob1
+	const y := 4567
+body imp1() separate
+
+body imp1
+
+	write("hi", glob1.x, glob1.a)
+	write("hello", x, glob1.z, y)
+	write("yo", glob1.b, glob1.c)
+	write("yo", glob1.e, glob1.d, glob1.y)
+end

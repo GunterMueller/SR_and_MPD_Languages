@@ -1,0 +1,4 @@
+#  gmt  Fri Sep 10 14:49:48 MST 1993
+0 mpd usurper.mpd
+0 run
+0 rm -rf MPDinter core *.out

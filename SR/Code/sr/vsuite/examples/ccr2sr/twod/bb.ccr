@@ -1,0 +1,41 @@
+/* output deterministic, but its order is nondeterministic */
+
+/* not a very interesting test:
+ * takes two depositers to set each slot's value.
+ * takes only fetcher to grab value.
+ */
+
+
+/* use unadvertised feature to define NN */
+#define NN 3
+
+_resource2(buffer,1,NN,1,NN)
+  var slot[1:NN,1:NN] := ([NN] ([NN] 0))
+  var full[1:NN,1:NN] := ([NN] ([NN] 0))
+_resource_end2(buffer)
+
+resource main()
+  process depositers(h := 1 to 2*NN)
+    var i := (h-1) mod NN + 1
+    var data: int
+    fa d := 1 to 2, k := 1 to NN ->
+      data := h*1000+k
+      nap(10)
+        _region2(buffer,i,k, full[i][k]<2)
+          slot[i,k] +:= data; full[i,k]++
+          nap(10)
+        _region_end2(buffer,i,k)
+        nap(10)
+    af
+  end
+  process fetchers(i := 1 to NN)
+    var result: int
+    fa h := 1 to 2, k := 1 to NN ->
+        _region2(buffer,i,k, full[i][k]=2)
+          nap(10)
+          result := slot[i,k]; full[i,k] := 0; slot[i,k] := 0
+        _region_end2(buffer,i,k)
+      write( "fetcher", i, "on loop", h, k, "got", result )
+    af
+  end
+end

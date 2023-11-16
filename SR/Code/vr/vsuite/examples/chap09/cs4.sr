@@ -1,0 +1,17 @@
+resource cs4()
+  optype results_type = (...)
+  op request(results_cap: cap results_type; ...)
+  const N := 20  # number of client processes
+  process client(i := 1 to N)
+    op results: results_type
+     ...
+    send request(results,...)
+    # possibly perform some other work
+    receive results(...)
+     ...
+  end
+  proc request(results_cap, ...)
+    # handle request
+    send results_cap(...)
+  end
+end

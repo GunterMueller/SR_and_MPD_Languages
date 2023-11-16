@@ -1,0 +1,191 @@
+# Quadrature
+#
+# Vincent W. Freeh, Qiang A. Zhao, November 92
+#
+# Usage: winquad StartX EndX Delay
+
+resource winquad()
+
+  import SRWin
+
+  const	JS := 4			# number of job servers
+  const	W := 800, H := 400
+  const	EPS := 0.00001
+  const	DHGT := 10
+  var A : real := 0.0;		getarg(1, A)
+  var B : real := 2.0;		getarg(2, B)
+  var D := 50;			getarg(3, D)
+  var SW := 400
+
+  op getJob(a, b, f_a, f_b, a3: real)
+  op ftn(real) returns real
+  op banner(win: winWindow; str: string[*])
+  op DrawArea(w: winWindow; a, b, f_a, f_b: real; fill: bool)
+  op EraseArea(w: winWindow; a, b, f_a, f_b: real)
+  op DrawDoneBar(w: winWindow; a, b: real)
+  op ec : winEventChannel
+  var mainwin: winWindow
+  var colors[1:JS] : string[6]
+	colors[1] := "red"
+	colors[2] := "yellow"
+	colors[3] := "green"
+	colors[4] := "cyan"
+  var ff : winFont
+  var sum[JS]: real
+  var a3, f_a, f_b: real
+  var wid, hgt: real
+
+  mainwin := WinOpen("", "Quadrature", ec, UseDefault, W, H+DHGT)
+  if mainwin = null ->
+    write("Oops.  cannot open mainwin")
+    stop 
+  fi
+  WinSetEventMask(mainwin, Ev_KeyUp | Ev_ButtonUp)
+  WinSetForeground(mainwin, "YellowGreen")
+  ff := WinLoadFont(mainwin, "lucidasanstypewriter-bold-24")
+  if ff != null ->
+    SW := WinTextWidth(ff, "Press SPACE to go")
+    WinSetFont(mainwin, ff)
+  fi
+
+  ## the function
+  proc ftn(x) returns e
+    var i := 1.0
+    var rx := x
+
+    e := 1.0 + x
+    do abs(rx) > 0.00001 ->
+      i +:= 1.0
+      rx *:= x/i
+      e +:= rx
+    od
+    return
+  end
+
+  proc banner(win, str)
+    WinClearArea(mainwin, winRectangle(0, 0, W, H+DHGT))
+    WinDrawString(win, winPoint((W-SW)/2, (H+DHGT)/2), str)
+  end
+
+  proc DrawDoneBar(w, a, b)
+    var rect: winRectangle
+
+    rect.x := int(real(W) * (real(a)-A)/wid)
+    rect.y := 0
+    rect.w := int(real(W) * (real(b)-A)/wid) - rect.x
+    rect.h := DHGT
+
+    WinFillRectangle(w, rect)
+    WinSync(mainwin, false)
+  end
+
+  proc DrawArea(w, a, b, f_a, f_b, fill)
+    var pts[4]: winPoint
+
+    pts[1].x := pts[4].x := int(real(W) * (real(a)-A)/wid)
+    pts[2].x := pts[3].x := int(real(W) * (real(b)-A)/wid)
+    pts[1].y := pts[2].y := H + DHGT
+    pts[3].y := H - int(real(H)*f_b/hgt) + DHGT
+    pts[4].y := H - int(real(H)*f_a/hgt) + DHGT
+
+    if fill ->
+      WinFillPolygon(w, pts)
+    [] else ->
+      WinDrawPolygon(w, pts)
+    fi
+    WinSync(mainwin, false)
+  end
+
+  proc EraseArea(w, a, b, f_a, f_b)
+    var rect: winRectangle
+
+    rect.x := int(real(W) * (real(a)-A)/wid)
+    rect.y := DHGT
+    rect.w := int(real(W) * (real(b)-A)/wid) - rect.x
+    rect.h := H + DHGT
+
+    WinEraseArea(w, rect)
+    WinSync(mainwin, false)
+  end
+
+  process worker(id := 1 to JS)
+    var mywin: winWindow
+    var a, b, c, f_a, f_b, f_c, a1, a2, a3: real
+    var a1_2: real
+
+    mywin := WinNewContext(mainwin)
+    WinSetForeground(mywin, colors[id])
+
+    receive getJob(a, b, f_a, f_b, a3)
+
+    do true ->
+      DrawArea(mywin, a, b, f_a, f_b, true)
+      nap(D)
+      c := (a+b)/2.0
+      f_c := ftn(c)
+
+      a1 := 0.5 * (c - a) * (f_a + f_c)		# area in interval [a,c]
+      a2 := 0.5 * (b - c) * (f_c + f_b)		# area in interval [c,b]
+      a1_2 := a1 + a2
+
+      if (abs(a1_2 - a3)) < EPS ->
+	sum[id] +:= a1_2
+	DrawDoneBar(mywin, a, b)
+	receive getJob(a, b, f_a, f_b, a3)
+      [] else ->
+	EraseArea(mywin, a, b, f_a, f_b)
+	DrawArea(mywin, c, b, f_c, f_b, false)
+	send getJob(c, b, f_c, f_b, a2)	# start job for right interval
+	b := c				# continue working on left interval
+	f_b := f_c
+	a3 := a1
+      fi
+    od
+  end
+
+  #################
+  var got, tmp : int
+  var ev : winEvent
+  var started := false
+  banner(mainwin, "Press 'SPACE' to go")
+  do true ->
+    in ec(ev) ->
+      if (ev.event_type = Ev_KeyUp) ->
+	var ch := char(ev.data)
+	if ch = 'q' | ch = 'Q' | ch = '\177' | ch = '\003' ->
+	  stop
+	[] ch = ' ' and not started ->
+	  ## insert a job
+	  banner(mainwin, "")
+	  started := true
+	  fa i:= 1 to JS ->
+	    sum[i] := 0.0
+	  af
+	  wid := B-A
+	  hgt := ftn(B)
+	  f_a := ftn(A); f_b := hgt
+	  a3 := 0.5 * (wid) * (f_a + f_b)
+	  send getJob(A, B, f_a, f_b, a3)
+	[] ch = '-' ->
+	  D +:= 50
+	[] ch = '+' ->
+	  D := max(0, D-50)
+	[] ch >= '0' and ch <= '9' ->
+	  D := (int(ch)-int('0')) * 100
+	[] ch = 'r' ->
+	  started := false
+	  banner(mainwin, "Press 'SPACE' to go")
+	fi
+
+      [] ev.event_type = Ev_DeleteWindow ->
+	stop
+
+      fi
+    ni
+  od
+
+  final
+    WinClose(mainwin)
+  end
+end
+

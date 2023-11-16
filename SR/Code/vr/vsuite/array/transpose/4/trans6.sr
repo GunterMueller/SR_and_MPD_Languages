@@ -1,0 +1,55 @@
+# transpose a matrix
+resource trans6()
+	const W := 5
+	var a[1:10,1:10] : int
+	op init()
+	op print()
+	op transpose()
+
+	init()
+	print()
+	transpose()
+	print()
+
+	proc init()
+		var count : int := 0
+		fa r := 1 to 10 ->
+			fa c := 1 to 10 ->
+				count ++
+				a[r,c] := count
+			af
+		af
+	end
+	# handles only positive numbers of size with at most W digits.
+	op itoa(x:int) returns s[1:W]:char
+	proc itoa(x) returns s
+		fa p := 1 to W -> s[p] := ' ' af
+		if x = 0 ->
+			s[W] := '0'
+		[] else ->
+			var p :int := W
+			do x != 0 & p > 0 ->
+				s[p] := char(48+x%10)
+				x := x/10; p--
+			od
+		fi
+	end
+
+	proc print()
+		const N := 10
+		write("----",N)
+		fa r := 1 to N ->
+			fa c := 1 to N ->
+				put (" "); put( itoa( a[r,c] ) )
+			af
+			write()
+		af
+	end
+	proc transpose()
+		fa r := 1 to 10 ->
+			fa c := 1 to r-1 ->
+				a[r,c] :=: a[c,r]
+			af
+		af
+	end
+end

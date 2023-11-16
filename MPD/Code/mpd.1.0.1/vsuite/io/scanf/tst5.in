@@ -1,0 +1,40 @@
+$a 5
+$f%b
+$d true
+$d false
+$d True
+$d TRUE
+$d False
+$d FALSE
+$d truej
+$f%1b
+$d t
+$d F
+$d T
+$d f
+$d g
+$f%2b
+$d fasle
+$d truth
+$d true
+$d FALSE
+$d True
+$d TRUE
+$d False
+$d FALSE
+$d truej
+$f%*1b%1b
+$d tt
+$d Ff
+$d TT
+$d tF
+$d gt
+$d kK
+$f%*b %b
+$d false true
+$d falsetrue
+$d TRUEFALSE
+$f%*b%b
+$d truefalse
+$d falsetrue
+#

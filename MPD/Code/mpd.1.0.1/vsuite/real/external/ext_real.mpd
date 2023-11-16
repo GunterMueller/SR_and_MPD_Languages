@@ -1,0 +1,15 @@
+resource ext_real()
+    external printreal(real r1, real r2, real r3 ) returns char
+    external int_times_real(int i1 , real r1 , real r2, int i2 )
+    external prod(real r1 , int i1 , int i2, real r2 ) returns real
+
+    real r1 = 1.234; real r2 = 2.345
+    int  i1 = 2;     int  i2 = 3
+
+    write(printreal(r1, r2, 3.456))
+    int_times_real(2, 2, 3, 3)
+    int_times_real(i1, r1, r2, i2)
+    write( prod(r1, i1, i2, r2))
+    r2 = prod(r1, i1, i2, r2)
+    write(r2)
+end ext_real

@@ -1,0 +1,12 @@
+# x is implemented as a sem
+# but for cosend the code generator assumes it's implemented normally.
+resource a()
+
+  sem x = 1
+
+  V(x)
+  P(x)
+
+  co send x() // send x() oc
+
+end

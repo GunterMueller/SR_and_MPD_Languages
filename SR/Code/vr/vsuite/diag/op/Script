@@ -1,0 +1,6 @@
+#  check compiler errors related to ops
+
+0 sh ../mkscript.sh op.sr | tee sh.tmp | sr=$sr sh >op.out
+1 grep -v ok: op.out
+0 cmp -s op.std op.out
+0 rm -rf Interfaces core *.out *.tmp test*.sr

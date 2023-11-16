@@ -1,0 +1,4 @@
+0 sr -c baby1.sr
+0 srl baby1
+0 run
+0 rm -rf Interfaces core *.out

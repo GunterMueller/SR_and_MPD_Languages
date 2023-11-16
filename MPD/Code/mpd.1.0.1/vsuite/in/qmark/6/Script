@@ -1,0 +1,5 @@
+0 mpd -c -do qm8.mpd
+0 cmp Compiler.std Compiler.out
+0 mpdl qm8
+0 run
+0 rm -rf MPDinter core *.out

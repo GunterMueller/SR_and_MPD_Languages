@@ -1,0 +1,17 @@
+resource cs1()
+  op request(...), results(...)
+  process client
+     ...
+    send request(...)
+    # possibly perform some other work
+    receive results(...)
+     ...
+  end
+  process server
+    do true ->
+      receive request(...)
+      # handle request
+      send results(...)
+    od
+  end
+end

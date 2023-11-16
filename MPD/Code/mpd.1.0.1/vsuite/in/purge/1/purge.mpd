@@ -1,0 +1,41 @@
+# From: olsson@ivy.ucdavis.edu (Ron Olsson)
+# Date: Wed, 18 Jan 89 17:34:07 PST
+
+# this program tests whether invocations are purged.
+# combine a local operation (foo) with global (another)
+# since purging from such a class is (slightly) more difficult.
+
+resource a()
+   op go(cap (int x) f)
+   op another(int x)
+   process p1  {
+      send another(66)
+      send another(77)
+      in go(f) ->
+	   send f(1234)
+	   send another(88)
+	   send f(9876)
+	   send another(99)
+      ni
+   }
+    process p  {
+       for [ i = 1 to 2 ] {
+	  op foo(int x)
+	  send go(foo)
+	  in foo(x) -> write("foo1", i, x)
+	  [] another(x) and i == 2 -> write("another1", i, x)
+	  ni
+	  write(i,?foo,?another)
+	  while (i == 2 and ?another > 0) {
+	       int  x
+	       receive another(x)
+	       write("another2", i, x)
+	  }
+	  while (i == 2 and ?foo > 0) {
+	       int  x
+	       receive foo(x)
+	       write("foo2", i, x)
+	  }
+       }
+    }
+end

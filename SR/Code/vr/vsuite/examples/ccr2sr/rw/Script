@@ -1,0 +1,5 @@
+0 ccr2sr rw.ccr
+0 sr rw.sr
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out rw.sr

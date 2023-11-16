@@ -1,0 +1,124 @@
+resource jacobi
+  import main
+  op toprow([*] real)
+  op bottomrow([*] real)
+  op compute(up, down: cap jacobi; coord: cap main)
+body jacobi(id, N, PR, S: int; l, t, r, b: real)
+  var grid[2][0:S+1,0:N+1]: real
+  var cur := 1, nxt := 2
+  var diff: real    # max difference
+
+  # initialize grids
+  grid := ([2] ([S+2] ([N+2] 0.0)))
+  fa i := 0 to S+1 ->  # left and right
+    grid[cur][i,0] := l; grid[nxt][i,0] := l
+    grid[cur][i,N+1] := r; grid[nxt][i,N+1] := r
+  af
+  if id = 1 ->  # top for process 1
+    fa j := 0 to N+1 ->
+      grid[cur][0,j] := t; grid[nxt][0,j] := t
+    af
+  fi
+  if id = PR ->  # bottom for process PR
+    fa j := 0 to N+1 ->
+      grid[cur][S+1,j] := b; grid[nxt][S+1,j] := b
+    af
+  fi
+
+  proc compute(up, down, coord)
+    do true ->
+      # compute new values for grid points
+      diff := 0.0
+      fa i := 1 to S, j := 1 to N ->
+        grid[nxt][i,j] := (grid[cur][i-1,j] + grid[cur][i,j-1] + \
+                           grid[cur][i+1,j] + grid[cur][i,j+1]) / 4
+        diff := max(diff, abs(grid[nxt][i,j] - grid[cur][i,j]))
+      af
+      # replace old values by new ones, and
+      # exchange top and bottom rows with neighbors
+      cur :=: nxt
+      send up.bottomrow(grid[cur][1,*])
+      send down.toprow(grid[cur][S,*])
+      if id != 1 -> receive toprow(grid[cur][0,*]) fi
+      if id != PR ->
+        receive bottomrow(grid[cur][S+1,*])
+      fi
+      # check for termination
+      if coord.terminate(diff) -> exit fi
+    od
+  end
+
+  final
+    fa i := 1 to S ->
+      fa j := 1 to N -> writes(grid[cur][i,j], " ") af
+      write()
+    af
+  end
+end
+
+resource main
+  import jacobi
+  op terminate(diff: real) returns ans: bool
+body main()
+  var N := 8    # grid dimension
+  var PR := 2   # number of processes
+  var S: int    # strip size
+  # read command-line arguments, if present
+  getarg(1, N); getarg(2, PR); S := N/PR
+  if (N mod PR) != 0 -> 
+    write("N must be a multiple of PR"); stop(1)
+  fi
+  # read boundary values and epsilon
+  var l, t, r, b: real
+  writes("enter 4 border values: ");
+  read(l, t, r, b)
+  var epsilon: real
+  writes("enter epsilon: "); read(epsilon)
+
+  # create instances of jacobi()
+  var jcap[1:PR]: cap jacobi
+  if PR = 1 ->
+      jcap[1] := create jacobi(1,N,PR,S,l,t,r,b)
+  [] else ->
+      jcap[1] := create jacobi(1,N,PR,S,l,t,r,0.0)
+      fa i := 2 to PR-1 ->
+        jcap[i] := create jacobi(i,N,PR,S,l,0.0,r,0.0)
+      af
+      jcap[PR] := create jacobi(PR,N,PR,S,l,0.0,r,b)
+  fi
+
+  # start the computation
+  if PR = 1 ->
+      send jcap[1].compute(noop,noop,myresource())
+  [] else ->
+      send jcap[1].compute(noop,jcap[2],myresource())
+      fa i := 2 to PR-1 ->
+        send jcap[i].compute(jcap[i-1],
+                             jcap[i+1],myresource())
+      af
+      send jcap[PR].compute(jcap[PR-1],
+                            noop,myresource())
+  fi
+
+  # do termination checks until convergence
+  var iters := 0
+  do true ->
+    iters++
+    # wait for all processes to call terminate, then
+    # service invocation with largest value for diff
+    in terminate(diff) returns ans st ?terminate = PR by -diff ->
+           ans := diff <= epsilon
+           fa i := 1 to PR-1 ->
+             in terminate(diff2) returns ans2 ->
+               ans2 := ans
+             ni
+           af
+           if ans -> exit fi
+    ni
+  od
+
+  final  # print results
+    write("convergence after", iters, "iterations\n")
+    fa i := 1 to PR -> destroy jcap[i] af
+  end
+end

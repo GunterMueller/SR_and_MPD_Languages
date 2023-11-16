@@ -1,0 +1,29 @@
+#test var arguments that are arbitrary arrays
+
+resource ar2()
+    op pr(var int a[1:*], var int b[1:*],  int count)
+
+    int  a[1:10]
+    for [ i = 1 to 10 ] {
+	a[i] = i
+    }
+
+    for [ top = 1 to 9 ] {
+	call pr(a[1:top], a[top+1:10],  top)
+    }
+
+    for [ i = 1 to 10 ] {
+	write(a[i])
+    }
+
+    proc pr(a,b, cnt)  {
+	for [ i = 1 to cnt ] {
+	    a[i] ++
+	}
+	for [ i= 1 to 10-cnt ] {
+	    b[i] ++
+	}
+    }
+end
+
+

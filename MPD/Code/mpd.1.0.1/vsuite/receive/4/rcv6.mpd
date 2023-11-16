@@ -1,0 +1,18 @@
+# test receive statement; use same name variables as in op declaration.
+resource rcv6()
+	op p()
+	op q(int a, int b, char c)
+	op r(int x)
+	op s(int x, int y)
+
+	int a, b, x, y; char c
+	send p()
+	send q(4,5,'d')
+	send r(77)
+	send s(-1,-2)
+	receive r(x); write(x)
+	receive s(y,x); write(y,x)
+	receive p(); write("p");
+	receive q(a,b,c); write(a,b,c)
+
+end

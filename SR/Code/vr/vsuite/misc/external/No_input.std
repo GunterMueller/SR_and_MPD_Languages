@@ -1,0 +1,38 @@
+begin external test
+57
+85
+91
+1988 in octal is   3704
+time looks plausible
+gettimeofday agrees
+fputs ok
+& printf is too
+fputc(c,stdout): y => returned y
+fputc('x',stdout): x => returned x
+atoi("93481") = 93481
+atoi("11213") = 11213
+hex value is =(12345678)=
+mktemp worked
+ctime worked
+getenv(nonexistent) returned ""
+getenv result truncated successfully
+
+abcd efghi jklmno pqrstuv wxyz0123
+abcd
+efghi
+jklmno
+pqrstuv
+wxyz0123
+abcd efghi jklmno pqrstuv wxyz0123
+in the east river garden
+in
+the
+east
+river
+garden
+in the east river garden
+23456789TJQKA
+aeiou
+*
+e.sr func.c
+done

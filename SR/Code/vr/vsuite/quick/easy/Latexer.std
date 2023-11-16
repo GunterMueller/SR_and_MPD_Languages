@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{srlatex}
+\begin{document}
+\raggedbottom
+\begin{flushleft}
+\begin{srTeXprogram}
+\srTeXcm{\#}\srTeXsp{2}\srTeXcm{maximum$-$sum}\srTeXsp{1}\srTeXcm{section}\srTeXsp{1}\srTeXcm{due}\srTeXsp{1}\srTeXcm{to}\srTeXsp{1}\srTeXcm{Gries.}\\
+\hspace{0pt}\\
+\srTeXcm{\#}\srTeXsp{2}\srTeXcm{good}\srTeXsp{1}\srTeXcm{test}\srTeXsp{1}\srTeXcm{of}\srTeXsp{1}\srTeXcm{dynamic}\srTeXsp{1}\srTeXcm{allocation}\srTeXsp{1}\srTeXcm{of}\srTeXsp{1}\srTeXcm{arrays$,$}\srTeXsp{1}\srTeXcm{pre$-$defined}\srTeXsp{1}\srTeXcm{functions}\\
+\srTeXcm{\#}\srTeXsp{2}\srTeXcm{$($lb$,$ub$,$max$),$}\srTeXsp{1}\srTeXcm{and}\srTeXsp{1}\srTeXcm{some}\srTeXsp{1}\srTeXcm{sequential}\srTeXsp{1}\srTeXcm{stuff.}\\
+\hspace{0pt}\\
+\srTeXcm{\#}\srTeXsp{1}\srTeXcm{this}\srTeXsp{1}\srTeXcm{tiny}\srTeXsp{1}\srTeXcm{program}\srTeXsp{1}\srTeXcm{has}\srTeXsp{1}\srTeXcm{a}\srTeXsp{1}\srTeXcm{remarkable}\srTeXsp{1}\srTeXcm{proclivity}\srTeXsp{1}\srTeXcm{for}\srTeXsp{1}\srTeXcm{exposing}\srTeXsp{1}\srTeXcm{compiler}\srTeXsp{1}\srTeXcm{bugs.}\\
+\hspace{0pt}\\
+\srTeXkw{resource}\srTeXsp{1}\srTeXid{gries}$()$\\
+\vskip1\baselineskip
+\srTeXsp{4}\srTeXkw{op}\srTeXsp{1}\srTeXid{max\_sum}$($\srTeXid{a}$[0$\,:\,$*]$\,:\,\srTeXkw{int}$)$\srTeXsp{1}\srTeXkw{returns}\srTeXsp{1}\srTeXid{ms}\,:\,\srTeXkw{int}\\
+\vskip1\baselineskip
+\srTeXsp{4}\srTeXkw{var}\srTeXsp{1}\srTeXid{n}\,:\,\srTeXkw{int}\\
+\srTeXsp{4}\srTeXid{put}$($\srTeXst{"}\srTeXst{enter}\srTeXsp{1}\srTeXst{n}\srTeXst{$\backslash $n}\srTeXst{"}$)$\\
+\srTeXsp{4}\srTeXid{read}$($\srTeXid{n}$)$\\
+\srTeXsp{4}\srTeXkw{var}\srTeXsp{1}\srTeXid{nums}$[1$\,:\,\srTeXid{n}$]$\srTeXsp{1}\,:\,\srTeXsp{1}\srTeXkw{int}\\
+\srTeXsp{4}\srTeXcm{\#}\srTeXsp{1}\srTeXcm{read}\srTeXsp{1}\srTeXcm{in}\srTeXsp{1}\srTeXcm{numbers}\\
+\srTeXsp{8}\srTeXkw{fa}\srTeXsp{1}\srTeXid{i}\srTeXsp{1}$:=$\srTeXsp{1}\srTeXid{lb}$($\srTeXid{nums}$)$\srTeXsp{1}\srTeXkw{to}\srTeXsp{1}\srTeXid{ub}$($\srTeXid{nums}$)$\srTeXsp{1}$\rightarrow $\\
+\srTeXsp{12}\srTeXid{put}$($\srTeXst{"}\srTeXst{$?$}\srTeXst{"}$)$\\
+\srTeXsp{12}\srTeXid{read}$($\srTeXid{nums}$[$\srTeXid{i}$])$\\
+\srTeXsp{8}\srTeXkw{af}\\
+\srTeXsp{4}\srTeXid{write}$($\srTeXid{max\_sum}$($\srTeXid{nums}$))$\\
+\vskip1\baselineskip
+\srTeXsp{4}\srTeXkw{proc}\srTeXsp{1}\srTeXid{max\_sum}$($\srTeXid{a}$)$\srTeXsp{1}\srTeXkw{returns}\srTeXsp{1}\srTeXid{s}\\
+\srTeXsp{8}\srTeXkw{var}\srTeXsp{1}\srTeXid{k}\,:\,\srTeXkw{int}\srTeXsp{1}$:=$\srTeXsp{1}\srTeXid{lb}$($\srTeXid{a}$)$\\
+\srTeXsp{8}\srTeXkw{var}\srTeXsp{1}\srTeXid{c}\,:\,\srTeXkw{int}\srTeXsp{1}$:=$\srTeXsp{1}$0$\\
+\srTeXsp{8}\srTeXid{s}\srTeXsp{1}$:=$\srTeXsp{1}$0$\\
+\srTeXsp{8}\srTeXkw{do}\srTeXsp{1}\srTeXid{k}\srTeXsp{1}$\neq $\srTeXsp{1}\srTeXid{ub}$($\srTeXid{a}$)+1$\srTeXsp{1}$\rightarrow $\\
+\srTeXsp{12}\srTeXid{c}\srTeXsp{1}$:=$\srTeXsp{1}\srTeXid{max}$($\srTeXid{a}$[$\srTeXid{k}$]+$\srTeXid{c}$,0)$\\
+\srTeXsp{12}\srTeXid{s}\srTeXsp{1}$:=$\srTeXsp{1}\srTeXid{max}$($\srTeXid{s}$,$\srTeXid{c}$)$\\
+\srTeXsp{12}\srTeXid{k}$++$\\
+\srTeXsp{8}\srTeXkw{od}\\
+\srTeXsp{4}\srTeXkw{end}\\
+\srTeXkw{end}\\
+\goodbreak
+\hspace{0pt}\\
+\end{srTeXprogram}
+\end{flushleft}
+\vfill
+\end{document}

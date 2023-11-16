@@ -1,0 +1,84 @@
+# checks real literals, abs(), min(), max(), low(), high()
+resource reals
+body reals()
+
+    var r1: real
+    var rstd := 0.0
+
+    var REL_ERR := 1e-5 # allowed relative error, implicit decl of a real var
+    procedure fuzrcmp(r1, r2 : real)  returns result : bool
+	# if one wants to get an idea of the relative error print ...
+	# write(r1, r2, abs((r1-r2)/r2))
+	if abs((r1 - r2)/r1) < REL_ERR -> result := true ;
+	[] else -> result := false;
+	fi
+    end fuzrcmp
+
+    var cnt := 0
+    procedure errdetect(r1, r2: real)
+	++cnt
+	if not fuzrcmp(r1, r2)	-> write("error in #", cnt, " write") fi
+    end errdetect
+
+
+    r1 := .23456;      read(rstd); errdetect(r1, rstd)
+    r1 := 1.23456;     read(rstd); errdetect(r1, rstd)
+    r1 := 2.23456e-10; read(rstd); errdetect(r1, rstd)
+    r1 := 3.23456e+10; read(rstd); errdetect(r1, rstd)
+    r1 := 4.23456e10;  read(rstd); errdetect(r1, rstd)
+    r1 := 5e10;        read(rstd); errdetect(r1, rstd)
+    r1 := 6e-10;       read(rstd); errdetect(r1, rstd)
+    r1 := 7. ;         read(rstd); errdetect(r1, rstd)
+    r1 := 8.e-10 ;     read(rstd); errdetect(r1, rstd)
+    r1 := 8.e+10 ;     read(rstd); errdetect(r1, rstd)
+
+
+    # automatic int to real conversion
+    var i := 123
+    r1 := i;           read(rstd); errdetect(r1, rstd)
+
+    r1 := i * 2;       read(rstd); errdetect(r1, rstd)
+    r1 := i / 2;       read(rstd); errdetect(r1, rstd)
+    r1 := i + 2;       read(rstd); errdetect(r1, rstd)
+    r1 := i - 2;       read(rstd); errdetect(r1, rstd);
+
+    r1 := i * 2.34567e2;       read(rstd); errdetect(r1, rstd)
+    r1 := i / 2.34567e2;       read(rstd); errdetect(r1, rstd)
+    r1 := i + 2.34567e2;       read(rstd); errdetect(r1, rstd)
+    r1 := i - 2.34567e2;       read(rstd); errdetect(r1, rstd)
+
+    # testing abs(), min(), max()
+    read(rstd); errdetect(rstd, abs(-3.14159265))
+    read(rstd); errdetect(rstd, abs(+3.14159265))
+    read(rstd); errdetect(rstd,
+			min(-3.14159265, 9, 2*-3.14159265, 3*- - -3.14159265))
+    read(rstd); errdetect(rstd,
+			min(9, +3.14159265, 2*+3.14159265, 3*+ +3.14159265))
+    read(rstd); errdetect(rstd,
+			max(-9e99, -3.14159265, 2*-3.14159265, 3*-3.14159265))
+    read(rstd); errdetect(rstd, max(+3.14159265, 2*+3.14159265, 3*+3.14159265))
+
+    # testing low(), high() for int, char, bool
+    # assumes that we know what these values should be
+    if high(int) ~= 7FFFFFFFx -> write("Error in high(int)") fi
+    if  low(int) ~= 80000000x -> write("Error in  low(int)") fi
+
+    var ch := low(char); if int(ch) != 0 -> write("Error in  low(char)") fi
+    ch := high(char); if int(ch) != 255 -> write("Error in  low(char)") fi
+
+    if high(bool) != true -> write("Error in high(bool)") fi
+    if  low(bool) != false -> write("Error in low(bool)") fi
+
+
+    # test that low(real) is plausibly small
+    var x := low(real)
+    var y := 1.0 + x
+    if y != 1.0 -> write ("low(real) too big? ", x, y) fi
+
+    # test that high(real) is plausibly large
+    x := high(real)
+    y := x - 1.0
+    if (x != y) -> write ("high(real) too small? ", x, y) fi
+
+    write ("done")
+end reals

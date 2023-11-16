@@ -1,0 +1,15 @@
+# make sure that import is done in context of its environment
+# (i.e., just predefs) not that of its importer
+
+
+resource a
+	const X := EOF	  # predefined constant
+end
+
+resource b
+	type oscar = enum(alpha, beta, gamma, delta, epsilon)
+	const EOF := delta
+	import a
+body b()
+	write( int(EOF), int(a.X) )	# 3 and -1
+end

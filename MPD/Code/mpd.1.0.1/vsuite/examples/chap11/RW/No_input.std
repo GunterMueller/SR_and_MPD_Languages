@@ -1,0 +1,10 @@
+process one is reading
+process two is reading
+process one is reading
+process two is writing
+process one is reading
+process two is writing
+process one is reading
+process two is writing
+process one is reading
+RTS warning: blocked process: rw.RW_allocator : file RW_allocator.mpd, line 12

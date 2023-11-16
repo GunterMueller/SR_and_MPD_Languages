@@ -1,0 +1,115 @@
+resource jacobi
+  import main
+  op toprow([*] real)
+  op bottomrow([*] real)
+  op compute(up, down: cap jacobi; coord: cap main)
+body jacobi(id, N, PR, S: int; left, top, right, bottom: real)
+  var grid[0:S+1,0:N+1]: real 
+  var newgrid[1:S,1:N]: real   # work area
+  var diff: real               # max difference
+  # initialize boundaries then interior of grid
+  fa i := 0 to S+1 ->  # left and right
+    grid[i,0] := left; grid[i,N+1] := right
+  af
+  fa j := 0 to N+1 -> grid[0,j] := top af
+  fa j := 0 to N+1 -> grid[S+1,j] := bottom af
+  fa i := 1 to S, j := 1 to N -> grid[i,j] := 0.0 af
+
+  proc compute(up, down, coord)
+    do true ->
+      # compute next iteration
+      diff := 0.0
+      fa i := 1 to S, j := 1 to N ->
+        newgrid[i,j] := (grid[i-1,j]+grid[i,j-1]+grid[i+1,j]+grid[i,j+1])/4
+        diff := max(diff, abs(newgrid[i,j] - grid[i,j]))
+      af
+      # replace grid by newgrid
+      fa i := 1 to S, j := 1 to N ->
+        grid[i,j] := newgrid[i,j]
+      af
+      # check for termination
+      if coord.terminate(diff) -> exit fi
+      # exchange top and bottom rows with neighbors
+      send up.bottomrow(grid[1,*])
+      send down.toprow(grid[S,*])
+      if id != 1 -> receive toprow(grid[0,*]) fi
+      if id != PR -> receive bottomrow(grid[S+1,*]) fi
+    od
+  end
+
+  final
+    fa i := 1 to S ->
+      fa j := 1 to N -> writes(grid[i,j], " ") af
+      write()
+    af
+  end
+end
+
+resource main
+  import jacobi
+  op terminate(diff: real) returns ans: bool
+body main()
+  var N := 8    # grid dimension
+  var PR := 2   # number of processes
+  var S: int    # strip size
+  # read command-line arguments, if present
+  getarg(1, N); getarg(2, PR); S := N/PR
+  if (N mod PR) != 0 -> 
+    write("N must be a multiple of PR"); stop(1)
+  fi
+  # read boundary values and epsilon
+  var left, top, right, bottom: real
+  writes("enter 4 border values: ");
+  read(left, top, right, bottom)
+  var epsilon: real
+  writes("enter epsilon: "); read(epsilon)
+
+  # create virtual machines
+  var fd: file, fname: string[20]
+  fd := open("hosts", READ)
+  var vmcap[1:PR]: cap vm
+  fa i := 1 to PR ->
+    read(fd, fname)
+    vmcap[i] := create vm() on fname
+  af
+
+  # create instances of jacobi()
+  var jcap[1:PR]: cap jacobi
+  jcap[1] := create jacobi(1,N,PR,S,left,top,right,0.0) on vmcap[1]
+  fa i := 2 to PR-1 ->
+    jcap[i] := create jacobi(i,N,PR,S,left,0.0,right,0.0) on vmcap[i]
+  af
+  if PR > 1 ->
+    jcap[PR] := create jacobi(PR,N,PR,S,left,0.0,right,bottom) on vmcap[PR]
+  fi
+
+  # start the computation
+  send jcap[1].compute(noop,jcap[2],myresource())
+  fa i := 2 to PR-1 ->
+    send jcap[i].compute(jcap[i-1],jcap[i+1],myresource())
+  af
+  if PR > 1 ->
+    send jcap[PR].compute(jcap[PR-1],noop,myresource())
+  fi
+
+  var iters := 0
+  # do termination checks until convergence
+  do true ->
+    iters++
+    # wait for all processes to call terminate, then
+    # service invocation with largest value for diff
+    in terminate(diff) returns ans st ?terminate = PR by -diff ->
+      ans := diff <= epsilon
+      fa i := 1 to PR-1 ->
+        in terminate(diff2) returns ans2 -> ans2 := ans ni
+      af
+      if ans -> exit fi
+    ni
+  od
+  stop
+
+  final  # print results
+    write("convergence after", iters, "iterations\n")
+    fa i := 1 to PR -> destroy jcap[i] af
+  end
+end

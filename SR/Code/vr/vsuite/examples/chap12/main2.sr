@@ -1,0 +1,12 @@
+resource main2()
+  import foo
+  const N := 5
+  op done(); var vmcap: cap vm
+  var foo1, foo2: cap foo
+  foo1 := create foo(N, 1, done)
+  vmcap := create vm()
+  foo2 := create foo(N, 2, done) on vmcap
+  fa i := 1 to 2*N -> receive done() af
+  destroy foo1; destroy foo2
+  destroy vmcap
+end

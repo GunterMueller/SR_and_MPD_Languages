@@ -1,0 +1,40 @@
+# simple program that does some sorting.
+resource sorter1()
+
+	op print(int a[1:*])
+	op sort(var int a[1:*])
+
+
+	put("number of numbers?")
+	int  n 
+	read(n)
+	int  nums[1:n] 
+	# read in numbers
+		for [ i = lb(nums) to ub(nums) ] {
+			put("? ")
+			read(n)
+			nums[i] = n
+		}
+	write("before sorting")
+	print(nums)
+	sort(nums)
+	write("after sorting")
+	print(nums)
+
+
+	proc print(a)  {
+		for [ i = lb(a) to ub(a) ] {
+			write(a[i])
+		}
+	}
+
+	proc sort(b)  {
+		write("sort");
+
+		write("lb is", lb(b), "ub is", ub(b))
+		for [ i = lb(b) to ub(b)-1, j = i+1 to ub(b) st b[i] > b[j] ] {
+			# b[i], b[j] := b[j], b[i]
+			b[i] :=: b[j]
+		}
+	}
+end

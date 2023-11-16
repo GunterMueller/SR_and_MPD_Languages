@@ -1,0 +1,8 @@
+
+===============  sem3  ===============
+
+ops:
+   Rs  SYM2 sema: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 semb: K_OP T_OP(){send}:T_VOID
+   Rp  SYM2 a: K_OP T_OP(){send}:T_VOID
+   Rp  SYM2 b: K_OP T_OP(){send}:T_VOID

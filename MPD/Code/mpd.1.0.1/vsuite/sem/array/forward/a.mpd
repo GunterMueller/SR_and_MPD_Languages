@@ -1,0 +1,33 @@
+# forwarding to an op or from within body of in stmt for an op
+# should disqualify the op as a sem
+resource a()
+
+   sem s = 1
+   P(s)
+   V(s)
+   in s() -> forward s() ni
+   write ("part 1 done")
+
+   sem t[2] = (1,1)
+   P(t[1])
+   V(t[1])
+   in t[2]() -> forward t[1]() ni
+   write ("part 2 done")
+
+   sem u[2] = (1,1)
+   sem w = 1
+   P(w)
+   P(u[1])
+   V(u[1])
+   in u[2]() -> forward w() ni
+   write ("part 3 done")
+
+   sem x[2] = (1,1)
+   sem y = 2
+   P(y)
+   P(x[1])
+   V(x[1])
+   in y() -> forward x[2]() ni
+   write ("part 4 done")
+
+end

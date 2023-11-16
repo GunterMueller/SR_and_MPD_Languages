@@ -1,0 +1,41 @@
+\raggedbottom
+\line{$\hbox{$\hbox{\it \#}\ \ \hbox{\it maximum-sum}\ \hbox{\it section}\ \hbox{\it due}\ \hbox{\it to}\ \hbox{\it Gries.}$}$\hfill}
+\line{$\hbox{$$}$\hfill}
+\line{$\hbox{$\hbox{\it \#}\ \ \hbox{\it good}\ \hbox{\it test}\ \hbox{\it of}\ \hbox{\it dynamic}\ \hbox{\it allocation}\ \hbox{\it of}\ \hbox{\it arrays,}\ \hbox{\it pre-defined}\ \hbox{\it functions}$}$\hfill}
+\line{$\hbox{$\hbox{\it \#}\ \ \hbox{\it (lb,ub,max),}\ \hbox{\it and}\ \hbox{\it some}\ \hbox{\it sequential}\ \hbox{\it stuff.}$}$\hfill}
+\line{$\hbox{$$}$\hfill}
+\line{$\hbox{$\hbox{\it \#}\ \hbox{\it this}\ \hbox{\it tiny}\ \hbox{\it program}\ \hbox{\it has}\ \hbox{\it a}\ \hbox{\it remarkable}\ \hbox{\it proclivity}\ \hbox{\it for}\ \hbox{\it exposing}\ \hbox{\it compiler}\ \hbox{\it bugs.}$}$\hfill}
+\line{$\hbox{$$}$\hfill}
+\line{$\hbox{${\bf resource}\ {\rm gries}()$}$\hfill}
+\vskip1\baselineskip
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\bf op}\ {\rm max\_sum}({\rm a}[0\,\colon *]\,\colon {\bf int})\ {\bf returns}\ {\rm ms}\,\colon {\bf int}$}$\hfill}
+\vskip1\baselineskip
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\bf var}\ {\rm n}\,\colon {\bf int}$}$\hfill}
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\rm put}(\hbox{\tt \char34 }\hbox{\tt enter}\ \hbox{\tt n}\hbox{\tt {\tt\char92}n}\hbox{\tt \char34 })$}$\hfill}
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\rm read}({\rm n})$}$\hfill}
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\bf var}\ {\rm nums}[1\,\colon {\rm n}]\ \,\colon \ {\bf int}$}$\hfill}
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{$\hbox{\it \#}\ \hbox{\it read}\ \hbox{\it in}\ \hbox{\it numbers}$}$\hfill}
+\line{$\hbox to 4.444444em{$$\hfill}\hbox{${\bf fa}\ {\rm i}\ :=\ {\rm lb}({\rm nums})\ {\bf to}\ {\rm ub}({\rm nums})\ \rightarrow $}$\hfill}
+\line{$\hbox to 6.666667em{$$\hfill}\hbox{${\rm put}(\hbox{\tt \char34 }\hbox{\tt ?}\hbox{\tt \char34 })$}$\hfill}
+\line{$\hbox to 6.666667em{$$\hfill}\hbox{${\rm read}({\rm nums}[{\rm i}])$}$\hfill}
+\line{$\hbox to 4.444444em{$$\hfill}\hbox{${\bf af}$}$\hfill}
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\rm write}({\rm max\_sum}({\rm nums}))$}$\hfill}
+\vskip1\baselineskip
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\bf proc}\ {\rm max\_sum}({\rm a})\ {\bf returns}\ {\rm s}$}$\hfill}
+\line{$\hbox to 4.444444em{$$\hfill}\hbox{${\bf var}\ {\rm k}\,\colon {\bf int}\ :=\ {\rm lb}({\rm a})$}$\hfill}
+\line{$\hbox to 4.444444em{$$\hfill}\hbox{${\bf var}\ {\rm c}\,\colon {\bf int}\ :=\ 0$}$\hfill}
+\line{$\hbox to 4.444444em{$$\hfill}\hbox{${\rm s}\ :=\ 0$}$\hfill}
+\line{$\hbox to 4.444444em{$$\hfill}\hbox{${\bf do}\ {\rm k}\ \not= \ {\rm ub}({\rm a})+1\ \rightarrow $}$\hfill}
+\line{$\hbox to 6.666667em{$$\hfill}\hbox{${\rm c}\ :=\ {\rm max}({\rm a}[{\rm k}]+{\rm c},0)$}$\hfill}
+\line{$\hbox to 6.666667em{$$\hfill}\hbox{${\rm s}\ :=\ {\rm max}({\rm s},{\rm c})$}$\hfill}
+\line{$\hbox to 6.666667em{$$\hfill}\hbox{${\rm k}++$}$\hfill}
+\line{$\hbox to 4.444444em{$$\hfill}\hbox{${\bf od}$}$\hfill}
+\line{$\hbox to 2.222222em{$$\hfill}\hbox{${\bf end}$}$\hfill}
+\filbreak
+\line{$\hbox{${\bf end}$}$\hfill}
+\filbreak
+\goodbreak
+\line{$\hbox{$$}$\hfill}
+\filbreak
+\eject
+\bye

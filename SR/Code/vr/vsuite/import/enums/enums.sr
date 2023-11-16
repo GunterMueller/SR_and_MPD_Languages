@@ -1,0 +1,29 @@
+# this used to cause a loop in interfaces code
+# because enumeration literals point back to type.
+resource e1
+	op f(x:cap e1)
+	type color = enum (red,blue)
+	op g(shady:color)
+body e1()
+	proc f(x)
+		write( "in f" )
+		x.g(red); x.g(blue)
+		write( "out f" )
+	end
+	proc g(shady)
+		if shady = blue -> write( "blue" )
+		[] shady = red -> write( "red" )
+		[] else -> write( "oops" )
+		fi
+	end
+end
+
+resource e2
+	import e1
+body e2()
+
+	var c:cap e1
+	c := create e1()
+	c.f(c)
+	write( "done" )
+end

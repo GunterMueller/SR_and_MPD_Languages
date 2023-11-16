@@ -1,0 +1,6 @@
+#  test for miscellaneous compiler error messages
+
+0 sh ../mkscript.sh syntax.mpd | tee sh.tmp | mpd=$mpd sh >syntax.out
+1 grep -v ok: syntax.out
+0 cmp -s syntax.std syntax.out
+0 rm -rf MPDinter core *.out *.tmp test*.mpd

@@ -1,0 +1,10 @@
+#  The original SR program found an apparent bug in the Sun C
+#  preprocessor; works fine on Vax.  We've isolated the bug as shown
+#  below.  It is very sensitive to the location of newlines, but this is
+#  like the code that mpd generates.
+
+resource main()
+    op str() returns string[10] str
+    proc str() returns str { str = "" }
+    write("'"||str())
+end

@@ -1,0 +1,5 @@
+# check "missing main resource xxx" trap
+# check "warnings: body for b missing"
+1 mpdm -m xxx *.mpd
+
+0 rm -rf MPDinter core *.out Makefile

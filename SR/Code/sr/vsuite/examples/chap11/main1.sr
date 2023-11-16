@@ -1,0 +1,13 @@
+resource main()
+  op f(x: int)
+  process p
+     ...
+    call f(y)
+     ...
+  end
+  process q
+     ...
+    in f(x) -> z +:= x ni
+     ...
+  end
+end

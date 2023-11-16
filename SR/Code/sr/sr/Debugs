@@ -1,0 +1,30 @@
+Compiler Debug Flags  (-d xyz)
+
+Each letter (except "a" or "A") acts as a toggle.
+
+    a	defaults marked here by `*'  (set in compiler.h)
+    A	all options
+
+   *b	show output buffering
+
+   *c	op classes
+
+   *e	print errors as they are found, instead of sorting by line number
+    
+    k	tokens returned by gettok
+
+   *o	operations
+
+   *p	parameter lists
+
+    S	early symbol table before signatures
+    $	early symbol table including predefs
+   *s	symbol table with signatures attached
+
+    t	parse tree
+    T	parse tree including imported specs
+    i	parse tree after resolving identifiers
+    g	parse tree after affixing signatures
+   *f	parse tree after constant folding
+
+    y	Yacc trace (yydebug), if built with #define YYDEBUG

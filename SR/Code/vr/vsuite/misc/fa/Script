@@ -1,0 +1,4 @@
+#  gmt  Wed Jan 27 12:33:05 MST 1993
+0 sr fa.sr
+0 run
+0 rm -rf Interfaces core *.out

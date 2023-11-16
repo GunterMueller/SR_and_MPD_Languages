@@ -1,0 +1,33 @@
+resource rec3 ()
+
+    type rt = rec(
+	    char a[2:4][5:8]
+	    int i
+	    string[12] s
+	    real x[5]	# will be misaligned if compiler isn't careful
+	    )
+
+    procedure rdump (rt r )  {
+	for [ i = lb(r.a) to ub(r.a) ] {
+	    for [ j = lb(r.a,2) to ub(r.a,2) ] {
+		writes (r.a[i,j]) } }
+	writes (" ", r.i, ' ', r.s)
+	for [ i = 1 to 5 ] {
+	    printf (" %4.2f", r.x[i]) }
+	write()
+    }
+
+    rt r1, r2
+
+    r1.a = (('a','b','c','d'),('e','f','g','h'),('i','j','k','l'))
+    r1.i = 11213
+    r1.s = "alamagoosa"
+    r1.x = ([5] 3.14159)
+    rdump (r1)
+
+    rdump (r2 = rt(r1.a, 621-4325, "superfoonly", (7.,6.,5.,4.,3.)))
+
+    r2 :=: r1
+    rdump (r1)
+    rdump (r2)
+end

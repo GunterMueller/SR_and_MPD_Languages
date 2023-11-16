@@ -1,0 +1,121 @@
+#  test timer functions
+#
+#  usage:
+#       a.out
+#       a.out maxerror
+#       a.out maxearly maxlate
+#
+#  MAXEARLY and MAXLATE controls how much earlier or later (in milliseconds)
+#  we'll accept a nap as being correct.  Larger differences aren't NECESSARILY
+#  wrong, but they're suspicious.
+
+resource timer ()
+    int MAXEARLY = 20          # allow up to 1/50 sec early
+    int MAXLATE = 1000         # allow up to 1 sec late
+    external time (ptr int p ) returns int  t
+    op tnap (int msec )
+    op oops (string[*] msg, int msec , int a1 , int a2 )
+
+    int  t1, t2, a1, a2 
+
+    if (numargs() == 1) { getarg(1,MAXEARLY); getarg(1,MAXLATE) }
+    if (numargs() == 2) { getarg(1,MAXEARLY); getarg(2,MAXLATE) }
+
+    write("maximum eagerness:", MAXEARLY, "msec early")
+    write("maximum tardiness:", MAXLATE, "msec late")
+
+    write("begin timing test")
+    t1 = time(null)
+    a1 = age()
+
+    tnap(-479652)
+    tnap(0)
+    tnap(1)
+    tnap(2)
+    tnap(5)
+    tnap(10)
+    tnap(22)
+    tnap(47)
+    tnap(100)
+    tnap(220)
+    tnap(470)
+    tnap(1000)
+    tnap(2200)
+    tnap(0)
+    tnap(1)
+    tnap(2)
+    tnap(5)
+    tnap(10)
+    tnap(22)
+    tnap(47)
+    tnap(100)
+    tnap(220)
+    tnap(470)
+    tnap(1000)
+    tnap(0)
+    tnap(0)
+    tnap(0)
+    tnap(0)
+    tnap(0)
+    tnap(1)
+    tnap(1)
+    tnap(1)
+    tnap(1)
+    tnap(1)
+    tnap(1234)
+
+    write("checking overall times")
+    t2 = time(null)
+    a2 = age()
+    if (abs((a2-a1)/1000 - (t2-t1)) > 1 + (MAXLATE + MAXEARLY) / 1000) {
+	writes("  *possible* overall timer problem:")
+	writes("  Unix t1==",t1,", t2==",t2,", difference==",t2-t1," seconds\n")
+	writes("  MPD a1==",a1,", a2==",a2,", difference==",a2-a1," msec\n")
+	}
+
+#  verify that active processes don't prevent a napping process from waking
+
+    sem s, t
+    process p { while (true) { P(s) ; V(t) } }
+    process q { while (true) { P(t) ; V(s) } }
+
+    write ("checking starvation")
+    V(t)                        # start the processes
+    write ("   napping")
+    nap (5000)                  # nap
+    write ("   awakened")
+    write("end timing test")
+    stop
+
+
+proc tnap (msec) {        # test a nap of n msec
+    int  a1, a2, delta
+    writes("nap(",msec,"):\n")
+    a1 = age()
+    nap(msec)
+    a2 = age()
+    delta = a2 - a1
+    if (msec < 0) {
+	msec = 0       # nap() treats it as zero; so will we
+	}
+    if (delta < 0) {
+	oops("time went backwards",msec,a1,a2)
+    } else if (delta < msec - MAXEARLY ) {
+	oops("insufficient nap",msec,a1,a2)
+    } else if (delta > msec + MAXLATE ) {
+	oops("excessive nap",msec,a1,a2)
+    }
+}
+
+
+
+proc oops (msg, msec, a1, a2)  {
+    int actual = a2 - a1
+    int offby = actual - msec
+    writes("    error: ",msg,"  (wanted ",msec," msec;  got ",actual,
+	";  off by ",offby,")\n")
+}
+
+
+
+end timer

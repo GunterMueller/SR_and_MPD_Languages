@@ -1,0 +1,196 @@
+# test escape statements (exit, next, reply, return)
+# from within else part of in statement.
+# the compiler code for such is a bit tricky and was broken.
+
+resource escape()
+	sem ok # controls order of output (keeps deterministic)
+	op p()
+	op q()
+	op pp()
+	op sem1()
+	op main()
+	op sub()
+	op g(), h()
+	op x(), y()
+	op f()
+	op pr()
+
+	call p()
+	call q()
+	P(ok)
+	send pp()
+	send sem1()
+	P(ok)
+	call main()
+	send g(); send h(); call sub()
+	send g();           call sub()
+	          send h(); call sub()
+	                    call sub()
+	send x()
+	call y()
+	call y()
+	call y()
+
+	sem z := 7
+	op ztest()
+	call ztest()
+	write ("done")
+
+
+	# should be optimized to proc call
+	proc p()
+		write("p")
+	end
+
+	# should not be optimized to proc call
+	proc q()
+		write("q")
+		reply
+		write("q replied")
+		V(ok)
+	end
+
+	proc pp()
+		in sem1() ->
+			# should cause compile time warning
+			# since sem1 always invoked by send
+			write("sem1")
+			reply
+			write("sem1 replied")
+		ni
+		write("pp done")
+		V(ok)
+	end
+
+	# exercise exit, next, reply, return
+	proc main()
+		do true ->
+			write("A")
+			in f() ->
+				write("B")
+			[] else ->
+				write("C")
+				exit
+			ni
+			write("D")
+		od
+		send f()
+		do true ->
+			write("A1")
+			in f() ->
+				write("B1")
+			[] else ->
+				write("C1")
+				exit
+			ni
+			write("D1")
+		od
+		send f()
+		do true ->
+			write("A2")
+			in f() ->
+				write("B2")
+				exit
+			[] else ->
+				write("C2")
+				exit
+			ni
+			write("D2")
+		od
+		write("E")
+		fa i := 1 to 2 ->
+			write("F")
+			in f() ->
+				write("G")
+			[] else ->
+				write("H")
+				next
+			ni
+			write("I")
+		af
+		write("J")
+		call pr()
+		P(ok)
+		write("O")
+		in f() ->
+			write("P")
+		[] else ->
+			write("Q")
+			return
+		ni
+		write("R")
+	end
+
+	proc pr()
+		write("K")
+		in f() ->
+			write("L")
+		[] else ->
+			write("M")
+			reply
+		ni
+		write("N")
+		V(ok)
+	end
+
+	proc sub()
+		write("S1")
+		in g() ->
+			write("S2")
+			in h() ->
+				write("S3")
+				return /* from h */
+			[] else ->
+				write("S4")
+				return /* from g */
+			ni
+			write("S5")
+		[] else ->
+			write("S6")
+			in h() ->
+				write("S7")
+				return /* from h */
+			[] else ->
+				write("S8")
+				return /* from sub */
+			ni
+			write("S9")
+		ni
+		write("S10")
+	end
+
+	# for testing that next and exit really terminate the `in':
+	# (the above tests didn't catch this...)
+	proc x ()
+		write ("in x")
+		reply
+		fa i := 1 to 10 ->
+			in y () ->
+			    write ("got y in loop", i)
+			    if i = 1 -> next fi
+			    if i = 2 -> exit fi
+			ni
+		af
+		in y () ->
+			write ("got y beyond loop")
+		ni
+	end
+
+	# a similar test using a true semaphore
+	# (z is a sem; y was a heavyweight op because it's called)
+	proc ztest ()
+		writes ("ztest:")
+		fa i := 1 to 5 ->
+			writes (" a")
+			in z () ->
+				writes ("b")
+				if i = 2 -> next fi
+				writes ("c")
+				if i = 4 -> exit fi
+				writes ("d")
+			ni
+			writes ("e")
+		af
+		write ("",?z)
+	end
+end

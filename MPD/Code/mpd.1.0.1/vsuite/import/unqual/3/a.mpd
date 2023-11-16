@@ -1,0 +1,24 @@
+global a
+	const int X = 10
+	const int Y = -5
+end
+global aa
+	const int XX = 210
+	const int Y = -25
+end
+resource b()
+	import a
+
+	write(a.X)
+	write(a.Y)
+	write(X)
+	write(Y)
+	int  x = 56
+	if (x == 56) {
+		import aa
+		write(aa.Y)
+		write(XX)
+		write(X)
+	}
+
+end

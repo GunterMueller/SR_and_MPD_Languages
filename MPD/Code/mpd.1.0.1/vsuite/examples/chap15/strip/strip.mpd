@@ -1,0 +1,106 @@
+global size
+  int N = 8    # grid dimension
+  int PR = 2   # number of processes
+  int S        # strip size
+body size
+  getarg(1, N); getarg(2, PR); S = N/PR
+  if ((N mod PR) != 0) {
+    write("N must be a multiple of PR"); stop(1)
+  }
+end
+
+global data
+  import size
+  real grid[2][0:N+1,0:N+1]
+  real epsilon = 0.3
+  int nxt = 2
+  int cur = 1
+  op print()
+body data
+  grid = ([2] ([N+2] ([N+2] 0.0)))
+  real l= 1.0
+  real t=2.1
+  real r=3.3
+  real b=4.9
+  for [ i = 0 to N+1 ] {
+    grid[cur][i,0] = l; grid[nxt][i,0] = l
+  }
+  for [ i = 0 to N+1 ] {
+    grid[cur][0,i] = t; grid[nxt][0,i] = t
+  }
+  for [ i = 0 to N+1 ] {
+    grid[cur][i,N+1] = r; grid[nxt][i,N+1] = r
+  }
+  for [ i = 0 to N+1 ] {
+    grid[cur][N+1,i] = b; grid[nxt][N+1,i] = b
+  }
+
+  proc print()  {
+    write()
+    for [ i = 1 to N ] {
+      for [ j = 1 to N ] { printf("%5.3f ",grid[cur][i,j]) }
+      write()
+    }
+  }
+end
+
+global barrier_synch
+  import size
+  op barrier()
+body barrier_synch
+  int cnt = 0
+  int sleep = 1
+  sem mutex = 1, delay[1:2] = ([2] 0)
+
+  proc barrier()  {
+    P(mutex)
+    cnt++
+    if (cnt < PR) {
+	int mysleep = sleep
+	V(mutex); P(delay[mysleep])
+    } else {
+	cnt = 0
+	for [ i = 1 to PR-1 ] { V(delay[sleep]) }
+	sleep = 3-sleep  # use other delay semaphore
+	V(mutex)
+    }
+  }
+end
+
+resource jacobi()
+  import data, size, barrier_synch
+  real maxdiff[1:PR]    # differences
+  int iters = 0
+
+  process strip [ p = 1 to PR ] {
+    const int r = (p-1)*S + 1    # starting row of strip
+    real  mdiff
+    while (true) {
+      # if process 1, count iterations
+      if (p == 1) { iters++ }
+      # compute new values for strip of grid
+      # use local variable to hold maximum difference
+      mdiff = 0.0
+      for [ i = r to r+S-1, j = 1 to N ] {
+	grid[nxt][i,j] = (grid[cur][i-1,j] + grid[cur][i,j-1] + \
+			   grid[cur][i+1,j] + grid[cur][i,j+1]) / 4
+	mdiff = max(mdiff, abs(grid[nxt][i,j] - grid[cur][i,j]))
+      }
+      maxdiff[p] = mdiff  # store mdiff in shared array
+      barrier()
+      # if process 1, swap roles of grids
+      if (p == 1) { nxt :=: cur }
+      # check for convergence and possibly terminate
+      for [ i = 1 to PR ] {
+	mdiff = max(mdiff, maxdiff[i])
+      }
+      if (mdiff <= epsilon) { exit }
+      barrier()
+    }
+  }
+
+  final {
+    write("convergence after", iters, "iterations")
+    print()
+  }
+end

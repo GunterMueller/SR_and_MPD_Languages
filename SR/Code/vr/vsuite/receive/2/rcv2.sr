@@ -1,0 +1,16 @@
+# test receive statement
+resource rcv2()
+	op p(x:int)
+	var N:int
+	write(1111)
+	read(N)
+	fa i := 1 to N ->
+		send p(-i)
+	af
+	write(2222)
+	fa i := 1 to N ->
+		var z:int
+		receive p(z)
+		write(z)
+	af
+end

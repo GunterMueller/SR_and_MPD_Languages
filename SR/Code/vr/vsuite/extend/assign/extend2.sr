@@ -1,0 +1,17 @@
+
+resource ServOps
+   op passL (x:int)
+end
+
+resource Servant
+   extend ServOps
+body Servant()
+   initial
+      var s : cap Servant
+      var si : cap ServOps
+	 s := create Servant()
+	 si.passL := s.passL	# caused problem in v1
+      var u : int
+      receive passL(u)
+   end
+end

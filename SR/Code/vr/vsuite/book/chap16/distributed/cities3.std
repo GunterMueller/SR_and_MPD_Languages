@@ -1,0 +1,6 @@
+the shortest path has length 6
+the cities on the shortest path are:
+  1 2 3 
+RTS warning: blocked process: Manager.manager : file distributed.sr, line 78
+RTS warning: blocked process: Manager.getjob : file distributed.sr, line 66
+RTS warning: blocked process: Manager.getjob : file distributed.sr, line 66

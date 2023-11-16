@@ -1,0 +1,46 @@
+a is 12345
+file pointer is 5
+a is 23456
+file pointer is 6
+a is 34567
+file pointer is 7
+a is 45678
+file pointer is 8
+a is 56789
+file pointer is 10
+a is 6789 
+file pointer is 10
+a is 789  
+file pointer is 10
+a is 89   
+file pointer is 10
+a is 9    
+file pointer is 10
+a is      
+file pointer is 10
+a is abcde
+file pointer is 15
+a is bcdef
+file pointer is 17
+a is cdef 
+file pointer is 17
+a is def  
+file pointer is 17
+a is ef   
+file pointer is 17
+a is f    
+file pointer is 17
+a is      
+file pointer is 17
+a is ghijk
+file pointer is 22
+a is hijkl
+file pointer is 23
+a is ijklm
+file pointer is 24
+a is jklmn
+file pointer is 25
+a is 12345
+file pointer is 5
+a is f    
+file pointer is 17

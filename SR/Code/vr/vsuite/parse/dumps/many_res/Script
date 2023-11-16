@@ -1,0 +1,4 @@
+0 sr -c mr.sr
+0 srl mr22 mr21 mr20 mr19 mr18 mr17 mr16 mr15 mr14 mr13 mr12 mr11 mr10 mr9 mr8 mr7 mr6 mr5 mr4 mr3 mr2 mr1
+0 run
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,5 @@
+# ron Mon Apr 17 12:06:26 1989
+0 sr -c escape.sr
+0 srl escape
+0 run
+0 rm -rf Interfaces core *.out

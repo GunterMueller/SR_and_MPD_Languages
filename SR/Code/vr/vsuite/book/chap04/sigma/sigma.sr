@@ -1,0 +1,14 @@
+resource main()
+
+  procedure sigma(n: int) returns sum: int
+    sum := 0
+    fa i := 1 to n -> sum +:= i  af
+  end
+
+  var x,y: int
+  
+  y := 12 
+  x := 10 + sigma(y)
+  write("x = ",x)
+
+end

@@ -1,0 +1,147 @@
+resource CmdInterpreter
+  import Defs, Utilities, Login, DirServer
+body CmdInterpreter(user: name; myhost: int; ttyin, ttyout: file;
+        host[*]: name; dscap[*]: cap DirServer; done: cap ())
+
+  # command "cr filename"
+  procedure cmd_cr(fname: name; server: int)
+    var fd := dscap[server].fcreate(user, fname, WRITE)
+    if fd.w = null -> write(ttyout, "cannot create file", fname); return fi
+    # read from ttyin and write to fd
+    write(ttyout, "Enter contents; Last line should be a single dot")
+    var ln: line
+    read(ttyin, ln)
+    do ln != "." ->
+      fd.w(ln); read(ttyin, ln)
+    od
+    fd.c()
+  end
+
+  # command "cat filename"
+  procedure cmd_cat(fname: name; server: int)
+    var fd := dscap[server].fopen(user, fname, READ)
+    if fd.r = null -> write(ttyout, "cannot read file", fname); return fi
+    # read from fd and write to ttyout
+    var ln: line
+    do fd.r(ln) != EOF -> write(ttyout, ln) od
+    fd.c()
+  end
+
+  # command "rm filename"
+  procedure cmd_rm(fname: name; server: int)
+    if dscap[server].fremove(user, fname) -> return fi
+    write(ttyout, "cannot remove file", fname)
+  end
+
+  # command "cp filename1 filename2"
+  procedure cmd_cp(f1: name; s1: int; f2: name; s2: int)
+    var fd1 := dscap[s1].fopen(user, f1, READ)
+    if fd1.r = null -> write(ttyout, "cannot read file", f1); return fi
+    var fd2 := dscap[s2].fcreate(user, f2, WRITE)
+    if fd2.w = null -> write(ttyout, "cannot write file", f2); return fi
+    # read from file fd1 and write to file fd2
+    var ln: line
+    do fd1.r(ln) != EOF -> fd2.w(ln) od
+    fd1.c(); fd2.c()
+  end
+
+  process CI
+    var cmdline: line, args[3]: name
+    var cur_host := myhost
+    write(ttyout)
+    do true ->
+      writes(ttyout, "% "); read(ttyin, cmdline)
+      var cmd := get_arg(cmdline)
+      if cmd = "cr" ->    # create a new file
+          var arg := get_arg(cmdline)
+          if arg = "" ->
+            write(ttyout, "Usage:  cr filename"); next
+          fi
+          var machine, fname: name
+          parse_filename(arg, machine, fname)
+          var server := cur_host
+          if machine != "" ->
+            if (server := lookup(machine, host)) = 0 ->
+              write(ttyout, "invalid host"); next
+            fi
+          fi
+          cmd_cr(fname, server)
+      [] cmd = "cat" ->    # print an existing file
+          var arg := get_arg(cmdline)
+          if arg = "" ->
+            write(ttyout, "Usage:  cat filename"); next
+          fi
+          var machine, fname: name
+          parse_filename(arg, machine, fname)
+          var server: int
+          if machine = "" -> server := cur_host
+          [] else -> server := lookup(machine, host)
+          fi
+          if server = 0 ->
+            write(ttyout, "invalid host"); next
+          fi
+          cmd_cat(fname, server)
+      [] cmd = "rm" ->    # remove a file
+          var arg := get_arg(cmdline)
+          if arg = "" ->
+            write(ttyout, "Usage:  rm filename"); next
+          fi
+          var machine, fname: name
+          parse_filename(arg, machine, fname)
+          var server: int
+          if machine = "" -> server := cur_host
+          [] else -> server := lookup(machine, host)
+          fi
+          if server = 0 ->
+            write(ttyout, "invalid host"); next
+          fi
+          cmd_rm(fname, server)
+      [] cmd = "cp" ->    # copy one file to another
+          var arg1 := get_arg(cmdline)
+          var arg2 := get_arg(cmdline)
+          if arg1 = "" or arg2 = "" ->
+            write(ttyout, "Usage:  cp file1 file2"); next
+          fi
+          var m1, f1, m2, f2: name
+          var s1, s2: int
+          parse_filename(arg1, m1, f1)
+          parse_filename(arg2, m2, f2)
+          if m1 = "" -> s1 := cur_host
+          [] else -> s1 := lookup(m1, host)
+          fi
+          if m2 = "" -> s2 := cur_host
+          [] else -> s2 := lookup(m2, host)
+          fi
+          if s1 = 0 or s2 = 0 ->
+            write(ttyout, "invalid host"); next
+          fi
+          cmd_cp(f1, s1, f2, s2)
+      [] cmd = "ls" ->    # list contents of current directory
+          var server := cur_host    # default for ls command
+          var machine := get_arg(cmdline)
+          if machine != "" ->
+            server := lookup(machine, host)
+          fi
+          if server = 0 ->
+            write(ttyout, "invalid host"); next
+          fi
+          var files[FILES]: name
+          var nfiles := dscap[server].list(user, files)
+          fa i := 1 to nfiles -> write(ttyout, files[i]) af
+      [] cmd = "pwd" ->    # print name of current directory
+          write(ttyout, host[cur_host])
+      [] cmd = "cd" ->    # change directory
+          var machine := get_arg(cmdline)
+          if machine = "" -> cur_host := myhost; next fi
+          var new_host := lookup(machine, host)
+          if new_host = 0 -> write(ttyout, "invalid host", machine)
+          [] else -> cur_host := new_host
+          fi
+      [] cmd = "exit" ->    # exit interpreter
+          send done(); exit
+      [] else -> write(ttyout, "invalid command")
+      fi
+    od
+  end
+
+end  CmdInterpreter

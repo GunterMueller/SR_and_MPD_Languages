@@ -1,0 +1,5 @@
+#  gmt  Tue Oct 29 17:33:57 MST 1991
+0 mpd -c bfree2.mpd
+0 mpdl a
+0 run
+0 rm -rf MPDinter core *.out

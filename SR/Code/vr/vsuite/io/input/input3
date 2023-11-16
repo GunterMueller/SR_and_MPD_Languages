@@ -1,0 +1,6 @@
+# token spacing; "true"; line length = string length;  EOF in middle of get(s)
+     -239  C   true   red, blue, green
+republican
+democratic
+three
+four

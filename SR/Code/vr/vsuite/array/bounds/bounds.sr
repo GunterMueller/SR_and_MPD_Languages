@@ -1,0 +1,89 @@
+# checks related to lb() , ub() for multidim arrays
+resource lb_ub
+	op fill1d(a[1:*] : int)
+	op fill1d_unsp_lb(a[*] : int)
+	op fill2d(a[1:*][1:*] : int)
+	op fill3d(a[1:*][1:*][1:*] : int)
+	op fill3d_unsp_lb(a[1:*][*][1:*] : int)   # some lb's are unspecified
+
+body lb_ub()
+
+proc fill1d(a)
+	write ("1D array ")
+	write (lb(a), ub(a))
+	write (lb(a, 1), ub(a, 1))
+	fa i := lb(a, 1) to ub(a, 1) ->
+		a[i] := i
+		writes(a[i], " ")
+	af
+	put("\n")
+end fill1d
+
+proc fill1d_unsp_lb(a)
+	write ("1D array : unspecified range w/o lb")
+	write (lb(a), ub(a))
+	write (lb(a, 1), ub(a, 1))
+	fa i := lb(a, 1) to ub(a, 1) ->
+		a[i] := i
+		writes(a[i], " ")
+	af
+	put("\n")
+end fill1d_unsp_lb
+
+proc fill2d(a)
+	write ("2D array ")
+	write (lb(a), ub(a), lb(a[1]), ub(a[1]))
+	write (lb(a, 1), ub(a, 1), lb(a, 2), ub(a, 2))
+	fa i := lb(a, 1) to ub(a, 1),
+	   j := lb(a, 2) to ub(a, 2) ->
+		a[i, j] := (i - 1) * ub(a) + j
+		writes(a[i,j], " ")
+	af
+	put("\n")
+end fill2d
+
+proc fill3d(a)
+	write ("3D array ")
+	write (lb(a), ub(a), lb(a[1]), ub(a[1]),
+				     lb(a[1][lb(a,2)]), ub(a[1][ub(a,2)]))
+	write (lb(a, 1), ub(a, 1), lb(a, 2), ub(a, 2), lb(a, 3), ub(a, 3))
+	fa i := lb(a, 1) to ub(a, 1),
+	   j := lb(a, 2) to ub(a, 2),
+	   k := lb(a, 3) to ub(a, 3) ->
+		a[i, j, k] := (i - 1) * ub(a) * ub(a[1]) +
+				(j - 1) * ub(a[1]) + k
+		writes(a[i,j,k], " ")
+	af
+	put("\n")
+end fill3d
+
+proc fill3d_unsp_lb(a)
+	write ("3D array : unspecified range w/o lb")
+	write (lb(a), ub(a), lb(a[1]), ub(a[1]),
+				     lb(a[1][lb(a,2)]), ub(a[1][ub(a,2)]))
+	write (lb(a, 1), ub(a, 1), lb(a, 2), ub(a, 2), lb(a, 3), ub(a, 3))
+	fa i := lb(a, 1) to ub(a, 1),
+	   j := lb(a, 2) to ub(a, 2),
+	   k := lb(a, 3) to ub(a, 3) ->
+		a[i, j, k] := (i - 1) * ub(a) * ub(a[1]) +
+				(j - 1) * ub(a[1]) + k
+		writes(a[i,j,k], " ")
+	af
+	put("\n")
+end fill3d_unsp_lb
+
+var a : [31:32][33:34][35:36] int
+var b [20:21] : [22:23] int
+var c [10:11] : int
+
+fill1d(c); fill1d_unsp_lb(c)
+fill2d(b)
+fill3d(a); fill3d_unsp_lb(a)
+
+final
+    # used to have a problem with variably-sized arrays in final code
+    var d[1:ub(c)] : char
+    write ("d:", lb(d), ub(d))
+end
+
+end lb_ub

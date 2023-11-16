@@ -1,0 +1,22 @@
+_resource(bb)
+   const N := 10
+   var count := 0, front := 1, rear := 1
+   var buf[N]: int
+_resource_end(bb)
+
+resource foo()
+  process depositer(i := 1 to 10)
+    nap(10-i)
+    _region(bb,count < N)
+      write("depositer",i); nap(1)
+      buf[rear] := i*100; rear := rear%N + 1; count++
+    _region_end(bb)
+  end
+  process fetcher(i := 1 to 10)
+    nap(4-i)
+    _region(bb,count>0)
+      write("fetcher",i); write("fetch",buf[front]); nap(1)
+      front := front%N + 1; count--
+    _region_end(bb)
+  end
+end

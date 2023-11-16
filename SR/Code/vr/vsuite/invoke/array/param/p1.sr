@@ -1,0 +1,31 @@
+#  simple calls with array params
+
+#  calls to a should use predeclared param block; calls to b should not
+
+resource p1()
+	var n := 3		# once got bad optimization if variable
+	op a(z[1:3]: int)
+	op b(z[1:n]: int)
+
+	const c := ((12, 83, 41))
+	a(c)
+	b(c)
+
+        var zz[1:10]: int;
+        fa i := 1 to 10 ->
+	zz[i] := i
+        af
+
+        fa i := 1 to 8 ->
+	call a(zz[i:i+2])
+	call b(zz[i:i+2])
+        af
+
+	proc a(z)
+	    write(z[1],z[2],z[3])
+	end
+
+	proc b(z)
+	    write(z[1],z[2],z[n])
+	end
+end

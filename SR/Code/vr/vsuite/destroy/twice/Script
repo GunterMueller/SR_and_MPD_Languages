@@ -1,0 +1,3 @@
+0 sr twice.sr
+1 run
+0 rm -rf Interfaces core *.out

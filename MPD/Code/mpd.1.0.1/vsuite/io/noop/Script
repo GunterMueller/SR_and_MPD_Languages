@@ -1,0 +1,5 @@
+#  gmt  Fri May 26 11:12:00 MST 1989
+0 mpd -c noop.mpd
+0 mpdl none
+0 run
+0 rm -rf MPDinter core *.out

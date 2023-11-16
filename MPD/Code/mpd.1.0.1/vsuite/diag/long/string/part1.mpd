@@ -1,0 +1,4 @@
+# verify that a long string doesn't crash the compiler
+
+resource foo ()
+   string[1000] s = \

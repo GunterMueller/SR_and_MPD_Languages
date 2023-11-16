@@ -1,0 +1,19 @@
+resource do8()
+	int  a,b,c
+	a = 1
+	b = 2
+	c = 0
+	write(a); write(b); write(c)
+	while (a != 10) {
+		b = a
+		while (b != 10) {
+			c++
+			b++
+			write(a); write(b); write(c)
+		}
+		a++
+		write(a); write(b); write(c)
+	}
+	a :=: c
+	write(a); write(b); write(c)
+end

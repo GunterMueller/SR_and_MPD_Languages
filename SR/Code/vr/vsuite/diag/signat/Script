@@ -1,0 +1,6 @@
+#  test for signature errors
+
+0 sh ../mkscript.sh signat.sr | tee sh.tmp | sr=$sr sh >signat.out
+1 grep -v ok: signat.out
+0 cmp -s signat.std signat.out
+0 rm -rf Interfaces core *.out *.tmp test*.sr

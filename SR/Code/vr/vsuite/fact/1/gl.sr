@@ -1,0 +1,3 @@
+global gl
+	optype answer = (result: int) {send}
+end

@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 sr -c fwd1.sr
+0 srl fwd1
+0 run 
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,3 @@
+echo gries.sr
+rm -rf ./Interfaces 
+rm -f core a.out

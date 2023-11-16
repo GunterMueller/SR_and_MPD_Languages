@@ -1,0 +1,17 @@
+this string has two
+	embedded
+	newlines
+embedded apos'phe and escaped "quotes" in doubly quoted string
+sharp sign # number sign # pound sign # octothorp # whatever
+back\slash (sometimes ignored)
+alerts
+verticaltab
+formfeed
+         returncarriage
+        ecapskcab
+[7mescapes[m
+tab	and 4 bells
+turning on the ¸ôè âéô
+hexadecimal	!
+characters
+done

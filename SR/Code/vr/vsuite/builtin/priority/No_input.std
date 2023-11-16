@@ -1,0 +1,36 @@
+main: 0
+part 1: main waiting
+process 1 blocking, priority 7
+process 2 blocking, priority 9
+process 3 blocking, priority 6
+process 4 blocking, priority 4
+main sending
+main blocking
+process 2 executing, priority 9
+process 1 executing, priority 7
+process 3 executing, priority 6
+process 4 executing, priority 4
+going on
+
+part 2: main waiting
+main sending
+main blocking
+process 3 executing, priority 3
+process 2 executing, priority 2
+process 1 executing, priority 1
+going on
+
+part 3:
+p1a: 0
+p1b: 10
+p1c: 10
+p2a: 10
+p2b: -5
+p1d: -20
+chp: -20
+chp: 100
+p1e: -20
+p2c: -30
+p2d: -30
+p1f: -20
+done

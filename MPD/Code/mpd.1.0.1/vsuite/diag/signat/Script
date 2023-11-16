@@ -1,0 +1,6 @@
+#  test for signature errors
+
+0 sh ../mkscript.sh signat.mpd | tee sh.tmp | mpd=$mpd sh >signat.out
+1 grep -v ok: signat.out
+0 cmp -s signat.std signat.out
+0 rm -rf MPDinter core *.out *.tmp test*.mpd

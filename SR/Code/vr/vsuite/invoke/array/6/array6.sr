@@ -1,0 +1,22 @@
+# array of local operations.
+resource array6()
+
+    write("starting")
+    op myanswer[1:10]  (x:int)
+
+
+    write("sending")
+    fa i := 1 to 10 ->
+	send myanswer[i](i*100)
+    af
+
+    write("receiving")
+    fa i := 6 to 10 ->
+	var j: int
+	receive myanswer[i](j); write(i,j)
+    af
+    fa i := 5 downto 1 ->
+	var j: int
+	receive myanswer[i](j); write(i,j)
+    af
+end

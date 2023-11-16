@@ -1,0 +1,29 @@
+resource imp2
+	import imp1
+	op f(t x) {send,call}
+body imp2(int x)
+	op h() {send}
+	cap imp1  c
+
+	write("imp2 initial",x)
+
+	process g  {
+		t z
+		z.a = 5
+		z.b = 6
+		write("imp2 before create")
+		c = create imp1(-1,-2,-3,true)
+		write("imp2 after create")
+		send c.f(z)
+		send h()
+	}
+	proc h()  {
+		t x
+		x.a = -99
+		x.b = -100
+		c.f(x)
+	}
+	proc f(z)  {
+		write("imp2 f", z.a, z.b)
+	}
+end

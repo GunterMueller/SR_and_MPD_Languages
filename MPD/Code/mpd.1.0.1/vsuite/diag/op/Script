@@ -1,0 +1,6 @@
+#  check compiler errors related to ops
+
+0 sh ../mkscript.sh op.mpd | tee sh.tmp | mpd=$mpd sh >op.out
+1 grep -v ok: op.out
+0 cmp -s op.std op.out
+0 rm -rf MPDinter core *.out *.tmp test*.mpd

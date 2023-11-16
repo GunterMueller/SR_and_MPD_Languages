@@ -1,0 +1,28 @@
+global a
+	const int x = 1234
+end
+
+global aa
+	const int x = -654
+end
+
+resource b()
+
+	int  x = 56
+	write("hi",x)
+	while (true) {
+	    if (x == 56) {
+		import a
+		write(a.x,x)
+		x = 88
+	    } else if (x == 88 ) {
+		import aa
+		write(aa.x,x)
+		x = 98765
+	    } else {
+		exit
+	    }
+	}
+	write("ih",x)
+
+end

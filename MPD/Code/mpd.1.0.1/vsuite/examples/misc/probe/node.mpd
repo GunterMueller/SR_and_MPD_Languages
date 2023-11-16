@@ -1,0 +1,66 @@
+resource node
+  import printer
+  optype echo_type (int topology[1:*,1:*])
+  op neighbors(cap node links[1:*], int indices[1:*])
+  op initiate(res int topology[1:*,1:*])
+  op probe(int from , cap echo_type echo )
+body node(int n, int myid, cap printer pr ) separate
+
+body node
+
+  cap node  links[1:n] 
+  int  indices[1:n] 
+
+  proc neighbors(Links,Indices)  {
+    links = Links; indices = Indices
+    writes("neighbors of node ", myid, ":  ")
+    for [ i = 1 to n st indices[i]~= 0 ] { writes(indices[i]," ") }
+    write()
+  }
+
+  proc initiate(topology)  {
+    op echo_type echo
+    send probe(myid,echo)
+    receive echo(topology)
+  }
+
+  process probe_handler  {
+    while (true) {
+	in probe(from,echo_back) ->
+	    int mytop[1:n, 1:n] = ([n]([n] 0))
+		  mytop[myid,1:*] = indices
+	    op echo_type echo
+	    int  probed = 0
+
+	    # send probe to other neighbors
+	    for [ k = 1 to n st k ~= from and indices[k]~=0 ] {
+		send links[k].probe(myid,echo)
+		probed++
+	    }
+
+	    # receive echoes and handle other probes
+	    while (probed>0) {
+		in echo(othertop) ->
+		    int ot[1:n,1:n] = othertop
+		    for [ i = 1 to n, j = 1 to n
+			 st mytop[i,j]==0 and ot[i,j]~=0 ] {
+			     mytop[i,j] = ot[i,j]
+		    }
+		    probed--
+		[] probe(from,echo_back) ->
+		    int empty_top[1:n,1:n] = ([n]([n] 0))
+		    send echo_back(empty_top)
+		ni
+	    }
+
+	    # send final topology to printer
+	    send pr.print(myid,mytop)
+
+	    # echo mytop back to first prober
+	    send echo_back(mytop)
+
+	ni
+    }
+  }
+
+end node

@@ -1,0 +1,116 @@
+##  Test newlines in funny places and line numbers in diagnostics.
+#
+#   (Do not look too hard at this; you'll get a headache.)
+#
+#   WARNING:  if you change this source you'll have to change "Complier.std"
+#
+#   (#%#% remove most \$ later, except a few for testing, and in string const)
+
+global f;end
+global g/*
+	...
+	...
+	...*/
+    import f
+    var v := 12
+    var s : string(20) := ""	# check correct line number on warning msgs
+#
+\
+#
+body g
+type t = int
+    write ("g:", ++v, s ||:= 'g')
+end;resource/**/a()
+    import g
+    write ("a:", ++v, s ||:= 'a')
+end a;resource
+	b()
+    import g
+    write (
+	"b:"
+	,
+	++ v
+	,
+	s
+	||:=
+	'b'
+	)
+end
+
+resource /*
+   ... comment ...
+   ... comment ...
+   ... comment ...
+   ... comment ...
+	*/ c ()
+"\
+this\
+string\
+has\
+embedded\
+newlines\
+to\
+see\
+if\
+we\
+can\
+throw\
+off\
+the\
+line\
+counter\
+"
+
+    var s2 : string(3)		# check line number reported here, too
+				# note that the line is followed
+				# by several lines of comments
+				# and a couple of blank lines
+
+
+# preserve blank lines before here
+
+    import
+	g
+    write ("c:",
+	++v, s ||:= 'c')
+end
+
+resource d
+body d () separate		# separate body used to throw off line numbers
+
+body d
+    final reply end
+end
+
+resource m ()
+    import g, a, b, c, d
+    create a()
+    create
+	b (
+	)
+    create c()
+    write ("m:", ++v, s ||:= 'm')
+
+    procedure
+	w (
+	n
+	:
+	int )
+	write (
+	n
+	)
+    end
+    co
+	( i
+	:=
+	1
+	to
+	5
+	)
+	w (
+	i
+	)
+    oc
+
+    final reply end		# checks err msg from second pass
+end

@@ -1,0 +1,4 @@
+0 sr -c my.spec.sr my.body.sr
+0 srl my
+0 run
+0 rm -rf Interfaces core *.out

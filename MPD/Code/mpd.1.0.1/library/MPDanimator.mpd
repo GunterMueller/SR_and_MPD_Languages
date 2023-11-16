@@ -1,0 +1,209 @@
+global MPDanimator
+   op A_bg(string[*] colorr)
+   op A_coords(real lx, real byy, real rx, real ty)
+   op A_delay(int frames)
+   op A_line (int id, real lx, real ly, real sx, real sy,
+      string[*] colorr, string[*] width, string[*] style, string[*] arrows)
+   op A_rectangle(int id, real lx, real ly, real sx, real sy,
+      string[*] colorr, string[*] filll)
+   op A_circle(int id, real lx, real ly, real rad,
+      string[*] colorr, string[*] filll)
+   op A_triangle(int id, real lx, real ly, real vx0, real vy0,
+      real vx1, real vy1, string[*] colorr, string[*] filll)
+   op A_text(int id, real lx, real ly, int cen, string[*] colorr, string[*] str)
+   op A_bigtext(int id, real lx, real ly, int cen,
+      string[*] colorr, string[*] str)
+   op A_fonttext(int id, real lx, real ly, int cen,
+      string[*] colorr, string[*] fontname, string[*] str)
+   op A_delete(int id)
+   op A_move(int id, real tx, real ty)
+   op A_moverelative(int id, real tx, real ty)
+   op A_moveto(int id1, int id2)
+   op A_jump(int id, real tx, real ty)
+   op A_stepjump(int id, real tx, real ty, int nsteps, int steptime)
+   op A_jumprelative(int id, real tx, real ty)
+   op A_jumpto(int id1, int id2)
+   op A_stepjumpto(int id1, int id2, int nsteps, int steptime)
+   op A_color(int id, string[*] colname)
+   op A_fill(int id, string[*] filll)
+   op A_vis(int id)
+   op A_raise(int id)
+   op A_lower(int id)
+   op A_exchangepos(int id1, int id2)
+   op A_switchpos(int id1, int id2)
+   op A_swapid(int id1, int id2)
+   op A_resize(int id, real rx, real ry)
+   op A_zoom(int id, real rx, real ry)
+   op A_end()
+body MPDanimator
+   external BEGIN_TANGOalgoOp()
+   external IDS_ASSOCmake()
+   external END_TANGOalgoOp()
+   external bg(string[*] colorr)
+   external coords(real lx, real byy, real rx, real ty)
+   external delay(int frames)
+   external line (int id, real lx, real ly, real sx, real sy,
+      string[*] colorr, string[*] width, string[*] style, string[*] arrows)
+   external rectangle(int id, real lx, real ly, real sx, real sy,
+      string[*] colorr, string[*] filll)
+   external circle(int id, real lx, real ly, real rad,
+      string[*] colorr, string[*] filll)
+   external triangle(int id, real lx, real ly, real vx0, real vy0,
+      real vx1, real vy1, string[*] colorr, string[*] filll)
+   external text(int id, real lx, real ly, int cen,
+      string[*] colorr, string[*] str)
+   external bigtext(int id, real lx, real ly, int cen,
+      string[*] colorr, string[*] str)
+   external fonttext(int id, real lx, real ly, int cen,
+      string[*] colorr, string[*] fontname, string[*] str)
+   external delete(int id)
+   external move(int id, real tx, real ty)
+   external moverelative(int id, real tx, real ty)
+   external moveto(int id1, int id2)
+   external jump(int id, real tx, real ty)
+   external jumprelative(int id, real tx, real ty)
+   external jumpto(int id1, int id2)
+   external color(int id, string[*] colname)
+   external fill(int id, string[*] filll)
+   external vis(int id)
+   external raise(int id)
+   external lower(int id)
+   external exchangepos(int id1, int id2)
+   external switchpos(int id1, int id2)
+   external swapid(int id1, int id2)
+   external resize(int id, real rx, real ry)
+   external zoom(int id, real rx, real ry)
+
+   external locX(int id) returns real x
+   external locY(int id) returns real y
+
+   op jumpsteps(int id, real tx, real ty, int nsteps, int steptime)
+   op jumptosteps(int id1, int id2, int nsteps, int steptime)
+
+   write(stderr, "MPDanimator global has been created")
+   BEGIN_TANGOalgoOp()
+   IDS_ASSOCmake()
+   reply
+
+   while (true) {
+      in A_bg(colorr) ->
+           bg(colorr)
+      [] A_coords(lx, byy, rx, ty) ->
+           coords(lx, byy, rx, ty)
+      [] A_delay(frames) ->
+           delay(frames)
+      [] A_line(id, lx, ly, sx, sy, colorr, width, style, arrows) ->
+           line(id, lx, ly, sx, sy, colorr, width, style, arrows)
+      [] A_rectangle(id, lx, ly, sx, sy, colorr, filll) ->
+           rectangle(id, lx, ly, sx, sy, colorr, filll)
+      [] A_circle(id, lx, ly, rad, colorr, filll) ->
+           circle(id, lx, ly, rad, colorr, filll)
+      [] A_triangle(id, lx, ly, vx0, vy0, vx1, vy1, colorr, filll) ->
+           triangle(id, lx, ly, vx0, vy0, vx1, vy1, colorr, filll)
+      [] A_text(id, lx, ly, cen, colorr, str) ->
+           text(id, lx, ly, cen, colorr, str)
+      [] A_bigtext(id, lx, ly, cen, colorr, str) ->
+           bigtext(id, lx, ly, cen, colorr, str)
+      [] A_fonttext(id, lx, ly, cen, colorr, fontname, str) ->
+           fonttext(id, lx, ly, cen, colorr, fontname, str)
+      [] A_delete(id) ->
+           delete(id)
+      [] A_move(id, tx, ty) ->
+           move(id, tx, ty)
+      [] A_moverelative(id, tx, ty) ->
+           moverelative(id, tx, ty)
+      [] A_moveto(id1, id2) ->
+           moveto(id1, id2)
+      [] A_jump(id, tx, ty) ->
+           jump(id, tx, ty)
+      [] A_stepjump(id, tx, ty, nsteps, steptime) ->
+         forward jumpsteps(id, tx, ty, nsteps, steptime)
+      [] A_jumprelative(id, tx, ty) ->
+           jumprelative(id, tx, ty)
+      [] A_jumpto(id1, id2) ->
+           jumpto(id1, id2)
+      [] A_stepjumpto(id1, id2, nsteps, steptime) ->
+         # cannot calculate tox,toy here and reuse jumpsteps since
+         # signatures must match of stepjumpto and jumpsteps to use forward
+         forward jumptosteps(id1, id2, nsteps, steptime)
+      [] A_color(id, colname) ->
+           color(id, colname)
+      [] A_fill(id, filll) ->
+           fill(id, filll)
+      [] A_vis(id) ->
+           vis(id)
+      [] A_raise(id) ->
+           raise(id)
+      [] A_lower(id) ->
+           lower(id)
+      [] A_exchangepos(id1, id2) ->
+           exchangepos(id1, id2)
+      [] A_switchpos(id1, id2) ->
+           switchpos(id1, id2)
+      [] A_swapid(id1, id2) ->
+           swapid(id1, id2)
+      [] A_resize(id, rx, ry) ->
+           resize(id, rx, ry)
+      [] A_zoom(id, rx, ry) ->
+           zoom(id, rx, ry)
+      [] A_end() st ?A_bg == 0 and
+            ?A_coords == 0 and
+            ?A_delay == 0 and
+            ?A_line == 0 and
+            ?A_rectangle == 0 and
+            ?A_circle == 0 and
+            ?A_triangle == 0 and
+            ?A_text == 0 and
+            ?A_bigtext == 0 and
+            ?A_delete == 0 and
+            ?A_move == 0 and
+            ?A_moverelative == 0 and
+            ?A_moveto == 0 and
+            ?A_jump == 0 and
+            ?A_stepjump == 0 and
+            ?A_jumprelative == 0 and
+            ?A_jumpto == 0 and
+            ?A_stepjumpto == 0 and
+            ?A_color == 0 and
+            ?A_fill == 0 and
+            ?A_vis == 0 and
+            ?A_raise == 0 and
+            ?A_lower == 0 and
+            ?A_exchangepos == 0 and
+            ?A_switchpos == 0 and
+            ?A_swapid == 0 ->
+           write(stderr, "A_end has been invoked")
+           END_TANGOalgoOp()
+      ni
+   }
+
+   proc jumpsteps(id, tx, ty, nsteps, steptime) {
+      real curx, cury, delx, dely
+      curx = locX(id)
+      cury = locY(id)
+      delx = (tx - curx)/nsteps
+      dely = (ty - cury)/nsteps
+      for [ i = 1 to nsteps-1 ] {
+         # use call here rather than send because A_stepjump may have been
+         # called and we want that caller to stay blocked until all of this
+         # finishes
+         call A_jumprelative(id, delx, dely)
+         nap(steptime)
+      }
+      call A_jump(id, tx, ty) # to avoid roundoff accumulation error
+   }
+
+   proc jumptosteps(id1, id2, nsteps, steptime) {
+      real tox, toy
+      tox = locX(id2)
+      toy = locY(id2)
+      jumpsteps(id1, tox, toy, nsteps, steptime)
+   }
+
+   final {
+      # end animation even if above in statement queue not empty; call A_end()
+      # from user application to flush queue
+      write(stderr, "MPDanimator destroyed, final block executing")
+      END_TANGOalgoOp()
+   }
+end MPDanimator

@@ -1,0 +1,25 @@
+# a bit faster than ordinary marking?
+# because it worries only about odds.
+resource sieve()
+
+	int  n
+	put("enter n "); read(n)
+	const int N = (n-1)/2
+	bool  hit[1:N] 
+	for [ i = 1 to N ] { hit[i] = false; }
+	write(2)
+	for [ i = 1 to N ] {
+		if (not hit[i]) {
+			int  num = i+i+1
+			write(num)
+			# mark odd multiples of num.
+			# e.g., for 5, mark 15,25,35, ...
+				int  j = i+num
+				while (j <= N) {
+					hit[j] = true
+					j = j+num
+				}
+		}
+	}
+end
+

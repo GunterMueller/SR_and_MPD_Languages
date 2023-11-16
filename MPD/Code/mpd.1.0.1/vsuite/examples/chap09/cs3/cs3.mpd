@@ -1,0 +1,19 @@
+resource cs3()
+  optype results_type = ()
+  op request(cap results_type  results_cap)
+  const int N = 20  # number of client processes
+  process client [ i = 1 to N ] {
+    op results_type results
+    send request(results)
+    # possibly perform some other work
+    receive results()
+  }
+  process server  {
+    while (true) {
+      cap results_type  results_cap
+      receive request(results_cap)
+      # handle request
+      send results_cap()
+    }
+  }
+end

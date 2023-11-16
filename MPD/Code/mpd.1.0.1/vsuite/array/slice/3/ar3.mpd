@@ -1,0 +1,27 @@
+resource ar3()
+    op a(var int x[1:5, 1:*], int cnt)
+
+    int  y[1:5, 1:10]
+
+    for [ i= 1 to 5 ] {
+	for [ j = 1 to 10 ] {
+	y[i,j] = i + j;
+	}
+    }
+    a(y, 10);
+
+    for [ i= 1 to 5 ] {
+	for [ j = 1 to 10 ] {
+	write(y[i,j]);
+	}
+    }
+
+
+    proc a(x, cnt)  {
+	for [ i = 1 to 5 ] {
+	    for [ j = 1 to cnt ] {
+		x[i,j] -- ;
+	    }
+	}
+    }
+end

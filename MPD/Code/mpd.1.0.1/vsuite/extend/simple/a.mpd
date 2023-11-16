@@ -1,0 +1,26 @@
+# extend of two specs
+
+resource a1
+	op f1(int x)
+	op g1()
+end
+
+resource a2
+	op f2(int x)
+	op g2()
+end
+
+resource b
+	op e()
+	extend a1, a2
+	op h()
+body b()
+	int  x = 789
+	e(); f1(12345); f2(1234); g1(); g2(); h()
+	proc e()   { write("hi from e",x) }
+	proc f1(x) { write("hi from f1",x) }
+	proc f2(x) { write("hi from f2",-x) }
+	proc g1()  { write("hi from g1",x) }
+	proc g2()  { write("hi from g2",-x) }
+	proc h()   { write("hi from h",x) }
+end

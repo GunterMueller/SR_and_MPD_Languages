@@ -1,0 +1,48 @@
+This the SR programming language, Version 2.3.3, from the University of Arizona.
+
+
+SR is described in "The SR Programming Language: Concurrency in Practice"
+by Gregory R. Andrews and Ronald A. Olsson (Benjamin/Cummings, 1993, ISBN
+0-8053-0088-0).  Information about concurrent programming in general can be
+found in "Concurrent Programming: Principles and Practice" by Gregory R.
+Andrews (Benjamin/Cummings, 1991, ISBN 0-8053-0086-4).  These books can be
+ordered through your local bookstore or by telephoning 1-800-950-2665 or
+1-415-594-4400.
+
+The ./ps directory contains documentation in PostScript form, including:
+	language.ps	an overview of the SR language
+	release.ps	release notes, including problems and limitations
+	install.ps	installation instructions
+	manpages.ps	typeset versions of the manual pages
+	srwin.ps	a report describing the SRWin X-windows interface
+	sranimator.ps	a report describing the XTANGO animation interface
+Troff source for many of these files is in the ./doc directory.
+README files in both of those directories give further details.
+
+See ./Systems for a list of targeted architectures and special platform-
+dependent installation requirements.
+
+
+SR comes from:
+	SR Project
+	Department of Computer Science
+	The University of Arizona
+	Tucson, Arizona  85721-0077
+
+We can be reached by electronic mail at sr-project@cs.arizona.edu
+or by FAX at  +1 520 621 4246.
+
+The SR web page is at http://www.cs.arizona.edu/sr/.
+
+SR is available by anonymous FTP from the "sr" directory on cs.arizona.edu.
+An electronic mail interface to FTP is provided by ftpmail@cs.arizona.edu;
+for details, send a message with "help" in the body.
+
+
+The SR system is in the public domain and you may use and distribute it
+as you wish.  We ask that you retain credits referencing the University
+of Arizona and that you identify any changes you make.
+
+We can't provide a warranty with SR; it's up to you to determine its
+suitability and reliability for your needs.  We do intend to maintain
+SR as resources permit, and would like to hear of any problems.

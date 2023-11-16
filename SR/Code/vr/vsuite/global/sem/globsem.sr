@@ -1,0 +1,29 @@
+# global semaphores
+
+global g
+    sem s := 1
+    sem t, u
+body g
+    P(s)
+    write ("g here")
+    reply
+    P(s)
+    write ("g again")
+    V(u)
+    P(s)
+    in s() -> write ("g got s")
+    [] t() -> write ("g got t")
+    ni
+    write ("done: ", ?s, ?t, ?u)
+end
+
+resource r ()
+    write ("r here")
+    import g
+    write ("r again")
+    V(s)
+    P(u)
+    write ("r finishing")
+    V(s)
+    V(s)
+end

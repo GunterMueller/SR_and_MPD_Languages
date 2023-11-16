@@ -1,0 +1,75 @@
+#  A simple test of remote virtual machine creation.  Just give a list of
+#  hostnames as command arguments; the program will verify that a virtual
+#  machine can be created on each one.
+
+
+resource remote (s : string[*])
+	external gethostname (res s : string[*]; namelen : int)
+	external getpid () returns n : int
+process v
+	var h : string[64]
+	gethostname (h, maxlength(h))
+	printf ("  machine=%-5d  pid=%-5d  host=%s\n", mymachine(), getpid(), h)
+	flush (stdout)
+end v
+end remote
+
+
+resource main
+	import remote
+	external getenv (s : string[*]) returns v : string[250]
+body main()
+	var s : string[100]
+	var mcap : cap vm
+	var rcap : cap remote
+	op startup (m : cap vm; s : string[*])
+
+	# check environment variables
+	s := getenv("SRXPATH")
+	if s ~= "" ->
+		writes("SRXPATH=",s,"\n")
+	fi
+	s := getenv("SRMAP")
+	if s ~= "" ->
+		writes("SRMAP=",s,"\n")
+	fi
+
+	# first, create one locally
+	write("trying locally:")
+	flush(stdout)
+	mcap := create vm()
+	if mcap = null ->
+		write(stderr,"can't create vm on local machine")
+	[] else ->
+		rcap := create remote(s) on mcap
+		nap(1000)	# give new process a chance to print
+	fi
+
+	# now, create one on each specified remote machine
+	fa i := 1 to numargs() ->
+		getarg(i,s)
+		writes("trying ",s,":\n")
+		flush(stdout)
+
+		# first, try using `locate'
+		locate(i,s)
+		mcap := create vm() on i
+		startup (mcap, s)
+
+		# then, try direct creation
+		mcap := create vm() on s
+		startup (mcap, s)
+
+	af
+	stop
+
+proc startup (m, s)
+	if mcap = null ->
+		write(stderr,"can't create vm on",s)
+	[] else ->
+		rcap := create remote(s) on mcap
+		nap(1000)	# give new process a chance to print
+	fi
+end startup
+
+end main

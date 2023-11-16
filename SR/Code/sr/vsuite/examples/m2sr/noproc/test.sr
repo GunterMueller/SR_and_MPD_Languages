@@ -1,0 +1,7 @@
+resource test()
+
+  import no_proc
+
+  write("done")
+
+end

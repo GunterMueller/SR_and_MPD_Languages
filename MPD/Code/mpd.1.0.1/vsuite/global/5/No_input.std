@@ -1,0 +1,8 @@
+This is ggg initialisation code
+1 1 abc : before `import ggg', I is  111
+This is globps
+1 1 abc : after `import ggg', I is  222
+=====
+1 2 abc : before `import ggg', I is  222
+1 2 abc : after `import ggg', I is  222
+ggg : Finalisation code

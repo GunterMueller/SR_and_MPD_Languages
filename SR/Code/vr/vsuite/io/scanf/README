@@ -1,0 +1,28 @@
+The file in here are test files and answer files:
+    xxx.in	test file
+    xxx.std	expected output from scan  (tests scanf)
+    xxx.sstd	expected output from sscan (tests sscanf)
+
+The format for a test file is:
+ 1)  # at the beginning of line terminates test
+ 2)  $a <number>  sets the argtype
+         argtypes:
+		1  ii
+		2  s
+		3  ss
+		4  cs
+		5  b
+		6  bb
+		7  i j ca[i:j]
+		8  rr
+		9  p
+		10 rs
+ 3)  $f<string>  sets the format string passed to [s]scanf.  A space
+	between the 'f' and <string> results in a space in the format.
+	So $f %i%i yields format string of ' %i%i'.
+ 4)  $d<line>  is a data line.  Scan begins with char following the 'd'.
+
+
+In this dir the tst.* test files ' should run with no errors.
+Those beginning with 'arg' are error due to invalid args or such.
+etc.

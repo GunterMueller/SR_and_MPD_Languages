@@ -1,0 +1,9 @@
+resource t4()
+	var n: int;
+	put("? "); read(n);
+	var a[1:n] : int;
+	a[1:n] := ([n] 7);
+	fa i := 1 to n ->
+		write(a[i])
+	af
+end

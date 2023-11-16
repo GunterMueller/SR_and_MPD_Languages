@@ -1,0 +1,5 @@
+#  gmt  Fri Nov  1 16:29:47 MST 1991
+0 mpd -c globsem.mpd
+0 mpdl g r
+0 run
+0 rm -rf MPDinter core *.out

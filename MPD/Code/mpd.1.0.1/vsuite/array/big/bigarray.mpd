@@ -1,0 +1,28 @@
+# large array args caused core dump under v1
+# problem was in using shorts instead of ints for various size fields
+
+resource a()
+    op get_result(var int S[*]) {call}
+    sem s, t
+    int N = 20000
+    write(N)
+    int  A[N] 
+    for [ k = 1 to N ] { A[k] = 100+k  }
+    # assumes N >= 10
+    for [ k = 1 to 10 ] { writes(A[k*N/10]," ")  };  write()
+    get_result(A)
+    P(s)
+    for [ k = 1 to 10 ] { writes(A[k*N/10]," ")  };  write()
+    V(t)
+
+proc get_result(S)  {
+    write("In get_result",ub(S)); flush(stdout)
+    for [ i = 1 to ub(S) ] { S[i] = S[i]+1000 }
+    reply
+    for [ i = 1 to ub(S) ] { S[i] = S[i]+47 }
+    V(s)
+    P(t)
+    for [ k = 1 to 10 ] { writes(S[k*ub(S)/10]," ")  };  write()
+}
+
+end

@@ -1,0 +1,5 @@
+#  gmt  Wed Nov  4 16:26:42 MST 1987
+0 mpd -c alloc.mpd
+0 mpdl alloc
+0 run
+0 rm -rf MPDinter core *.out

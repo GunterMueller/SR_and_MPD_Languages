@@ -1,0 +1,4 @@
+#  gmt  Thu Sep 12 10:51:43 MST 1991
+0 mpd twice.mpd
+0 run
+0 rm -rf MPDinter core *.out

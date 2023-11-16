@@ -1,0 +1,4 @@
+# gmt Mon Feb  5 16:32:57 MST 2001
+0 mpd p.mpd
+0 run
+0 rm -rf MPDinter core *.out

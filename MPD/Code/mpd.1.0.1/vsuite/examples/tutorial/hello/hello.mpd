@@ -1,0 +1,6 @@
+# a simple MPD program with a single resource
+# it prints a string followed by a newline character
+
+resource hello()
+  write("Hello world.")
+end

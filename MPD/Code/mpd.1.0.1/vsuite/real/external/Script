@@ -1,0 +1,7 @@
+# aprasad  Jun 91
+
+0 mpd -c ext_real.mpd
+0 cc -c ext.c
+0 mpdl ext_real ext.o
+0 run
+0 rm -rf MPDinter core *.o *.out 

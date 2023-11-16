@@ -1,0 +1,5 @@
+#  gmt  Fri Sep 27 13:36:30 MST 1991
+0 mpd -c finalmsg.mpd
+0 mpdl r m
+0 run
+0 rm -rf MPDinter core *.out

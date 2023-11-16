@@ -1,0 +1,4 @@
+"nl.mpd", line 17: warning: getpid(), parameter 1: type precludes returning a result
+"nl.mpd", line 65: warning: umask(), parameter 1: type precludes returning a result
+"nl.mpd", line 83: warning: reply in final ignored
+"nl.mpd", line 116: warning: reply in final ignored

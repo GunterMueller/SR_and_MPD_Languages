@@ -1,0 +1,32 @@
+MPD vsuite/examples README
+
+This directory contains some examples of complete MPD programs.  Many
+of these have been converted (with little polishing) from SR programs.
+The files are grouped into subdirectories:
+
+    tutorial	Programs from the MPD tutorial,
+    		http://www.cs.arizona.edu/mpd/programs/tutorial.html
+
+    chap01 - chap18
+    		Programs from _The_SR_Programming_Language_
+		by Andrews and Olsson.
+    
+    misc	Miscellaneous programs, mostly small ones.
+
+    graphics	Programs using the MPDWin interface to X Windows.
+
+    animator	Programs that use MPDAnimator, the XTANGO interface.
+
+Some of these subdirectories have additional README files.
+
+Because this collection is part of the MPD verification suite, some minor
+editing has been done to aid automated testing.  This involved changes
+such as:
+
+    Embedding fragments in complete programs
+    Reducing output precision to hide floating-point hardware differences
+    Removing irreproducible outputs such as age() values
+    Removing program nondeterminism
+
+Additionally, the verification process uses some extra files in every
+directory (commonly named "Script" and "*.std").  These files may be ignored.

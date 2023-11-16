@@ -1,0 +1,3 @@
+The idea of this directory is that you can put it in your search path,
+and in the SR configuration, and it will find the latest versions of the
+SR files in the source tree without having to install them anywhere.

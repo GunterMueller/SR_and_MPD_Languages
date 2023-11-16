@@ -1,0 +1,23 @@
+#
+#	Tests that release of class in sr_rm_iop in the run time support.
+#	(variation on vsuite/misc/pairs)
+resource cs()
+    const N := 5
+    op p (id : int)
+    op comm[1:N] (who: int)
+
+
+    fa i := 1 to N -> send p(i) af
+
+
+    proc p(id)
+	fa j := 1 to N st (j != id) ->
+	    if id > j ->
+		comm[j] (id)
+	    [] id < j ->
+		in comm[id] (who) ->
+		ni
+	    fi
+	af
+    end p
+end cs

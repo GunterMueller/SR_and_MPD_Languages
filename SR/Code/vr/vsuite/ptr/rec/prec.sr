@@ -1,0 +1,51 @@
+# test pointers to records including forward refs
+
+resource prec()
+
+	type rt = rec (a:int; nxt: ptr rt);
+	var rp: ptr rt;
+
+	# simple case
+	var k: rt;
+	k.a := 14;
+	rp := @k
+	write(rp^.a);
+
+	# array of pointers
+	var rlist[1:10]: rt;
+	fa i := 1 to 9 ->
+		rlist[i].a := i;
+		rlist[i].nxt := @rlist[i+1];
+	af
+	rlist[10].a := 10;
+	rlist[10].nxt := null;
+
+	rp := @rlist[1];
+	do rp ~= null ->
+		write(rp^.a)
+		rp := rp^.nxt;
+	[] else ->
+		write("NULL");
+		exit;
+	od
+
+	# forward refs
+	type pt2 = ptr t2
+	var p : pt2
+	var q, r : ptr t2
+
+	type t1 = rec (i: int; p: ptr t2)
+	var r1 : t1
+	type t2 = rec (c: char; p: ptr t1)
+	var s, t : ptr t2
+
+	var r2 := t2 ('!', @r1)
+	r1 := t1 (491, @r2)
+	p := r1.p
+	write (r1.i, r1.p^.c)
+	write (r2.p^.i, r2.c)
+	write (p^.p^.i, p^.c)
+	q := r := s := t := p
+	write (r^.p^.i, q^.c)
+	write (t^.p^.i, s^.c)
+end

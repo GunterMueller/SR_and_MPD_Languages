@@ -1,0 +1,9 @@
+resource sem2()
+    op semop() {send}
+
+    write("a")
+    send semop()
+    write("b")
+    receive semop()
+    write("c")
+end

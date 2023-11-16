@@ -1,0 +1,60 @@
+    Initial Topology read from input4
+1:  0 2 3 0 0 
+2:  1 0 0 4 0 
+3:  1 0 0 4 0 
+4:  0 2 3 0 5 
+5:  0 0 0 4 0 
+
+neighbors of node 1:  2 3 
+neighbors of node 2:  1 4 
+neighbors of node 3:  1 4 
+neighbors of node 4:  2 3 5 
+neighbors of node 5:  4 
+    Topology Computed by Node 3
+1:  0 0 0 0 0 
+2:  0 0 0 0 0 
+3:  1 0 0 4 0 
+4:  0 0 0 0 0 
+5:  0 0 0 0 0 
+
+    Topology Computed by Node 1
+1:  0 2 3 0 0 
+2:  0 0 0 0 0 
+3:  0 0 0 0 0 
+4:  0 0 0 0 0 
+5:  0 0 0 0 0 
+
+    Topology Computed by Node 2
+1:  0 2 3 0 0 
+2:  1 0 0 4 0 
+3:  0 0 0 0 0 
+4:  0 0 0 0 0 
+5:  0 0 0 0 0 
+
+    Topology Computed by Node 4
+1:  0 2 3 0 0 
+2:  1 0 0 4 0 
+3:  1 0 0 4 0 
+4:  0 2 3 0 5 
+5:  0 0 0 0 0 
+
+    Topology Computed by Node 5
+1:  0 2 3 0 0 
+2:  1 0 0 4 0 
+3:  1 0 0 4 0 
+4:  0 2 3 0 5 
+5:  0 0 0 4 0 
+
+    Topology Computed by Node 0
+1:  0 2 3 0 0 
+2:  1 0 0 4 0 
+3:  1 0 0 4 0 
+4:  0 2 3 0 5 
+5:  0 0 0 4 0 
+
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: printer.mutex : file printer.sr, line 9

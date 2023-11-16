@@ -1,0 +1,50 @@
+# test val, var, and res slice parameters  (1-D int arrays)
+
+resource ronco ()
+
+    procedure adump (string[12] label, int array[*]) {  # dump an array
+	label ||= ':'
+	while (length(label) < maxlength(label)) { label ||= ' ' }
+	writes (label)
+	for [ i = 1 to ub(array) ] { writes (" ", array[i]) }
+	write ()
+    }
+
+    procedure incr (var int a[*]) {                     # incr array elements
+	for [ i = 1 to ub(a) ] { a[i]++ }
+    }
+
+    procedure sto (res int a[*], int init, int incr) {  # store into array elems
+	for [ i = 1 to ub(a) ] {
+	    a[i] = init
+	    init += incr
+	}
+    }
+
+    int a[3:9] = (30, 40, 50, 60, 70, 80, 90)
+    adump ("a", a)
+    adump ("a[*]", a[*])
+    adump ("a[3:*]", a[3:*])
+    adump ("a[*:*]", a[*:*])
+    adump ("a[*:4]", a[*:4])
+    adump ("a[5:7]", a[5:7])
+    adump ("a[8:*]", a[8:*])
+    write ()
+
+    incr (a) ;      adump ("incr a", a)
+    incr (a[*]);    adump ("incr a[*]", a)
+    incr (a[3:*]);  adump ("incr a[3:*]", a)
+    incr (a[*:*]);  adump ("incr a[*:*]", a)
+    incr (a[*:4]);  adump ("incr a[*:4]", a)
+    incr (a[5:7]);  adump ("incr a[5:7]", a)
+    incr (a[8:*]);  adump ("incr a[8:*]", a)
+    write()
+
+    sto (a,      23, 1);  adump ("sto a", a)
+    sto (a[*],   33, 1);  adump ("sto a[*]", a)
+    sto (a[3:*], 43, 1);  adump ("sto a[3:*]", a)
+    sto (a[*:*], 53, 1);  adump ("sto a[*:*]", a)
+    sto (a[*:4], 63, 1);  adump ("sto a[*:4]", a)
+    sto (a[5:7], 65, 1);  adump ("sto a[5:7]", a)
+    sto (a[8:*], 68, 1);  adump ("sto a[8:*]", a)
+end

@@ -1,0 +1,198 @@
+global SRanimator
+   op A_bg(colorr : string[*])
+   op A_coords(lx, byy, rx, ty : real)
+   op A_delay(frames : int)
+   op A_line (id : int; lx, ly, sx, sy : real;
+      colorr, width, style, arrows : string[*])
+   op A_rectangle(id : int; lx, ly, sx, sy : real; colorr, filll : string[*])
+   op A_circle(id : int; lx, ly, rad : real; colorr, filll : string[*])
+   op A_triangle(id : int; lx, ly, vx0, vy0, vx1, vy1 : real;
+      colorr, filll : string[*])
+   op A_text(id : int; lx, ly : real; cen : int; colorr, str : string[*])
+   op A_bigtext(id : int; lx, ly : real; cen : int; colorr, str : string[*])
+   op A_fonttext(id : int; lx, ly : real; cen : int; colorr, fontname, str : string[*])
+   op A_delete(id : int)
+   op A_move(id : int; tx, ty : real)
+   op A_moverelative(id : int; tx, ty : real)
+   op A_moveto(id1, id2 : int)
+   op A_jump(id : int; tx, ty : real)
+   op A_stepjump(id : int; tx, ty : real; nsteps, steptime : int)
+   op A_jumprelative(id : int; tx, ty : real)
+   op A_jumpto(id1, id2 : int)
+   op A_stepjumpto(id1, id2 : int; nsteps, steptime : int)
+   op A_color(id : int; colname : string[*])
+   op A_fill(id : int; filll : string[*])
+   op A_vis(id : int)
+   op A_raise(id : int)
+   op A_lower(id : int)
+   op A_exchangepos(id1, id2 : int)
+   op A_switchpos(id1, id2 : int)
+   op A_swapid(id1, id2 : int)
+   op A_resize(id : int; rx, ry: real)
+   op A_zoom(id : int; rx, ry: real)
+   op A_end()
+body SRanimator
+   external BEGIN_TANGOalgoOp(), IDS_ASSOCmake(), END_TANGOalgoOp()
+   external bg(colorr : string[*])
+   external coords(lx, byy, rx, ty : real)
+   external delay(frames : int)
+   external line (id : int; lx, ly, sx, sy : real;
+      colorr, width, style, arrows : string[*])
+   external rectangle(id : int; lx, ly, sx, sy : real;
+      colorr, filll : string[*])
+   external circle(id : int; lx, ly, rad : real; colorr, filll : string[*])
+   external triangle(id : int; lx, ly, vx0, vy0, vx1, vy1 : real;
+      colorr, filll : string[*])
+   external text(id : int; lx, ly : real; cen : int; colorr, str : string[*])
+   external bigtext(id : int; lx, ly : real; cen : int; colorr, str : string[*])
+   external fonttext(id : int; lx, ly : real; cen : int; colorr, fontname, str : string[*])
+   external delete(id : int)
+   external move(id : int; tx, ty : real)
+   external moverelative(id : int; tx, ty : real)
+   external moveto(id1, id2 : int)
+   external jump(id : int; tx, ty : real)
+   external jumprelative(id : int; tx, ty : real)
+   external jumpto(id1, id2 : int)
+   external color(id : int; colname : string[*])
+   external fill(id : int; filll : string[*])
+   external vis(id : int)
+   external raise(id : int)
+   external lower(id : int)
+   external exchangepos(id1, id2 : int)
+   external switchpos(id1, id2 : int)
+   external swapid(id1, id2 : int)
+   external resize(id : int; rx, ry: real)
+   external zoom(id : int; rx, ry: real)
+
+   external locX(id : int) returns x : real
+   external locY(id : int) returns y : real
+
+   op jumpsteps(id : int; tx, ty : real; nsteps, steptime : int)
+   op jumptosteps(id1, id2 : int; nsteps, steptime : int)
+
+   write(stderr, "SRanimator global has been created")
+   BEGIN_TANGOalgoOp()
+   IDS_ASSOCmake()
+   reply
+
+   do true ->
+      in A_bg(colorr) ->
+           bg(colorr)
+      [] A_coords(lx, byy, rx, ty) ->
+           coords(lx, byy, rx, ty)
+      [] A_delay(frames) ->
+           delay(frames)
+      [] A_line(id, lx, ly, sx, sy, colorr, width, style, arrows) ->
+           line(id, lx, ly, sx, sy, colorr, width, style, arrows)
+      [] A_rectangle(id, lx, ly, sx, sy, colorr, filll) ->
+           rectangle(id, lx, ly, sx, sy, colorr, filll)
+      [] A_circle(id, lx, ly, rad, colorr, filll) ->
+           circle(id, lx, ly, rad, colorr, filll)
+      [] A_triangle(id, lx, ly, vx0, vy0, vx1, vy1, colorr, filll) ->
+           triangle(id, lx, ly, vx0, vy0, vx1, vy1, colorr, filll)
+      [] A_text(id, lx, ly, cen, colorr, str) ->
+           text(id, lx, ly, cen, colorr, str)
+      [] A_bigtext(id, lx, ly, cen, colorr, str) ->
+           bigtext(id, lx, ly, cen, colorr, str)
+      [] A_fonttext(id, lx, ly, cen, colorr, fontname, str) ->
+           fonttext(id, lx, ly, cen, colorr, fontname, str)
+      [] A_delete(id) ->
+           delete(id)
+      [] A_move(id, tx, ty) ->
+           move(id, tx, ty)
+      [] A_moverelative(id, tx, ty) ->
+           moverelative(id, tx, ty)
+      [] A_moveto(id1, id2) ->
+           moveto(id1, id2)
+      [] A_jump(id, tx, ty) ->
+           jump(id, tx, ty)
+      [] A_stepjump(id, tx, ty, nsteps, steptime) ->
+         forward jumpsteps(id, tx, ty, nsteps, steptime)
+      [] A_jumprelative(id, tx, ty) ->
+           jumprelative(id, tx, ty)
+      [] A_jumpto(id1, id2) ->
+           jumpto(id1, id2)
+      [] A_stepjumpto(id1, id2, nsteps, steptime) ->
+         # cannot calculate tox,toy here and reuse jumpsteps since
+         # signatures must match of stepjumpto and jumpsteps to use forward
+         forward jumptosteps(id1, id2, nsteps, steptime)
+      [] A_color(id, colname) ->
+           color(id, colname)
+      [] A_fill(id, filll) ->
+           fill(id, filll)
+      [] A_vis(id) ->
+           vis(id)
+      [] A_raise(id) ->
+           raise(id)
+      [] A_lower(id) ->
+           lower(id)
+      [] A_exchangepos(id1, id2) ->
+           exchangepos(id1, id2)
+      [] A_switchpos(id1, id2) ->
+           switchpos(id1, id2)
+      [] A_swapid(id1, id2) ->
+           swapid(id1, id2)
+      [] A_resize(id, rx, ry) ->
+           resize(id, rx, ry)
+      [] A_zoom(id, rx, ry) ->
+           zoom(id, rx, ry)
+      [] A_end() st ?A_bg = 0 and
+            ?A_coords = 0 and
+            ?A_delay = 0 and
+            ?A_line  = 0 and
+            ?A_rectangle = 0 and
+            ?A_circle = 0 and
+            ?A_triangle = 0 and
+            ?A_text = 0 and
+            ?A_bigtext = 0 and
+            ?A_delete = 0 and
+            ?A_move = 0 and
+            ?A_moverelative = 0 and
+            ?A_moveto = 0 and
+            ?A_jump = 0 and
+            ?A_stepjump = 0 and
+            ?A_jumprelative = 0 and
+            ?A_jumpto = 0 and
+            ?A_stepjumpto = 0 and
+            ?A_color = 0 and
+            ?A_fill = 0 and
+            ?A_vis = 0 and
+            ?A_raise = 0 and
+            ?A_lower = 0 and
+            ?A_exchangepos = 0 and
+            ?A_switchpos = 0 and
+            ?A_swapid = 0 ->
+           write(stderr, "A_end has been invoked")
+           END_TANGOalgoOp()
+      ni
+   od
+
+   proc jumpsteps(id, tx, ty, nsteps, steptime)
+      var curx, cury, delx, dely : real
+      curx := locX(id)
+      cury := locY(id)
+      delx := (tx - curx)/nsteps
+      dely := (ty - cury)/nsteps
+      fa i := 1 to nsteps-1 ->
+         # use call here rather than send because A_stepjump may have been
+         # called and we want that caller to stay blocked until all of this
+         # finishes
+         call A_jumprelative(id, delx, dely)
+         nap(steptime)
+      af
+      call A_jump(id, tx, ty) # to avoid roundoff accumulation error
+   end jumpsteps
+
+   proc jumptosteps(id1, id2, nsteps, steptime)
+      var tox, toy : real
+      tox := locX(id2); toy := locY(id2)
+      jumpsteps(id1, tox, toy, nsteps, steptime)
+   end jumptosteps
+
+   final
+      # end animation even if above in statement queue not empty; call A_end()
+      # from user application to flush queue
+      write(stderr, "SRanimator destroyed, final block executing")
+      END_TANGOalgoOp()
+   end final
+end SRanimator

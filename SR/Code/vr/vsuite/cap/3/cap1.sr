@@ -1,0 +1,37 @@
+# operation capability variables and optypes.
+# output nondeterministic.
+resource cap1()
+	op p(a,b:int)
+	op q(x:int)
+
+	var cp1: cap p
+	optype optypep = (x,y:int)	# optype WITH "="
+	var cp2: cap optypep
+	var cp3: cap (q,w:int)
+	var cq1: cap q
+	optype optypeq (r:int)		# optype WITHOUT "="
+	var cq2: cap optypeq
+	var cq3: cap (s:int)
+	cp1 := p
+	cp2 := p
+	cp3 := p
+	cq1 := q
+	cq2 := q
+	cq3 := q
+	write('m',5555)
+	co call cp1(-3,-4)
+	// cq1(-1000)
+	// cp2(-5,-6)
+	// cq2(-2000)
+	// cp3(-7,-8)
+	// cq3(-3000)
+	oc
+	write('m',-5555)
+
+	proc p(a,b)
+		write('p',a,b)
+	end
+	proc q(x)
+		write('q',x)
+	end
+end

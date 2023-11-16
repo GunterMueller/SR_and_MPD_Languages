@@ -1,0 +1,14 @@
+resource fun()
+  op f(int x) returns int  z
+  op g(int y) returns int  z
+  process p  {
+    int a = f(1); write(a)
+  }
+  proc f(x) returns z  {
+    forward g(2*x)
+       # continue executing, perhaps changing x
+  }
+  proc g(y) returns z  {
+    z = y+10
+  }
+end

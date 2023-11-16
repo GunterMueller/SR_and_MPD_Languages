@@ -1,0 +1,22 @@
+.TH MPDPROF 1 "13 March 2001" "University of Arizona"
+.SH NAME
+mpdprof \- MPD profiler
+.SH SYNOPSIS
+\fBmpdprof [ \-a ] [ \fRtracefile\fP ]
+.SH DESCRIPTION
+.LP
+.I Mpdprof
+reads a trace file produced by an MPD program
+and totals the counts of the events by line number.
+If the
+.B \-a
+option is given, the report is produced in the form of an
+annotated program listing.
+.SH "SEE ALSO"
+.LP
+mpd(1), mpdtrace(5)
+.SH CAVEATS
+.LP
+An annotated listing can be produced only when
+.I mpdprof
+is run in the directory containing the source files.

@@ -1,0 +1,48 @@
+# reply in initial and final and other good stuff.
+resource hmmm
+	const N := 10000
+body hmmm(x:int; c: cap (x:int) {send})
+		# c's main purpose is to make output deterministic.
+
+	write("initial",x)
+	reply
+	destroy myresource()
+	write("OOPS, shouldn't get here",x)
+
+	final
+		write("final start",x)
+		if x > 0 ->
+			var c: cap hmmm
+			op done(x:int) {send}
+			c := create hmmm(x-1,done)
+			var y:int
+			receive done(y)
+			if y-N = x-1 ->
+				write("ok",y)
+			[] else ->
+				write("OOPS", y)
+			fi
+		fi
+		write("final end",x)
+		send c(x+N)
+	end
+end
+
+resource main
+	import hmmm
+body main()
+	process p
+		write("start p")
+		var c:cap hmmm
+		op done(x:int) {send}
+		c := create hmmm( 5, done )
+		var y:int
+		receive done(y)
+		if y-hmmm.N = 5 ->
+			write("ok",y)
+		[] else ->
+			write("OOPS", y)
+		fi
+		write("end p")
+	end
+end

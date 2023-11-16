@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 mpd -c implicit.mpd
+0 mpdl implicit
+0 run 
+0 rm -rf MPDinter core *.out

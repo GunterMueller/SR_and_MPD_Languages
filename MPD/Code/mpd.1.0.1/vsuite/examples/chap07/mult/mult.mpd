@@ -1,0 +1,42 @@
+resource mult()
+  const int N = 5
+  real  a[N,N], b[N,N], c[N,N]
+
+  # read in some initial values for a and b
+  int i = 1
+  int j = 1
+  while (i <= N) {
+    while (j <= N) {
+      read(a[i,j])
+      read(b[i,j])
+      j++
+    }
+    j = 1
+    i++
+  }
+
+  # multiply a and b in parallel
+  # place result in matrix c
+  process multiply [ i = 1 to N, j = 1 to N ] {
+      real inner_prod = 0.0
+      for [ k = 1 to N ] {
+	  inner_prod += a[i,k]*b[k,j]
+      }
+      c[i,j] = inner_prod
+  }
+
+  final {
+   i = 1; j = 1
+   while (i <= N) {
+     while (j <= N) {
+       writes(c[i,j]," ")
+       j++
+     }
+     j = 1
+     i++
+     write()
+   }
+
+  }
+
+end

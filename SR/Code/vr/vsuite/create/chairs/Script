@@ -1,0 +1,5 @@
+#  gmt  Wed Jun 26 17:52:21 MST 1991
+0 sr -c chairs.sr
+0 srl Chair Main
+0 run
+0 rm -rf Interfaces core *.out

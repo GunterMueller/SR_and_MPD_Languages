@@ -1,0 +1,50 @@
+global sizes
+  var N := 10    # matrix dimension, default 10
+  var PR := 2    # number of processes, default 2
+  var S:  int    # strip size
+body sizes
+  getarg(1, N); getarg(2, PR); S := N/PR
+  if N mod PR != 0 ->
+    write("N must be a multiple of PR"); stop
+  fi
+end
+
+resource mult()
+  import sizes
+  var a[N,N], b[N,N], c[N,N]: real
+  sem done := 0, continue := 0
+
+  var start := age()  # determine start time
+  process strip(p := 1 to PR)
+    const R := (p-1)*S + 1    # starting row of strip
+    # initialize parts of a and b
+    fa i := R to R+S-1, j := 1 to N ->
+      a[i,j] := 1.0; b[i,j] := 1.0
+    af
+    # barrier to wait for all initialization
+    V(done); P(continue)
+    # compute S*N inner products
+    fa i := R to R+S-1, j := 1 to N ->
+      var inner_prod := 0.0  # local accumulator
+      fa k := 1 to N ->
+        inner_prod +:= a[i,k]*b[k,j]
+      af
+      c[i,j] := inner_prod
+    af
+  end
+
+  process coordinator
+    fa i := 1 to PR -> P(done) af
+    fa i := 1 to PR -> V(continue) af
+  end
+
+  final  # write results (if arrays exist)
+    var finish := age()  # determine finish time
+    if N mod PR != 0 -> stop fi
+    write("execution time using", PR, "processes was", finish-start, "milliseconds")
+    fa i := 1 to N ->
+      fa j := 1 to N -> writes(c[i,j], " ") af
+      write()
+    af
+  end
+end

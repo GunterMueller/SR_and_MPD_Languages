@@ -1,0 +1,35 @@
+# this program is deterministic and really does terminate.
+# who wrote this bizarre program? (oops, I did.)
+resource do7()
+	var m:int := 4; const N := 3
+	var a,b,c,d:int; var e: int := m; var f: int := N
+	a := 8888
+	b := 7777
+	c := 6666
+	d := 1
+	write(a); write(b); write(c); write(d)
+	do a = 1 ->
+		writes("\nA")
+		a :=: b
+	[] b = 1 ->
+		writes("\nB")
+		b :=: d
+	[] c = 1 ->
+		writes("\nC")
+		if e = 0 ->
+			if f > 0 ->
+				c :=: a
+				e := m
+				m := m-1
+				f := f-1
+			[] else -> c := 9999
+			fi
+		[] else -> e--
+		fi
+	[] d = 1 ->
+		writes("\nD")
+		d :=: c
+	od
+	write(a); write(b); write(c); write(d)
+	write(e); write(f)
+end

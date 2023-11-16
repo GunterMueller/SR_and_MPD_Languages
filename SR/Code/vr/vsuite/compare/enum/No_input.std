@@ -1,0 +1,5 @@
+e2 e4   < true    <= true    = false   != true    >= false    > false
+e3 e3   < false    <= true    = true   != false    >= true    > false
+e3 e1   < false    <= false    = false   != true    >= true    > true
+ok false
+ok false false

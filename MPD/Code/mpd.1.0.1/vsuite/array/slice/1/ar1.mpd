@@ -1,0 +1,40 @@
+resource ar1()
+
+	procedure init_1d (var int x[1:*], int seed)  {
+		for [ i = lb(x) to ub(x) ] {
+			x[i] = seed+i
+		}
+	}
+
+	procedure init_2d (var int x[1:*,1:*], int seed)  {
+		for [ i = lb(x,1) to ub(x,1) ] {
+			for [ j = lb(x,2) to ub(x,2) ] {
+				x[i,j] = ++seed
+			}
+		}
+	}
+
+	procedure print_1d (int x[*])  {
+		for [ i = lb(x) to ub(x)-1 ] {
+			writes(x[i])
+			writes(", ")
+		}
+		write(x[ub(x)])
+	}
+
+	procedure print_2d (int x[*,*])  {
+		for [ i = lb(x,1) to ub(x,1) ] {
+			for [ j = lb(x,2) to ub(x,2) ] {
+				writes(x[i,j],", ")
+			}
+		}
+		write()
+	}
+
+	int  a[5,4], b[10] 
+	init_2d(a,000); print_2d(a)
+	init_1d(b,100); print_1d(b);
+	b[4:7] = a[3,1:*]; print_1d(b);
+	init_1d(b,200)
+	a[2,1:*] = b[2:5]; print_2d(a);
+end

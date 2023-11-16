@@ -1,0 +1,15 @@
+proc stress test
+  nprocs = 10
+  nloops = 500
+  naptime = 1
+proc 3 done
+proc 2 done
+proc 1 done
+proc 5 done
+proc 4 done
+proc 7 done
+proc 6 done
+proc 10 done
+proc 9 done
+proc 8 done
+all done

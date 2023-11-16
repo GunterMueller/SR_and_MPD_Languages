@@ -1,0 +1,57 @@
+# check timeslicing of cpu burner in favor of I/O checking.
+# gets "alarm clock" abort if it fails
+
+# this programming style is not advocated for normal use.
+
+
+
+resource rmt
+    optype voidop = ()
+body rmt (v: cap voidop)
+    process p
+	do true ->
+	    v ()
+	od
+    end
+end rmt
+
+
+resource slice2 ()
+    import rmt
+    external alarm (seconds : int)
+    op incr()
+
+    const timeout := 300
+    const limit := 10
+    var n := 0
+
+
+proc incr ()		# incr n when called from remote machine
+    n++
+end
+
+
+
+process watcher		# wait for n to reach limit, then quit
+    do n < limit ->
+	# nothing
+    od
+    write ("done watching")
+    stop
+end
+
+
+
+
+    var v : cap vm
+    var r : cap rmt
+
+    alarm (timeout)		# set timeout to avoid infinite loop
+    v := create vm ()
+    r := create rmt (incr) on v
+    if r = null ->
+	write ("create failed")
+	stop
+    fi
+
+end

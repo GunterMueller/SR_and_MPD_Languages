@@ -1,0 +1,19 @@
+resource do8()
+	var a,b,c:int
+	a := 1
+	b := 2
+	c := 0
+	write(a); write(b); write(c)
+	do a != 10 ->
+		b := a
+		do b != 10 ->
+			c++
+			b++
+			write(a); write(b); write(c)
+		od
+		a++
+		write(a); write(b); write(c)
+	od
+	a :=: c
+	write(a); write(b); write(c)
+end

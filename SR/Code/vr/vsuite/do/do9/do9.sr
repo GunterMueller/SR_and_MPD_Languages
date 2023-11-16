@@ -1,0 +1,38 @@
+resource do9()
+	var a,b,c:int
+	a := 1
+	b := 2
+	c := 0
+	write(a); write(b); write(c);
+	do a != 10 ->
+		b := a
+		write(a); write(b); write(c);
+		do b != 10 ->
+			c++
+			b++
+			next
+			b := -33
+			c := 9999 + 88888
+			a := 8888
+		[] a = 20000 ->
+			exit
+			b := -44
+		[] c = 222 ->
+			if a = 3 ->
+				exit
+				a := 4444
+			[] else ->
+				next
+				b := 9999
+			fi
+		od
+		a++
+		write(a); write(b); write(c);
+		if a != 10 -> next
+		[] else -> exit
+		fi
+		a--
+	od
+	a :=: c
+	write(a); write(b); write(c);
+end

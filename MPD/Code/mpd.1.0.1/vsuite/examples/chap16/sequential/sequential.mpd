@@ -1,0 +1,71 @@
+global Arguments
+  int n
+  string[20] fname
+body Arguments
+  getarg(1, n); getarg(2, fname)
+end
+
+global Shared
+  import Arguments
+  int dist[1:n,1:n]                # distances
+  int  shortest = 2**30            # best so far
+  op update(int path[1:*], int length)     # update shortest
+body Shared
+  file fd = open(fname, READ)
+  for [ i = 1 to n, j = 1 to n ] { read(fd, dist[i,j]) }
+  int  shortest_path[1:n]
+
+  # update shortest length and path, if necessary
+  proc update(path, length)  {
+    if (length < shortest) {
+      shortest = length; shortest_path = path
+    }
+  }
+
+  final {
+    write("the shortest path has length", shortest)
+    write("the cities on the shortest path are:")
+    writes("  ")
+    for [ i = 1 to n ] { writes(shortest_path[i], " ") }
+    write()
+  }
+end
+
+resource Main()
+  import Arguments, Shared
+
+  # if city is not in path, add it and return true;
+  # otherwise return false
+  procedure visit(int path[1:*], int city) returns bool   ok{
+      for [ i = 2 to ub(path) st path[i] == city ] {
+	ok = false; return
+      }
+      ok = true
+  }
+
+  # using recursion and backtracking, examine all paths that
+  # could be the shortest
+  procedure tsp(int path[1:*], int length)  {
+    int hops = ub(path)
+    if (hops == n) {    # complete tour, see if best
+	length += dist[path[n],1]
+	update(path, length)
+    } else if (hops < n ) {    # visit all cities not yet in path
+	for [ city = 2 to n st visit(path, city) ] {
+	  int newpath[1:hops+1]
+	  int newlength
+	  newpath[1:hops] = path
+	  newpath[hops+1] = city
+	  newlength = length + dist[newpath[hops],newpath[hops+1]]
+	  # recurse again if newpath possibly the best
+	  if (newlength < shortest) { tsp(newpath, newlength) }
+	}
+    }
+  }
+
+  int path[1:2] = (1, 0)
+  for [ i = 2 to n ] {
+    path[2] = i; tsp(path, dist[1,i])
+  }
+
+end Main

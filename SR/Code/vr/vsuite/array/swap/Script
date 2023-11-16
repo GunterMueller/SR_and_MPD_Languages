@@ -1,0 +1,5 @@
+#  gmt  Thu Sep 26 17:55:40 MST 1991
+0 sr -c aswap.sr
+0 srl aswap
+0 run
+0 rm -rf Interfaces core *.out

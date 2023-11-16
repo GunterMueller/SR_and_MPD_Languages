@@ -1,0 +1,5 @@
+# check "missing main resource xxx" trap
+# check "warnings: body for b missing"
+1 srm -m xxx *.sr
+
+0 rm -rf Interfaces core *.out Makefile

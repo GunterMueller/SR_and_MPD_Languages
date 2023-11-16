@@ -1,0 +1,19 @@
+# question mark operator.
+# local operations.
+resource qm2()
+	op g() {send}
+	op f() {send}
+	send g()
+	write( ? f, ? g)
+	send f()
+	send g()
+	send f()
+	send g()
+	write( ? f, ? g)
+	while (?f + ?g > 0) {
+		# give preference to f
+		in f() -> write("in f",?f,?g)
+		[] g() and ?f == 0 -> write("in g",?f,?g)
+		ni
+	}
+end

@@ -1,0 +1,4 @@
+# gmt Wed Feb 26 11:15:30 MST 1992
+0 mpd prec.mpd
+0 run
+0 rm -rf MPDinter core *.out

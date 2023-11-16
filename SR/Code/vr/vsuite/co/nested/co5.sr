@@ -1,0 +1,20 @@
+# test nested co's.
+
+# this test IS deterministic.
+
+resource co5 ()
+	op p (a: int)
+
+	write (0)
+	co  call p (1) ->
+			write (2)
+			co  call p (3) -> write (4)
+			oc
+			write (5)
+	oc
+	write (6)
+
+	proc p (a)
+		write (a)
+	end
+end

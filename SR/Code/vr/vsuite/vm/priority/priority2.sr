@@ -1,0 +1,39 @@
+# check if process priorities work right across virtual machines
+
+global defs
+   optype simpleOp ()
+end defs
+
+
+resource res2
+   import defs
+body res2 (mainop : cap simpleOp)
+
+   process p2
+      write ("remote priority =", mypriority())
+      setpriority (4)
+      send mainop ()
+   end p2
+
+end res2
+
+
+resource priority2
+   import res2, defs
+   op  mainop : simpleOp
+
+body priority2 ()
+   var  vmcap : cap vm
+
+   write ("initial priority =", mypriority())
+   setpriority (-10)
+   write ("altered priority =", mypriority())
+   vmcap := create vm()
+   create res2 (mainop) on vmcap
+
+   proc mainop ()
+      write ("proc priority =", mypriority())
+      stop
+   end mainop
+
+end priority2

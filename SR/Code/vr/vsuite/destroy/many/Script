@@ -1,0 +1,4 @@
+0 sr -c t.sr
+0 srl s r t
+0 run
+0 rm -rf Interfaces core *.out

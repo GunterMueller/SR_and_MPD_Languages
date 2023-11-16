@@ -1,0 +1,36 @@
+# test swapping of arrays
+
+resource aswap ()
+
+    var c := chars ("abcde")
+    var d := chars ("zyxwv")
+    write (c, d)
+    c :=: d
+    write (c, d)
+    d :=: c
+    write (c, d)
+    write (c :=: d)
+
+    procedure adump (x[*,*]:int)
+	fa i:= 1 to ub(x) ->
+	    fa j := 1 to ub(x,2) ->
+		writes (x[i,j], " ")
+	af af
+	write ()
+    end
+
+    var a := ((11,13,17,19,23), (29,31,37,41,43), (47,53,59,61,67))
+    var b := ((11,31,71,91,32), (92,13,73,14,34), (74,35,95,16,76))
+    adump (a)
+    adump (b)
+    write()
+
+    a :=: b
+    adump (a)
+    adump (b)
+    write()
+
+    adump (b :=: a)
+    adump (b :=: a)
+    write()
+end

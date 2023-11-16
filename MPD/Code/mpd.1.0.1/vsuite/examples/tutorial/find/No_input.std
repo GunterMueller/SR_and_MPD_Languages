@@ -1,0 +1,6 @@
+find.mpd:   const int MAXPATTERN = 20
+find.mpd:   const int MAXFILENAME = 20
+find.mpd:   const int MAXLINE = 120
+find.mpd:   string[MAXPATTERN] pattern; getarg(1, pattern)
+find.mpd:   string[MAXFILENAME] filename; getarg(2, filename)
+find.mpd:   string[MAXLINE] line[2]  # two lines of strings

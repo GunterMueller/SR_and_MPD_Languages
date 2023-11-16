@@ -1,0 +1,7 @@
+# aprasad  Jun 91
+
+0 sr -c ext_real.sr
+0 cc -c ext.c
+0 srl ext_real ext.o
+0 run
+0 rm -rf Interfaces core *.o *.out 

@@ -1,0 +1,4 @@
+0 sr -c extend2.sr
+0 srl -R10 Servant
+1 run
+0 rm -rf Interfaces core *.out

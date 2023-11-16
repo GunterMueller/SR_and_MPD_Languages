@@ -1,0 +1,4 @@
+0 sr -c decl4.sr
+0 srl decl4
+0 run
+0 rm -rf Interfaces core *.out

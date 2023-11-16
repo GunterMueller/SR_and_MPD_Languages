@@ -1,0 +1,40 @@
+argtype: 5
+format: '%b'
+  5 < 1>: true
+  5 < 1>: false
+  5 < 0>: false
+  5 < 1>: true
+  5 < 0>: true
+  5 < 1>: false
+  5 < 1>: true
+format: '%1b'
+  5 < 1>: true
+  5 < 1>: false
+  5 < 1>: true
+  5 < 1>: false
+  5 < 0>: false
+format: '%2b'
+  5 < 1>: false
+  5 < 1>: true
+  5 < 1>: true
+  5 < 1>: false
+  5 < 0>: false
+  5 < 1>: true
+  5 < 0>: true
+  5 < 1>: false
+  5 < 1>: true
+format: '%*1b%1b'
+  5 < 1>: true
+  5 < 1>: false
+  5 < 1>: true
+  5 < 1>: false
+  5 < 0>: false
+  5 < 0>: false
+format: '%*b %b'
+  5 < 1>: true
+  5 < 0>: true
+  5 < 0>: true
+format: '%*b%b'
+  5 < 1>: false
+  5 < 1>: true
+finished

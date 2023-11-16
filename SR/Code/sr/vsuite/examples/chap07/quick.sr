@@ -1,0 +1,26 @@
+resource quick()
+  op sort(var a[1:*]: int)
+  var n: int
+  # read in n
+  getarg(1,n)
+  var a[1:n]: int
+  # read in data to be sorted
+  fa i := 1 to n -> read(a[i]) af
+  write("input:"); fa i := 1 to n -> write(a[i]) af
+  sort(a)
+  write("sorted:"); fa i := 1 to n -> write(a[i]) af
+
+  proc sort(a)
+    if ub(a) <= 1 -> write("small array", ub(a)); return fi
+    fa i := 1 to ub(a) -> writes(a[i], " ") af; write()
+    var pivot := a[1]
+    var lx := 2, rx := ub(a)
+    do lx <= rx ->
+        if a[lx] <= pivot -> lx++
+        [] a[lx] >  pivot -> a[lx] :=: a[rx]; rx--
+        fi
+    od
+    a[rx] :=: a[1]
+    co sort(a[1:rx-1]) // sort(a[lx:ub(a)]) oc
+  end
+end quick

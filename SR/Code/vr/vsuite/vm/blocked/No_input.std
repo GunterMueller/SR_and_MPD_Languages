@@ -1,0 +1,16 @@
+resource l here
+resource r here
+resource r here
+resource l ready to hang
+[vm 1] RTS warning: blocked process: l.q : file blocked.sr, line 27
+[vm 1] RTS warning: blocked process: l.q : file blocked.sr, line 27
+[vm 1] RTS warning: blocked process: l.q : file blocked.sr, line 27
+[vm 1] RTS warning: blocked process: l.body : file blocked.sr, line 31
+[vm 3] RTS warning: blocked process: r.p : file blocked.sr, line 13
+[vm 3] RTS warning: blocked process: r.p : file blocked.sr, line 13
+[vm 3] RTS warning: blocked process: r.p : file blocked.sr, line 13
+[vm 3] RTS warning: blocked process: r.body : file blocked.sr, line 17
+[vm 2] RTS warning: blocked process: r.p : file blocked.sr, line 13
+[vm 2] RTS warning: blocked process: r.p : file blocked.sr, line 13
+[vm 2] RTS warning: blocked process: r.p : file blocked.sr, line 13
+[vm 2] RTS warning: blocked process: r.body : file blocked.sr, line 17

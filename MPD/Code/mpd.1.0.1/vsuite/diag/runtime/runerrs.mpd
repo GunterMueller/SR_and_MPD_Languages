@@ -1,0 +1,115 @@
+##  runtime error reporting test
+#
+#   usage:  a.out n
+#
+#   This program tests a variety of runtime errors.
+#   Because the errors are fatal, it must be run once for each error.
+#   The argument n selects the nth failure from the list below.
+
+global g; end
+resource r; op foo(); body r(); proc foo() { write("FOO CALLED!") } end
+
+resource runerrs ()
+    import g, r
+    int  n
+    if (getarg(1,n) ~= 1) {
+	write (stderr, "usage: a.out n   (must supply choice number)")
+	stop (2)
+    }
+    writes (stderr, "\n", n, ": ")
+
+    type ptype = ptr any
+    string[10] s = "abcde"
+    string[3] t = "def"
+    char a[5:8] = chars("ghij")
+    char b[7] = chars("klmnopq")
+    file  f = null
+    ptype  p 
+    char  c = 'c'
+    cap vm  vc = null
+    cap () opc = null
+    cap () oc2            # uninitialized
+    cap r  rc
+    const string[5000] long_str = string(([5000] '*'))
+    string[3] sa1[5]; string[7] sa2[5:9] = ([5]"abc")
+    sem sem1;  cap sem  semcap 
+    op o(); op oo()
+#37
+#38
+#39     These lines are reserved for future expansion so that the line
+#40     numbers associated with the errors below can remain unchanged.
+
+    if (n==1){ a[4] 			# 1. array subscript too low
+    }else if(n==2){ a[9] 		# 2. array subscript too high
+    }else if(n==3){ s[0] 		# 3. string subscript too low
+    }else if(n==4){ s[6] 		# 4. string subscript too high
+    }else if(n==5){ s = "zyxwvutsrqp" 	# 5. string too long to assign
+    }else if(n==6){ t = string(a) 	# 6. too long to assign to string
+    }else if(n==7){ a = chars(s) 	# 7. too long to assign to array
+    }else if(n==8){ b = a 		# 8. array too big to assign
+    }else if(n==9){ a = b 		# 9. array too small to assign
+#      n=10 unused
+#      (2 lines)
+    }else if(n==11){ writes(f, "ab") 	# 11. operation attempted on NULL file
+#   [] n=12 -> 			# 12. file not open
+#   [] n=13 -> 			# 13. bad read format
+    }else if(n==14){printf("%12")	# 14. unterminated conv spec in format
+    }else if(n==15){printf("%s %d","abc")	# 15. insufficient arg list for format
+    }else if(n==16){printf("%d","abc")	# 16. format calls for an int arguent
+    }else if(n==17){printf("%b","abc")	# 17. format calls for a bool arguent
+    }else if(n==18){printf("%c","abc")	# 18. format calls for a char arguent
+    }else if(n==19){printf("%r",c)	# 19. string argument expected
+    }else if(n==20){printf("%s",c)	# 20. format calls for a string argument
+    }else if(n==21){printf("%s",long_str)	# 21. illegal string length for %s
+    }else if(n==22){printf("%f","abc")	# 22. format calls for a real argument
+    }else if(n==23){printf("%p","a")	# 23. format calls for a ptr argument
+    }else if(n==24){printf("%h","a")	# 24. illegal modifier [hlL] in format
+    }else if(n==25){printf("%A","abc")	# 25. illegal spec char in format
+    }else if(n==26){printf(" ",2)	# 26. too many arguments for format
+    }else if(n==27){ 0.0**0.0 		# 27. 0.0**y with non-positive y
+    }else if(n==28){ -5.0 **0.5 	# 28. x**y with neg x & non-integer y
+    }else if(n==29){ 1**-1 		# 29. negative integer exponent
+    }else if(n==30){ 3.0 mod 0 	# 30. (real) x mod y called with zero y
+    }else if(n==31){ 3 mod 0 		# 31. (int) x mod y called with zero y
+#   [] n=32 -> 			# 32. out of mem (removed / nonportable)
+    }else if(n==33){ a[1:5] 		# 33. illegal slice from array
+    }else if(n==34){ a[6:9] 		# 33. illegal slice from array
+    }else if(n==35){ t[0:2] 		# 35. illegal slice from string
+    }else if(n==36){ t[2:4] 		# 36. illegal slice from string
+    }else if(n==37){ locate(10, long_str) 	# 37. strings too long in locate call
+    }else if(n==38){ destroy (vc) 	# 38. attempting to destroy null vm
+    }else if(n==39){ oc2() 		# 39. invalid operation capability
+    }else if(n==40){ sem v = int("-7"); P(v) 			# 40. illegal semaphore initializer
+    }else if(n==41){ opc() 		# 41. invoking null operation
+    }else if(n==42){ create runerrs() 	# 42. too many active resources
+    }else if(n==43){ sa2[7]||='d'; sa1=sa2 			# 43. element too long to assign
+    }else if(n==44){ s :=: t 		# 44. length exceeded on string swap
+    }else if(n==45){ t :=: s 		# 45. length exceeded on string swap
+    }else if(n==46){ char(int("256")) 	# 46. bad conversion to char
+    }else if(n==47){ bool("uncertain")	# 47. bad conversion to bool
+    }else if(n==48){ int("twelve") 	# 48. bad conversion to int
+    }else if(n==49){ real(long_str) 	# 49. bad conversion to real
+    }else if(n==50){ a :=: b 		# 50. wrong sizes for array swap
+    }else if(n==51){ int a[5:3] 	# 51. illegal array bounds
+    }else if(n==52){ (1,2,3,4,5,[-3]7)	# 52. illegal repeat count (total ok)
+    }else if(n==53){ ([-3]7) 		# 53. illegal repeat count (total bad)
+    }else if(n==54){ destroy oc2 	# 54. can't destroy uninit cap
+    }else if(n==55){ destroy (semcap = sem1)	# 55. can't destory sem
+    }else if(n==56){ destroy (opc = o)		# 56. can't destory static op
+    }else if(n==57){ destroy (opc = oo)	# 57. can't destroy proc
+    }else if(n==58){ destroy (opc = new(op())); destroy opc 	# 58. can't destroy twice
+    }else if(n==59){ opc=oo; receive opc() 	# 59. can't input from a proc op
+    }else if(n==60){ opc=null; receive opc() 	# 60. can't input from null cap
+    }else if(n==61){ opc=noop; receive opc() 	# 61. input from noop blocks
+    }else if(n==62){ ?(opc=null) 		# 62. query of null cap
+    }else if(n==63){ destroy(rc=create r()); rc.foo() 	# 63. call destroyed op
+    } else {
+	write (stderr, "no such choice number")
+	stop (2)
+    }
+
+    write (stderr, "error was not detected")
+    stop (3)
+
+    proc oo() {}
+end

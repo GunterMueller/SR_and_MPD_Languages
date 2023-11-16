@@ -1,0 +1,30 @@
+resource param()
+    op p(var int a, val int b, res int c)
+    int  d = 460
+    int  e = 470
+    int  f = 480
+
+    int  a = 10
+    int  b = 20
+    int  c = 30
+    write(a,b,c)
+    p(a,b,c)
+    write(a,b,c)
+    write(d,e,f)
+    p(d,e,f)
+    write(d,e,f)
+    write(a,b,c,d,e,f)
+# output nondeterministic beyond here
+    send p(a,c,e)
+    write(a,b,c,d,e,f)
+    send p(b,d,f)
+    write(a,b,c,d,e,f)
+
+    proc p (a,b,c)  {
+	write("p:",a,b)
+	a++
+	b++
+	c = a * b + 47
+	write("p:",a,b,c)
+    }
+end

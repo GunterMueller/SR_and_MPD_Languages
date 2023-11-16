@@ -1,0 +1,28 @@
+# test reply statements
+# no output between calls to keep output determinstic.
+resource rep1()
+    op p1(x: int)
+    op p2(y: int)
+    op p3(z: int)
+
+
+    write(9999)
+    call p1(1)
+    call p2(3)
+    call p3(2)
+    write(-9999)
+
+
+    proc p1(x)
+	write(x)
+	reply
+	write(x)
+	in p2(y) ->
+	    write(y)
+	    reply
+	    in p3(z)->
+		write(y+z)
+	    ni
+	ni
+    end
+end

@@ -1,0 +1,4 @@
+0 sr -c y.sr
+0 srl filemanager mutex branch ts bank
+0 run
+0 rm -rf Interfaces core *.out

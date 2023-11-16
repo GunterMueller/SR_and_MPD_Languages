@@ -1,0 +1,20 @@
+resource main()
+  op f(int x), g(real u) returns real v
+  process p1  {
+    int  y
+    call f(y)
+  }
+  process p2  {
+    real  w
+    w = g(3.8)
+  }
+  process q  {
+    int  x,z
+    real  u,v
+    for [ i = 1 to 2 ] {
+      in f(x) -> z += x
+      [] g(u) returns v -> v = u*u-9.3
+      ni
+    }
+  }
+end

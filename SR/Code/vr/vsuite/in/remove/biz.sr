@@ -1,0 +1,53 @@
+# very convoluted program to exercise a very obscure bug in remove in rts/iop.c
+#     old_pr not empty
+#     new_pr empty
+#     new_in not empty
+# actually, we shouldn't fix it and let it give a segmentation violation
+# as it does now.  anyone that programs like this deserves a seg viol.
+resource biz()
+	op a(x:int)
+	op ugh1(x:int) returns b:bool
+	op ugh2(x:int) returns b:bool
+	op go()
+	op p3()
+
+	send a(11)
+	send a(12)
+
+	process p1(i:=1 to 2)
+		in a(x) st ugh1(x) ->
+			write("oops",x)
+		ni
+	end
+	process p2 # execution of in stmt starts after each of p1's in stmt
+		receive go()
+		receive go()
+		in a(x) st ugh2(x) ->
+			write("ok",x)
+		ni
+		in a(x) st ugh1(x) ->
+			write("oops",x)
+		ni
+	end
+	var count := 0
+	proc ugh1(x) returns z
+		z := x < 0
+		count++
+		if count = 5 ->
+			# create another process
+			send p3()
+			nap(10000) # let p3 block on its in stmt
+		fi
+		send go() # generates more of these than needed
+	end
+	proc ugh2(x) returns z
+		send a(1000+x)
+		z := true
+	end
+	proc p3()
+		write("hi")
+		in a(x) ->
+			write("p3",x)
+		ni
+	end
+end

@@ -1,0 +1,14 @@
+#  truth table
+
+resource bool4()
+
+	bool  l, r
+	write("\t\t not\t and\t or\t xor")
+	for [ i = 0 to 1 ] {
+	    l = i == 0
+	    for [ j = 0 to 1 ] {
+		r = j == 0
+		write(l,"\t",r,"\t",~r,"\t",l&r,"\t",l|r,"\t",l xor r);
+	    }
+	}
+end

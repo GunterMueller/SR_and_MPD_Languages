@@ -1,0 +1,4 @@
+0 mpd -c decl5.mpd
+0 mpdl decl5
+0 run
+0 rm -rf MPDinter core *.out

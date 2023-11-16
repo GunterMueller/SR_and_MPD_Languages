@@ -1,0 +1,19 @@
+resource des1()
+	int  a = 99
+
+	a = 11111
+	write(a)
+	a = -112
+	write(a)
+	write(44)
+	destroy myresource()
+	write(22)
+
+	final {
+		write(33)
+		write(a)
+		a = a - 200
+		write(a)
+		write(55)
+	}
+end

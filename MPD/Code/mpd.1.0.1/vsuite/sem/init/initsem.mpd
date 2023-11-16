@@ -1,0 +1,48 @@
+# test semaphore initialization, including arrays
+
+resource initsem()
+    sem sema = 3
+    sem semb
+    sem semc
+
+    process a  {
+	P(sema); P(sema); P(sema)
+	write(1111);
+	V(semb)
+	P(sema)
+	write(2222)
+	V(semb)
+    }
+
+    process b  {
+	P(semb)
+	write(3333)
+	V(sema)
+	P(semb)
+	write(4444)
+	V(semc)
+    }
+
+    P(semc)
+
+    sem s = 3
+    write(?s)
+
+    sem t[5] = (2,7,1,8,3)
+    for [ i = 1 to 5 ] { writes (?t[i], " ") }
+    write()
+
+    sem u[3,2] = ((3, 1), (4, 1), (5, 9))
+    for [ i = 1 to 3 ] { writes (?u[i,1], " ", ?u[i,2], " ") }
+    write()
+
+    while (?s ~= 0) { P(s) }
+    for [ i = 1 to 3 ] {
+	while (?t[i] ~= 0) { P(t[i]) }
+	for [ j = 1 to 2 ] {
+	    while (?u[i,j] ~= 0) { P(u[i,j]) }
+	}
+    }
+
+    write("done")
+end

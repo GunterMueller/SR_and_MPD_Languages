@@ -1,0 +1,4 @@
+argtype: 1
+format: '%b'
+RTS abort: file sscan.sr, line 47:
+   arguments do not match format string

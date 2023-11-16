@@ -1,0 +1,19 @@
+resource scope()
+
+    int a1 = 100
+    begin {
+	int a1 = 200
+	if (true) {
+	    begin {
+		int a1 = 300
+		    begin {
+			int a1 = 400
+			write ("4: a1 = ", a1)
+		    }
+		write ("3: a1 = ", a1)
+	    }
+	}
+	write ("2: a1 = ", a1)
+   }
+   write ("1: a1 = ", a1)
+end  scope

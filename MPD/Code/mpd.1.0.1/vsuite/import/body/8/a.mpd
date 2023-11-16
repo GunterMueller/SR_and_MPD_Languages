@@ -1,0 +1,21 @@
+resource a
+	op f(int x)
+body a(int y)
+	proc f(x) { write("in a's f", x, y) }
+end
+
+resource b()
+
+	int  x = 56
+	write("hi",x)
+	if (x == 56) {
+		import a
+		cap a  c
+		write("before create")
+		c = create a(14)
+		write("after create")
+		c.f(765)
+		write("done")
+	}
+
+end

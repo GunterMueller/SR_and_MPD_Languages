@@ -1,0 +1,18 @@
+global Screen
+  op refresh(), move_to(x,y: int)
+  op up(), down(), left(), right()
+  op write(x: string[*])
+body Screen
+  proc refresh()
+    ...
+  end
+  proc move_to(x,y)
+    ...
+  end
+  var where_x := 0, where_y := 0
+  # initially, clear the screen, and
+  # move the cursor to the home position
+  refresh(); move_to(where_x,where_y)
+  # declarations of procs for
+  # up(), down(), left(), right(), write()
+end Screen

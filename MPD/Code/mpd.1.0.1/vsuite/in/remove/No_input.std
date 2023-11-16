@@ -1,0 +1,6 @@
+ok 11
+hi
+p3 12
+RTS warning: blocked process: biz.p2 : file biz.mpd, line 28
+RTS warning: blocked process: biz.p1 : file biz.mpd, line 18
+RTS warning: blocked process: biz.p1 : file biz.mpd, line 18

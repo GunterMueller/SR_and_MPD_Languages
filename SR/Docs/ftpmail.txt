@@ -1,0 +1,118 @@
+NAME
+     ftpmail - FTP access via electronic mail
+
+SYNOPSIS
+     mail ftpmail@cs.arizona.edu
+
+DESCRIPTION
+     ftpmail gives any person with email connectivity  access  to
+     the   University  of  Arizona  Computer  Science  Department
+     anonymous ftp site.  ftpmail takes a script contained in the
+     body  of  an email message and follows it to obtain listings
+     and transfer files from a remote network site.  The  subject
+     line  of  the message is ignored.  Large files will be split
+     into manageable chunks, each of which will be mailed to  the
+     user.   Binary  files  will  be made suitable for email with
+     either uuencode or btoa.
+
+COMMANDS
+     Valid commands to the ftpmail server are:
+
+     reply-to email-address
+          Who to send the response to.  Defaults to your incoming
+          email address.
+
+     help
+          Send  this  help  file.   All  other  instructions  are
+          ignored.
+
+     open [ site [ user [ pass ] ] ]
+          The open command is mandatory.  Only cs.arizona.edu can
+          be  accessed from this server, but it must be specified
+          as the site to log in as any user other than anonymous.
+          User  and  password  can  be  specified  for users with
+          accounts    on    cs.arizona.edu.      Defaults     are
+          cs.arizona.edu, anonymous, reply-to address.
+
+     cd pathname
+          change directory
+
+     ls [ pathname ]
+          get short listing  of  pathname  (defaults  to  current
+          directory).
+
+     ls -lR [ pathname ]
+          long recursive listing of pathname (defaults to current
+          directory).
+
+     dir [ pathname ]
+          long listing of pathname (defaults  to  current  direc-
+          tory).
+
+     get pathname
+          get a file and email back to user.
+
+     compress
+          compress files and directory listings using compress(1)
+          before emailing back to user.
+
+     btoa | uuencode
+          These are mutually exclusive options for  converting  a
+          binary file before emailing. Default is uuencode(1).
+
+     force btoa | uuencode
+          Force all files or directory  listings  to  be  encoded
+          before sending back.  There is no default.
+
+     mode ascii | binary
+          Set the mode selected for the get command for line ter-
+          mination.  Defaults to binary.
+
+     quit
+          End of input - ignore any following lines.
+
+EXAMPLES
+     Connect to cs.arizona.edu and send back a  long  listing  of
+     the top level of the ftp directory.
+          open
+          dir
+          quit
+
+
+
+     Connect to cs.arizona.edu and send back the files tachie.lab
+     and  nikkei.ai  from  the japan/kahaner.reports directory to
+     lmjm@doc.ic.ac.uk
+
+          reply-to lmjm@doc.ic.ac.uk
+          open
+          cd japan/kahaner.reports
+          get tachie.lab
+          get nikkei.ai
+          quit
+
+
+
+     Connect to cs.arizona.edu, send back the  file  TR92-09.ps.Z
+     in  the reports/1992 directory.  As this is a binary file it
+     has to be transferred in binary mode.  Because it is  binary
+     it  will  automatically  be  uuencoded  (the  default binary
+     encoder).    Then   change  to  ../../sr  and  mail  back  a
+     compressed  directory listing.  Although compressing ls out-
+     put makes it binary, which then has to be encoded, it  still
+     ends up smaller than the original.
+
+          open
+          cd reports/1992
+          get TR92-09.ps.Z
+          cd ../../sr
+          compress
+          ls -ltra
+          quit
+
+SEE ALSO
+     ftp(1C), ls(1V),
+
+BUGS
+     Whatever are inherent in mail, perl (ftpmail is  written  in
+     perl) and ftp, and probably others.

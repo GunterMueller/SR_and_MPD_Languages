@@ -1,0 +1,39 @@
+ok:  missing parameter list for resource
+ok:  missing parameter list for resource
+ok:  a global cannot have a parameter list
+ok:  a global cannot have a parameter list
+ok:  var decl in spec part of resource
+ok:  var decl in spec part of resource
+ok:  warning: reply in final ignored
+ok:  warning: suspicious comparison
+ok:  illegal reference to formal parameter n
+ok:  illegal reference to formal parameter b
+ok:  expected .end b.
+ok:  expected .end q.
+ok:  expected .end y.
+ok:  illegal context for array bound .\*.
+ok:  illegal context for string bound .\*.
+ok:  illegal context for string bound .\*.
+ok:  illegal context for array bound .\*.
+ok:  illegal context for string bound .\*.
+ok:  parse error at keyword .by.
+ok:  parse error at identifier .r.
+ok:  parse error at token .:.
+ok:  parse error at token .%.
+ok:  parse error at token .;.
+ok:  parse error at literal .abcdefghijklmnop.
+ok:  parse error at literal .x.
+ok:  parse error at EOF
+ok:  unexpected newline
+ok:  duplicate identifier: a
+ok:  undefined identifier: count
+ok:  undefined identifier: i
+ok:  undefined identifier: y
+ok:  undefined identifier: i
+ok:  undefined identifier: i
+ok:  undefined identifier: bogus
+ok:  undefined identifier: a2
+ok:  undefined identifier: x
+ok:  undefined identifier: servant
+ok:  undefined identifier: chair
+ok:  undefined identifier: self

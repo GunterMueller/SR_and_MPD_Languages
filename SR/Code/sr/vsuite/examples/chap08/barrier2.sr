@@ -1,0 +1,24 @@
+global barrier
+  const N := 20  # number of processes
+  sem continue[N] := ([N] 0)
+  sem done := 0
+body barrier
+  process c
+    do true ->
+      fa w := 1 to N -> P(done) af
+      fa w := 1 to N -> V(continue[w]) af
+    od
+  end
+end
+
+resource workers()
+  import barrier
+  # declarations of variables shared by workers
+  process worker(i := 1 to N)
+    do true ->
+      # code to implement one iteration of task i
+      V(done)
+      P(continue[i])
+    od
+  end
+end

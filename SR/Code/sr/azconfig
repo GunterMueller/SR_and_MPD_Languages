@@ -1,0 +1,312 @@
+#!/bin/sh
+#
+#   azconfig option ...  -- edit Configuration file for certain configurations
+#
+#   This is mainly a tool for SR development; it includes some Arizona-specific
+#   values.  See the installation guide for instructions about how to edit the
+#   Configuration file and Makefile to define a configuration.
+#
+#   options are:
+#
+#	links	    [default] for use from source area via symlinks in ./links
+#	local	    for /usr/local/bin
+#	optlocal    for /opt/local/bin
+#	srbin	    for /usr/sr/bin
+#	/path	    to put all installed files in the given path
+#	dist	    for making a formal distribution (uses /usr/local/bin etc.)
+#
+#	multi	    build MultiSR when possible
+#	uni	    force UniSR even if MultiSR available
+#
+#	fast	    build with -O and disable debugging
+#
+#	gcc         use gcc (Gnu C compiler)
+#	gcc2	    use gcc from "gcc2" path
+#	clcc	    use clcc (CenterLine C)
+#	acc	    use acc (Sun ANSIish C compiler)
+#	c89	    use acc (Dec ANSI C compiler)
+#
+#   Unspecified options are reset to defaults, NOT left unchanged.
+#
+#   WARNING -- this script overwrites the srmap file
+
+
+# look around the system and create a set of default values
+
+CC=cc
+CFLAGS=-g
+CEXTRA=
+CMULTI=
+
+SRSRC=`pwd | sed -e '
+   s=^/tmp_mnt/R/.../.../\(.../usr.*/.*\)=/r/\1=
+   s=^/tmp_mnt/=/=
+   s=^/\.automount/=/=
+   s=^/R/.../=/r/=
+   s=^/export/home[^/]*/=/home/='`
+SRCMD=$SRSRC/links
+SRLIB=$SRSRC/links
+MAN1=
+MAN3=
+MAN5=
+MANEXT=1
+MULTI=uni
+
+CCPATH=
+for i in /bin/cc /usr/bin/cc /usr/bin/c89 /usr/lang/cc /usr/lang/acc \
+	/opt/SUNWspro/bin/cc /opt/cygnus/bin/cc /usr/local/bin/gcc
+do
+   if [ -r $i ]; then CCPATH=$i; break; fi
+done
+
+RSHPATH=/usr/bin/rsh
+if [ -f /usr/bin/remsh ]; then RSHPATH=/usr/bin/remsh; fi
+if [ -f /usr/ucb/rsh ]; then RSHPATH=/usr/ucb/rsh; fi
+if [ -f /usr/bsd/rsh ]; then RSHPATH=/usr/bsd/rsh; fi
+
+LIBC=
+if [ -f /usr/lib/libseq.a ];    then LIBC="$LIBC -lseq"; fi
+if [ -f /usr/lib/libsocket.a ]; then LIBC="$LIBC -lsocket"; fi
+if [ -f /usr/lib/libnsl.a ];    then LIBC="$LIBC -lnsl"; fi
+
+LIBM=-lm
+if [ -f /usr/att/lib/libm.a ]; then LIBM="$LIBM /usr/att/lib/libm.a"; fi
+
+LIBR=
+
+XINCL=/usr/include
+if [ -d /usr/X11/include/X11 ]; then XINCL=/usr/X11/include; fi
+if [ -d /usr/openwin/include/X11 ]; then XINCL=/usr/openwin/include; fi
+if [ ! -d $XINCL/X11 ]; then XINCL=; fi
+
+XTANGO=/home/sr/xtango/include
+if [ ! -f $XTANGO/xtango.h ]; then XTANGO=; fi
+
+VFPATH=/usr/lib/vfontedpr
+if [ ! -f "$VFPATH" ]; then VFPATH=; fi
+
+# on Sun Solaris, use different path for RSH, and define __svr4__
+if [ "`(uname -sr | cut -c1-7) 2>/dev/null`" = "SunOS 5" ]; then
+    RSHPATH=/bin/rsh
+    CEXTRA=-D__svr4__
+fi
+
+# on HP Bobcat, need extra big compiler tables to build
+if [ "`(uname -m) 2>/dev/null`" = "9000/330" ]; then CEXTRA="+Np300 +Nw500"; fi
+
+# on Sequent, use MultiSR by default
+if [ -f /usr/lib/libpps.a ]; then 
+    LIBR="-lpps"
+    MULTI=dynix
+    CMULTI="-Y"
+fi
+
+# on IRIX, use MultiSR by default, and suppress annoying warnings
+if [ -f /usr/lib/libmpc.a ]; then 
+    CFLAGS="$CFLAGS -w"
+    MULTI=irix
+fi
+
+# on Sun running Solaris 2, use MultiSR by default
+if [ -f /lib/libthread.so.1 ]; then 
+    LIBR="-lthread"
+    MULTI=solaris
+fi
+
+# on Intel Paragon, link in nx library
+if [ -f /lib/libnx.a ]; then 
+    LIBC="-lnx"
+fi
+
+# on Linux, disable Lex library and do various other things
+if [ "`(uname -s) 2>/dev/null`" = "Linux" ]; then
+    LIBM="-lm -lc"
+    LIBX="-L/usr/X11/lib"
+    if [ "`uname -m`" = "i686" ]; then
+    	MULTI=linux-x86
+    fi
+fi
+
+# if this looks like an Arizona system, use our srmap file
+if grep -s '^gmt:[^:]*:0*28:0*46:' /etc/passwd >/dev/null; then
+    SRMAP=srmap.az
+else
+    SRMAP=srmap.min
+fi
+
+# process options
+
+for i
+do case $i in
+    dist)
+	# override what we figured out above and set standard values
+	CC=cc
+	CFLAGS=-g
+	CEXTRA=
+	CMULTI=
+	MULTI=uni
+	SRSRC=/usr/local/src/sr
+	SRCMD=/usr/local/bin
+	SRLIB=/usr/local/lib/sr
+	SRMAP=srmap.min
+	MAN1=/usr/man/manl
+	MAN3=/usr/man/manl
+	MAN5=/usr/man/manl
+	MANEXT=l
+	CCPATH=/bin/cc
+	LIBC=
+	LIBM=-lm
+	LIBR=
+	RSHPATH=/usr/ucb/rsh
+	XINCL=/usr/include
+	XTANGO=
+	VFPATH=/usr/lib/vfontedpr
+	;;
+    local)
+	SRCMD=/usr/local/bin
+	SRLIB=/usr/local/lib/sr
+	if [ -d /usr/local/man ]; then
+	    MAN1=/usr/local/man/man1
+	    MAN3=/usr/local/man/man3
+	    MAN5=/usr/local/man/man5
+	    MANEXT=1
+	else
+	    MAN1=/usr/man/manl
+	    MAN3=/usr/man/manl
+	    MAN5=/usr/man/manl
+	    MANEXT=l
+	fi
+	;;
+    optlocal)
+	SRCMD=/opt/local/bin
+	SRLIB=/opt/local/lib/sr
+	MAN1=/opt/local/man/man1
+	MAN3=/opt/local/man/man3
+	MAN5=/opt/local/man/man5
+	MANEXT=1
+	;;
+    srbin)
+	SRCMD=/usr/sr/bin
+	SRLIB=/usr/sr/bin
+	MAN1=/usr/sr/bin
+	MAN3=/usr/sr/bin
+	MAN5=/usr/sr/bin
+	MANEXT=1
+	;;
+    links) 
+	SRCMD=$SRSRC/links
+	SRLIB=$SRSRC/links
+	MAN1=
+	MAN3=
+	MAN5=
+	;;
+    uni)
+	LIBR=
+	MULTI=uni
+	CMULTI=
+	;;
+    multi)
+	if [ "`(uname -sm) 2>/dev/null`" = "Linux i686" ]; then
+	    MULTI=linux-x86
+	fi
+	if [ -f /lib/libthread.so.1 ]; then 
+	    LIBR="-lthread"
+	    MULTI=solaris
+	fi
+	if [ -f /usr/lib/libpps.a ]; then 
+	    LIBR="-lpps"
+	    MULTI=dynix
+	    CMULTI="-Y"
+	fi
+	if [ -f /usr/lib/libmpc.a ]; then 
+	    MULTI=irix
+	fi
+	;;
+    fast)
+	CFLAGS="-O -DNDEBUG"
+	;;
+    gcc)
+	CC=gcc
+	CCPATH=
+	for i in /usr/local/bin/gcc /usr/local/gcc \
+		/opt/local/bin/gcc /opt/cygnus/bin/gcc
+	do
+	   if [ -r $i ]; then CCPATH=$i; break; fi
+	done
+	;;
+    gcc2)
+	CC=gcc2
+	CCPATH=/usr/local/gcc2
+	;;
+    clcc)
+	CC=clcc
+	CCPATH=/usr/local/CenterLine/bin/clcc
+	;;
+    acc)
+	CC=acc
+	CCPATH=/usr/lang/acc
+	;;
+    c89)
+	CC=c89
+	CCPATH=/usr/bin/c89
+	;;
+    /*)
+	test -d $i || echo warning -- $i is not a directory
+	SRCMD=$i
+	SRLIB=$i
+	MAN1=$i
+	MAN3=$i
+	MAN5=$i
+	MANEXT=1
+	;;
+    *)
+	echo 1>&2 "${0}:  option '$i' unrecognized"
+	exit 1
+	;;
+    esac
+    done
+
+if [ -z "$CCPATH" ]; then
+    echo 1>&2 "$0: can't find a C compiler"
+    exit 1
+fi
+
+cp Makefile Makefile.new
+ed Makefile.new <<==EOF==
+/^CC *=/s|.*|CC = $CC|
+/^CFLAGS *=/s|.*|CFLAGS = $CFLAGS $CEXTRA $CMULTI|
+/^MULTI *=/s|.*|MULTI = $MULTI|
+w
+q
+==EOF==
+
+cp Configuration Configuration.new
+ed Configuration.new <<==EOF==
+/^SRSRC *=/s|.*|SRSRC = $SRSRC|
+/^SRCMD *=/s|.*|SRCMD = $SRCMD|
+/^SRLIB *=/s|.*|SRLIB = $SRLIB|
+/^MAN1 *=/s|.*|MAN1 = $MAN1|
+/^MAN3 *=/s|.*|MAN3 = $MAN3|
+/^MAN5 *=/s|.*|MAN5 = $MAN5|
+/^MANEXT *=/s|.*|MANEXT = $MANEXT|
+/^CCPATH *=/s|.*|CCPATH = $CCPATH|
+/^RSHPATH *=/s|.*|RSHPATH = $RSHPATH|
+/^XINCL *=/s|.*|XINCL = $XINCL|
+/^XTANGO *=/s|.*|XTANGO = $XTANGO|
+/^VFPATH *=/s|.*|VFPATH = $VFPATH|
+/^LIBC *=/s|.*|LIBC = $LIBC|
+/^LIBM *=/s|.*|LIBM = $LIBM|
+/^LIBR *=/s|.*|LIBR = $LIBR $LIBX|
+w
+q
+==EOF==
+
+mv Makefile Makefile.bak
+mv Makefile.new Makefile
+mv Configuration Configuration.bak
+mv Configuration.new Configuration
+
+cp $SRMAP srmap
+diff Makefile.bak Makefile
+diff Configuration.bak Configuration
+exit 0

@@ -1,0 +1,7 @@
+resource foo(N, n: int; c: cap())
+  import glob
+  process p(i := 1 to N)
+    P(mutex); x +:= n; V(mutex)
+    send c()
+  end
+end

@@ -1,0 +1,4 @@
+0 sr -c concat.sr
+0 srl concat
+0 run
+0 rm -rf Interfaces core *.out

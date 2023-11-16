@@ -1,0 +1,15 @@
+resource main()
+  op swap(var int x)
+  process p1  {
+    int  y
+    call swap(y)
+  }
+  process p2  {
+    int  z
+    call swap(z)
+  }
+  process q  {
+    int  x1,x2
+    in swap(x1) -> in swap(x2) -> x1 :=: x2 ni ni
+  }
+end

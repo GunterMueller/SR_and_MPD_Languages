@@ -1,0 +1,4 @@
+#  gmt  Thu May  7 09:27:32 MST 1992
+0 mpd swap.mpd
+0 run
+0 rm -rf MPDinter core *.out

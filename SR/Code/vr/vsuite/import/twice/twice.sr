@@ -1,0 +1,49 @@
+#  make sure a resource or global can be imported more than once
+#
+#  also tries a few other things twice
+
+global g
+	sem s
+	var i := 3
+end
+
+global h
+	sem t, u
+body h
+	write ("h here")
+	V(t)
+end
+
+resource r
+      const n := 4712
+end
+
+resource m()
+	begin;  var v := 12;  sem t := 5; P(t); write(++v, ?t);  end
+	begin;  var v := 12;  sem t := 5; P(t); write(++v, ?t);  end
+		var v := 12;  sem t := 5; P(t); write(++v, ?t);
+	begin;  import g;  write(++i);  V(s);  end;
+	begin;  import g;  P(s);  write(++i);  end;
+	begin;  import r;  write (n);  end
+	begin;  import r;  write (n);  end
+	import g;
+	import r;
+	write (n);
+	write (++i);
+
+	# try to catch problems with simultaneous imports
+	const nrep := 20
+	process p (i := 1 to nrep)
+		import h
+		P(t)
+		writes("p")
+		V(t)
+		V(u)
+	end
+
+	import h
+	fa i := 1 to nrep ->
+		P(u)
+		af
+	write ("\ndone")
+end

@@ -1,0 +1,19 @@
+resource decl6()
+	var z:int := 1111
+	final
+		var i :int := 1
+		var j :int := 999
+		write(z); write(i); write(j)
+	end
+	op p()
+	proc p()
+		write(z)
+		z++
+		write(z)
+		destroy myresource()
+	end
+	process ho_hum
+		write(z)
+		p()
+	end
+end

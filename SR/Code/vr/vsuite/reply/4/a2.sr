@@ -1,0 +1,13 @@
+resource a2()
+	op game_over()
+	process p1
+		game_over()
+		write("after 1st game over")
+	end
+	process work
+		in game_over() ->
+			reply
+		ni
+		write("leaving work process")
+	end
+end

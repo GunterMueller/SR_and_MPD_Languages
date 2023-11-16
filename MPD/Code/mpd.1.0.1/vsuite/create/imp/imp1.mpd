@@ -1,0 +1,11 @@
+# output nondeterministic.
+resource imp1
+	type t = rec(int a,b)
+	op f(t x) {call,send}
+body imp1(int a, int c, int d, bool b)
+	write("imp1 initial",a,b,c,d)
+
+	proc f(x)  {
+		write("imp1 f",x.a,x.b)
+	}
+end

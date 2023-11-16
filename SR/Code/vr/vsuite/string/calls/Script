@@ -1,0 +1,4 @@
+0 sr -c calls.sr
+0 srl calls
+0 run
+0 rm -rf Interfaces core *.out

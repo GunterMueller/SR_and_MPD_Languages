@@ -1,0 +1,9 @@
+resource t4()
+	int n
+	put("? "); read(n);
+	int a[1:n] 
+	a[1:n] = ([n] 7);
+	for [ i = 1 to n ] {
+		write(a[i])
+	}
+end

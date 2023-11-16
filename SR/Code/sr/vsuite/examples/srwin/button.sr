@@ -1,0 +1,122 @@
+# Implementing a button
+#
+# Qiang A. Zhao, March 93
+#
+
+global Button
+
+  import SRWin
+
+  type buttonRec = rec (
+		window : winWindow
+		x, y, w, h, border : int
+	)
+
+  optype buttonCallBack(buttonRec; string[*])
+
+  op button(	but: buttonRec;
+		borderColor, buttonColor, labelColor : winColor;
+		labelString: string[*];
+		cb: cap buttonCallBack)
+
+body Button
+
+  import SRWin
+
+  ### A button
+  proc button(but, borderColor, buttonColor, labelColor, labelString, cb)
+    var labelFont : winFont := WinDefaultFont(but.window)
+
+    var x := but.x + but.border
+    var y := but.y + but.border
+    var w := but.w - but.border * 2
+    var h := but.h - but.border * 2
+    var labx := (w - WinTextWidth(labelFont, labelString)) / 2
+    var laby := (h + WinFontAscent(labelFont) - WinFontDescent(labelFont)) / 2
+
+    var mywin: winWindow
+    op evchan: winEventChannel
+    mywin := WinCreateSubwindow(but.window, evchan, OffScreen, x, y, w, h)
+    if mywin = null ->
+      write(stderr, "Button: '", labelString, "' cannot be created")
+      return
+    fi
+
+    WinSetEventMask(mywin, Ev_ButtonDown | Ev_ButtonUp |
+	Ev_EnterWindow | Ev_ExitWindow)
+
+    var normalw : winWindow := WinNewContext(mywin)
+    WinSetForeground(normalw, labelColor)
+    WinSetBackground(normalw, buttonColor)
+
+    var revw : winWindow := WinNewContext(mywin)
+    WinSetForeground(revw, buttonColor)
+    WinSetBackground(revw, labelColor)
+
+    WinSetBorder(normalw, but.border, buttonColor)
+    WinEraseArea(normalw, winRectangle(0, 0, w, h))
+    WinDrawString(normalw, winPoint(labx, laby), labelString)
+    WinMapWindow(normalw)		# same as mapping 'mywin'
+
+    var pressed : bool := false
+    do true ->
+      var ev: winEvent
+      receive evchan(ev)
+
+      if ev.event_type = Ev_ButtonDown ->
+	pressed := true
+	WinSetBorder(mywin, but.border, borderColor)
+	WinEraseArea(revw, winRectangle(0, 0, w, h))
+	WinDrawString(revw, winPoint(labx, laby), labelString)
+
+      [] ev.event_type = Ev_ButtonUp ->
+	WinSetBorder(mywin, but.border, borderColor)
+	WinEraseArea(normalw, winRectangle(0, 0, w, h))
+	WinDrawString(normalw, winPoint(labx, laby), labelString)
+	if pressed ->
+	  cb(but, labelString)
+	fi
+	pressed := false
+
+      [] ev.event_type = Ev_EnterWindow ->
+	WinSetBorder(mywin, but.border, borderColor)
+
+      [] ev.event_type = Ev_ExitWindow ->
+	pressed := false
+	WinSetBorder(normalw, but.border, buttonColor)
+	WinEraseArea(normalw, winRectangle(0, 0, w, h))
+	WinDrawString(normalw, winPoint(labx, laby), labelString)
+      fi
+
+      WinFlush(mywin)
+    od
+  end
+end Button	### global
+
+resource ButtonTest()
+  import SRWin, Button
+
+  op cb1, cb2: buttonCallBack
+
+  proc cb1(b, str)
+    write("Hello")
+  end
+
+  proc cb2(b, str)
+    write("Quit")
+    stop(0)
+  end
+
+  var mywin: winWindow
+  mywin := WinOpen("", "Button Test", null, UseDefault, 130, 80)
+  WinFlush(mywin)
+  send button(buttonRec(mywin, 10, 10, 50, 40, 2),
+	"red", "white", "blue", "Hello", cb1)
+  send button(buttonRec(mywin, 70, 10, 50, 40, 2),
+	"green", "blue", "white", "Quit", cb2)
+
+final
+  WinClose(mywin)
+end
+end ButtonTest
+

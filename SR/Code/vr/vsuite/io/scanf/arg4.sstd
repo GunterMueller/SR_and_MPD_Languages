@@ -1,0 +1,4 @@
+argtype: 1
+format: '%r'
+RTS abort: file sscan.sr, line 47:
+   invalid field specifier in format string

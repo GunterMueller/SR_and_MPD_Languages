@@ -1,0 +1,70 @@
+global size
+  var N := 8    # grid dimension, default 8
+body size
+  getarg(1, N)
+end
+
+global data
+  import size
+  var grid[2][0:N+1,0:N+1]: real
+  var epsilon: real
+  var nxt := 2, cur := 1
+  op print()
+body data
+  grid := ([2] ([N+2] ([N+2] 0.0)))
+  var l, t, r, b: real
+  writes("enter 4 border values: ");
+  read(l, t, r, b)
+  fa i := 0 to N+1 ->
+    grid[cur][i,0] := l; grid[nxt][i,0] := l
+  af
+  fa i := 0 to N+1 ->
+    grid[cur][0,i] := t; grid[nxt][0,i] := t
+  af
+  fa i := 0 to N+1 ->
+    grid[cur][i,N+1] := r; grid[nxt][i,N+1] := r
+  af
+  fa i := 0 to N+1 ->
+    grid[cur][N+1,i] := b; grid[nxt][N+1,i] := b
+  af
+  writes("enter epsilon: "); read(epsilon)
+
+  proc print()
+    write()
+    fa i := 1 to N ->
+      fa j := 1 to N -> writes(grid[cur][i,j], " ") af
+      write()
+    af
+  end
+end
+
+resource jacobi()
+  import data, size
+  var diff[1:N,1:N]: real    # differences
+
+  procedure update(i, j: int)
+    grid[nxt][i,j] := (grid[cur][i-1,j] + grid[cur][i,j-1] + \
+                       grid[cur][i+1,j] + grid[cur][i,j+1]) / 4
+    diff[i,j] := abs(grid[nxt][i,j] - grid[cur][i,j])
+  end
+
+  procedure check_diffs(i: int)
+    fa j := 2 to N ->
+      diff[i,1] := max(diff[i,1], diff[i,j])
+    af
+  end
+
+  var iters := 0, maxdiff: real
+  do true ->    # iterate until convergence
+    iters++
+    co (i := 1 to N, j := 1 to N) update(i,j) oc
+    nxt :=: cur    # swap roles of grids
+    maxdiff := 0.0
+    co (i := 1 to N) check_diffs(i) ->
+          maxdiff := max(maxdiff, diff[i,1])
+    oc
+    if maxdiff <= epsilon -> exit fi
+  od
+  write("convergence after", iters, "iterations")
+  print()
+end

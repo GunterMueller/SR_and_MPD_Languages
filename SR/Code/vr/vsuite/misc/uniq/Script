@@ -1,0 +1,6 @@
+#  gmt  Wed Aug  7 09:59:20 MST 1991
+0 sr -c uniq.sr
+0 srl d
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out

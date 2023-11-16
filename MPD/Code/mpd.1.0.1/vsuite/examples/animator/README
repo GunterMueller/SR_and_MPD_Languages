@@ -1,0 +1,37 @@
+MPD vsuite/examples/animator README
+
+This directory contains several programs illustrating the use of MPDanimator.
+(Note that MPDanimator requires XTANGO, which must first be built separately.)
+
+A Makefile is provided; you'll need to set the TLIB variable to point to the
+location of xtango.o on your system.  Running "make" with no arguments builds
+the non-trivial animations.  Remember to run "xrdb -merge XTANGO/xtango.res"
+before running the animations.
+
+The files included here are:
+
+bubblesort.mpd
+quicksort.mpd
+	Two animations of sorting algorithms.
+
+dining.mpd
+	Distributed dining philosophers, based on section 13.3 of the SR book.
+
+bbdriver.mpd
+bbproc.mpd
+bbin.mpd
+	The bounded buffer problem.  bbin uses rendezvous; bbproc uses calls.
+
+rwdriver.mpd
+rwfair.mpd
+rwstarve.mpd
+	Two readers-writers animations.  rwstarve starves the writers;
+	rwfair is more fair.
+
+hello.mpd
+tfonts.mpd
+tlines.mpd
+tresize.mpd
+tsteps.mpd
+tzoom.mpd
+	Simple tests, not built by default.

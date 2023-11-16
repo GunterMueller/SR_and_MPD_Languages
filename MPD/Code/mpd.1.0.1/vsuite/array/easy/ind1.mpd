@@ -1,0 +1,26 @@
+# indexing
+resource ind1()
+	int  a[1:10]
+	op print()
+	proc print()  {
+		write("----")
+		for [ i = 1 to 10 ] {
+			write(a[i])
+		}
+	}
+	op init()
+	proc init()  {
+		int  count = 0
+		for [ i = 10 downto 1 ] {
+			count ++
+			a[i] = count
+		}
+	}
+
+	init()
+	print()
+	a[4] = - a[4]
+	a[6] = a[ a[9] + a[8] + a[ a[3] ] ]
+	print()
+
+end

@@ -1,0 +1,64 @@
+
+# another test of else with multiple processes
+# note: processes synchronize so execution is deterministic;
+# output is also deterministic.
+resource a()
+   op bozo(t:int);  op hoho(t,x:int);  op blocker() returns b:bool; op f(x:int)
+   op done()
+   # control[t,i] is 0 if else present for hoho(i) during try t
+   # otherwise it is value to send to f
+      var control[1:5,1:5] :int :=
+          (( 29, 28, 27, 26, 25),
+            (24,  0, 23,  0, 22),
+	    (21,  0,  0, 20, 19),
+	     (0,  0,  0,  0,  0),
+	     (0,  0, 18, 17,  0 ))
+      var output[1:5,1:5] :int := ([5]([5] -1))
+
+      fa t := 1 to 5 ->
+          write("****Try",t)
+	  send f(9999)
+          fa i := 1 to 5 st control[t,i] != 0 -> send f(control[t,i])  af
+          call bozo(t)
+          fa i := 1 to 5 -> call hoho(t,i) af
+	  fa k := 1 to 5 -> receive done() af
+      af
+      fa k := 1 to 5 ->
+         fa l := 1 to 5 ->
+            writes(output[k,l])
+	    if l = 5 -> write()
+	    [] else -> writes(" ")
+	    fi
+         af
+      af
+      fa k := 1 to 5,
+         l := 1 to 5 st control[k,l] != output[k,l] ->
+            write("oops",k,l); stop(1)
+      af
+
+   proc bozo(t)
+      write("bozo",t)
+      reply
+      # don't try this at home boys and girls
+      in f(x) and blocker() ->
+      ni
+   end
+   proc hoho(t,i)
+      reply
+      if control[t,i] = 0 ->
+          in f(x) and x = -98765 /* always false */ -> output[t,i] := x
+          [] else -> output[t,i] := 0
+          ni
+      [] else ->
+          in f(x) st control[t,i] = x -> output[t,i] := x
+          ni
+      fi
+      send done()
+   end
+   # the idea is to block bozo so that the hoho's get put on
+   # the new process list for f.
+   proc blocker() returns b
+      b := true
+      nap(1000)		# was 10000: "big enough for even very slow systems"
+   end
+end

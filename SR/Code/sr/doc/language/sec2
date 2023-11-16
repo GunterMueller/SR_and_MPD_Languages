@@ -1,0 +1,126 @@
+.sh 1 "SR Model of Computation" 2
+.lp
+An SR program
+can execute within multiple address spaces,
+which can be located
+on multiple physical machines.
+Processes within a single address space can also share objects.
+Thus,
+SR supports programming
+in distributed environments
+as well as in shared-memory environments.
+.pp
+The SR model of computation allows a program to be split into one or
+more address spaces called #virtual #machines.
+Each virtual
+machine defines an address space on one physical machine.
+Virtual machines are created dynamically;
+they are referenced indirectly through #capability #variables.
+Virtual machines contain instances of
+two related kinds of modular components: #globals and #resources.
+.pp
+Each of these components contains two parts:
+a specification (aka a spec) and an implementation (aka a body).
+An import mechanism is used to make available
+in one component
+objects declared in the spec of another.
+In these two ways,
+globals and resources are similar to modules in Modula-2 [Wirt82]
+but they are created differently.
+Instances of resources are created dynamically,
+by an explicit create statement.
+These instances, and the services they provide,
+are referenced indirectly through
+#resource #capability #variables.
+Instances of globals are also created dynamically.
+However,
+they are created implicitly
+as needed\(emspecifically,
+when an instance of an importing resource or global is itself created
+and an instance of that global does not already exist on the same
+virtual machine.
+Furthermore,
+each virtual machine can contain only a single instance
+of a global.
+Globals, and the services they provide,
+can be referenced directly through their names.
+.pp
+The spec of a global or resource
+can contain declarations of types, constants,
+and operations;
+a global's spec can additionally contain declarations of variables.
+An operation defines a service that
+must be provided somewhere in the program.
+It can be considered a generalization of
+a procedure:  it has a name, and can take parameters and return a result.
+An operation declared in a resource's spec must be serviced
+in that resource's body.
+Similarly,
+an operation declared in a global's spec #can be serviced
+in the global's body;
+it can also be serviced within
+an importing resource or global.
+.\"  on the same virtual machine.
+.pp
+The body of a global or a resource
+can contain declarations of additional objects;
+these objects are visible only within the body,
+not to any importer.
+Bodies also contain code that,
+among other things,
+services operations.
+The code is split into units called #processes and #procs.
+Processes are created implicitly
+when the enclosing global or resource is created.
+Instances of procs are created when they are invoked;
+they too execute as independent processes.
+All processes created within a global or a resource
+execute on the same virtual machine
+on which the enclosing global or resource
+was created.
+Processes and procs can declare additional variables and operations;
+they must contain the code that services
+invocations of any locally declared operations.
+.pp
+Figure 1 summarizes SR's model of computation.
+.KS
+.ce
+.F+
+figure model.ps
+height 2.75i
+.F-
+.KE "Figure 1.  SR model of computation"
+In its simplest form,
+a program consists of a single virtual machine executing on one
+physical machine,
+possibly a shared-memory multiprocessor.
+A program can also consist of multiple virtual machines executing on
+multiple physical machines.
+Hybrid forms are possible and in fact useful.
+Data and processor(s) are shared within a virtual machine;
+different virtual machines can be placed on
+(distributed across) different physical machines.
+.pp
+Processes on the same or different
+virtual machines
+can communicate
+through operation invocation.
+Operations may be invoked
+directly through the operation's declared name or
+through a resource capability variable;
+.\" (if declared in the resource's spec);
+or they may be invoked
+indirectly through an #operation #capability #variable.
+These capability variables are strongly typed and may
+point to operations with structurally equivalent signatures.
+They may also be passed as parameters to operations during invocation or to
+resources during resource creation,
+allowing processes in different
+resource instances, on possibly different virtual machines,
+to communicate.
+.pp
+Communication between processes is independent of their virtual
+machine locations.
+For example, message passing between processes in the same resource
+instance has the same syntax and semantics as message passing between
+processes on different virtual machines.

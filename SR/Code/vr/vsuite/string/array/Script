@@ -1,0 +1,5 @@
+# gmt 23jul91
+0 sr -c array.sr
+0 srl array
+0 run
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,38 @@
+# test types using name of current resource.
+# and a little structural equivalence of records.
+resource rec1
+	type t = rec(int a; int b)
+body rec1()
+	op putty(t q)
+	t a
+	op assign(int a, int b) returns rec (int r1; int r2) r
+
+	t b
+	b.a = 6
+	b.b = 7
+	call putty(b)
+	a = b
+	call putty(a)
+	t  c 
+	rec (int a1; int a2) d
+	c.a = 88
+	c.b = 55
+	putty(c)
+	d = c
+	putty(d)
+	d.a1 = 111
+	d.a2 = 222
+	putty(d)
+	c.b = d.a1
+	c.a = d.a2
+	putty(c)
+	putty(assign(666,777))
+
+	proc putty(z)  {
+		write(z.a,z.b)
+	}
+	proc assign(a,b) returns s  {
+		s.r1 = a
+		s.r2 = b
+	}
+end

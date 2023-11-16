@@ -1,0 +1,13 @@
+0 m2sr -sc nocv.m
+0 sr -C nocv.sr test.sr
+
+0 m2sr -sw nocv.m
+0 sr -C nocv.sr test.sr
+
+0 m2sr -su nocv.m
+0 sr -C nocv.sr test.sr
+
+0 m2sr -sx nocv.m
+0 sr -C nocv.sr test.sr
+
+0 rm -rf Interfaces core *.out nocv.sr

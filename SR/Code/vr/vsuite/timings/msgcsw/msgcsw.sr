@@ -1,0 +1,35 @@
+# context switch using message passing
+# The context switch is similar to switch using semaphores.  The only
+# difference is that message passing is used instead of semaphores.
+# The reported number of times is twice the loop limit
+# because two context switches occur on each pass.
+
+resource context
+  op up(), down()		# export prevents semaphore implementation
+body context()
+
+  var limit, factor, base, trials : int
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit := factor * base / 2
+
+  process p1
+    var start, finish : int
+
+    fa i := 1 to trials ->
+        start := age()
+        fa i := 1 to limit -> send up(); receive down() af
+        finish := age()
+	printf("%d times   %d ms\n", 2*limit, finish-start)
+    af
+  end
+
+  process p2
+    fa i := 1 to trials ->
+        fa i := 1 to limit -> receive up(); send down() af
+    af
+  end
+
+end

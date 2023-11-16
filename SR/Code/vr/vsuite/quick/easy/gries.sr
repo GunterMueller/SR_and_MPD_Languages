@@ -1,0 +1,33 @@
+#  maximum-sum section due to Gries.
+
+#  good test of dynamic allocation of arrays, pre-defined functions
+#  (lb,ub,max), and some sequential stuff.
+
+# this tiny program has a remarkable proclivity for exposing compiler bugs.
+
+resource gries()
+
+    op max_sum(a[0:*]:int) returns ms:int
+
+    var n:int
+    put("enter n\n")
+    read(n)
+    var nums[1:n] : int
+    # read in numbers
+	fa i := lb(nums) to ub(nums) ->
+	    put("?")
+	    read(nums[i])
+	af
+    write(max_sum(nums))
+
+    proc max_sum(a) returns s
+	var k:int := lb(a)
+	var c:int := 0
+	s := 0
+	do k != ub(a)+1 ->
+	    c := max(a[k]+c,0)
+	    s := max(s,c)
+	    k++
+	od
+    end
+end

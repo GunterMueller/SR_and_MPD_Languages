@@ -1,0 +1,15 @@
+resource ext_real()
+    external printreal(r1, r2, r3 : real) returns char
+    external int_times_real(i1 : int; r1 , r2: real; i2 : int)
+    external prod(r1 : real; i1 , i2: int; r2 : real) returns real
+
+    var r1 := 1.234, r2 := 2.345
+    var i1 := 2, i2 := 3
+
+    write(printreal(r1, r2, 3.456))
+    int_times_real(2, 2, 3, 3)
+    int_times_real(i1, r1, r2, i2)
+    write( prod(r1, i1, i2, r2))
+    r2 := prod(r1, i1, i2, r2)
+    write(r2)
+end ext_real

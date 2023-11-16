@@ -1,0 +1,6 @@
+
+===============  qm2  ===============
+
+ops:
+   Ri  SYM2 g: K_OP T_OP(){send}:T_VOID
+   Ri  SYM2 f: K_OP T_OP(){send}:T_VOID

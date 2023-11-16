@@ -1,0 +1,21 @@
+resource a
+	op f(x:int)
+	type foo = rec(a,b:int)
+	op g(z:a.foo)
+end
+
+resource b
+	op h(x:int)
+	extend a
+	op i(x:a.foo)	# a is known since implicitly imported
+	import a	# unneded, but should cause no problem
+	op j(v:a.foo)
+body b()
+	var x:int := 789; var y:foo
+	y.a := 17; y.b := 86; f(12345); g(y); h(6543); i(y); j(foo(12,34))
+	proc f(x)  write("hi from f",x)  end
+	proc g(z)  write("hi from g",-x,y.a, y.b,z.a,z.b)  end
+	proc h(y)  write("hi from h",x,y)  end
+	proc i(z)  write("hi from i",-x,y.a,y.b,z.a,z.b)  end
+	proc j(t)  write("hi from j",x,y.a,y.b,t.a,t.b)  end
+end

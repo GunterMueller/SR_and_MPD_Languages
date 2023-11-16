@@ -1,0 +1,6 @@
+begin main
+r here
+created r
+r final here
+destroyed r
+RTS abort: attempting to destroy resource (r) that no longer exists

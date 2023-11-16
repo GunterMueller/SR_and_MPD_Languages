@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 mpd -c fwd1.mpd
+0 mpdl fwd1
+0 run 
+0 rm -rf MPDinter core *.out

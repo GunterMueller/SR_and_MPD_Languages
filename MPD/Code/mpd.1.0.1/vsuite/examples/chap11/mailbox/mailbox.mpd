@@ -1,0 +1,23 @@
+resource main()
+
+op deposit(int)
+op fetch() returns int
+
+process manager  {
+  int  buffer
+  while (true) {
+    in deposit(item) -> buffer = item ni
+    in fetch() returns item -> item = buffer ni
+  }
+}
+
+process user  {
+  int x = 1
+  for [ i = 1 to 10 ] {
+    deposit(x)
+    x += fetch()
+  }
+  write(x)
+}
+
+end

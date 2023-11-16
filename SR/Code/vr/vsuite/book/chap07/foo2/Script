@@ -1,0 +1,3 @@
+0 sr foo2.sr
+0 run
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,119 @@
+Compiler Tour  (Outline)
+
+
+Overview
+    One resource at a time.  Build binary tree, walk it several times.
+    Main passes:  scan/parse; import; symbols; signatures; classify; generate
+    Overall control in main.c
+    Steps for each resource in resource.c
+
+Data Structures
+    See structs.h, etc.
+    See diagrams
+    See debug options (e.g. sr -dsp)
+
+Memory Allocation
+    ralloc() routine (& NEW macro) allocate zeroed memory
+    Memory just accumulates while compiling a resource
+    Memory is finally freed -- all of it -- at the end of each resource
+
+Error Reporting
+    Errors are collected by err()
+    They are sorted by line number & flushed by errflush()
+    Catch SEGV etc to flush out any earlier errors
+
+Scanner
+    Use Lex
+    Reserved words are separate tokens
+    Echo spec portions, sans comments, to .spec file
+    Special treatment of \n
+
+Parser
+    Use Yacc
+    Build binary tree representing source
+    Mostly faithful to input, could almost regenerate source
+    Some rewriting, e.g. procedure -> op + proc; var a,b -> var a, var b
+
+Import pass
+    Scan parse tree for imports and extends
+    Recursively call parser to incorporate each one
+    Extend is effectively import+include so the parser is called twice
+
+Symbol Pass
+    Build symbol table (describe organization)
+    Associate each ID in tree with the correct symtab entry
+
+Signature Pass
+    Attach signature to each node
+    Most type checking done in this pass, and some implicit conversion
+
+Classification Pass
+    Group input stmts into classes
+    Select implementation method (proc, in, sem) for each op
+
+Generation Pass
+    Two phases:  (1) top-level resource code  (2) procs, final, etc.
+
+Output Routines
+    Maintain 10 parallel output streams %0 through %9; %9 is the default
+    Can divert a stream, and undivert, in stack fashion
+    Flush, in order, when requested (end of resource)
+    Usage is:
+	%0	#includes etc. -- top level resource stuff
+	%1	resource capabilities
+	%2	structs defining record types
+	%3	global variables
+	%4	parameter blocks
+	%5	resource variables -- resource capability part
+	%6	resource variables -- all the rest
+	%7	string constants
+	%8	local variable decls
+	%9	executable statements
+
+Temporaries in the Generated Code
+    Three types of dynamic allocation
+    "temps" -- act like registers; explicitly alloc'd and freed (stackwise)
+    "transient" -- Ptrs to alloc'd expr results; later freed automatically
+    "persistent" -- Ptrs to alloc'd vars; freed at end of block
+
+Avoiding double code generation
+    If the g.c. for any operation must reference any operand twice or more,
+    it must generate once into a temp and then use the temp.
+
+Generated Names
+    _xxxx	user symbol xxxx
+    __xxxx	remainder of space for array xxxx of opcaps
+    _nnn	direct parameter nnn  (n=0 is return value)
+    o_nnn	offset to descriptor parameter nnn
+    _nnn	anonymous opcap nnn
+    annn	array pointer temporary
+    bnnn	boolean temporary
+    cnnn	class pointer
+    ctnnnx	temp for comparing caps
+    ennn	enum temporary
+    fnnn	output format string
+    hnnn	char temporary
+    innn	integer temporary
+    onnn	opcap temporary
+    pnnn	pointer temporary
+    pbnnn	parameter block for in stmt at depth nnn
+    pb_xxx	parameter block typedef for op or resource xxx
+    pb_rrr_xxx	parameter block typedef for op xxx imported from resource rrr
+    pb_nnn	parameter block typedef for anonymous capability nnn
+    qnnn	parameter block for direct call
+    rinnn	record initializer for structure rsnnn
+    rsnnn	record structure nnn
+    rnnn	real temporary
+    snnn	string constant
+    tnnn	transient block pointer
+    vnnn	saved integer value (e.g. expr giving array bounds)
+    znnn	string pointer temporary
+    Lnnn	code label
+    P_xxxx	proc xxxx code
+    R_xxxx	resource xxxx main code
+    F_xxxx	resource xxxx finalization code
+    N_xxxx	resource xxxx pattern number
+    C_xxxx	resource xxxx capability pattern
+    G_xxxx	global xxxx resource cap
+    gv_xxxx	global xxxx variables
+    cl_xxxx	global xxxx shared op class

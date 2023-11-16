@@ -1,0 +1,27 @@
+# semicolons as declaration terminators
+resource a3(int xx)
+	type t1 = rec (int a;int b;)
+	type t2 = rec (int a;int b)
+	type t3 = rec (int a;int b;)
+	type t4 = rec (int a;int b)
+
+	int  a,b,c
+	b = 2222
+	a = b; b = 90 ;c = 100; c = b;
+	write(a,b,c);
+
+	int x,y 
+	char  z
+	char zz
+	op f(int c,int d);
+	proc f(cc,dd)  {
+		skip;
+	};
+	final {
+	};
+end;
+resource a33
+	import a3
+body a33()
+	cap a3 c ; c = create a3(4444)
+end;

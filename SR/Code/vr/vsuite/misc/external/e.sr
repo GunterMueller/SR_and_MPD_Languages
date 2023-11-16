@@ -1,0 +1,177 @@
+#  extensive test of externals under various conditions
+#
+#  Because of externals to printf and puts, which write to the (unshared)
+#  stdout buffer, this test cannot be run using multiprocessing on the Sequent.
+#  This is disabled by "SR_PARALLEL=0" in the Script file.
+
+resource e ()
+    optype stoi (s: string[*]) returns i: int
+    type timeval = rec (sec, usec: int)
+    type timezone = rec (minw, dst: int)
+
+    external func3 (n : int) returns v : int,
+	     func5 (n : int) returns v : int,
+	     func7 (n : int) returns v : int
+
+    external atoi: stoi
+    external ctime (t: ptr int)				returns s: string[26]
+    external fprintf (f: file; s: string[*]; v: int)
+    external fputc (c: char; f: file)			returns r: char
+    external fputs (p: ptr char; f: file)
+    external getenv (s: string[*])			returns v: string[5]
+    external gettimeofday (res tv: timeval; res tz: timezone)
+    external mktemp (var path: string[*])
+    external printf (c[*] : char)
+    external puts (s: string[*])
+    external sprintf (res s: string[*]; fmt: string[*]; v:int)
+    external system (s: string[*])
+    external time (t: ptr int)				returns n: int
+
+
+    var s: string[100]
+    var c, ca[1:10]: char;
+    var t1, t2, n: int
+    var tv: timeval;
+    var tz: timezone;
+
+    write("begin external test")
+
+    # test simple int functions (these are mainly here to test srl)
+    write(func3(19))
+    write(func5(17))
+    write(func7(13))
+
+    # test file, string, and int arguments
+    fprintf(stdout,"1988 in octal is %6o\n",1988)
+
+    # test "ptr int" argument, and int return value
+    t1 := 1
+    t2 := 2
+    t1 := time(@t2)
+    if t1 ~= t2 | t1 < 1000000000 | t1 > 2000000000 ->   # valid ~2002 - ~2034
+	write("time is wrong: t1 =",t1,"  t2 =",t2)
+    [] else->
+	write("time looks plausible")
+    fi
+
+    # test that records are passed by reference
+    gettimeofday(tv,tz)		# assume this happens no more than 5 sec later
+    n := tv.sec - t1
+    if n < 0 or n > 5 ->
+	write("gettimeofday: sec =",tv.sec,"  usec = ",tv.usec,"  vs. t1 =",t1)
+    [] else ->
+	write("gettimeofday agrees")
+    fi
+
+    # test ptr char and char array
+    ca := chars("fputs ok\n\0")
+    fputs(@ca[1],stdout)
+    ca := chars("& printf \0")
+    printf(ca)
+    printf(chars("is too\n\0"))
+
+    # test char argument, char return value
+    c := 'y'
+    writes("fputc(c,stdout): ")
+    c := fputc(c,stdout)
+    write(" => returned",c)
+    writes("fputc('x',stdout): ")
+    c := fputc('x',stdout)
+    write(" => returned",c)
+
+    # test function declared with optype
+    write("atoi(\"93481\") =",atoi("93481"))
+    s := "11213"
+    n := atoi(s)
+    writes("atoi(\"",s,"\") = ",n,'\n')
+
+    # test res string argument
+    s := "aaddssggddsassggddhhhhggggttgfdsaaddssggddsassggddhhhhggggttgggg"
+    sprintf (s, "hex value is =(%x)=", 12345678x)
+    write (s)
+
+    # test var string argument
+    s := "TEMPXXXXXX\0 this extra stuff inits a different string length"
+    mktemp(s)
+    if length(s) != 10 | s[1:4] != "TEMP" | s[6:7] = "XX" ->
+	write("mktemp returned", s)
+    [] else ->
+	write("mktemp worked")
+    fi
+
+    # test string valued function
+    s := "ggkghhggdgkghhggdgkjjhhggfdgssssggaassaagdsassaaggaaasdfddssaaaa"
+    s := ctime(@t1)
+    if length(s) != 25 | s[14] != ':' | s[25] != '\n' ->
+	writes("ctime(",t1,") returned \"(",s,"\"\n")
+    [] else ->
+	write("ctime worked")
+    fi
+
+    # test string valued function returning NULL
+    s := "zyxwvutsrqponmlkjihgfedcba"
+    s := getenv("no-such-thing")
+    writes("getenv(nonexistent) returned \"",s,"\"\n")
+
+    # test truncation of return value from string function
+    s := getenv("PATH")		# we assume PATH will be longer than 5!
+    if length(s) != 5 ->
+	write("PATH is",s)
+    [] else ->
+	write("getenv result truncated successfully")
+    fi
+    write()
+
+    # Now test the passing of string parameters in detail.  Besides testing that
+    # the null character '\0' gets stored correctly, we'll try to verify that
+    # sizes are big enough for the null to fit without stomping anything else.
+
+    var s4: string[4]
+    var s5: string[5]
+    var s6: string[6]
+    var s7: string[7]		# "worst case" -- no slop else null kills s8
+    var s8: string[8]
+    var c5[1:5]: char
+
+    s4 := "abcd"		# init all strings at maximum possible length
+    s5 := "efghi"
+    s6 := "jklmno"
+    s7 := "pqrstuv"
+    s8 := "wxyz0123"
+    write(s4,s5,s6,s7,s8)	# dump them out to check
+    puts(s4)			# each call should insert a null
+    puts(s5)
+    puts(s6)
+    puts(s7)
+    puts(s8)
+    write(s4,s5,s6,s7,s8)	# make sure the nulls didn't stomp anything
+
+    # now shorten the strings and try again to be sure the nulls really
+    # do get placed correctly.
+    s4 := "in"
+    s5 := "the"
+    s6 := "east"
+    s7 := "river"
+    s8 := "garden"
+    write(s4,s5,s6,s7,s8)
+    puts(s4)
+    puts(s5)
+    puts(s6)
+    puts(s7)
+    puts(s8)
+    write(s4,s5,s6,s7,s8)
+
+    # try with other than string variables as arguments
+    puts("23456789TJQKA")
+    c5 := chars("aeiou")
+    puts(string(c5))
+    write(char(42))
+
+    # test system call
+    flush(stdout)
+    system("echo *.sr *.c")
+
+    # all done
+    write("done")
+
+end

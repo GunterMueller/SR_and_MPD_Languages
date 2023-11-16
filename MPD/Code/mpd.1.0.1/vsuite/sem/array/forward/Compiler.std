@@ -1,0 +1,10 @@
+
+===============  a  ===============
+
+ops:
+   Ri* SYM2 s: K_OP T_OP(){send}:T_VOID
+   Ri* SYM2 t: K_OP [1:2]T_OP(){send}:T_VOID
+   Ri* SYM2 u: K_OP [1:2]T_OP(){send}:T_VOID
+   Ri  SYM2 w: K_OP T_OP(){send}:T_VOID
+   Ri  SYM2 x: K_OP [1:2]T_OP(){send}:T_VOID
+   Ri* SYM2 y: K_OP T_OP(){send}:T_VOID

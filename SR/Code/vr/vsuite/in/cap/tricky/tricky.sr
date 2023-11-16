@@ -1,0 +1,74 @@
+# tricky cases involving input from cap, esp. class merging
+
+resource r ()
+
+    # in input stmt below, a1 and a2 must be in same class
+    # even though use of a2's cap comes lexically after the input stmt
+    op setcap ()
+    op a1 (int), a2 (int)
+    var a3 : cap (int)
+    setcap ()
+    send a1(11)
+    send a2(12)
+    send a1(13)
+    send a2(14)
+    do true ->
+	in a1(n) -> write("a1:", n)
+	[] a3(n) -> write("a2:", n)
+	[] else  -> exit
+	ni
+    od
+
+    proc setcap ()
+	a3 := a2
+    end
+
+    # b1 and b2 must be merged although they're assignment-incompatible
+    op b1 (char) {send}
+    op b2 (char)
+    send b1('A')
+    send b2('B')
+    var b3 := b1
+    var b4 := b2
+    send b1('C')
+    send b2('D')
+    do true ->
+	in b3(c) -> write("b3:", c)
+	[] b4(c) -> write("b4:", c)
+	[] else  -> exit
+	ni
+    od
+
+    #  forwards inside nested inputs from opcaps
+    optype iop (int)
+    var chico := new (iop)
+    var harpo := new (op (int))
+    op fini ()
+
+    process listener
+	do true ->
+	    in chico (i) ->
+		write ("chico", i)
+		forward harpo (i + 2)
+		in harpo (j) ->
+		    write ("   harpo", i, j)
+		    if i % 2 = 1 ->
+			write ("   fwd")
+			forward chico (j + 3)
+		    fi
+		ni
+	    [] harpo (j) ->
+		write ("harpo", j)
+	    [] fini () ->
+		write ("fini")
+		exit
+	    ni
+	od
+    end
+
+    harpo (3)
+    chico (5)
+    fini ()
+    write ("done")
+
+end

@@ -1,0 +1,23 @@
+resource stream_merge()
+  const int EOS = high(int)  # end of stream marker
+  op stream1(int x), stream2(int x)
+  process one  {
+    int y = 1
+    send stream1(y)
+    send stream1(EOS)
+  }
+  process two  {
+    int y = 2
+    send stream2(y)
+    send stream2(EOS)
+  }
+  process merge  {
+    int  v1, v2
+    receive stream1(v1); receive stream2(v2)
+    while (v1 < EOS or v2 < EOS) {
+      if (v1 <= v2) { write(v1); receive stream1(v1)
+      } else if (v2 <= v1 ) { write(v2); receive stream2(v2)
+      }
+    }
+  }
+end

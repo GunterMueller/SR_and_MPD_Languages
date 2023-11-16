@@ -1,0 +1,53 @@
+## test diagnostics in response to deadlock
+#
+#  usage: a.out [abcdemf]
+#
+#  each letter of the argument selects a hang in a, b, c, d, e, main, or final
+
+resource deadlock ()
+    var options : string[10] := ""		# default options
+    op a(), b(), c(), d(), e(), hang()
+    op hi (s : string[*]), bye (s : string[*])
+    op opt (c : char) returns b : bool
+
+proc opt (c) returns b				# is c a selected option?
+    b := false
+    fa i := 1 to length (options) ->
+	if options[i] = c ->
+	    b := true
+	    return
+	fi
+    af
+end
+
+proc hi (s)  write ("hello from", s) end
+proc bye (s) write (s, "done") end
+
+proc a () hi ("a"); if opt ('a') -> receive hang () fi; bye ("a"); end
+proc b () hi ("b"); if opt ('b') -> receive hang () fi; bye ("b"); end
+proc c () hi ("c"); if opt ('c') -> receive hang () fi; bye ("c"); end
+proc d () hi ("d"); if opt ('d') -> receive hang () fi; bye ("d"); end
+proc e () hi ("e"); if opt ('e') -> receive hang () fi; bye ("e"); end
+
+    getarg (1, options)
+    hi ("main")
+    send hang()
+    receive hang ()
+    send a()
+    send b()
+    send c()
+    send d()
+    send e()
+    if opt ('m') ->
+	receive hang ()
+    fi
+    write ("main done")
+
+final
+    hi ("final")
+    if opt ('f') ->
+	receive hang ()
+    fi
+    write ("final done")
+end
+end

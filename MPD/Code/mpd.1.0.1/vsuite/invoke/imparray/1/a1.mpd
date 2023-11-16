@@ -1,0 +1,27 @@
+resource a1
+	op p[1:5]()
+body a1(int x)
+	write("initial a1:",x)
+	process q  {
+		write("process a1:",x)
+		for [ i = 1 to 5 ] {
+			in p[i]() -> write("in",x,i) ni
+		}
+	}
+	final {
+		write("final a1:",x)
+	}
+end
+
+resource a2
+	import a1
+body a2()
+	write("initial a2")
+	cap a1  c
+	c = create a1(5)
+	for [ i = 1 to 4 ] {
+		send c.p[i]()
+	}
+	call c.p[5]()
+	destroy c
+end

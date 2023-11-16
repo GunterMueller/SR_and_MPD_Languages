@@ -1,0 +1,4 @@
+0 sr -c global.sr player.sr dealer.sr
+0 srl defs dealer
+0 run
+0 rm -rf Interfaces core *.out

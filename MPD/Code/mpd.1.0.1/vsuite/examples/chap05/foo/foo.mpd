@@ -1,0 +1,24 @@
+resource foo()
+  const int N = 10; int  a[N]
+  for [ i = 1 to 10 ] { a[i] = i }
+
+  const int S = 20
+  int  b[S,S]
+
+  begin {   # code to initialize b
+    int c = 0
+    for [ i = 1 to S, j = 1 to S ] {
+      b[i,j] = c++
+    }
+  }
+
+  procedure empty()  {
+  }
+
+  final {
+    for [ j = 1 to S ] {
+      write(b[1,j])
+    }
+  }
+
+end

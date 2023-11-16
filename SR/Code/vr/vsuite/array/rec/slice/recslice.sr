@@ -1,0 +1,22 @@
+#  Check slices of arrays of records passed as both val and var params
+
+resource main ()
+   type complex = rec (r, i : real)
+
+   procedure swap (var x[*] : complex)
+      fa i := 1 to ub(x) -> x[i].r :=: x[i].i af
+   end
+
+   procedure dump (var x[*] : complex)
+      write()
+      fa i := 1 to ub(x) -> write (i, ":", x[i].r, x[i].i) af
+   end
+
+   var x[8]: complex
+   fa i := 1 to 8 -> x[i] := complex(.10101*i, 1.11111*i) af
+   dump (x)
+   dump (x[2:5])
+   dump (x)
+   swap (x[4:7])
+   dump (x)
+end

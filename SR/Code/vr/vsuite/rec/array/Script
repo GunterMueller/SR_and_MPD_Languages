@@ -1,0 +1,4 @@
+0 sr -c Io.sr specs.sr CS.sr CT.sr
+0 srl Io ChServer ChTest
+0 run
+0 rm -rf Interfaces core *.out

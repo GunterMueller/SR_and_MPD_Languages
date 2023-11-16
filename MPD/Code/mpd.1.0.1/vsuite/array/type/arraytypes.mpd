@@ -1,0 +1,26 @@
+# 2-D arrays declared using type-definitions; checks if assignments are
+# correct
+resource arraytypes
+	type M3x4 = [1:3] [1:4]  int
+	type M1x4 = [1:4]  int
+	type M1x1 = int
+body arraytypes()
+	M3x4  a 
+	M1x4  b [1:3] 
+	M1x1  c [1:3] [1:4] 
+
+	for [ i = 1 to 3, j = 1 to 4 ] {
+		a[i][j] = (i-1)*4 + j
+	}
+
+	for [ i = 1 to 3, j = 1 to 4 ] {
+		b[i][j] = a[i,j]  # a[i,j] is same as a[i][j]
+	}
+	c = b
+
+	# matrices a,b and c all have the same contents at this point
+	for [ i = 1 to 3, j = 1 to 4 ] {
+		writes("[", i, ",", j, "] ")
+		write(" a:", a[i][j], " b:", b[i, j], " c:", c[i, j])
+	}
+end arraytypes

@@ -1,0 +1,9 @@
+#  gmt  Tue Feb 16 09:52:16 MST 1993
+
+0 srlatex -p test.sr
+0 mv Latexer.out normal.out
+0 srlatex -pe test.sr
+0 mv Latexer.out escape.out
+0 cmp -s normal.std normal.out
+0 cmp -s escape.std escape.out
+0 rm -rf Interfaces core *.out *.aux *.dvi *.log

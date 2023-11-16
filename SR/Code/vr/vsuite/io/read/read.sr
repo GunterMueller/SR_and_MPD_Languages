@@ -1,0 +1,30 @@
+resource Read
+
+body Read()
+
+   process main
+      var b : bool
+      var c : char
+      var rc, n, l : int
+      var p : ptr any
+      var r : real
+      var f : file
+      var filename : string[50]
+
+      if getarg(1, filename) = EOF -> write("usage: read <filename>"); stop fi
+      f := open(filename, READ)
+      if f = null -> write("cannot open file"); stop fi
+
+
+      do true ->
+	 rc := read(f, b); write(rc, b)
+	 if rc = EOF -> stop fi
+
+	 rc := read(f, c); write(rc, c)
+	 rc := read(f, n); write(rc, n)
+	 rc := read(f, p); write(rc, p)
+	 rc := read(f, r); write(rc, r)
+	 write()
+    od
+   end
+end

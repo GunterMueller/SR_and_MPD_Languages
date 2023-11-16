@@ -1,0 +1,139 @@
+# multimensional slicing
+
+resource mslice ()
+
+    procedure vprint (label : string[*]; v : [*]int)	# print a vector
+	writes ("\n", label, ": ")
+	fa i := 1 to ub(v) -> printf ("%4i", v[i]) af
+	write ()
+    end
+
+    procedure mprint (label : string[*]; a : [*,*]int)	# print a matrix
+	writes ("\n", label, ":\n")
+	fa i := 1 to ub(a,1) ->
+	    fa j := 1 to ub(a,2) ->
+		printf ("%4i", a[i,j])
+	    af
+	    write()
+	af
+    end
+
+
+    # 2-d matrix manipulation
+
+    var v:= (1,2,3,4,5)
+    var x, y: [5,5] int
+    var c: [2:4,2:4] int
+    var d[0:1][0:3] := ((80,81,82,83), (90,91,92,93))
+
+    fa i := 1 to 5 ->			# seed x
+	fa j := 1 to 5 ->
+	    x[i,j] := 10 * i + j
+	af
+    af
+
+    mprint ("initial state", x)		
+
+    y := x
+    y[2] := v
+    mprint ("row 2 assigned", y)
+
+    y := x
+    y[3,*] := v
+    mprint ("row 3 sliced", y)
+
+    y := x
+    y[*,4] := v
+    mprint ("column 4 sliced", y)
+
+    fa i := 1 to 5 ->
+	y[i] := x[*,i]			# assign slice to whole row
+    af
+    mprint ("transpose 1", y)		
+
+    fa i := 1 to 5 ->
+	y[i,*] := x[*,i]		# assign slice to row slice
+    af
+    mprint ("transpose 2", y)		
+
+    fa i := 1 to 5 ->
+	y[*,i] := x[i]			# assign whole row to slice
+    af
+    mprint ("transpose 3", y)		
+
+    fa i := 1 to 5 ->
+	y[*,i] := x[i]			# assign row slice to slice
+    af
+    mprint ("transpose 4", y)		
+
+    c := x[2:4,2:4]			# extract center portion
+    mprint ("center", c)
+
+    y[2:4,2:4] := c			# assign to center
+    mprint ("filled y", y)
+
+    y := x
+    y[2:3,*:4] := d			# non-symmetric 2-d case
+    mprint ("set near upper left", y)
+
+    y := x
+    y[3:4,2:*] := d			# non-symmetric 2-d case
+    mprint ("set near lower right", y)
+
+    # some examples from the book (section 2.6)
+
+    var a[10], b[5,4]:int
+
+    fa i := 1 to 10 -> a[i] := 11 * i af
+    vprint ("array a", a)
+
+    b := x[*,1:4]
+    mprint ("array b", b)
+
+    vprint ("b[2,*]", b[2,*])
+    vprint ("b[*,3]", b[*,3])
+
+    const f := "\n%-10s %4i\n"
+    printf (f, "a[4]", a[4])
+    printf (f, "a[1:*][4]", a[1:*][4])
+    printf (f, "a[2:*][3]", a[2:*][3])
+
+    vprint ("b[2,2:3]",            b[2,2:3])
+    vprint ("b[2][2:3]",           b[2][2:3])
+    vprint ("b[2,*][2:3]",         b[2,*][2:3])
+    vprint ("b[2:2][1][2:3]",      b[2:2][1][2:3])
+    vprint ("b[2:2][1:*][1][2:3]", b[2:2][1:*][1][2:3])
+    vprint ("b[1:*][2][2:3]",      b[1:*][2][2:3])
+
+
+    # slices of a 3-D array
+
+    var e[4,5,6] : int
+    fa i := 1 to 4 ->
+	fa j := 1 to 5 ->
+	    fa k := 1 to 6 ->
+		e[i,j,k] := 100 * i + 10 * j + k
+	    af
+	af
+    af
+
+    vprint ("e[1,1,*]", e[1,1,*])
+    vprint ("e[1,*,1]", e[1,*,1])
+    vprint ("e[*,1,1]", e[*,1,1])
+    mprint ("e[2,*,*]", e[2,*,*])
+    mprint ("e[*,3,*]", e[*,3,*])
+    mprint ("e[*,*,4]", e[*,*,4])
+
+    e[3,*,2:*] := x
+    mprint ("with x", e[3,*,*])
+
+   var s[2:3,5:6,7:9]:=((chars("abc"),chars("def")),(chars("ghi"),chars("jkl")))
+   write(s[3,6])
+   write(s[3][6])
+   write(s[3,6,*])
+   write(s[3][6,*])
+   write(s[3][6][*])
+   write(s[3][6][7:9])
+
+    write ("\ndone")
+end

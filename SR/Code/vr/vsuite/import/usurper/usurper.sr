@@ -1,0 +1,17 @@
+# wrong imported op called under SR 2.2
+
+resource unit
+    optype Messenger ()
+    op DoneMsgr (msgr : cap Messenger)
+    op Take ()
+body unit ()
+    proc DoneMsgr (msgr); write ("DoneMsgr called"); end DoneMsgr
+    proc Take (); write ("Take usurping"); end Take
+end unit
+
+resource prime ()
+    import unit
+    var finished : cap Messenger := new(Messenger)
+    var machine := create unit ()
+    machine.DoneMsgr (noop)
+end prime

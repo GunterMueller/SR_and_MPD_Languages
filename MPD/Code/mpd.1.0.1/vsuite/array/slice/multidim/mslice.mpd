@@ -1,0 +1,139 @@
+# multimensional slicing
+
+resource mslice ()
+
+    procedure vprint (string[*] label, [*]int v) {    # print a vector
+	writes ("\n", label, ": ")
+	for [ i = 1 to ub(v) ] { printf ("%4i", v[i]) }
+	write ()
+    }
+
+    procedure mprint (string[*] label, [*,*]int a) {  # print a matrix
+	writes ("\n", label, ":\n")
+	for [ i = 1 to ub(a,1) ] {
+	    for [ j = 1 to ub(a,2) ] {
+		printf ("%4i", a[i,j])
+	    }
+	    write()
+	}
+    }
+
+
+    # 2-d matrix manipulation
+
+    [5]int v= (1,2,3,4,5)
+    [5,5] int x, y
+    [2:4,2:4] int c
+    int d[0:1][0:3] = ((80,81,82,83), (90,91,92,93))
+
+    for [ i = 1 to 5 ] {                   # seed x
+	for [ j = 1 to 5 ] {
+	    x[i,j] = 10 * i + j
+	}
+    }
+
+    mprint ("initial state", x)
+
+    y = x
+    y[2] = v
+    mprint ("row 2 assigned", y)
+
+    y = x
+    y[3,*] = v
+    mprint ("row 3 sliced", y)
+
+    y = x
+    y[*,4] = v
+    mprint ("column 4 sliced", y)
+
+    for [ i = 1 to 5 ] {
+	y[i] = x[*,i]                  # assign slice to whole row
+    }
+    mprint ("transpose 1", y)
+
+    for [ i = 1 to 5 ] {
+	y[i,*] = x[*,i]                # assign slice to row slice
+    }
+    mprint ("transpose 2", y)
+
+    for [ i = 1 to 5 ] {
+	y[*,i] = x[i]                  # assign whole row to slice
+    }
+    mprint ("transpose 3", y)
+
+    for [ i = 1 to 5 ] {
+	y[*,i] = x[i]                  # assign row slice to slice
+    }
+    mprint ("transpose 4", y)
+
+    c = x[2:4,2:4]                     # extract center portion
+    mprint ("center", c)
+
+    y[2:4,2:4] = c                     # assign to center
+    mprint ("filled y", y)
+
+    y = x
+    y[2:3,*:4] = d                     # non-symmetric 2-d case
+    mprint ("set near upper left", y)
+
+    y = x
+    y[3:4,2:*] = d                     # non-symmetric 2-d case
+    mprint ("set near lower right", y)
+
+    # some examples from the book (section 2.6)
+
+    int  a[10], b[5,4]
+
+    for [ i = 1 to 10 ] { a[i] = 11 * i }
+    vprint ("array a", a)
+
+    b = x[*,1:4]
+    mprint ("array b", b)
+
+    vprint ("b[2,*]", b[2,*])
+    vprint ("b[*,3]", b[*,3])
+
+    const string[20] f = "\n%-10s %4i\n"
+    printf (f, "a[4]", a[4])
+    printf (f, "a[1:*][4]", a[1:*][4])
+    printf (f, "a[2:*][3]", a[2:*][3])
+
+    vprint ("b[2,2:3]",            b[2,2:3])
+    vprint ("b[2][2:3]",           b[2][2:3])
+    vprint ("b[2,*][2:3]",         b[2,*][2:3])
+    vprint ("b[2:2][1][2:3]",      b[2:2][1][2:3])
+    vprint ("b[2:2][1:*][1][2:3]", b[2:2][1:*][1][2:3])
+    vprint ("b[1:*][2][2:3]",      b[1:*][2][2:3])
+
+
+    # slices of a 3-D array
+
+    int  e[4,5,6] 
+    for [ i = 1 to 4 ] {
+	for [ j = 1 to 5 ] {
+	    for [ k = 1 to 6 ] {
+		e[i,j,k] = 100 * i + 10 * j + k
+	    }
+	}
+    }
+
+    vprint ("e[1,1,*]", e[1,1,*])
+    vprint ("e[1,*,1]", e[1,*,1])
+    vprint ("e[*,1,1]", e[*,1,1])
+    mprint ("e[2,*,*]", e[2,*,*])
+    mprint ("e[*,3,*]", e[*,3,*])
+    mprint ("e[*,*,4]", e[*,*,4])
+
+    e[3,*,2:*] = x
+    mprint ("with x", e[3,*,*])
+
+   char s[2:3,5:6,7:9]=((chars("abc"),chars("def")),(chars("ghi"),chars("jkl")))
+   write(s[3,6])
+   write(s[3][6])
+   write(s[3,6,*])
+   write(s[3][6,*])
+   write(s[3][6][*])
+   write(s[3][6][7:9])
+
+    write ("\ndone")
+end

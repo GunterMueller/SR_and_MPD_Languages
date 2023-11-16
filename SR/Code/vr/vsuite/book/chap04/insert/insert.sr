@@ -1,0 +1,25 @@
+# Insert item into info array; stop if out of room
+
+resource main()
+
+  const N := 10
+  var x: int 
+  var info[N] : int
+  var count := 1
+
+  op insert(int)
+
+  proc insert(item)
+    if count >= N ->
+      write(stderr,"insert: no room"); 
+      stop
+    fi
+    info[count++] := item
+  end
+
+  x := 1
+  do true ->
+    insert(x)
+    x++
+  od
+end

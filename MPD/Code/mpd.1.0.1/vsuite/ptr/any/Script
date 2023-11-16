@@ -1,0 +1,5 @@
+#  gmt  Fri Oct 28 09:49:28 MST 1988
+0 mpd -c any.mpd
+0 mpdl annie
+0 run
+0 rm -rf MPDinter core *.out

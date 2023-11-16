@@ -1,0 +1,45 @@
+    Initial Topology read from input2
+1:  0 2 3 0 
+2:  1 0 3 4 
+3:  1 2 0 4 
+4:  0 2 3 0 
+
+neighbors of node 1:  2 3 
+neighbors of node 2:  1 3 4 
+neighbors of node 3:  1 2 4 
+neighbors of node 4:  2 3 
+    Topology Computed by Node 1
+1:  0 2 3 0 
+2:  0 0 0 0 
+3:  0 0 0 0 
+4:  0 0 0 0 
+
+    Topology Computed by Node 3
+1:  0 0 0 0 
+2:  0 0 0 0 
+3:  1 2 0 4 
+4:  0 0 0 0 
+
+    Topology Computed by Node 4
+1:  0 0 0 0 
+2:  0 0 0 0 
+3:  0 0 0 0 
+4:  0 2 3 0 
+
+    Topology Computed by Node 2
+1:  0 2 3 0 
+2:  1 0 3 4 
+3:  1 2 0 4 
+4:  0 2 3 0 
+
+    Topology Computed by Node 0
+1:  0 2 3 0 
+2:  1 0 3 4 
+3:  1 2 0 4 
+4:  0 2 3 0 
+
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: node.probe_handler : file node.sr, line 29
+RTS warning: blocked process: printer.mutex : file printer.sr, line 9

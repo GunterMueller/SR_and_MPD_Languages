@@ -1,0 +1,75 @@
+resource pipeline_sort()
+  op print_array(a[1:*]: int)
+  op sort(var a[1:*]: int)
+  op result(pos, value: int) {send}  # results
+  optype pipe(value: int) {send}     # values to sort
+  op worker(m: int) returns p: cap pipe {call}
+
+  process main_routine
+    var n: int
+    writes("number of integers? ")
+    read(n)
+    var nums[1:n]: int
+    write("input integers, separated by whitespace")
+    fa i := 1 to n -> read(nums[i]) af
+    write("original numbers")
+    print_array(nums)
+    sort(nums)
+    write("sorted numbers")
+    print_array(nums)
+  end
+
+  # Print elements of array a
+  proc print_array(a)
+    fa i := lb(a) to ub(a) -> write(a[i]) af
+  end
+
+  # Sort array a into non-decreasing order
+  proc sort(a)
+    if ub(a) = 0 -> return fi
+    var first_worker: cap pipe
+    # Call worker; get back a capability for its
+    # pipe operation; use the pipe to send all values
+    # in a to the worker.
+    first_worker := worker(ub(a)-lb(a)+1)
+    fa i := lb(a) to ub(a) ->
+      send first_worker(a[i])
+    af
+    # Gather the results into the right places in a
+    fa i := lb(a) to ub(a) ->
+      var pos, value: int
+      receive result(pos, value)
+      a[ub(a)+lb(a)-pos] := value
+    af
+  end
+
+  # Worker receives m integers on mypipe from its
+  # predecessor.  It keeps smallest and sends
+  # others on to the next worker.  After seeing all
+  # m integers, worker sends smallest to sort,
+  # together with the position (m) in array a in
+  # which smallest is to be placed.
+  proc worker(m) returns p
+    var smallest: int    # the smallest seen so far
+    op mypipe: pipe
+    p := mypipe
+    reply  # invoker now has a capability for mypipe
+    receive mypipe(smallest)
+    if m > 1 ->
+      # create next instance of worker
+      var next_worker: cap pipe # pipe to next worker
+      next_worker := worker(m-1)
+      fa i := m-1 downto 1 ->
+        var candidate: int
+        receive mypipe(candidate)
+        # save new value if it is smallest
+        # so far; send other values on
+        if candidate < smallest ->
+          candidate :=: smallest
+        fi
+        send next_worker(candidate)
+      af
+    fi
+    send result(m, smallest)  # send smallest to sort
+  end
+end pipeline_sort

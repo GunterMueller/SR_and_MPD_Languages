@@ -1,0 +1,18 @@
+
+===============  dp  ===============
+
+ops:
+   Ri  SYM2 csp_match: K_OP T_OP(T_INT):T_VOID
+   Ri  SYM2 csp_die: K_OP T_OP(T_INT):T_VOID
+   Rp  SYM2 csp_reinit: K_OP T_OP(T_INT):T_VOID
+   Rp  SYM2 csp_insert: K_OP T_OP(T_INT,T_INT,T_BOOL,T_INT,T_INT,T_INT,T_INT):T_VOID
+   Rp  SYM2 csp_delete: K_OP T_OP(T_PTR):T_VOID
+   Rs  SYM2 csp_err: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 need: K_OP [0:4][1:1]T_OP():T_VOID
+   Rs  SYM2 hungry: K_OP [0:4][1:1]T_OP():T_VOID
+   Rs  SYM2 full: K_OP [0:4][1:1]T_OP():T_VOID
+   Rs  SYM2 eat: K_OP [0:4][1:1]T_OP():T_VOID
+   Ri  SYM2 csp_reply: K_OP [1:]T_OP(T_INT,T_INT,T_INT,T_INT):T_VOID
+   Rp  SYM2 csp_waiter: K_OP T_OP(T_INT){send}:T_VOID
+   Rp  SYM2 csp_phil: K_OP T_OP(T_INT){send}:T_VOID
+   Rp  SYM2 csp_coordinator: K_OP T_OP(){send}:T_VOID

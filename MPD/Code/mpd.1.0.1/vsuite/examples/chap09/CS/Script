@@ -1,0 +1,4 @@
+0 mpd CS.mpd
+0 a.out >No_input.out 2>&1
+0 scmp No_input.out No_input.std
+0 rm -rf MPDinter core *.out

@@ -1,0 +1,4 @@
+#  gmt  Thu May  7 09:27:32 MST 1992
+0 sr swap.sr
+0 run
+0 rm -rf Interfaces core *.out

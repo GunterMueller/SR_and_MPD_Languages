@@ -1,0 +1,13 @@
+resource pairs()
+	op node(int me )
+	op start()
+	send node(1)
+	start()
+	proc node(me)  {
+		int  paired_with = me
+		write(me,"p_w:",paired_with)
+		in start() -> reply ni
+		write(me,"p_w too:",paired_with)
+	}
+end
+

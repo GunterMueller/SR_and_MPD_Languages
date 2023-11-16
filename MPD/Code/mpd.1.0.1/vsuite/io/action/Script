@@ -1,0 +1,5 @@
+#  gmt  Mon Dec  7 10:36:45 MST 1987
+0 mpd -c action.mpd
+0 mpdl action
+0 run
+0 rm -rf MPDinter core *.out

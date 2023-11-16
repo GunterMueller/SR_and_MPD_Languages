@@ -1,0 +1,5 @@
+#  gmt  Fri May 26 11:12:00 MST 1989
+0 sr -c noop.sr
+0 srl none
+0 run
+0 rm -rf Interfaces core *.out

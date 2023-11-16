@@ -1,0 +1,30 @@
+_program(f)
+  _specs
+    _process_spec(A)
+    _process_spec(B)
+      _port(A,goo, (x:int))
+  _specs_end
+
+  _process_body(A)
+    write("start of A")
+    fa k := 1 to 2 ->
+      var x := 11
+      _if
+        _guard_o(k>0,B,goo, (k*100)) -> write("A sent", k*100)
+      _fi
+      write(x)
+    af
+  _process_end
+
+  _process_body(B)
+    write("start of B")
+    fa k := 1 to 2 ->
+      var x := 22
+      _if
+        _guard_i(true,A,goo, (x)) -> write("B got", x)
+      _fi
+      write(x)
+    af
+  _process_end
+
+_program_end

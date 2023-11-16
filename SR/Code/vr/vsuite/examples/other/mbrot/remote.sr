@@ -1,0 +1,49 @@
+#  remote resource -- this is where the actual calculation is done
+#
+#  The SR code just interfaces to the C code that does the real work.
+
+resource remote
+
+    type config = rec (		# configuration record
+	cwidth: int		#   cell width, in pixels -- must be even
+	cheight: int		#   cell height
+	nwide: int		#   output width, in cells
+	nhigh: int		#   output height
+	niter: int		#   number of iterations
+	xll: real		#   x ordinate
+	yll: real		#   y ordinate
+	delta: real		#   increment per pixel
+    )
+    optype outproc = (m, i, j: int; d[*]: char) {send}
+
+    op docell (i, j: int) {send}
+    op init (c : config)
+    external calc (x, y, d: real;  res s: [*]char;  n, w, h : int)
+
+body remote (m: int; o: cap outproc)
+
+    process p
+	var c: config
+	var i, j: int
+	var x, y: real
+
+	# get initialization parameters
+	receive init (c)
+
+	# now we know how big the data will be; allocate the buffer
+	var s[c.cwidth*c.cheight]: char
+
+	# loop forever processing requests
+	do true ->
+	    receive docell(i,j)	     # get the request to process cell (i,j)
+
+	    # calculate one cell and store results in buffer
+	    x := c.xll + c.delta * i * c.cwidth
+	    y := c.yll + c.delta * (j * c.cheight + c.cheight - 1);
+	    calc (x, y, c.delta, s, c.niter, c.cwidth, c.cheight)
+
+	    send o(m,i,j,s)	     # send back the buffer, with identification
+	od
+    end p
+
+end remote

@@ -1,0 +1,10 @@
+resource test_lines()
+   import SRanimator
+   call A_bg("azure")
+   call A_line(1, 0.5, 0.5, 0.25, 0.0, "red", "thin", "dashed", "forward")
+   call A_line(2, 0.25, 0.25, 0.25, 0.0, "black", "medthick", "solid", "bidirectional")
+   call A_line(3, 0.75, 0.75, -0.25, 0.0, "green", "thick", "dotted", "backward")
+   call A_line(4, 0.35, 0.75, -0.25, 0.0, "green", "thick", "illegal", "none")
+   call A_line(5, 0.35, 0.75, -0.25, 0.0, "orange", "thin", "solid", "none")
+   call A_end()
+end test_lines

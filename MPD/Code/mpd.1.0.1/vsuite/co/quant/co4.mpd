@@ -1,0 +1,15 @@
+# test quantifiers
+# output nondeterministic.
+resource co4()
+	op p(int i, int j)
+
+	write ("begin")
+	co [ i= 1 to 4,j=2 to 3 ]
+		call p(i,j) -> write("after:",i,j)
+	oc
+	write ("done")
+
+	proc p(i,j)  {
+		write("p:",i,j)
+	}
+end

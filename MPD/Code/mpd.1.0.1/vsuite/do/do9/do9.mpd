@@ -1,0 +1,42 @@
+resource do9()
+	int  a,b,c
+	a = 1
+	b = 2
+	c = 0
+	write(a); write(b); write(c);
+	while (a != 10) {
+		b = a
+		write(a); write(b); write(c);
+		while (true) {
+		    if (b != 10) {
+			c++
+			b++
+			next
+			b = -33
+			c = 9999 + 88888
+			a = 8888
+		    } else if (a == 20000 ) {
+			exit
+			b = -44
+		    } else if (c == 222 ) {
+			if (a == 3) {
+				exit
+				a = 4444
+			} else {
+				next
+				b = 9999
+			}
+		    } else {
+			exit
+		    }
+		}
+		a++
+		write(a); write(b); write(c);
+		if (a != 10) { next
+		} else { exit
+		}
+		a--
+	}
+	a :=: c
+	write(a); write(b); write(c);
+end

@@ -1,0 +1,47 @@
+# test procedure calls with string parameters and arguments
+
+resource calls()
+	op cproc (char c[1:*])
+	op sproc (string[*] s)
+	op star (string[*] x)
+
+	string[25] s
+	char  c[1:8]
+
+	sproc("abc")
+	cproc(chars("abc"))
+	star("abc")
+	sproc("rutabaga")
+	cproc(chars("rutabaga"))
+	star("rutabaga")
+	s = "indubitably"
+	sproc(s)
+	cproc(chars(s))
+	star(s)
+	c = chars("catalina")
+	sproc(string(c))
+	cproc(c)
+	star(string(c))
+
+
+proc star(x)  {
+	string[length(x)] s
+	char c[1:length(x)]
+	sproc(x)
+	s = x
+	sproc(s)
+	c = chars(x)
+	cproc(c)
+}
+
+
+proc sproc(s)  {
+	write("string  len:",length(s)," max:",maxlength(s)," val:",s)
+}
+
+
+proc cproc(c)  {
+	write("char[]   lb:",lb(c),"  ub:",ub(c)," val:",c)
+}
+
+end

@@ -1,0 +1,9 @@
+resource factmain
+    import fact
+body factmain()
+	var b: cap fact
+	var n :int
+	n := 5
+	write(n)
+	b := create fact(n,1)
+end

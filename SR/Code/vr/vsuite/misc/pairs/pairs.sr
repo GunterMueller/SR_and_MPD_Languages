@@ -1,0 +1,49 @@
+#	Pairing problem in SR; degenerate case: fully connected network
+#	Idea is that each node tries to pair up with 1 other adjacent node.
+#	If none is available, it pairs up with itself.
+
+#	Note: this program tests an old bug with remove
+#	exhibits that bug only for N >=5.
+
+### some write statements are commented out to make the output
+### reproducible (except for its order)
+
+resource pairs()
+    const N := 5
+    op node (id : int)
+    op gab[1:N] (who, status : int) returns partner : int
+
+    fa i := 1 to N -> send node(i) af
+
+    proc node(id)
+	var buddy := 0			# i.e., "paired_with"
+
+	fa j := 1 to N st (j != id) ->
+	    if id > j ->
+		write (id, "invites", j)
+		if j = gab[j] (id, buddy) ->
+		    buddy := j;	# BOTH SINGLE, NOW HITCHED.
+		    # write (id , "got ", j)
+		fi
+	    [] id < j ->
+		write (id, "waits for", j)
+		in gab[id] (who, status) returns partner ->
+		    write (id, "receives invitation from ", who)
+		    if buddy = status ->
+			buddy := who
+			partner := id
+			# write (id, "accepts", who)
+		    [] else ->
+			partner := 0
+			# write (id, "rejects", who)
+		    fi
+		ni
+	    fi
+	af
+
+	if buddy = 0 -> buddy := id fi
+
+	write ("NODE", id, "finishing up")
+	# write ("NODE", id, "buddy is", buddy)
+    end node
+end pairs

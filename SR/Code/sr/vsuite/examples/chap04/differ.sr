@@ -1,0 +1,9 @@
+proc differ(s1, s2) returns first_place
+  var i := 1, len := min(length(s1),length(s2))
+  do i <= len & s1[i] = s2[i] -> i++ od
+  if i > len & length(s1) = length(s2) ->
+      first_place := 0
+  [] else ->
+      first_place := i
+  fi
+end differ

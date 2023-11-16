@@ -1,0 +1,9 @@
+cgrep.sr: resource grep(pattern, filename: string[*])
+cgrep.sr:   procedure find(pattern, line: string[*])
+cgrep.sr:     # if line contains pattern, write out line
+cgrep.sr:     var i := 1, plen := length(pattern)
+cgrep.sr:       if pattern = line[i:i+plen-1] ->
+cgrep.sr:     # find all instances of pattern in filename
+cgrep.sr:       find(pattern, line)
+cgrep.sr:   var pattern: string[MAXPATTERN]; getarg(1, pattern)
+cgrep.sr:       create grep(pattern, filename)

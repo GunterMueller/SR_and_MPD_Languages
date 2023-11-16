@@ -1,0 +1,5 @@
+# revised by gmt Thu Mar  3 17:54:41 MST 1988
+0 mpd -c free.mpd
+0 mpdl f
+0 run
+0 rm -rf MPDinter core *.out

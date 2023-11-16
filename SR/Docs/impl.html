@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<link rel="StyleSheet" type="text/css" href="/style/simple.css">
+<title>The SR Implementation</title>
+</head><body>
+
+
+<!-- /style/csbanner.ssi: included to render CS header with links -->
+<!-- compatible with /style/simple.css, but does not require it -->
+
+<img src="/style/elements/genheader.gif" width="760" height="148"
+ alt="The University of Arizona / Computer Science / UAScience"
+ style="position:absolute; top:0px; left:10px;">
+
+<div style="position:absolute; top:0px; left:10px; width:493px; height:42px;">
+<a title="The University of Arizona" href="http://www.arizona.edu/">
+<img border="0" alt="The University of Arizona"
+ src="/style/elements/42blu493.gif"></a></div>
+
+<div style="position:absolute; top:56px; left:516px; width:150px; height:43px;">
+<a title="Computer Science" href="http://www.cs.arizona.edu/">
+<img border="0" alt="ComputerScience"
+ src="/style/elements/tplDept.gif" width="150" height="43"></a></div>
+
+<div style="position:absolute; top:99px; left:516px; width:150px; height:23px;">
+<a title="UAScience" href="http://cos.arizona.edu/">
+<img border="0" alt="UAScience"
+ src="/style/elements/tplCollg.gif" width="150" height="23"></a></div>
+
+<div style="position:absolute; top:0px; left:760px; width:10px; height:42px;">
+<a title="Validate" href="http://validator.w3.org/check?uri=referer&amp;ss=1">
+<img border="0" alt=""
+ src="/style/elements/42blu10.gif" width="10" height="42"></a></div>
+
+<div style="padding: 150px 0 0 0;"></div>
+<div class="up150"></div>
+
+<!-- /style/csbanner.ssi: end inclusion -->
+
+
+
+
+<h1>The SR Implementation</h1>
+
+<p> An SR program runs on one or more networked Unix machines
+of the same architecture.
+True multiprocessing is provided on SPARC Solaris or SGI Irix systems.
+Multiprocessing is simulated on X86 Linux (32-bit),
+Alpha Linux, Digital Unix, HP-UX, or IBM AIX.
+SR does <em>not</em> run on 64-bit X64/AMD64 Linux.
+
+<p> The implementation consists of a compiler that translates SR to C,
+a linker that serves as a front-end to ld, and associated other
+programs and library files.
+To allow additional hands-on experience, three preprocessors convert
+notations for CCRs, monitors, and CSP into SR code.
+
+<p> The latest implementation of SR is version 2.3.3,
+released in January, 2005.
+
+<h2>Downloads</h2>
+<p> Our FTP area is <a href="ftp://ftp.cs.arizona.edu/sr">here.</a>
+Source and documentation are contained in
+<a href="ftp://ftp.cs.arizona.edu/sr/sr.tar.Z">sr.tar.Z</a>.
+An extended verification suite, needed only if you're going to
+modify the system or port it to a new architecture, is in
+<a href="ftp://ftp.cs.arizona.edu/sr/vs.tar.Z">vs.tar.Z</a>.
+Installation instructions are available in
+<a href=install.ps>PostScript</a> or <a href=install.pdf>PDF</a> form.
+
+<p> Here are some notes about building
+<a href="ftp://ftp.cs.arizona.edu/sr/windows.txt">SR on Windows</a>.
+
+<h2>E-mail access</h2>
+<p> Data from the FTP area is available via
+<a href=ftpmail.txt>electronic mail.</a>
+
+<p><hr>
+<a href=index.html><img src=srtiny.gif width=64 height=40 align=middle alt="">
+Return to SR home page</a>
+</body></html>

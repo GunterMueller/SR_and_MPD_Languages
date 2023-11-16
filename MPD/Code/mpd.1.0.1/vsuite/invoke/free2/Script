@@ -1,0 +1,4 @@
+# revised by gmt Thu Mar  3 17:54:41 MST 1988
+0 mpd badfree3.mpd
+0 run
+0 rm -rf MPDinter core *.out

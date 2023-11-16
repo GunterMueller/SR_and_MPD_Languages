@@ -1,0 +1,4 @@
+#  gmt Tue Sep 10 11:03:54 MST 1991
+0 sr bulky.sr
+0 run
+0 rm -rf Interfaces core *.out

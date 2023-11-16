@@ -1,0 +1,34 @@
+/* from CSP paper, implicit termination */
+_program(h)
+  _specs
+    _process_spec(WEST)
+    _process_spec(X)
+      _port(X,wch, (c: char))
+    _process_spec(EAST)
+      _port(EAST,ech, (c: char))
+  _specs_end
+
+  _process_body(WEST)
+    write("start of WEST")
+    var c := 'a'
+    do c <= 'z' -> _stmt_o(X,wch, (c)); c++;  od
+  _process_end
+
+  _process_body(X)
+    write("start of X")
+    var c: char
+    _do
+      _guard_i(true, WEST,wch, (c)) -> _stmt_o(EAST,ech, (c))
+    _od
+  _process_end
+
+  _process_body(EAST)
+    write("start of EAST")
+    var c: char, cnt := 0
+    _do
+      _guard_i(true, X,ech, (c)) -> cnt++
+    _od
+    write(cnt)
+  _process_end
+
+_program_end

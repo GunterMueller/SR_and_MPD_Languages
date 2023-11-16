@@ -1,0 +1,53 @@
+/* parallel sort
+ */
+_program(sort)
+  _specs
+    _process_spec(P1)
+      _port(P1,pass1, (x: int))
+      _port(P1,print, ())
+    _process_spec(P2)
+      _port(P2,pass2, (x: int))
+  _specs_end
+
+  const N := 10
+  _process_body(P1)
+    var a[1:N/2]: int
+    fa i := 1 to N by 2 -> a[i/2+1] := i af
+    fa k := 1 to N/2 -> write("P1", a[k]) af
+    _stmt_i(P2,print, ()) /* to sync printing. */
+    const largest := N/2; var got: int
+    _stmt_o(P2,pass2, (a[largest])); _stmt_i(P2,pass1, (got))
+    do a[largest] > got ->
+      var k := 1
+      do a[k] < got -> k++ od /* k is at most largest-1 */
+      fa j :=  largest-1 downto k ->
+        a[j+1] := a[j]
+      af
+      a[k] := got
+      _stmt_o(P2,pass2, (a[largest])); _stmt_i(P2,pass1, (got))
+    od
+    fa k := 1 to N/2 -> write("P1", a[k]) af
+    _stmt_i(P2,print, ()) /* to sync printing. */
+  _process_end
+
+  _process_body(P2)
+    var a[1:N/2]: int
+    fa i := 1 to N by 2 -> a[i/2+1] := N/2+i-2 af
+    _stmt_o(P1,print, ()) /* to sync printing. */
+    fa k := 1 to N/2 -> write("P2", a[k]) af
+    const smallest := 1; var got: int
+    _stmt_i(P1,pass2, (got)); _stmt_o(P1,pass1, (a[smallest]))
+    do a[smallest] < got ->
+      var k := N/2
+      do a[k] > got -> k-- od /* k is at least smallest+1 */
+      fa j :=  smallest+1 to k ->
+        a[j-1] := a[j]
+      af
+      a[k] := got
+      _stmt_i(P1,pass2, (got)); _stmt_o(P1,pass1, (a[smallest]))
+    od
+    _stmt_o(P1,print, ()) /* to sync printing. */
+    fa k := 1 to N/2 -> write("P2", a[k]) af
+  _process_end
+
+_program_end

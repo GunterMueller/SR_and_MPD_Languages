@@ -1,0 +1,4 @@
+#  gmt  Tue Jun  1 10:42:44 MST 1993
+0 sr rmtcap.sr
+0 run
+0 rm -rf Interfaces core *.out

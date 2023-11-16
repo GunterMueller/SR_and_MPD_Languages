@@ -1,0 +1,4 @@
+#  gmt  Fri Sep 10 14:49:48 MST 1993
+0 sr usurper.sr
+0 run
+0 rm -rf Interfaces core *.out

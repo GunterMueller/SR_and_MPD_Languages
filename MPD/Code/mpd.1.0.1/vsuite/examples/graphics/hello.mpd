@@ -1,0 +1,144 @@
+# Window "hello world" program
+#
+# Qiang A. Zhao, October 92
+#
+# Usage: hello [nap_time [font] ]
+#
+
+resource hello()
+
+  import MPDWin
+
+  const real ST_LOW = 8.0
+  const real ST_LEN = 6.0
+  const real ST_ST = 0.05
+
+  const int W = 500
+  const int H = 500
+  const real PI = 3.1415927
+  const real TWO_PI = 6.2831856
+
+  winWindow  mainwin, win2, win3, win4
+  op winEventChannel ec
+  sem gone = 0
+  winEvent  ev
+  bool stay = true
+  int  slp = 50;				getarg(1, slp)
+  string[80] font = "lucidasanstypewriter-14";	getarg(2, font)
+
+  ### Op to draw flying text
+  op    ftext(winWindow win1, winWindow win2, string[*] str)
+  proc  ftext(win1, win2, str)  {
+    winPoint  pt = winPoint(int(random(W)), int(random(H)))
+    winFont  ff 
+    int  ww = 90
+    ff=WinLoadFont(mainwin, font)
+    if (ff == null) {
+      write("Whoops, can't load my favorite font... Use default...")
+    } else {
+      ww = WinTextWidth(ff, str)
+      WinSetFont(win1, ff)
+      WinSetFont(win2, ff)
+    }
+    while (stay) {
+      WinDrawString(win2, pt, str)
+      pt.x = int(random(-ww, W))
+      pt.y = int(random(-ww, H))
+      WinDrawImageString(win1, pt, str)
+      WinFlush(mainwin)
+      nap(int(random(1000, 2000)))
+    }
+    if (ff != null) { WinFreeFont(win1, ff) }
+    V(gone)
+  }
+
+  ### m copies, n-point polygon
+  op    drawing(winWindow win1, winWindow win2, int m, int n)
+  proc  drawing(win1, win2, m, n)  {
+    winPoint  data[m][n] 
+    real dir[n]
+    real sta = random(TWO_PI)
+    real stp 
+    int  lastp = 1, curp = 2
+    for [ i= 1 to n ] {
+      data[1][i].x = int(random(W))
+      data[1][i].y = int(random(H))
+      dir[i] = random(TWO_PI)
+    }
+    while (stay) {
+      WinDrawPolygon(win2, data[curp])
+      for [ i=1 to n ] {
+	stp = ST_LOW + ST_LEN * sin(sta)
+	data[curp][i].x = data[lastp][i].x + int(stp*cos(dir[i]))
+	data[curp][i].y = data[lastp][i].y + int(stp*sin(dir[i]))
+	# change direction if hit any wall
+	if (data[curp][i].x < 0) {
+	  dir[i] = PI-dir[i]; data[curp][i].x = 0
+	} else if (data[curp][i].x >= W ) {
+	  dir[i] = PI-dir[i]; data[curp][i].x = W-1
+	}
+	if (data[curp][i].y < 0) {
+	  dir[i] = -dir[i]; data[curp][i].y = 0
+	} else if (data[curp][i].y >= H ) {
+	  dir[i] = -dir[i]; data[curp][i].y = H-1
+	}
+      }
+      WinDrawPolygon(win1, data[curp])
+      WinFlush(win1)
+      lastp = lastp mod m + 1
+      curp = curp mod m + 1
+      sta += ST_ST
+      if (sta >= TWO_PI) {
+	sta -= TWO_PI
+      }
+      nap(int(random(slp/2, slp)))
+    }
+    V(gone)
+  }
+
+  ###
+  # open a WxH window called "Test", map_depth=0 means "on screen"
+  mainwin = WinOpen("", "Test", ec, UseDefault, W, H)
+  if (mainwin == null) {
+    write("Ouch, can't open window")
+    stop(1)
+  }
+  win2 = WinNewContext(mainwin)
+  win3 = WinNewContext(mainwin)
+  win4 = WinNewContext(mainwin)
+
+  # begin to draw...
+  WinSetForeground(win2, "blue")
+  WinSetForeground(win3, "red")
+  WinSetForeground(win4, "cyan")
+  WinSetForeground(mainwin, "black")
+
+  # fire up several processes (keep PROCESSES consistent)
+  const int PROCESSES = 3
+  send drawing(win2, mainwin, 10, 4)
+  send drawing(win3, mainwin, 15, 3)
+  send ftext(win4, mainwin, "Hello World")
+
+  # test events...
+  WinSetEventMask(mainwin, Ev_KeyUp)
+  WinSetPoll(mainwin, 10)
+  while (stay) {
+    receive ec(ev)
+    if (ev.event_type == Ev_KeyUp) {
+      if (char(ev.data) == 'Q') {
+	stay = false
+      }
+    } else if (ev.event_type == Ev_DeleteWindow) {
+      write("DeleteWindow ...")
+      stay = false
+    }
+  }
+
+  # wait for all fancy processes quit
+  for [ i = 1 to PROCESSES ] { P(gone) }
+
+  ### done
+  # close window - the event polling process will terminate automatically
+  WinClose(mainwin)
+
+end

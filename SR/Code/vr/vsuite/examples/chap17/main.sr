@@ -1,0 +1,43 @@
+resource Main()
+  import Defs, DirServer, FileServer, Login
+
+  # read machine names from the command line
+  var nhosts := numargs()
+  var host[nhosts]: name
+  fa i := 1 to nhosts -> getarg(i, host[i]) af
+
+  # create virtual machines, one per host
+  var vmcap[nhosts]: cap vm
+  fa i := 1 to nhosts ->
+    vmcap[i] := create vm() on host[i]
+  af
+
+  # create directory servers on each host
+  var dscap[nhosts]: cap DirServer
+  fa i := 1 to nhosts ->
+    dscap[i] := create DirServer() on vmcap[i]
+  af
+
+  # prompt for names of terminal devices and
+  # create a login server for each terminal
+  fa i := 1 to nhosts ->
+    writes("number of ttys for machine ", host[i], ": ")
+    var nttys: int, device: name
+    read(nttys)
+    write("enter tty names")
+    fa j := 1 to nttys ->
+      read(device)
+      create Login(i, device, host, dscap) on vmcap[i]
+    af
+  af
+
+  write("DFS is now executing; enter any string to stop")
+  var str: name; read(str)
+  stop
+
+  final    # destroy directory servers
+    fa i := 1 to nhosts ->
+      destroy dscap[i]
+    af
+  end
+end Main

@@ -1,0 +1,37 @@
+# 3-dimensional arrays with several alignment challenges
+
+resource r ()
+    const int d1 = 3
+    int d2 = 7
+    const int d3 = 5
+    char c[d1,d2,d3] = ([d1] ([d2] ([d3] '-')))
+    int  n[d1,d2,d3] = ([d1] ([d2] ([d3] -47)))
+    string[2] s[d1,d2,d3] = ([d1] ([d2] ([d3] "hi")))
+    sem o[d1,d2,d3] = ([d1] ([d2] ([d3] 2)))
+    int  i, j, k
+
+    for [ v = 2 to d1 * d2 * d3 by 5 ] {
+	i = v % 17 % d1 + 1
+	j = v % 19 % d2 + 1
+	k = v % 23 % d3 + 1
+	c[i,j,k] = "abcdefghijklmnopqrstuvwxyz" [1 + v % 26]
+	n[i,j,k] = v
+	s[i,j,k] = "lo"
+	V(o[i,j,k])
+    }
+
+    for [ i = 1 to d1 ] {
+	for [ j = 1 to d2 ] {
+	    for [ k = 1 to d3 ] {
+		if (c[i,j,k] != '-'
+		| n[i,j,k] != -47
+		| s[i,j,k] != "hi"
+		| ?o[i,j,k] != 2) {
+		    printf ("%2d %2d %2d %6d '%c' %s %d\n", i, j, k,
+			n[i,j,k], c[i,j,k], s[i,j,k], ?o[i,j,k])
+    } } } }
+
+    P (o[d1,d2,d3])
+    P (o[d1][d2][d3])
+    write ("done")
+end

@@ -1,0 +1,14 @@
+resource main()
+
+  procedure sigma(int n) returns int   sum{
+    sum = 0
+    for [ i = 1 to n ] { sum += i  }
+  }
+
+  int  x,y
+
+  y = 12
+  x = 10 + sigma(y)
+  write("x = ",x)
+
+end

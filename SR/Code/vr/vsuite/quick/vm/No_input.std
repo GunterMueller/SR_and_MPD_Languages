@@ -1,0 +1,14 @@
+begin execution
+asking hostname
+checking myvm()
+creating local vm
+creating vm on 0
+locating 47 to current host
+creating vm on 47
+creating resources:  mr lr zr rr done
+parent machine:  0
+myvm() machine:  0
+local machine:   0
+zero machine:    0
+remote machine:  47
+done!

@@ -1,0 +1,42 @@
+# check that timeslicing of local cpu-bound processes works.
+# gets "alarm clock" abort if not.
+
+# this programming style is not advocated for normal use.
+
+
+resource slice1 ()
+    external alarm (seconds : int)
+    const timeout := 15
+    const limit := 10
+    var a := 0
+    var b := 0
+
+    alarm(timeout)	# set timeout to avoid infinite loop
+
+
+process advance		# advance a to keep it ahead of b
+    do a < limit ->
+	if a = b ->
+	    a++
+	fi
+    od
+    write ("done advancing")
+end
+
+
+process sync		# advance b to catch up to a
+    do b < limit ->
+	if b < a ->
+	    b++
+	fi
+    od
+    write ("done syncing")
+end
+
+
+process watch		# wait for b to reach limit
+    do b < limit ->
+    od
+    write ("done watching")
+end
+end

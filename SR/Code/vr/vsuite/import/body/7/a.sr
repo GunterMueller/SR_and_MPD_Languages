@@ -1,0 +1,19 @@
+global a
+	const x := 1234
+end
+
+resource aa
+	import a
+	const x := a.x + 200000
+body aa() separate
+
+resource b()
+
+	var x:int := 56
+	write("hi",x)
+	if x = 56 ->
+		import aa
+		write(aa.x,x)
+	fi
+
+end

@@ -1,0 +1,5 @@
+4 5   < true    <= true    = false   != true    >= false    > false
+888 888   < false    <= true    = true   != false    >= true    > false
+88 77   < false    <= false    = false   != true    >= true    > true
+ok false
+ok false false

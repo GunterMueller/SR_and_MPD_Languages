@@ -1,0 +1,14 @@
+/* nondeterministic, but repeatable for our implementation */
+resource test()
+  import no_cv
+
+  process main(i := 1 to 4)
+     var n : int
+     fa j := 1 to 3 ->
+	no_cv.setv(i)
+	n := no_cv.getv()
+	write("process", i, "got", n)
+    af
+  end
+
+end

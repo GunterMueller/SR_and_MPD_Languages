@@ -1,0 +1,7 @@
+0 csp2sr -te e.csp
+0 sr -C e.sr
+
+0 csp2sr -ti e.csp
+0 sr -C e.sr
+
+0 rm -rf Interfaces core *.out e.sr

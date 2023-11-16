@@ -1,0 +1,11 @@
+T_IM=1
+T_EX=2
+
+case $OPTION in
+    -ti) terminationdisc=$T_IM;;
+    -te) terminationdisc=$T_EX;;
+    *)   terminationdisc=$T_IM;;
+esac
+   
+$CCPATH -DTERMINATIONDISC=$terminationdisc -DT_IM=$T_IM -DT_EX=$T_EX \
+  -E $TMPFILE | sed "$SCRIPT" >> $SRFILE

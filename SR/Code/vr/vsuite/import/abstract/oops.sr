@@ -1,0 +1,12 @@
+# this once caused a problem in the interfaces code.
+resource o1
+	op f(x:cap o1)
+	type t = rec(a,b:int)
+	op g(y:t)
+body o1() separate
+
+
+resource o2
+	import o1
+body o2()
+end

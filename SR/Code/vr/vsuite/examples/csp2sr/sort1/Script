@@ -1,0 +1,7 @@
+0 csp2sr -te sort.csp
+0 sr -C sort.sr
+
+0 csp2sr -ti sort.csp
+0 sr -C sort.sr
+
+0 rm -rf Interfaces core *.out sort.sr

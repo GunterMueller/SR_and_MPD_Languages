@@ -1,0 +1,16 @@
+argtype: 3
+format: '%s%s'
+  3 < 2>: 'abraham','lincoln'
+format: '%7s%s'
+  3 < 2>: 'abraham','lincoln'
+format: '%5s%s'
+  3 < 2>: 'abrah','am'
+format: '%1s%3s'
+  3 < 2>: 'a','bra'
+format: '%25s%*s%s'
+  3 < 2>: 'abraham','continental'
+format: '%*s%s%s'
+  3 < 2>: 'lincoln','continental'
+format: '%*4s%s%*3s%s'
+  3 < 2>: 'ham','coln'
+finished

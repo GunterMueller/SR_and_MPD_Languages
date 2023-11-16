@@ -1,0 +1,3 @@
+0 m2sr -sc timer.m
+0 sr -C timer.sr test.sr
+0 rm -rf Interfaces core *.out timer.sr

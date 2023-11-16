@@ -1,0 +1,4 @@
+0 sr evaluator.sr
+0 a.out <in1 >in1.out 2>&1
+0 scmp in1.out in1.std
+0 rm -rf Interfaces core *.out

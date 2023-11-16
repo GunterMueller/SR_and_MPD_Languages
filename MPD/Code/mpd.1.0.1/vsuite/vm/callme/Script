@@ -1,0 +1,5 @@
+#  gmt  Tue Jun 21 17:48:43 MST 1988
+0 mpd -c potato.mpd
+0 mpdl spud maine
+0 run
+0 rm -rf MPDinter core *.out

@@ -1,0 +1,351 @@
+Systems Supporting MPD
+
+January 20, 2004
+Gregg Townsend
+
+
+MPD was built and tested on these platforms:
+
+    Intel PC (Linux)
+    Sun Sparc (Solaris)
+
+Code is also included for these systems:
+
+    Apollo DN (Domain/OS SR10.3)
+    Data General AViiON (DG/UX)
+    DEC Alpha (Linux)
+    DEC VAX (Ultrix or BSD Unix)
+    DEC MIPS (Ultrix)
+    Encore Multimax (Umax)
+    Harris HC/UX (Tahoe architecture)
+    HP PA-RISC (HP-UX)
+    HP 9000 series 300 (HP-UX)
+    IBM RS/6000 (AIX)
+    Intel PC (SVR4, NetBSD, FreeBSD)
+    Intel Paragon (OSF/1)
+    Motorola System V/68
+    NeXT (Mach)
+    Sequent Symmetry (Dynix 3.2 under "ucb" universe; NOT Dynix/PTX)
+    Sun 3 (SunOS 4)
+    Sun 4 / Sparc (SunOS 4)
+
+Additionally, any other system running Unix System V Release 4 is a candidate
+using csw/svr4.c for context switching; see the "Untested Systems" section
+below.
+
+MPD is written in C with a little assembly code for context switching.
+Bison can substitute for Yacc, and Flex can substitute for Lex.
+
+The notes below give additional information for particular systems.  In many
+cases, certain tests in the full verification suite (vsuite) are known to fail
+because of C compiler bugs or other system limitations.  These are isolated
+problems that do not affect the majority of MPD programs.
+
+
+******************************  Tested Systems  ******************************
+
+
+Intel PC Architecture (Linux):
+
+    Tested on: Fedora Linux 1 with GCC 3.3.2
+    Tested on: Red Hat Linux 9 with GCC 3.2.2
+
+    Before building, set "LIBM= -lm -lc" and "LIBR=-L/usr/X11/lib"
+    in ./Configuration.
+
+    True multiprocessing (obtained by setting MPD_PARALLEL) does not
+    work reliably on current Linux systems.  Simulated multiprocessing,
+    the usual case, still works fine.
+
+
+Sun 4 / Sparc running Solaris version 2 (System V release 4):
+
+    Tested on: SunOS 5.9 using Sun's C compiler.
+    Tested on: SunOS 5.7 using Sun's C compiler.
+
+    Before building, set "LIBC=-lsocket -lnsl" and "RSHPATH=/bin/rsh" in
+    ./Configuration, and set CCPATH as appropriate.  If using SunPro C,
+    also set "CFLAGS=-D__svr4__ -g" in the main Makefile.
+
+    IMPORTANT: MPD for Solaris does not need the BSD compatibility package.
+    Be sure that /usr/ucb is NOT in the search path when running "make".
+
+    A small number of warning messages are produced during the build.
+
+    Vsuite failures:  With MultiMPD configured, these tests fail due to
+    incorrect assumptions by the test program about the C time() function:
+	builtin/nap, misc/external, misc/extref
+
+    Under Solaris, use of MultiMPD precludes use of virtual machines.
+    When MultiMPD configured *and enabled* (by setting MPD_PARALLEL > 1)
+    the following additional vsuite tests fail:
+	create/chairs, diag/runtime, diag/trace, examples/chap12/main2,
+	examples/chap15/vm, examples/misc/mbrot, examples/misc/remote,
+	examples/tutorial/cgrep.vm, global/[3456], in/cap/remote,
+	literal/cap, misc/timeslice2, quick/vm, vm/*
+
+    Some intermittent hangs have been seen occasionally when running
+    distributed programs under Solaris 2.7.
+
+
+******************************  Untested Systems  ******************************
+
+
+DEC Alpha (Tru64 Unix, aka OSF/1, aka Digital Unix):
+
+    Last tested on: Digital Unix version 4.0B / 564.
+
+    This implementation provides 32 bit integers for MPD's int type although
+    these machines support 64 bit ints.  Thus, MPD's int corresponds to C's int.
+
+
+Silicon Graphics:
+
+    Last tested on:	Indigo2 (MIPS R10000 chip) running Irix 6.5.7f.
+
+    This system is configured for the O32 (Irix 5) or N32 (Irix 6.2) ABI.
+    It does not work with the N64 (Irix 6.0) ABI.
+
+    Before building, set CCPATH=/usr/bin/cc and RSHPATH=/usr/bsd/rsh
+    in ./Configuration.  Also add "-w" to the CFLAGS in the Makefile
+    if you don't want a huge volume of helpful warnings about (mostly)
+    legal C code.
+
+    Note: The assembly code in ./csw must be built using /bin/as,
+    not the GNU assembler.
+
+
+System V Release 4:
+
+    To build MPD on a generic SVR4 system, edit csw/Makefile to use the
+    SVR4 library functions makecontext/setcontext fo context switching.
+    Remove the four lines specifying the build of "asm.o" and replace
+    them with these two lines:
+
+	    asm.o:  svr4.c
+		    $(CC) $(CFLAGS) -c -o asm.o svr4.c
+
+    We once tested this on a Sun running Solaris, but on that platform
+    the sparc.s context switching code is used by choice because it is
+    considerably faster.
+
+
+Apollo:
+
+    We have included code from an Apollo port of SR Version 1 that was done
+    using GCC and GAS.  This was tested under Domain/OS version 10.3.
+    Gcc was used instead of cc because cc defines __STDC__ when it isn't
+    really a standard C compiler.  The generated code is compiled by cc.
+
+    Change the main Makefile to specify
+	CC = gcc
+	AS = gas
+	CFLAGS = -Dap3000
+
+    The assembly language code was slightly modified for SR V2 and has
+    not been tested.
+
+
+Data General AViiON:
+
+    Be sure to set RSHPATH=/usr/bin/remsh in ./Configuration.
+    SR V1 was never completely verified on the AViiON, and V2 is untried.
+
+
+DEC Alpha (Linux):
+
+    SR 2.3.2 was tested on: Red Hat Linux 6.0 (Kernel 2.2.5).
+
+    Before building, set "LIBM= -lm -lc" and "LIBR=-L/usr/X11/lib"
+    in ./Configuration.
+
+    Numerous warning messages are produced while building SR,
+    but the system seems to run correctly.
+
+    Vsuite failure:  misc/external fails because it assumes that the
+    system time_t datatype is the same size as an int.
+
+
+DEC VAX:
+
+    SR Version 1 ran on the Vax.  We no longer have a Vax available.
+    Under Vax Ultrix, SR worked with gcc or cc, but not with vcc.
+
+
+DEC MIPS:
+
+    Early versions of SR were tested on a Decstation 3100 running Ultrix
+    V4.3 Rev 43, using "cc", and on a DEC 5000 running Ultrix V4.2A.
+
+    Vsuite failures: with standard cc, the misc/swap vsuite test provokes
+    a Trace/BPT trap in the compiler, and misc/rmember also fails.
+
+    One early version of SR was tested using c89 ("DEC C for Ultrix on RISC
+    V1.0").  With this compiler, sr/input.c got a bugcheck when built with -g;
+    the fix is to build without -g.  Srwin did not build with c89.  The vsuite
+    tests misc/exprs, misc/swap, and rec/3 failed due to compiler bugs; we have
+    been told that at least some of these are fixed in c89 V1.1.  Some other
+    failures appeared to be similar but were investigated in detail.
+
+
+Encore Multimax:
+
+    SR V2 (single threaded) has been build on Umax 4.13 using some special
+    procedures.  cc was used for the csw directory; gcc was used for all
+    other directories.  Because the grammar is too complex for the Encore
+    version of Yacc, the .c and .h files were generated on another system.
+
+
+Harris HC/UX (Tahoe architecture):
+
+    Contributed code from SR Version 1 is included.  Version 2 is untested.
+
+
+HP PA-RISC (9000/800, 9000/700 series):
+
+    SR 2.3.1 was tested on: Hewlett-Packard 9000/735 running HP-UX 9.01.
+
+    Before building, change RSHPATH as indicated in ./Configuration.
+
+    Ignore any messages about "ranlib: ar already did it for you".
+
+    Vsuite failure: misc/rmember fails due to a compiler bug.
+
+    Note: won't build with the gnu assembler (as).
+
+
+HP 9000/300 series:
+
+    SR 2.1 was tested on: Hewlett-Packard 9000/330 running HP-UX 7.0.
+
+    Before building, change RSHPATH as indicated in ./Configuration.
+    Also set CFLAGS = +Np300 +Nw500 in the main Makefile.
+
+    Ignore any messages about "ranlib: ar already did it for you".
+
+    Vsuite failures:
+    
+	array/slice/2 fails due to a C preprocessor bug.
+
+	quick/jumble takes an especially long time to compile on this
+	system when optimization is enabled.
+
+
+IBM RS/6000:
+
+    SR 2.3.2 was tested on: IBM RS/6000 model 43P (PowerPC 604 chip)
+    running AIX 4.3.
+
+    Vsuite failure: quick/jumble fails its optimization test (sr -O).
+    The test program runs correctly without optimization.
+
+
+Intel PC (SVR4):
+
+    We have included contributed SR code for an SVR4 system but we cannot
+    test this configuration.
+
+
+Intel PC (NetBSD):
+
+    A version of SR was tested on: i386-netbsd 0.9a
+
+    Before building, set "XINCL=/usr/X386/include" in ./Configuration.
+
+    SR was built for testing using GNU Make (gmake).  The standard "make"
+    has problems with the library references ($$LIBx) in several Makefiles.
+
+
+Intel PC (FreeBSD):
+
+    A version of SR was tested on: FreeBSD-2.0.950412-SNAP and 
+    FreeBSD-2.1-Development.
+
+    Before building, set "XINCL=/usr/X11R6/include" in ./Configuration.
+
+    SR was built for testing using GNU Make (gmake).
+
+
+Intel Paragon:
+
+    A version of SR was tested on: 16-node Intel Paragon XP/S
+    model A4 (16 MB per node) running OSF/1 release 1.2.1.
+
+    A partition name must be specified to run an SR program.  The easiest
+    way to do this is to set the environment variable NX_DFLT_PART.  See
+    the SR release notes for more information about how the SR programming
+    model is mapped onto the Paragon architecture.
+
+    It is possible in principle to generate an SR cross-compiler on a
+    machine supporting the Paragon cross development tools, but this
+    configuration is not supported by SR.  SR must be built and run on
+    the Paragon itself.
+
+    Before building, set LIBR=-lnx in ./Configuration.
+
+    IMPORTANT:  The Paragon "make" utility doesn't handle the "#" character
+    properly.  The workaround is to always use "pmake MAKE=pmake" in place
+    of "make".
+
+    It appears that CLOCKS_PER_SEC is defined incorrectly in <time.h>.
+    This has no effect on SR programs but cause the csw/csloop timing
+    program (not normally run) to give incorrect results.
+
+
+Motorola System V/68:
+
+    Contributed code from SR Version 1 is included.
+
+
+NeXT:
+
+    SR 2.1 was tested on: NeXT Mach 2.1
+
+    Vsuite failures: several tests fail because the NeXT outputs floating
+    point numbers incorrectly.  The tests are:
+
+	array/rec/slice, examples/chap01/matrix, examples/chap04/trapezoidal,
+	examples/chap07/mult, examples/chap09/quadrature, examples/chap14/*,
+	builtin/general, create/args1, global/1, global/2, global/op,
+	invoke/ref, io/read, misc/exprs, misc/fa, misc/getarg,
+	misc/swap, quick/jumble, real/array, real/external
+
+
+Sequent Symmetry:
+
+    SR 2.3 was tested on: Sequent Symmetry running Dynix 3.2.
+
+    Before building, edit ./Configuration and set LIBC and LIBM for the Sequent
+    as indicated in the comments there.  Also edit the main Makefile and add
+    CFLAGS=-Y if you are building MultiMPD; see the installation documentation
+    for details.
+
+    This port was done under the "ucb" universe of Dynix.  Installation under
+    Dynix/PTX has not been tried and is not likely to succeed without much pain.
+
+    MultiSR did not build with the ATS C compiler (atscc): the necessary -Y
+    compiler option evokes numerous bogus "function redefined" diagnostics.
+    Single-threaded SR built and ran correctly using atscc (without -Y).
+
+    The SRWin X-windows interface did not work very well, for reasons that
+    are not understood; and it did not work at all under MultiSR.
+
+    Vsuite failure: the misc/rmember vsuite test fails.
+
+
+Sun 3:
+
+    SR 2.3 was tested on: Sun 3/80 running SunOS 4.1.1.
+
+    Vsuite failure: with standard (bundled) cc, the misc/rmember test fails.
+
+
+Sun 4 / Sparc running SunOS version 4 (sometimes called Solaris 1.1):
+
+    SR 2.3.1 was tested on: Sun 4/490 running SunOS 4.1.1, using "cc".
+
+    Vsuite failure: with standard (bundled) cc, the misc/rmember test fails.
+
+    Sun's "acc" compiler gives a segmentation fault on some architectures
+    when compiling rts/io.c and rts/scan.c with -g; the fix is to compile
+    without -g.  (The "acc" configuration has not been tested recently.)

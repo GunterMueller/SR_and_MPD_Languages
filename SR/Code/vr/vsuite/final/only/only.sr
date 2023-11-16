@@ -1,0 +1,21 @@
+#  Date: Tue, 8 Mar 1988 20:58 PST
+#  From: olsson@ivy.ucdavis.edu (Ron Olsson)
+#  Subject: problem with final in main
+
+resource a()
+    final
+	write("in final")
+	flush(stdout)
+    end
+end
+
+#  The initial process (IP below) enters Kill, which frees its process
+#  descriptor and invokes do_switch.  do_switch calls terminate
+#  (note:cur_proc->status==FREE).  terminate calls Spawn, which allocates
+#  the *just-freed* descriptor and does not allocate a new stack;
+#  new_context then initializes the (old) stack.  In fact, the stack Spawn
+#  gives to new_context is the same one as IP doing the Spawn!  On the
+#  Encore, things blow up when IP tries to return from Spawn.  Apparently,
+#  the stack layout on Sun and Vax are lucky? enough so return works.
+
+#  [ Fixed (10-Mar-88) gmt by modifiying process.c ]

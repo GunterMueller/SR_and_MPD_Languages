@@ -1,0 +1,6 @@
+proc insert(item)
+  if count >= N ->
+    write(stderr,"insert: no room"); stop(1)
+  fi
+  info[count++] := item
+end

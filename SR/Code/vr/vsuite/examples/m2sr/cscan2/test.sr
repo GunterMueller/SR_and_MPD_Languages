@@ -1,0 +1,57 @@
+resource main()
+    import repro, cscan
+    process p1
+        var me := 1
+        repro.entry(me)
+        cscan.request(40)
+        repro.entry(me)
+        write(me, "releasing after", 40)
+        cscan.release()
+        repro.entry(me)
+        cscan.request(20)
+        repro.entry(me)
+        write(me, "releasing after", 20)
+        cscan.release()
+    end
+    process p2
+        var me := 2
+        repro.entry(me)
+        cscan.request(35)
+        repro.entry(me)
+        write(me, "releasing after", 35)
+        cscan.release()
+        repro.entry(me)
+        cscan.request(60)
+        repro.entry(me)
+        write(me, "releasing after", 60)
+        cscan.release()
+        repro.entry(me)
+        cscan.request(10)
+        repro.entry(me)
+        write(me, "releasing after", 10)
+        cscan.release()
+        repro.entry(me)
+        cscan.request(80)
+        repro.entry(me)
+        write(me, "releasing after", 80)
+        cscan.release()
+    end
+    process p3
+        var me := 3
+        repro.entry(me)
+        cscan.request(30)
+        repro.entry(me)
+        write(me, "releasing after", 30)
+        cscan.release()
+        repro.entry(me)
+        cscan.request(50)
+        repro.entry(me)
+        write(me, "releasing after", 50)
+        cscan.release()
+        repro.entry(me)
+        cscan.request(5)
+        repro.entry(me)
+        write(me, "releasing after", 5)
+        cscan.release()
+    end
+end

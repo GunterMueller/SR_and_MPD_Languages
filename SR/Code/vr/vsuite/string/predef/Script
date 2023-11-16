@@ -1,0 +1,4 @@
+0 sr -c predef.sr
+0 srl predef
+0 run input1
+0 rm -rf Interfaces core *.out

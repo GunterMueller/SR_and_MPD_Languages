@@ -1,0 +1,5 @@
+#  gmt  Tue Oct 29 17:33:57 MST 1991
+0 sr -c bfree2.sr
+0 srl a
+0 run
+0 rm -rf Interfaces core *.out

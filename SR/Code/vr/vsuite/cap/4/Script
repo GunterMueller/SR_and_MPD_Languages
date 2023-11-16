@@ -1,0 +1,7 @@
+0 sr -c a.sr
+0 srl glob r s
+0 run
+0 srm a.sr
+0 sed 's/srm -w -c [^ ]* /srm /' Makefile >Makefile.out
+0 cmp -s Makefile.std Makefile.out
+0 rm -rf Interfaces core *.out Makefile

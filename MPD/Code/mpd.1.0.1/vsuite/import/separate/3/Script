@@ -1,0 +1,4 @@
+0 mpd -c h2.mpd h3a.mpd h3b.mpd
+0 mpdl h1 hh
+0 run
+0 rm -rf MPDinter core *.out

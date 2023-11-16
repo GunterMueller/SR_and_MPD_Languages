@@ -1,0 +1,59 @@
+# a rather slow implementation of quick sort
+
+resource sorter
+    op sort(var int a[1:*])
+body sorter()
+
+    int top, n[1:100]
+
+    for [ i = 1 to 100 ] {
+	read(n[i])
+	if (n[i] == -1) {
+	top = i-1;
+	exit;
+	}
+    }
+
+    call sort(n[1:top]);
+
+    for [ i = 1 to top ] {
+	write(n[i])
+    }
+
+
+    proc sort(a)  {
+	if ( ub(a) < 2 ) {
+	    skip
+	} else if (ub(a) == 2 ) {
+	    if (a[1] > a[2]) {
+		a[1] :=: a[2]
+	    }
+	} else {
+	    int  pivot = a[1];
+	    int  l = 2
+	    int  h = ub(a)
+
+	    while (true) {
+		while (true) {
+		    if (l < h & a[l] < pivot) {
+			l ++;
+		    } else if (a[h] > pivot ) {
+			h --;
+		    } else {
+			exit
+		    }
+		}
+
+		if (h > l) {
+		    a[l] :=: a[h];
+		    l++; h--
+		} else {
+		    a[1] :=: a[h];
+		    if (h-1 > 1) { sort(a[1:h-1]) }
+		    if (ub(a)-h > 1) { sort(a[h+1:ub(a)]) }
+		    exit;
+		}
+	    }
+	}
+    }
+end

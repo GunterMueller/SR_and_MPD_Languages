@@ -1,0 +1,197 @@
+The SR Verification Suite
+
+
+
+SIMPLE EXAMPLE:
+
+% cd v2
+% srv/srv quick
+SR version 91g, April 1991, University of Arizona
+-rw-rw-r--  1 gmt        455850 Mar 29 16:34 /usr/gmt/v2/rts/srlib.a
+-rwxrwxr-x  1 gmt         65536 Mar 29 18:02 /usr/gmt/v2/rts/srx
+-rwxrwxr-x  1 gmt        385024 Mar 29 18:02 /usr/gmt/v2/sr/sr
+-rwxrwxr-x  1 gmt          3134 Mar 29 18:02 /usr/gmt/v2/srgrind/srgrind
+-rwxrwxr-x  1 gmt         40960 Mar 29 18:02 /usr/gmt/v2/srl/srl
+-rwxrwxr-x  1 gmt         57344 Mar 29 18:02 /usr/gmt/v2/srm/srm
+-rw-rw-r--  1 gmt          2144 Mar 29 18:00 /usr/gmt/v2/srmap
+-rwxrwxr-x  1 gmt         49152 Mar 29 16:34 /usr/gmt/v2/srtex/srtex
+quick/jumble:
+quick/survey:
+quick/vm:
+%
+
+
+
+OUTPUT TO FILE; ERRORS REPORTED
+
+% srv/srv examples >& srv.out
+%
+% cat srv.out
+SR version 91g, April 1991, University of Arizona
+-rw-rw-r--  1 gmt        455850 Mar 29 16:34 /usr/gmt/v2/rts/srlib.a
+-rwxrwxr-x  1 gmt         65536 Mar 29 18:02 /usr/gmt/v2/rts/srx
+-rwxrwxr-x  1 gmt        385024 Mar 29 18:02 /usr/gmt/v2/sr/sr
+-rwxrwxr-x  1 gmt          3134 Mar 29 18:02 /usr/gmt/v2/srgrind/srgrind
+-rwxrwxr-x  1 gmt         40960 Mar 29 18:02 /usr/gmt/v2/srl/srl
+-rwxrwxr-x  1 gmt         57344 Mar 29 18:02 /usr/gmt/v2/srm/srm
+-rw-rw-r--  1 gmt          2144 Mar 29 18:00 /usr/gmt/v2/srmap
+-rwxrwxr-x  1 gmt         49152 Mar 29 16:34 /usr/gmt/v2/srtex/srtex
+examples/bbuffer:
+    expected 0, got 1 from a.out </dev/null
+    expected 0, got 1 from a.out </dev/null
+examples/dining:
+    expected 0, got 2 from sr
+examples/mbrot:
+    expected 0, got 1 from sr
+examples/primes:
+examples/probe:
+    expected 0, got 5 from sr
+examples/queens:
+examples/remote:
+examples/salesman:
+examples/tty:
+examples/wave:
+    expected 0, got 1 from sr
+examples/wondrous:
+%
+
+
+EXPANDING ERRORS USING SRVSUMM
+
+% srv/srvsumm <srv.out >srv.summ
+%
+% cat srv.summ
+#  SR version 91g, April 1991, University of Arizona
+#  -rw-rw-r--  1 gmt        455850 Mar 29 16:34 /usr/gmt/v2/rts/srlib.a
+#  -rwxrwxr-x  1 gmt         65536 Mar 29 18:02 /usr/gmt/v2/rts/srx
+#  -rwxrwxr-x  1 gmt        385024 Mar 29 18:02 /usr/gmt/v2/sr/sr
+#  -rwxrwxr-x  1 gmt          3134 Mar 29 18:02 /usr/gmt/v2/srgrind/srgrind
+#  -rwxrwxr-x  1 gmt         40960 Mar 29 18:02 /usr/gmt/v2/srl/srl
+#  -rwxrwxr-x  1 gmt         57344 Mar 29 18:02 /usr/gmt/v2/srm/srm
+#  -rw-rw-r--  1 gmt          2144 Mar 29 18:00 /usr/gmt/v2/srmap
+#  -rwxrwxr-x  1 gmt         49152 Mar 29 16:34 /usr/gmt/v2/srtex/srtex
+
+examples/bbuffer:
+    expected 0, got 1 from a.out </dev/null
+    expected 0, got 1 from a.out </dev/null
+
+examples/dining:
+    expected 0, got 2 from sr
+	"dining.sr", line 78: fatal: input arms name ops from multiple resources
+	"dining.sr", line 82: fatal: input arms name ops from multiple resources
+
+examples/mbrot:
+    expected 0, got 1 from sr
+	global.sr:
+	remote.sr:
+	main.sr:
+	global.sr:
+	remote.sr:
+	COMPILER MALFUNCTION (gdecl.c/65): sorry, no records yet
+
+examples/probe:
+    expected 0, got 5 from sr
+	printer.sr:
+	node.sr:
+	main.sr:
+	printer.sr:
+	node.sr:
+	"node.sr", line 44: fatal: incompatible initialization
+	"node.sr", line 50: fatal: input arms name ops from multiple resources
+	"node.sr", line 52: fatal: echo_back(), argument 1: wrong type
+	"node.sr", line 60: fatal: echo_back(), argument 1: wrong type
+	main.sr:
+	"main.sr", line 56: fatal: <expr>(), argument 1: wrong type
+
+examples/wave:
+    expected 0, got 1 from sr
+	printer.sr:
+	node.sr:
+	main.sr:
+	printer.sr:
+	node.sr:
+	"node.sr", line 24: fatal: assignment to slice not implemented
+	main.sr:
+
+#   11 total tests
+#    6 passed
+#    5 failed
+
+#    1 used records
+#    1 used slice assignment
+#    3 failed for other reasons
+
+#    4 failed in compiler
+#    1 failed elsewhere
+%
+
+
+
+CLEANING UP
+
+srv leaves lots of temp files around so you can see what went wrong.
+After running srvsumm, clean them up using "make vclean".
+
+% make vclean
+rm -f vsuite/negative/test??.sr
+find vsuite '(' '(' -type d -name Interfaces -o  -type f '('             -name '
+*~'              -o -name '*%'           -o -name '.[BC]K.*'     -o -name '.emac
+s_*'     -o -name '.nfs*'        -o -name '_*.[co]'      -o -name '*.orig'
+-o -name '*.org'         -o -name '*.old'        -o -name '*.bak'        -o -nam
+e '*.new'        -o -name '*.dif'        -o -name '*.out'        -o -name '*.raw
+'        -o -name '*.rej'        -o -name '*.i'          -o -name '*.v?'
+-o -name core            -o -name 'x?'           ')' ')' -o \
+    -type f '(' \
+       -name Makefile                   \
+    -o -name '*.o'                      \
+    -o -name '[CL]*er.std' -size 0      \
+    -o -perm 777 -o -perm 775           \
+    -o -perm 755 -o -perm 770           \
+    -o -perm 750 -o -perm 700           \
+    ')' ')' -print -exec rm -rf '{}' \; -prune
+vsuite/examples/wave/Compiler.out
+vsuite/examples/wave/Interfaces
+vsuite/examples/dining/Compiler.out
+vsuite/examples/dining/Interfaces
+vsuite/examples/mbrot/bkend.o
+vsuite/examples/mbrot/mbrot.o
+vsuite/examples/mbrot/Compiler.out
+vsuite/examples/mbrot/Interfaces
+vsuite/examples/probe/Compiler.out
+vsuite/examples/probe/Interfaces
+vsuite/examples/bbuffer/Compiler.out
+vsuite/examples/bbuffer/Interfaces
+vsuite/examples/bbuffer/Linker.out
+vsuite/examples/bbuffer/a.out
+vsuite/examples/bbuffer/No_input.out
+%
+
+
+
+HOW IT WORKS
+
+Each test is in a subdirectory of v2/vsuite containing a Script file, e.g.:
+
+% ls vsuite/examples/queens
+No_input.std    Script          queens.sr
+%
+% cat vsuite/examples/queens/Script
+#  gmt  Wed Oct 14 16:30:15 MST 1987
+0 sr -c queens.sr
+0 srl EightQueens
+0 run
+0 rm -rf Interfaces core *.out
+%
+
+
+
+PREPARING NEW TESTS
+
+Need a program that runs without any tty interaction and produces identical
+output every time (even when run under MultiSR).
+
+For a simple test, pick a place in the vsuite and add the test using srvi
+(see man page).
+
+For complex tests (e.g. multiple input/output file combinations),
+craft a Script file by hand, using an existing directory as an example.

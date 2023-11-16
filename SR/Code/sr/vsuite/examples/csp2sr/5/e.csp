@@ -1,0 +1,26 @@
+_program(e)
+  _specs
+    _process_spec(A)
+      _port(A,foo, (x:int))
+    _process_spec(B)
+  _specs_end
+
+  _process_body(A)
+    write("start of A")
+    fa k := 1 to 4 ->
+      var x: int
+      _if
+        _guard_i(true,B,foo, (x)) ->
+          write("got", x)
+      _fi
+    af
+  _process_end
+
+  _process_body(B)
+    write("start of B")
+    fa k := 1 to 4 ->
+      _stmt_o(A,foo, (k*100))
+    af
+  _process_end
+
+_program_end

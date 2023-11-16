@@ -1,0 +1,39 @@
+# this program is deterministic and really does terminate.
+# who wrote this bizarre program? (oops, I did.)
+resource do7()
+	int  m = 4; const int N = 3
+	int a,b,c,d; int  e = m; int f = N
+	a = 8888
+	b = 7777
+	c = 6666
+	d = 1
+	write(a); write(b); write(c); write(d)
+	while (true) {
+	    if (a == 1) {
+		writes("\nA")
+		a :=: b
+	    } else if (b == 1 ) {
+		writes("\nB")
+		b :=: d
+	    } else if (c == 1 ) {
+		writes("\nC")
+		if (e == 0) {
+			if (f > 0) {
+				c :=: a
+				e = m
+				m = m-1
+				f = f-1
+			} else { c = 9999
+			}
+		} else { e--
+		}
+	    } else if (d == 1 ) {
+		writes("\nD")
+		d :=: c
+	    } else {
+		exit
+	    }
+	}
+	write(a); write(b); write(c); write(d)
+	write(e); write(f)
+end

@@ -1,0 +1,21 @@
+# check that both parameters and quantifier variables get copied back.
+
+# deterministic.
+
+resource co8 ()
+	op p (var a, b: int) returns t: int
+
+	var x := 743, y : int
+	write ("begin co")
+	co (i := 7 to 7) y := p (i, x) ->
+	    write ("after co:", i, x, y)
+	oc
+	write ("end co:", x, y)
+
+	proc p (a, b) returns t
+		write ("in p:", a, b)
+		t := a + b
+		a +:= 10
+		b *:= 3
+	end
+end

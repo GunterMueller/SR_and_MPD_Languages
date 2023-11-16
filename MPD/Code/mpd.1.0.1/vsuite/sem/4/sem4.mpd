@@ -1,0 +1,21 @@
+resource sem4()
+    op sema() {send}
+    op semb() {send}
+
+    process a  {
+	write(1111);
+	send semb()
+	receive sema()
+	write(2222)
+	send semb()
+    }
+
+    process b  {
+	receive semb()
+	write(3333)
+	send sema()
+	receive semb()
+	write(4444)
+    }
+
+end

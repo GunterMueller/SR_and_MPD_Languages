@@ -1,0 +1,44 @@
+resource Main()
+  import Defs, DirServer, FileServer, Login
+
+  # read machine names from the command line
+  int nhosts = numargs()
+  name  host[nhosts]
+  for [ i = 1 to nhosts ] { getarg(i, host[i]) }
+
+  # create virtual machines, one per host
+  cap vm  vmcap[nhosts]
+  for [ i = 1 to nhosts ] {
+    vmcap[i] = create vm() on host[i]
+  }
+
+  # create directory servers on each host
+  cap DirServer  dscap[nhosts]
+  for [ i = 1 to nhosts ] {
+    dscap[i] = create DirServer() on vmcap[i]
+  }
+
+  # prompt for names of terminal devices and
+  # create a login server for each terminal
+  for [ i = 1 to nhosts ] {
+    writes("number of ttys for machine ", host[i], ": ")
+    int nttys
+    name device
+    read(nttys)
+    write("enter tty names")
+    for [ j = 1 to nttys ] {
+      read(device)
+      create Login(i, device, host, dscap) on vmcap[i]
+    }
+  }
+
+  # write("DFS is now executing; enter any string to stop")
+  # name str; read(str)
+  #stop
+
+  final {    # destroy directory servers
+    for [ i = 1 to nhosts ] {
+      destroy dscap[i]
+    }
+  }
+end Main

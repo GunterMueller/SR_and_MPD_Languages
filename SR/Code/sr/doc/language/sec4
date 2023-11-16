@@ -1,0 +1,623 @@
+.sh 1 "Example: Parallel Matrix Multiplication"
+.lp
+Matrix computations lie at the heart of most scientific
+computing problems.
+Matrix multiplication is one of the most basic
+of these computations.
+Here we develop four realistic algorithms.
+Two employ shared variables, and hence are suitable for
+execution on shared memory multiprocessors.
+The other two algorithms employ message passing,
+and hence are suitable for execution
+on distributed memory systems.
+Each algorithm also illustrates a different programming technique
+and a different combination of SR mechanisms.
+.pp
+The problem is to compute
+the product of two #n \(mu #n real matrices #a and #b.
+This requires computing #n{{2}} inner products,
+one for each combination of a row of #a and a column of #b.
+On a massively parallel, synchronous multiprocessor, all inner
+products could be computed in parallel with reasonable efficiency
+since, by default, every processor executes the same sequence
+of instructions at the same time.
+However, on an asynchronous multiprocessor each process has to be
+created and destroyed explicitly, and
+each inner product requires relatively little computation.
+In fact, the parallel program would be much slower than a sequential
+program since the cost of creating and destroying processes would far
+outweigh any benefits derived from parallel execution.
+.pp
+To execute efficiently on an asynchronous multiprocessor,
+each process in a parallel program must perform quite a bit
+of work relative to the amount of time it takes to create
+the process and the amount of time the process spends communicating
+and synchronizing with other processes.
+In short, the sequential execution time of the process must be
+much greater than the concurrency and communication overhead.
+The exact balance depends, of course, on the underlying hardware and
+on the concurrent programming mechanisms that are employed.
+This section develops four matrix-multiplication algorithms that
+employ different combinations of communication and synchronization mechanisms.
+Each can readily be modified to alter the balance between
+sequential execution time and concurrency overhead.
+.sh 2 "Pre-Scheduled Strips"
+.lp
+Given are real matrices @a[N,N]@, @b[N,N]@, and @c[N,N]@.
+Assume that these are shared variables,
+and that we wish to use @PR@ processes to compute the product
+of @a@ and @b@ and store it in @c@.
+For simplicity, we will also assume that @N@ is a multiple
+of @PR@; for example, @N@ might be 100 and @PR@ might be 10.
+.pp
+To balance the amount of computation performed by each process,
+each should compute @N@{{2}}/@PR@ inner products.
+The simplest way to do this is to assign each process
+responsibility for computing the values for all elements
+in a strip of matrix @c@.
+In particular, let @S@ be @N@/@PR@.
+Then the first process could compute the values of the
+first @S@ rows of @c@, the second could compute the values
+of the next @S@ rows of @c@, and so on.
+This kind of approach is sometimes called pre-scheduling
+since each process is assigned in advance a certain number of ``chores,''
+i.e., inner products in this case.
+.pp
+To implement this algorithm in SR, we will use one global
+and one resource,
+which are compiled in that order.
+The global,
+shown in Figure 2,
+declares the shared constants @N@, @PR@, and @S@
+and reads values for @N@ and @PR@ from the command line.
+It then computes @S@; if @N@ is not a multiple of @PR@, the global
+prints an error message and stops the program.
+Variables @N@ and @PR@ are given default initial values;
+these are used if there are no command-line arguments.
+(Calling @getarg@ has no effect if there is no corresponding argument.)
+.KS
+global sizes
+  var N := 10    # matrix dimension, default 10
+  var PR := 2    # number of processes, default 2
+  var S: int     # strip size
+body sizes
+  getarg(1, N); getarg(2, PR); S := N/PR
+  if N mod PR != 0 ->
+    write("N must be a multiple of PR"); stop (1)
+  fi
+end
+.\" was .KE,text,.KS; fused to fit on same page (only one horizontal line)
+.sp .25
+.ce 1
+\fPFigure 2.  Global @sizes@ for strips algorithm\*C
+.ce 0
+.hl
+resource mult()
+  import sizes
+  var a[N,N], b[N,N], c[N,N]: real
+  sem done := 0, continue := 0
+
+  process strip(p := 1 to PR)
+    const R := (p-1)*S + 1  # starting row of strip
+    # initialize parts of a and b
+    fa i := R to R+S-1, j := 1 to N ->
+      a[i,j] := 1.0; b[i,j] := 1.0
+    af
+    # barrier to wait for all initialization
+    V(done); P(continue)
+    # compute S*N inner products
+    fa i := R to R+S-1, j := 1 to N ->
+      var inner_prod := 0.0  # local accumulator
+      fa k := 1 to N ->
+        inner_prod +:= a[i,k]*b[k,j]
+      af
+      c[i,j] := inner_prod
+    af
+  end
+
+  process coordinator
+    fa i := 1 to PR -> P(done) af
+    fa i := 1 to PR -> V(continue) af
+  end
+
+  final  # print results
+    fa i := 1 to N ->
+      fa j := 1 to N -> writes(c[i,j], " ") af
+      write()
+    af
+  end
+end
+.KE "Figure 3.  Resource @mult@ for strips algorithm"
+.pp
+The resource, shown in Figure 3,
+declares the matrices and an array of @PR@ processes
+to compute the inner products.
+It also contains a process that implements a barrier synchronization point
+and final code to print results.
+Each instance of process @strip@ first initializes its
+bands of matrices @a@, @b@, and @c@.
+For simplicity, we have initialized all elements of @a@ and @b@ to 1.0;
+in general, initial values would come from a prior computation
+or from external files.
+.pp
+Because all elements of @a@ and @b@ must be initialized
+before they are used by other processes, we need to implement
+a barrier synchronization point.
+Here we have simply used two semaphores and a coordinator process.
+The @coordinator@ first waits for all @PR@ instances of @strip@
+to signal semaphore @done@, then it signals semaphore @continue@
+@PR@ times.
+Since the barrier is executed only once, this approach is
+reasonable for this program.
+In general, however, one will want to use one of the more
+efficient barriers described in [Andr91] or
+[MCS91].
+.pp
+The finalization code in @mult@ is executed when
+all instances of @strip@ have terminated.
+That code prints the results.
+This use of finalization code frees the programmer from having
+to program termination detection.
+.pp
+Many shared-memory multiprocessors employ caches, with one cache
+per processor.
+Each cache contains the memory blocks most recently referenced
+by the processor.
+(A block is typically a few contiguous words.)
+The purpose of caches is to increase performance, but they
+have to be used with care by the programmer or they can actually
+decrease performance (due to cache conflicts).
+Hill and Larus [HiLa90] give three rules-of-thumb programmers
+need to keep in mind:
+.ba +5n
+.ip \(bu 2n
+Perform all operations on a variable, especially updates, in one process (processor).
+.ip \(bu 2n
+Align data so that variables updated by different processors
+are in different cache blocks.
+.ip \(bu 2n
+Re-use data quickly when possible so that it remains in the
+cache and does not get ``spilled'' back to main memory.
+.ba -5n
+.lp
+Since SR stores matrices in row-major order (i.e., by rows),
+the above program uses caches well.
+In particular, each @strip@ process reads one distinct strip of @a@
+and writes one distinct strip of @c@,
+and it references elements of @a@ and @c@ by sweeping across rows.
+Every process references all elements of @b@, but that is unavoidable.
+(If @b@ were transposed, so that columns were actually stored in
+rows, it too could be referenced efficiently.)
+.sh 2 "Dynamic Scheduling:  A Bag of Tasks"
+.lp
+The algorithm in the previous section statically assigned
+an equal amount of work to each @strip@ process.
+If the processes execute on homogeneous processors without
+interruption, they would be likely to finish at about the
+same time.
+However, if the processes execute on different speed processors,
+or if they can be interrupted\(eme.g., in a timesharing system\(emthen
+different processes might complete at different times.
+To dynamically assign work to processes, we can employ a
+#shared #bag #of #tasks.
+This approach uses a shared work queue (represented by an operation).
+Initially,
+an administrator process places in the bag
+the initial tasks to be solved.
+Multiple worker processes take tasks from the bag and service them.
+For this problem,
+a task corresponds to the finding the @N@ inner products for
+a given row of the result matrix @c@.
+More generally,
+the worker processes
+often generate new tasks\(em\
+corresponding to subproblems\(em\
+that are put into the bag.
+This is the case in one solution to adaptive quadrature [AnOl92].
+There, worker processes are given tasks of approximating
+the area for a given interval;
+they add new tasks\(emcorresponding to finding areas for two sub-intervals\(em\
+to the bag
+if their approximation was not acceptable.
+In this section,
+we present a matrix multiplication program
+that implements a shared bag of tasks solution.
+.pp
+As in the previous program, we again employ one global
+and one resource.
+The global,
+shown in Figure 4,
+declares the matrix dimension @N@ and the
+number of worker processes @W@, and reads values
+for these variables from the command line.
+.KS
+global sizes
+  var N := 10    # matrix dimension, default 10
+  var W := 2     # number of workers, default 2
+body sizes
+  getarg(1, N); getarg(2, W)
+end
+.KE "Figure 4.  Global @sizes@ for bag of tasks algorithm"
+As before, the shared variables are given default initial values.
+.pp
+The resource @mult@,
+shown in Figure 5,
+imports @sizes@ and
+declares shared matrices @a@, @b@, and @c@;
+the sizes of these matrices again depend on @N@.
+The resource then declares an operation, @bag@, which
+is shared by the @worker@ processes in the resource.
+The initialization code in @mult@ sets all elements
+of @a@ and @b@ to 1.0 and sends each row index to @bag@.
+After initialization has completed,
+the worker processes are created.
+Each worker process repeatedly receives a row index @i@ from @bag@
+and computes @N@ inner products, one for each element
+of row @i@ of result matrix @c@.
+.KS
+resource mult()
+  import sizes
+  var a[N,N], b[N,N], c[N,N]: real
+  op bag(row: int)
+
+  # initialize the arrays and bag of tasks
+  fa i := 1 to N ->
+    fa j := 1 to N ->
+      a[i,j] := 1.0; b[i,j] := 1.0
+    af
+    send bag(i)
+  af
+
+  process worker(id := 1 to W)
+    var i: int    # index of row of c to compute
+    do true ->
+      receive bag(i)
+      fa j := 1 to N ->
+        var inner_prod := 0.0
+        fa k := 1 to N ->
+            inner_prod +:= a[i,k]*b[k,j]
+        af
+        c[i,j] := inner_prod
+      af
+    od
+  end
+
+  final
+    fa i := 1 to N ->
+      fa j := 1 to N -> writes(c[i,j], " ") af
+      write()
+    af
+  end
+end
+.KE "Figure 5.  Resource @mult@ for bag of tasks algorithm"
+The computation terminates when @bag@ is empty and all
+worker processes are blocked waiting to receive from it.
+At this point, the finalization code is executed; it prints
+out the values in @c@.
+.pp
+This program has been executed on a Sequent multiprocessor
+using 1, 2, 4, and 8 workers and processors.
+It shows nearly perfect speedup
+for reasonable-size matrices, e.g., when @N@ is 100 or more.
+In this case, the amount of computation per iteration of a worker process
+far outweighs the overhead of receiving a message from the bag.
+Like the previous program, this one uses caches well since
+SR stores matrices in row-major order, and
+each worker fills in an entire row of @c@.
+If the bag of tasks contained column indices instead of
+row indices, performance would be much worse since workers would
+encounter cache update conflicts.
+.sh 2 "A Distributed Broadcast Algorithm"
+.lp
+The program in the previous section can be modified so that the workers
+do not share the matrices or bag of tasks.
+In particular, each worker (or address space) could be
+given a copy of @a@ and @b@, and an administrator process
+could dispense tasks and collect results.
+With these changes, the program could execute on a distributed
+memory machine.
+.pp
+This section and the next present two additional distributed
+algorithms for matrix multiplication.
+To simplify the presentation, we use @N@{{2}} processes,
+one to compute each element of @c@.
+Initially each such process also has the corresponding
+values of @a@ and @b@.
+In this section, we have each process broadcast its value of @a@ to
+other processes on the same row and broadcast its value of @b@
+to other processes on the same column.
+In the next section, we have each process interact only
+with its four neighbors.
+Both algorithms can readily be generalized to use fewer processes,
+each of which is responsible for a block of matrix @c@.
+.pp
+Our broadcast implementation of matrix multiplication uses
+three components:  a global, a resource to compute elements of @c@,
+and a main resource.
+They are compiled in that order.
+The global,
+shown in Figure 6,
+declares and reads a command-line argument for
+the matrix dimension @N@.
+.KS
+global sizes
+  var N := 6    # matrix dimension, default 6
+body sizes
+  getarg(1, N)
+end
+.\" was .KE,text,.KS; fused to fit on same page (only one horizontal line)
+.sp .25
+.ce 1
+\fPFigure 6.  Global @sizes@ for distributed broadcast algorithm\*C
+.ce 0
+.hl
+resource point    # one instance per point
+  op compute(rlinks[*], clinks[*]: cap point)
+  op rowval(sender: int; value: real)
+  op colval(sender: int; value: real)
+body point(i, j: int)
+  import sizes
+  var aij := 1.0, bij := 1.0, cij := 0.0
+  var row[N], col[N]: real
+  row[j] := aij; col[i] := bij
+
+  proc compute(rlinks, clinks)
+    # broadcast aij to points on same row
+    fa k := 1 to N st k != j ->
+      send rlinks[k].rowval(j, aij)
+    af
+    # acquire other points from same row
+    fa k := 1 to N st k != j ->
+      receive rowval(sender, row[sender])
+    af
+    # broadcast bij to points on same column
+    fa k := 1 to N st k != i ->
+      send clinks[k].colval(i, bij)
+    af
+    # acquire other points from same column
+    fa k := 1 to N st k != i ->
+      in colval(sender, v) -> col[sender] := v ni
+    af
+    # compute inner product of row and col
+    fa k := 1 to N -> cij +:= row[k]*col[k] af
+  end
+
+  final writes(cij, " ") end
+end point
+.KE "Figure 7.  Resource @point@ for distributed broadcast algorithm"
+.pp
+Instances of resource @point@,
+shown in Figure 7,
+carry out the computation.
+The main resource creates one instance for each value of @c[i,j]@.
+Each instance exports three operations:  one to start the computation,
+one to exchange row values, and one to exchange column values.
+Operation @compute@ is implemented by a @proc@; it is invoked by
+a send statement in the main resource and hence executes as a process.
+The arguments of the @compute@ operation are capabilities for
+other instances of @point@.
+Operations @rowval@ and @colval@ are serviced by @receive@ statements;
+they are invoked by other instances of @point@ in the same row @i@
+and column @j@, respectively.
+.pp
+The @N@{{2}} instances of @point@ interact as follows.
+The @compute@ process in @point@ first sends its value of @aij@
+to the other instances of @point@ in the same row and receives
+their elements of @a@.
+The @compute@ process then sends its value of @bij@ to
+other instances of @point@ in the same column and receives their
+elements of @b@.
+After these two data exchanges, @point(i,j)@ now has row @i@ of @a@
+and column @j@ of @b@.
+It then computes the inner product of these two vectors.
+The final code prints out the value of @cij@.
+It is executed when the resource instance is destroyed explicitly.
+(Only the initial instance of the main resource is destroyed implicitly.)
+.pp
+.KS
+resource main()
+  import sizes, point
+  var pcap[N,N]: cap point
+  # create points
+  fa i := 1 to N, j := 1 to N ->
+    pcap[i,j] := create point(i, j)
+  af
+  # give each point capabilities for its neighbors
+  fa i := 1 to N, j := 1 to N ->
+    send pcap[i,j].compute(pcap[i,1:N], pcap[1:N,j])
+  af
+
+  final
+    fa i := 1 to N ->
+      fa j := 1 to N -> destroy pcap[i,j] af
+      write()
+    af
+  end
+end
+.KE "Figure 8.  Main resource for distributed broadcast algorithm"
+The main resource,
+shown in Figure 8,
+creates @N@{{2}} instances of @point@
+and gets back a capability for each, which it stores in matrix @pcap@.
+It then invokes the @compute@ operations, passing each instance
+of @point@ capabilities for other instances in the same row and column.
+We can use a row slice @pcap[i,1:N]@ to pass row @i@ of @pcap@
+and a column slice @pcap[1:N,j]@ to pass column @j@ of @pcap@
+to @compute@.
+When the program terminates, the final code in @main@ is
+executed.
+It destroys instances of @point@ in row-major order, which
+causes the elements of @c@ to be printed in row-major order.
+.pp
+As noted, this program can readily be modified to have each
+instance of @point@ start with a block of @a@ and a block of @b@
+and compute all elements of a block of @c@.
+The basic algorithmic structure and communication pattern
+would be identical.
+.pp
+This program executes on only a single virtual machine,
+and therefore also on a single physical machine.
+However,
+it can be easily modified
+so that, for example,
+instances of the @point@ resource for a given row
+are placed in their own virtual machine.
+Only @main@'s loop that creates resources needs to be changed;
+the new loop is:
+.PS
+  fa i := 1 to N ->
+    var vmcap: cap vm
+    vmcap := create vm()
+    fa j := 1 to N ->
+      pcap[i,j] := create point(i, j) on vmcap
+    af
+  af
+.PE
+Each iteration of the outer loop creates
+a new virtual machine (by creating a new instance of @vm@);
+the inner loop then creates instances of @point@ on that virtual machine.
+The above loop can be further modified, for example,
+so that each virtual machine
+is on a different physical machine.
+For example,
+the assignment statement
+that creates virtual machines can be changed to the following:
+.PS
+    vmcap := create vm() on i
+.PE
+The value of @i@ is taken to be a physical machine number;
+its use is installation dependent but can be made to be relatively portable.
+.\" **** or use array of machine names here?
+.sh 2 "A Distributed Heartbeat Algorithm"
+.lp
+In the broadcast algorithm, each instance of @point@ acquires an
+entire row of @a@ and an entire column of @b@ and then
+computes their inner product.
+Also, each instance of @point@ communicates with all other
+instances on the same row and same column.
+Here we present a matrix multiplication algorithm that employs
+the same number of instances of a @point@ resource.
+However, each instance holds only one value of @a@ and one of @b@
+at a time.
+Also, each instance of @point@ communicates only with its four neighbors.
+Again the algorithm can readily be generalized to work on blocks
+of points and to execute on multiple virtual machines.
+.pp
+As in the broadcast algorithm, we will use @N@{{2}} processes,
+one to compute each element of matrix @c@.
+Again, each initially also has the corresponding elements
+of @a@ and @b@.
+The algorithm consists of three stages [Manb89].
+In the first, processes shift values in @a@ circularly to the left;
+values in row @i@ are shifted left @i@ columns.
+Second, processes shift values in @b@ circularly up;
+values in column @j@ are shift up @j@ rows.
+The following display illustrates the result of the initial rearrangement
+of the values of @a@ and @b@ for a 3 \(mu 3 matrix:
+.PS
+a[1,2], b[2,1]   a[1,3], b[3,2]   a[1,1], b[1,3]
+
+a[2,3], b[3,1]   a[2,1], b[1,2]   a[2,2], b[2,3]
+
+a[3,1], b[1,1]   a[3,2], b[2,2]   a[3,3], b[3,3]
+.PE
+In the third stage, each process multiplies one element
+of @a@ and one of @b@, adds the product to its element of @c@,
+shifts the element of @a@ circularly left one column, and shifts the element
+of @b@ circularly up one row.
+This compute and shift sequence is repeated @N-1@ times, at
+which point the matrix product will have been computed.
+.pp
+We call this kind of algorithm a #heartbeat #algorithm since
+the actions of each process are like the beating of a heart:
+first send data out to neighbors, then bring data in from neighbors
+and use it.
+To implement the algorithm in SR, we again use one global
+and two resources, as in the broadcast algorithm.
+The global, shown in Figure 9,
+is identical to the one in the previous section.
+.pp
+The computation is carried out by @N@{{2}} instances of a
+@point@ resource,
+shown in Figure 10.
+It exports three operations as did its counterpart
+in the previous section.
+However, here the @compute@ operation passes capabilities
+for only the left and upward neighbors, and the @rowval@
+and @colval@ operations are invoked by only one neighbor.
+Also, the body of @point@ implements a different algorithm.
+.pp
+Finally, the main resource,
+shown in Figure 11, creates instances of @point@
+and passes each capabilities for its left and upward neighbors.
+Function @prev@ in @main@ uses modular arithmetic so
+that instances of @point@ on the left and top borders
+communicate with instances on the right and bottom borders,
+respectively.
+.KS
+global sizes
+  var N := 6    # matrix dimension, default 6
+body sizes
+  getarg(1, N)
+end
+.KE "Figure 9.  Global @sizes@ for distributed heartbeat algorithm"
+.KS
+resource point    # one instance per point
+  op compute(left, up: cap point)
+  op rowval(value: real), colval(value: real)
+body point(i, j: int)
+  import sizes
+  var aij: real := i, bij: real := j, cij := 0.0
+
+  proc compute(left, up)
+    # shift values in aij circularly left i columns
+    fa k := 1 to i ->
+      send left.rowval(aij); receive rowval(aij)
+    af
+    # shift values in bij circularly up j rows
+    fa k := 1 to j ->
+      send up.colval(bij); receive colval(bij)
+    af
+    cij := aij*bij
+    fa k := 1 to N-1 ->
+      # shift aij left, bij up, then multiply
+      send left.rowval(aij); send up.colval(bij)
+      receive rowval(aij); receive colval(bij)
+      cij +:= aij*bij
+    af
+  end
+
+  final writes(cij, " ") end
+end point
+.\" was .KE,text,.KS; fused to fit on same page (only one horizontal line)
+.sp .25
+.ce 1
+\fPFigure 10.  Resource @point@ for distributed heartbeat algorithm\*C
+.ce 0
+.hl
+resource main()
+  import sizes, point
+  var pcap[N,N]: cap point
+
+  procedure prev(index: int) returns lft: int
+    lft := (index-2) mod N + 1
+  end
+
+  # create points
+  fa i := 1 to N, j := 1 to N ->
+    pcap[i,j] := create point(i, j)
+  af
+  # give each point capabilities for its left
+  # and upward neighbors
+  fa i := 1 to N, j := 1 to N ->
+    send pcap[i,j].compute(pcap[i,prev(j)], pcap[prev(i),j])
+  af
+
+  final
+    fa i := 1 to N ->
+      fa j := 1 to N -> destroy pcap[i,j] af
+      write()
+    af
+  end
+end
+.KE "Figure 11.  Main resource for distributed heartbeat algorithm"

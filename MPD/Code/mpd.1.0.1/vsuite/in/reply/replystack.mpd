@@ -1,0 +1,20 @@
+# program terminates in deadlock
+
+resource rw()
+    op write_request(int x)
+    process a  {
+	while (true) {
+	    in write_request(x)  ->
+		reply
+	    ni
+	}
+    }
+    process writer  {
+	int  nowrites
+	nowrites = 500
+	write("number of writes", nowrites)
+	for [ i = 1 to nowrites ] {
+	   write_request(i)
+	}
+    }
+end rw

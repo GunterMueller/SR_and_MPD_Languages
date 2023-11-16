@@ -1,0 +1,62 @@
+%
+% Style file for srlatex.  Use document style option [srtex] to
+% typeset srlatex output.
+%
+% David Mosberger, UofA, 19 Oct. 1992
+% mod. Ron Olsson, UCD, 10 Sep. 1999 for latex 2e
+%
+% This style file can be used with both the new and old font selection
+% scheme.
+%
+\@ifundefined{selectfont}{
+  %
+  % Definitions for new font selection scheme:
+  %
+  \def\srTeXcommentfont{\rm}
+  \def\srTeXidfont{\it}
+  \def\srTeXkeywordfont{\bf}
+  \def\srTeXstringfont{\tt}
+}{
+  %
+  % Definitions for new font selection scheme:
+  %
+  \def\srTeXcommentfont{%
+	\rmfamily\upshape\mdseries\selectfont}
+  \def\srTeXidfont{%
+	\rmfamily\itshape\mdseries\selectfont}
+  \def\srTeXkeywordfont{%
+	\rmfamily\upshape\bfseries\selectfont}
+  \def\srTeXstringfont{%
+	\ttfamily\upshape\mdseries\selectfont}
+}
+
+\def\srTeXbx{{\fboxsep0.15em\fbox{\rule{0pt}{1.1ex}}}}	% box
+\def\srTeXpl{||}					% parallel
+
+\newdimen\srTeXcw
+\newsavebox{\srTeX@box}
+\srTeXcw0.5em
+
+\def\srTeXsp#1{\hspace{#1\srTeXcw}}			% space for #1 chars
+% text #2 in box of width #1 chars:
+% if text fits into width as defined by #1, make box that wide, otherwise
+% make box as wide to fit the text
+\def\srTeXmb#1#2{%
+	\leavevmode%
+	\sbox\srTeX@box{#2}%
+	\ifdim \wd\srTeX@box > #1\srTeXcw%
+	  #2%
+	  \typeout{srLaTeX warning: Text wider than expected\on@line.}%
+	  \typeout{srLaTeX warning: (increase \srTeXcw)}%
+	\else%
+	  \hbox to #1\srTeXcw{#2\hfill}%
+	\fi%
+}
+
+
+\def\srTeXcm#1{{\srTeXcommentfont #1}}			% comment
+\def\srTeXid#1{{\srTeXidfont #1}}			% id
+\def\srTeXkw#1{{\srTeXkeywordfont #1}}			% keyword
+\def\srTeXst#1{{\srTeXstringfont #1}}			% string
+
+\newenvironment{srTeXprogram}{}{}

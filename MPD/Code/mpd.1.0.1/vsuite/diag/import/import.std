@@ -1,0 +1,18 @@
+ok:  can't open spec file
+ok:  can't open spec file
+ok:  can't open spec file
+ok:  can't open spec file
+ok:  can't open spec file
+ok:  undefined identifier: i
+ok:  duplicate identifier: f
+ok:  duplicate identifier: f
+ok:  duplicate identifier: g
+ok:  duplicate identifier: f
+ok:  undefined identifier: a
+ok:  ambiguous identifier: Y
+ok:  ambiguous identifier: Y
+ok:  illegal object of capability
+ok:  illegal object of capability
+ok:  not a resource
+ok:  cannot extend a global
+ok:  .extend. is not allowed in a global

@@ -1,0 +1,79 @@
+.\" just to start next section on top of new page, after floating
+.\" figure of previous section
+.sh 1 "Concluding Remarks"
+.lp
+The examples in the previous section illustrated
+the flavor of SR programming
+for parallel and distributed environments,
+as well as some specific usages of SR mechanisms.
+SR's mechanisms can also be used in ways not illustrated by the
+examples.
+For example,
+SR allows operations to be declared within processes, or even within blocks of
+code, and allows
+these local operations
+to be assigned to operation capability variables.
+These are useful, for example,
+in programming
+#conversational #continuity.
+In such an interaction,
+a client process interacts with a server process
+and wishes to carry out a private conversation with
+it (see [Andr91]).
+.pp
+In many ways,
+the mechanisms that SR provides for sharing, distribution, and
+synchronization are a superset of those found in other languages,
+such as Ada [US83], Concurrent C [Geha89], Argus [Lisk83],
+and occam [Burn88].
+SR achieves this flexibility by having just a few well-integrated
+mechanisms,
+which can be used alone or freely in combination with others.
+One interesting question is whether such generalization
+is inherently more costly.
+For example,
+since SR operations subsume
+rendezvous,
+local procedure call,
+remote procedure call,
+process creation,
+semaphores,
+etc.,
+are they therefore expensive to use?
+Our implementation currently recognizes
+some commonly occurring patterns and generates lower-cost code
+than would be required in the worst, most general case.
+The version 1 SR compiler, for example,
+optimizes certain message passing scenarios
+to use low-cost semaphores,
+and certain remote procedure call scenarios
+to use conventional procedure call.
+The results are that the cost of synchronization in SR
+is competitive with those reported for other languages [Atki88].
+.pp
+One current effort
+involves identifying further optimization of synchronization
+mechanisms,
+including those that cross resource boundaries.
+Our overall approach applies source-level transformations
+to concurrent programs,
+replacing costly synchronization mechanisms
+with less costly ones [McOl90a,OlMc91].
+The techniques involve
+the application of dataflow analysis and an extension of interprocedural
+analysis
+and inter-module analysis
+to concurrent programs.
+An interesting aspect of this work
+is the use of attribute grammars to
+perform such analysis [McOl90b].
+These techniques
+are also applicable to other programming languages,
+e.g., Ada, Concurrent C, Argus, and occam.
+.pp
+Version 2 of SR works on a variety of UNIX-based systems,
+including a Sequent multiprocessor,
+and is in the public domain.
+For information on how to obtain SR,
+contact the authors or the SR project
+(by electronic mail to sr-project@cs.arizona.edu).

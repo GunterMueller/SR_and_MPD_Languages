@@ -1,0 +1,30 @@
+# Quick test that most of the components are in place and nominally functional.
+
+# build the program, checking that sr can call srl
+0 sr gries.sr
+
+# check for correct execution
+0 run input1
+0 run input2
+0 run input3
+0 run input4
+0 run input5
+
+# check that srm is installed and doesn't bomb, and that the Makefile is legal.
+# do "make ls"; making the SR program might bomb due to wrong paths or versions.
+# run "make" output through sed to remove leading tabs added by Encore.
+0 srm gries.sr
+0 make -n ls cleanx >Make.tmp 2>&1
+0 sed 's/^\	//' Make.tmp >Make.out
+0 cmp -s Make.std Make.out
+# now that we know it's legal, see that it's what we expected.
+0 sed 's/srm -w -c [^ ]* /srm /' Makefile >Makefile.out
+0 cmp -s Makefile.std Makefile.out
+
+# check that srtex and srlatex function and produce expected output
+0 srtex -p gries.sr
+0 cmp -s Texer.std Texer.out
+0 srlatex -p gries.sr
+0 cmp -s Latexer.std Latexer.out
+
+0 rm -rf Interfaces core *.out *.tmp Makefile

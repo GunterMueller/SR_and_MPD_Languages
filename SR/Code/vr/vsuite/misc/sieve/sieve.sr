@@ -1,0 +1,25 @@
+# a bit faster than ordinary marking?
+# because it worries only about odds.
+resource sieve()
+
+	var n:int
+	put("enter n "); read(n)
+	const N := (n-1)/2
+	var hit[1:N] :bool
+	fa i := 1 to N -> hit[i] := false; af
+	write(2)
+	fa i := 1 to N ->
+		if not hit[i] ->
+			var num:int := i+i+1
+			write(num)
+			# mark odd multiples of num.
+			# e.g., for 5, mark 15,25,35, ...
+				var j:int := i+num
+				do j <= N ->
+					hit[j] := true
+					j := j+num
+				od
+		fi
+	af
+end
+

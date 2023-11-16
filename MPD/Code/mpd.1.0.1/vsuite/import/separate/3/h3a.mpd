@@ -1,0 +1,4 @@
+# in three files
+resource hh
+	import h1
+body hh() separate

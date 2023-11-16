@@ -1,0 +1,4 @@
+#  gmt  Mon May 24 16:40:46 MST 1993
+0 sr tricky.sr
+0 run
+0 rm -rf Interfaces core *.out

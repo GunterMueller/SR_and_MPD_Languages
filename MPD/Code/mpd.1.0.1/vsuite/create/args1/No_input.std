@@ -1,0 +1,16 @@
+first arg is z
+second arg is:
+1001
+1002
+1003
+1004
+1005
+1006
+1007
+third arg is 249
+fourth arg is yippee!
+
+b: calling c1(12) and c2(47)
+hello number 12
+hello number 47
+b: other args: q 17 r 55 3.14159

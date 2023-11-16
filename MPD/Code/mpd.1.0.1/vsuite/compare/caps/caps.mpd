@@ -1,0 +1,54 @@
+# myresource and other bizzarenesses
+resource caps
+	op h( int  a)
+	op g() returns cap caps  a
+body caps()
+	write("start initial")
+	cap caps  m
+
+	if (m == myresource()) {
+	    write("this is not very likely")
+	} else {
+	    write("not equal. good.")
+	}
+
+	m = g()
+
+	if (m == myresource()) {
+	    write("equal")
+	} else {
+	    write("not equal.  oops")
+	}
+
+	if (g() != m) {
+	    write("oops")
+	} else {
+	    write("equal")
+	}
+
+	if (m.h == h) {
+		write("equal")
+	} else {
+		write("not equal; oops")
+	}
+
+	if (m.g != g) {
+	    write("OH-OH")
+	} else {
+	    write("WHEW!")
+	}
+
+	call h(1234)
+	call m.h(5678)
+	write("end initial")
+
+	proc h( z )  {
+		write("in h",z)
+	}
+
+	proc g() returns c  {
+		write("in g")
+		c = myresource()
+	}
+
+end

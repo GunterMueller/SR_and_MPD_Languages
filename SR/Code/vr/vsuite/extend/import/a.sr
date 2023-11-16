@@ -1,0 +1,20 @@
+# test that implicit import by extend after explicit import is ok.
+
+resource a
+    const N := 10
+end
+
+resource b
+    import a
+    const M := N+30
+    extend a
+    const L := a.N+100
+body b()
+    write ("b: ", N, M, L, a.N)
+end
+
+resource c ()
+    import a, b
+    create b()
+    write ("c: ", a.N, M, L, b.N)
+end

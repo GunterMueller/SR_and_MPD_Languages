@@ -1,0 +1,4 @@
+0 mpd -c ind1.mpd
+0 mpdl ind1
+0 run
+0 rm -rf MPDinter core *.out

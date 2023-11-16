@@ -1,0 +1,22 @@
+resource fact1()
+	op factorial(val int a) returns int  result
+	op trick(val int a)
+
+
+	for [ i = 0 to 20 ] {
+	    call trick(i)
+	}
+
+
+	proc trick(a)  {
+		write( factorial(a) )
+	}
+
+	proc factorial(a) returns result  {
+		if (a <= 1) {
+			result = 1
+		} else {
+			result = a * factorial(a-1)
+		}
+	}
+end

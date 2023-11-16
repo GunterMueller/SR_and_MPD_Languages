@@ -1,0 +1,4 @@
+# gmt 5-Aug-91 based on easy/{1,2,5} plus new code
+0 mpd insimple.mpd
+0 run
+0 rm -rf MPDinter core *.out

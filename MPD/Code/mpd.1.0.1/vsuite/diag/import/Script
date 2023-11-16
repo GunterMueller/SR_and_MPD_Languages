@@ -1,0 +1,6 @@
+#  check compiler errors related to import or extend
+
+0 sh ../mkscript.sh import.mpd | tee sh.tmp | mpd=$mpd sh >import.out
+1 grep -v ok: import.out
+0 cmp -s import.std import.out
+0 rm -rf MPDinter core *.out *.tmp test*.mpd

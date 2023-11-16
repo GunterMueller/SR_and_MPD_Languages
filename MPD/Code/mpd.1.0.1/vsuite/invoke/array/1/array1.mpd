@@ -1,0 +1,27 @@
+# arrays of operations, including non-int subscripts
+resource array1()
+	op a[1:10](int n) {send}
+	op b['a':'f'](int n)
+
+	for [ i = 10 downto 1 ] {
+		send a[i](i*100)
+	}
+	# receive them in reverse order
+	for [ i = 10 downto 1 ] {
+		in a[i](j) ->
+			write(i,j)
+		ni
+	}
+
+	for [ c = 'a' to 'f' ] {
+		send b[c](int(c))
+	}
+
+	for [ c = 'f' downto 'a' ] {
+		int  i 
+		receive b[c](i)
+		write(i)
+	}
+
+
+end

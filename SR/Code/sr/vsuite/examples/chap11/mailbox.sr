@@ -1,0 +1,7 @@
+process manager
+  var buffer: int
+  do true ->
+    in deposit(item) -> buffer := item ni
+    in fetch() returns item -> item := buffer ni
+  od
+end

@@ -1,0 +1,17 @@
+resource cs1()
+  op request(int), results(int)
+  process client
+    var y: int
+    send request(1)
+    # possibly perform some other work
+    receive results(y)
+  end
+  process server
+    var x: int
+    do true ->
+      receive request(x)
+      # handle request
+      send results(2)
+    od
+  end
+end

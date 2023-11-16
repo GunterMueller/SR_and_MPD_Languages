@@ -1,0 +1,11 @@
+resource foo()
+  var x := 0
+  process p1
+      x +:= 3
+  end
+  var a[10]: int
+  fa i := 1 to 10 -> a[i] := i af
+  process p2
+      x +:= 4
+  end
+end

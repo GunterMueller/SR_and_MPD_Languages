@@ -1,0 +1,11 @@
+argtype: 4
+format: '%c%s'
+  4 < 2>: a, 'braham'
+  4 < 2>: a, 'braham'
+format: '%1s%s'
+  4 < 2>: a, 'braham'
+format: '%[aeiouA-Z]%s'
+  4 < 2>: a, 'braham'
+  4 < 2>: C, 'ALVIN'
+  4 < 2>: i, 'rving'
+finished

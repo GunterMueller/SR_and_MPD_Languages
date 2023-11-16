@@ -1,0 +1,5 @@
+# gmt 23jul91
+0 mpd -c array.mpd
+0 mpdl array
+0 run
+0 rm -rf MPDinter core *.out

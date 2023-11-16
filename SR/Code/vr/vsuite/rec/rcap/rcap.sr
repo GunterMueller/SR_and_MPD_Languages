@@ -1,0 +1,50 @@
+# test recs containing rcaps containing arrays of ops
+
+# also test troublesome rec in rcap:
+# got segm fault from importing rec of cap of resource exporting an optype
+
+resource ugh
+   type rectype = rec (c : cap ugh)
+   optype simpleop ()
+body ugh ()
+   write ("resource `ugh' here")
+end
+
+
+resource r
+    op o ()
+    op p[4] (int)
+    op q[7] (int)
+body r ()
+    import ugh
+    type t = rec (a, b: int; c : cap r; d : int)
+    var v, a[3] : t
+
+    process pp (i := 1 to 4)
+	in p[i](n) -> write ("p", i, ":", n) ni
+    end
+
+    process qq (i := lb(q) to ub(q))
+	in q[i](n) -> write ("q", i, ":", n) ni
+    end
+
+    proc o ()
+	write ("o here")
+    end
+
+    a[1] := t (123, 456, noop, 789)
+    a[2] := t (234, 567, myresource(), 890)
+    a[3] := t (345, 678, null, 123)
+    if a[1].c ~= noop -> write ("oops: rcap not null") fi
+    if a[3].c ~= null -> write ("oops: rcap not noop") fi
+    if a[1].c.o ~= noop -> write ("oops: ocap not null") fi
+    if a[2].c.o ~= o    -> write ("oops: ocap not o") fi
+    if a[3].c.o ~= null -> write ("oops: ocap not noop") fi
+    a[1].c.o ()
+    a[2].c.o ()
+    fa i := 1 to 4 -> a[2].c.p[i](101 * i) af
+    fa i := 1 to 7 -> a[2].c.q[i](1001 * i) af
+    fa i := 1 to 3 -> write (a[i].a, a[i].b, a[i].d) af
+
+    create ugh ()
+end

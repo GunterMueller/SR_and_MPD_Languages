@@ -1,0 +1,86 @@
+# test reference parameters
+
+resource reffer ()
+    type rtype = rec (int n ; real x )
+    sem go, ready
+
+    op stir (                           # lots of different types
+	ref int i,
+	ref real x,
+	ref rtype r,
+	ref [*]char c,
+	ref string[*] s
+	)
+    proc stir (i,x,r,c,s) {             # modify all these parameters
+	i += 3
+	x *= sqrt(2)
+	r.n += 5
+	V(ready)                        # indicate we're halfway through
+	P(go)                           # pause for clearance
+	r.x *= sqrt(10)
+	for [ i = 1 to ub(c) ] { c[i] = char(int(c[i])+1) }
+	s ||= s[1] || 'z' || s[length(s)-1]
+	V(ready)                        # indicate we're all done
+    }
+
+    procedure adump (ref int a[*])  {
+	writes("[", lb(a), ":", ub(a), "]")
+	for [ i = lb(a) to ub(a) ] { writes(" ",a[i]) }
+	write()
+    }
+
+    procedure adump5 (ref int a[3:7])  {
+	writes("[", lb(a), ":", ub(a), "]")
+	for [ i = lb(a) to ub(a) ] { writes(" ",a[i]) }
+	write()
+    }
+
+    int n = 1
+    real x = 1.0
+    real y = 2.0
+    rtype r = rtype (2, .7183)
+    char a[12] = chars ("bandersnatch")
+    string[50] s = "abc"
+
+    V(go); stir (n,x,r,a,s); P(ready); P(ready); write (n,x,r.n,r.x,a,s)
+    V(go); stir (n,x,r,a,s); P(ready); P(ready); write (n,x,r.n,r.x,a,s)
+    V(go); stir (n,x,r,a,s); P(ready); P(ready); write (n,x,r.n,r.x,a,s)
+    V(go); stir (n,x,r,a,s); P(ready); P(ready); write (n,x,r.n,r.x,a,s)
+
+    send stir (n,x,r,a,s)               # now run it asynchronously
+    P(ready)
+    write (n,x,r.n,r.x,a,s)             # half of the params s/b changed
+    V(go)
+    P(ready)
+    write (n,x,r.n,r.x,a,s)             # other half now changed
+
+    send stir (n,x,r,a,s)
+    P(ready)
+    write (n,x,r.n,r.x,a,s)
+    V(go)
+    P(ready)
+    write (n,x,r.n,r.x,a,s)
+
+    x = 1.234
+    y = 5.678
+    op o (ref real a)
+    send o(x)
+    x = 4.321
+    y = 8.765
+    receive o(y)
+    write (x, y)                        # should both be 4.321 if passed by ref
+    send o(y)
+    x = 3.14159
+    y = 2.71828
+    in o(z) -> write (x, y, z) ni       # s/b 3.14, 2.72, 2.72
+
+    # test that called proc sees caller's array bounds consistently
+    int a1[5] = (11, 22, 33, 44, 55)
+    int a2[0:4] = (0, 1, 2, 3, 4)
+    int a3[3:8] = (3, 4, 5, 6, 7, 8)
+    adump(a1)
+    adump5(a1)
+    adump(a2)
+    adump5(a2)
+    adump(a3)
+end

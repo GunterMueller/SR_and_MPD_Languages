@@ -1,0 +1,49 @@
+#  Check that constant folding works.
+#
+#  If it doesn't, we'll at least get diagnostics about non-constant sizes
+#  in spec or record.  We might even get wrong output!
+
+resource c
+    type e = enum (zz, aa, bb, cc, dd, ee)
+    const c0 := int(bool(0.0))
+    const c1 := int(real(char(e(true))))
+    const c2 := int(char(real(real(bb))))
+    const c3 := int(char(e(3.14159))) 
+    const c4 := int(dd)
+    const c5 := int(2*2.7183)
+    const c6 := -+-(2*3 + 12/4 - 5 + 19%17)
+    const c7 := (1<<3) - (3>>1)
+    const c8 := 58x & 29x
+    const c9 := (0Ex xor 6) | 1
+    const c10 := int (-+- (3 * 2.7 + 76.1 / 11 - 4.8))
+    type t = rec (
+	m1[c0:c5] : bool
+	m2[c1:c6] : char
+	m3[c2:c7] : int
+	m4[c3:c8] : e
+	m5[c9] : real
+	m6 : string[c10]
+	m7 : string[51/3-2*3]
+    )
+    op o[c5]()
+body c ()
+    var v : t
+    reply
+    P(o[3])
+    write ("in c:", c1, c2, c3, c4, c5, c6, c7, c8, c9, c10)
+    write ("     ", lb(v.m1), ub(v.m1), lb(v.m2), ub(v.m2), lb(v.m3), ub(v.m3),
+	lb(v.m4), ub(v.m4), lb(v.m5), ub(v.m5),
+	maxlength(v.m6), maxlength(v.m7))
+end
+
+resource r ()
+    import c
+    var v : t
+    var ccap := create c ()
+    write ("in r:", c1, c2, c3, c4, c5, c.c6, c.c7, c8, c9, c10)
+    write ("     ", lb(v.m1), ub(v.m1), lb(v.m2), ub(v.m2), lb(v.m3), ub(v.m3),
+	lb(v.m4), ub(v.m4), lb(v.m5), ub(v.m5),
+	maxlength(v.m6), maxlength(v.m7))
+    ccap.o[3]()
+    write ("done")
+end

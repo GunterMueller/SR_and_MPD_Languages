@@ -1,0 +1,23 @@
+resource a1
+	op p[1:5](x:int) returns y:int
+body a1()
+	process q
+		fa i := 1 to 5 ->
+			in p[i](x) returns y ->
+				y := x + 4000; write("in",i,x,y)
+			ni
+		af
+	end
+end
+resource a2
+	import a1
+body a2()
+
+	write("initial a2")
+	var c:cap a1
+	c := create a1()
+	fa i := 1 to 5 ->
+		write( c.p[i](i*100) )
+	af
+
+end

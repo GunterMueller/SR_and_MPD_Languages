@@ -1,0 +1,43 @@
+# test seek and where
+resource io9()
+
+    file  f
+    char  a[1:5]
+
+    f = open("silly", WRITE);
+    if (f == null) {
+	write("can't open silly for writing")
+    } else {
+	write(f, "123456789")
+	write(f, "abcdef")
+	write(f, "ghijklmnopqrstuvwxyz")
+	close(f)
+
+	f = open("silly", READ)
+	if (f == null) {
+	    write("can't open silly for reading")
+	} else {
+	    read(f, a)
+	    write("a is", a)
+	    write("file pointer is", where(f))
+	    for [ i = 1 to 20 ] {
+		seek(f, ABSOLUTE, i)
+		read(f, a)
+		write("a is", a)
+		write("file pointer is", where(f))
+	    }
+	    seek(f, ABSOLUTE, 0)
+	    read(f,a)
+	    write("a is", a)
+	    write("file pointer is", where(f))
+
+	    seek(f, ABSOLUTE, 12)
+	    seek(f, RELATIVE, 3)
+	    read(f,a)
+	    write("a is", a)
+	    write("file pointer is", where(f))
+	}
+    }
+
+end
+

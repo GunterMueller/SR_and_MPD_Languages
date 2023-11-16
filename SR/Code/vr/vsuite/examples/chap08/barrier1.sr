@@ -1,0 +1,18 @@
+resource barrier()
+  const N := 20  # number of processes
+  sem done := 0, continue[N] := ([N] 0)
+  # declaration of variables shared by workers
+  process worker(i := 1 to N)
+    do true ->
+      # code to implement one iteration of task i
+      V(done)
+      P(continue[i])
+    od
+  end
+  process coordinator
+    do true ->
+      fa w := 1 to N -> P(done) af
+      fa w := 1 to N -> V(continue[w]) af
+    od
+  end
+end

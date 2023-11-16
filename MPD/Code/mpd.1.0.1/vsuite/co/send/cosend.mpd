@@ -1,0 +1,84 @@
+# test co sends and co invocations of null.
+# output nondeterministic (in its order).
+resource cosend()
+	op q(int x)
+	op p()
+	cap (int x) c1, c2
+
+	# note: compiler turns these co sends into regular sends
+	# (since they don't have PPC)
+	co send q(111)
+	// q(222) -> write(55)
+	// send q(333)
+	oc
+	# sends to some noops
+	c1 = noop; c2 = c1
+	co p() -> write(3)
+	// send c2(2222) -> write(4)
+	// [ i=1 to 4 ] send c1(3000+i) -> write(9876,i)
+	oc
+	# all sends and a quantifier
+	c1 = q; c2 = c1
+	co send p() -> write(33)
+	// send c2(4000) -> write(44)
+	// [ i=8 downto 5]  send c1(5000+i) -> write(5432,i)
+	oc
+	# all sends to noops
+	c1 = noop; c2 = noop
+	co send c2(6000) -> write(444)
+	// [ i=8 downto 5]  send c1(7000+i) -> write(1234,i)
+	oc
+	# all calls to noops
+	co call c2(8000) -> write(444)
+	// [ i=8 downto 5]  call c1(9000+i) -> write(6789,i)
+	oc
+
+	process one  {
+		# sends to noop and quantified sends
+		c1 = noop; c2 = c1
+		co q(1111) -> write(3)
+		// send c2(2222) -> write(4)
+		// [ i=1 to 3, j= 1 to 2 ] send q(i+100*j) -> write(i,j)
+		// [ i=6 to 8, j= 4 to 5 ] send c1(i+100*j) -> write(i,j)
+		oc
+		# sends and calls and quantified sends
+		c1 = q; c2 = c1
+		co q(1111) -> write(-3)
+		// send c2(2222) -> write(-4)
+		// [ i=1 to 3, j= 1 to 2 ] send q(i+100*j) -> write(i,j)
+		// [ i=6 to 8, j= 4 to 5 ] send c1(i+100*j) -> write(i,j)
+		oc
+	}
+	proc q(x)  {
+		write(10000+x)
+	}
+	proc p()  {
+		write(20000)
+	}
+	# for testing that sends don't copy back
+	op side(var int x) returns bool  r
+	process two  {
+		int  z = 88
+		# a bit perverse, but GC was copying back
+		# from duplicate invocation block returned for co send
+		# which gives correct result in most cases
+		# but is wrong and inefficient.
+		# output should be 1 90, 2 90
+		#               or 2 90, 1 90
+		co [ i = 1 to 2 st side(z) ] send side(z) -> write(i,z) oc
+	}
+	proc side(x) returns r  {
+		x++
+		r = true
+	}
+	# for testing co sends to in statements
+	op ok(var int x, var int y)
+	process three  {
+		int  z = 23
+		co [ i = 1 to 5 st i%2 == 0 ] send ok(i,z) -> write(i,z) oc
+	}
+	proc ok(x,y)  {
+		x++; y++
+		write(400000+x,y)
+	}
+end

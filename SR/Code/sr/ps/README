@@ -1,0 +1,37 @@
+This directory contains preformatted PostScript files of the SR documentation.
+
+
+Fundamental documents:
+
+language.ps	SR: A Language for Parallel and Distributed Programming [13 pp.]
+release.ps	Release Notes for Version 2.3 of SR		[ 6 pp.]
+install.ps	Installing the SR Programming Language		[ 7 pp.]
+
+
+Preformatted manual pages:
+
+manpages.ps	(formatted versions of the SR manual pages)	[38 pp.]
+
+
+Animation and Graphics:
+
+srwin.ps	SRWin: A Graphics Library for SR		[22 pp.]
+sranimator.ps	Integrating XTANGO's Animator into SR		[ 6 pp.]
+
+
+Internals:
+
+port.ps		Porting the SR Programming Language		[ 5 pp.]
+runtime.ps	The SR Run-Time System Interface		[16 pp.]
+impl.ps		The Implementation of SR			[28 pp.]
+
+
+Release notes from earlier editions:
+
+rel_2_0.ps	Release Notes for [the earlier] Version 2.0	[15 pp.]
+rel_2_1.ps	Release Notes for [the earlier] Version 2.1	[ 5 pp.]
+rel_2_2.ps	Release Notes for [the earlier] Version 2.2	[ 4 pp.]
+
+
+Some informal notes, not all current or correct, are stored as simple
+text files in ../notes.

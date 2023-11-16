@@ -1,0 +1,4 @@
+# this one's deterministic.
+0 mpd co8.mpd
+0 run 
+0 rm -rf MPDinter core *.out

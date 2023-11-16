@@ -1,0 +1,8 @@
+f1  !0 -!  t f  x y  11 22  1.11 2.22  sleet rain  2,3 5,7  42,78 67,31  p q
+f2  0! !-  f t  y x  22 11  2.22 1.11  rain sleet  5,7 2,3  67,31 42,78  q p
+f1  !0 -!  t f  x y  11 22  1.11 2.22  sleet rain  2,3 5,7  42,78 67,31  p q
+
+false y 22 2.22000 rain 7 31 q
+true x 22 1.11000 sleet 3 78 p
+
+f1  !0 -!  t f  x y  11 22  1.11 2.22  sleet rain  2,3 5,7  42,78 67,31  p q

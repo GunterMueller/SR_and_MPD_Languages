@@ -1,0 +1,95 @@
+# scanf test
+
+resource scan ()
+   var s, t : string[50]
+   var format : string[100]
+
+   process main
+      var i, j, k, l, n : int
+      var x, y, z : real
+      var p : ptr any
+      var argtype : int := 0
+      var u : string[50]
+      var b : bool := false
+      var b1 : bool := false
+      var c, ch, ca[1:10] : char
+      var f : file
+      var fname : string[50]
+
+      fa i := 1 to 10 -> ca[i] := '*' af
+
+      if getarg(1, fname) = EOF -> write("usage: scan <filename>"); stop fi
+
+      f := open(fname, READ)
+      if f = null -> write("couldn't open file"); stop fi
+      format := ""
+
+      do true ->
+	   n := scanf(f, "%1s", ch)
+	   if n = EOF -> write("end"); stop fi
+
+	   if ch = '$' ->
+		n := scanf(f, "%1s", ch)
+		if n = EOF -> write("error"); stop fi
+
+		if ch = 'a' ->
+		     read(f, argtype)
+#		     printf("argtype: %d %s\n", argtype, argstring[argtype])
+		     printf("argtype: %d\n", argtype)
+		[] ch = 'f' ->
+		     read(f, format)
+		     printf("format: '%s'\n", format)
+		[] ch = 'd' ->
+		     if argtype = 1 ->
+			  i := j := -1
+			  n := scanf(f, format, i, j)
+			  printf("%3d <%2d>: %d %d\n", argtype, n, i, j)
+		     [] argtype = 2 ->
+			  s := "uh-oh"
+			  n := scanf(f, format, s)
+			  printf("%3d <%2d>: '%s'\n", argtype, n, s)
+		     [] argtype = 3 ->
+			  s := "arf!"
+			  t := "boo!"
+			  n := scanf(f, format, s, t)
+			  printf("%3d <%2d>: '%s','%s'\n", argtype, n, s, t)
+		     [] argtype = 4 ->
+			  c := '*'
+			  s := "beef"
+			  n := scanf(f, format, c, s)
+			  printf("%3d <%2d>: %c, '%s'\n", argtype, n, c, s)
+		     [] argtype = 5 ->
+			  n := scanf(f, format, b)
+			  printf("%3d <%2d>: %b\n", argtype, n, b)
+		     [] argtype = 6 ->
+			  n := scanf(f, format, b, b1)
+			  printf("%3d <%2d>: %b, %b\n", argtype, n, b, b1)
+		     [] argtype = 7 ->
+			  ca := chars("**********")
+			  n := scanf(f, format, ca)
+			  printf("%3d <%2d>: '%s'\n", argtype, n, ca)
+		     [] argtype = 8 ->
+			  x := y := z := -1.0
+			  n := scanf(f, format, x, y);
+			  printf("%3d <%2d>: %g, %g\n",argtype,n,x,y)
+	             [] argtype = 9 ->
+#			  p := ptr(0deadbeefX)
+			  n := scanf(f, format, p)
+			  printf("%3d <%2d>: %p\n",argtype,n,p)
+		     [] argtype = 10 ->
+			  x := -1.0
+			  s := "hurl!"
+			  n := scanf(f, format, x, s);
+			  printf("%3d <%2d>: %g, '%s'\n",argtype,n,x,s)
+		     [] else ->
+			  write("invalid argtype")
+		     fi
+
+		     if n = EOF -> write("EOF reached"); stop fi
+		[] else -> write("error"); stop
+		fi
+	   [] ch = '#' -> write("finished"); stop
+	   fi
+      od
+   end
+end

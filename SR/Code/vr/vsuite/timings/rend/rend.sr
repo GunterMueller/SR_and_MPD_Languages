@@ -1,0 +1,34 @@
+# rendezvous
+# Two processes run.  One calls the receiver.  The receiver is an
+# input statement. 
+
+resource rend()
+
+  op dummy()
+
+  var limit, base, factor, trials :int
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit := factor * base
+  var runs := limit * trials
+
+  process receiver
+    fa i := 1 to runs ->
+      in dummy() -> skip ni
+    af
+  end
+
+  process test
+    var start, finish : int
+
+    fa t := 1 to trials ->
+        start := age()
+        fa i := 1 to limit -> dummy() af
+        finish := age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    af
+  end
+
+end

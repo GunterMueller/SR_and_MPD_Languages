@@ -1,0 +1,15 @@
+resource CS()
+  const N := 20   # number of processes
+  var x := 0      # shared variable
+  sem mutex := 1  # mutual exclusion for x
+  process p(i := 1 to N)
+    # non-critical section
+      ...
+    # critical section
+    P(mutex)  # enter critical section
+    x := x+1
+    V(mutex)  # exit critical section
+    # non-critical section
+      ...
+  end
+end

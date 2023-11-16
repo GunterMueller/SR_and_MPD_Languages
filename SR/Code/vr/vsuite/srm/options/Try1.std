@@ -1,0 +1,49 @@
+#	Makefile created by SRM
+
+
+SR = sr
+SRFLAGS = -I dir -O
+I = dir/Interfaces
+
+.SUFFIXES:
+
+link: exe
+
+exe: $I/main.o $I/node.o $I/printer.o test.o
+	srl -T -o exe -I dir node printer main test.o
+
+compile: $I/main.o $I/node.o $I/printer.o test.o
+
+run: link
+	exe arg
+
+$I/main.o: $I/node.spec $I/printer.spec $I/main.spec main.sr
+	$(SR) $(SRFLAGS) -b main.sr
+
+$I/main.spec: main.sr
+	$(SR) $(SRFLAGS) -s main.sr
+
+$I/node.o: $I/printer.spec $I/node.spec node.sr
+	$(SR) $(SRFLAGS) -b node.sr
+
+$I/node.spec: node.sr
+	$(SR) $(SRFLAGS) -s node.sr
+
+$I/printer.o: $I/printer.spec printer.sr
+	$(SR) $(SRFLAGS) -b printer.sr
+
+$I/printer.spec: printer.sr
+	$(SR) $(SRFLAGS) -s printer.sr
+
+clean:
+	rm -rf $I  test.o
+
+cleanx: clean
+	rm -f core exe clean.me
+
+ls:
+	@echo main.sr node.sr printer.sr test.c
+
+make:
+	srm -f Try1.tmp -Idir -oexe -m main -C -O -L-T -R arg -Z clean.me main.sr node.sr printer.sr test.c
+

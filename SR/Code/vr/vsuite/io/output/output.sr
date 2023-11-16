@@ -1,0 +1,40 @@
+#  test various forms of output
+
+resource output()
+
+    # this could be considered cheating, but we need a reproducible pointer.
+    external atol (s: string[*]) returns p: ptr char
+
+    put("this should be an x:")
+    put(stdout, "x")
+    put("and here is the end of the line\n");
+    put(stdout, "\n")
+
+    var s[1:5]: char := ('a', 'b', 'c', 'd', 'e');
+    put(s);
+    put("fghijklmnop");
+    put("qrstuvwxyz\n");
+
+    write("1")
+    write()
+    write(stdout, 2)
+
+    write(stdout)
+
+    var a: int := 99
+    var b: int := 88
+    var c: int := 77
+    var d: bool := true
+    var e: bool := false;
+    var f[1:12]: char := ('1','2','3','4','5','6','7','8','9','0','1','2');
+
+    write(a,b,c);
+    write(d,e);
+    write(f, " yes");
+    write(a+1, d, f[1:6]);
+
+    var p: ptr char := null
+    write(p)
+    p := atol ("12345")
+    write(p)
+end

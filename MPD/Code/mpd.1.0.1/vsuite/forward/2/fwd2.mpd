@@ -1,0 +1,30 @@
+resource fwd2
+	op p2(res int) returns int  result
+	sem p2wait = 0
+body fwd2()
+	proc p2(j )  returns result  {
+		j = 2222
+		P(p2wait)
+		result = 2000
+	}
+end fwd2
+
+resource main()
+	import fwd2
+	op p1(res int) returns int  result
+
+	cap fwd2 f = create fwd2();
+
+	proc p1( j) returns result  {
+		forward f.p2(j)
+		j = 1111 # should not be copied out to "j" which is a res param
+		result = 1000 # this should not be returned to the caller
+		V(f.p2wait)
+	}
+
+	process p  {
+		int i = 0
+		write(p1(i))   # Should print 2000
+		write(i) # Should print 2222
+	}
+end main

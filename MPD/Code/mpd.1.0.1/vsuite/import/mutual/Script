@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 mpd -c import.mpd
+0 mpdl -o a.out B
+0 run
+0 rm -rf MPDinter core *.out

@@ -1,0 +1,4 @@
+# check "spec for res b not found" trap
+1 srm *.sr
+
+0 rm -rf Interfaces core *.out Makefile

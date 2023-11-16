@@ -1,0 +1,16 @@
+resource main()
+  procedure factorial(int x)  {
+      int fact = 1
+      for [ i = 1 to x ] { fact *= i }
+      write(x, "factorial is", fact)
+  }
+  # find factorial for each positive number input
+  int x = 10
+  while (true) {
+      if (x == 0) { exit
+      } else if (x < 0 ) { write("number must be >= 0")
+      } else if (x > 0 ) { call factorial(x)
+      }
+      x--
+  }
+end

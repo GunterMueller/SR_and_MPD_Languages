@@ -1,0 +1,43 @@
+resource Servant
+  op getforks(id: int)  # called by Philosophers
+  op relforks(id: int)
+body Servant(n: int)
+  process server
+    var eating[1:n] := ([n] false)
+    do true ->
+      in getforks(id) st not eating[(id mod n) + 1]
+          and not eating[((id-2) mod n) + 1] ->
+              eating[id] := true
+      [] relforks(id) ->
+              eating[id] := false
+      ni
+    od
+  end
+end
+
+resource Philosopher
+  import Servant
+body Philosopher(s: cap Servant; id, t: int)
+  process phil
+    fa i := 1 to t ->
+      s.getforks(id)
+      write("Philosopher", id, "is eating")   # eat
+      s.relforks(id)
+      write("Philosopher", id, "is thinking") # think
+    af
+  end
+end
+
+resource Main()
+  import Philosopher, Servant
+  var n, t: int
+  writes("how many Philosophers? "); read(n)
+  writes("how many sessions per Philosopher? ")
+  read(t)
+  # create the Servant and Philosophers
+  var s: cap Servant
+  s := create Servant(n)
+  fa i := 1 to n ->
+    create Philosopher(s, i, t)
+  af
+end

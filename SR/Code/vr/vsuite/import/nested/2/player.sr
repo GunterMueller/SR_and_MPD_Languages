@@ -1,0 +1,6 @@
+resource player
+     import    defs
+body player  (
+                           outfile[1:*]:       char
+                          )
+separate

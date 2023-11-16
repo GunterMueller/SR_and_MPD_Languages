@@ -1,0 +1,37 @@
+resource r (i: int)
+	write (i)
+
+	final
+		write (-i)
+	end
+end
+
+resource s	import r
+body s (i: int)
+	var c1,c2: cap r
+
+	write (i*100)
+	c1 := create r (i)
+	c2 := create r (i*2)
+
+	final
+		destroy c1
+		destroy c2
+		write (-i*100)
+	end
+end
+
+resource t	import	s
+body t ()
+	var i: int
+
+	i := 1
+	do i <= 100 ->
+		write(i*1000)
+		var c: cap s
+		c := create s (i)
+		destroy c
+		write(-i*1000)
+		i := i+1
+	od
+end

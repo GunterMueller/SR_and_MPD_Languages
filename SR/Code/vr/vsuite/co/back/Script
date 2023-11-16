@@ -1,0 +1,4 @@
+# this one's deterministic.
+0 sr co8.sr
+0 run 
+0 rm -rf Interfaces core *.out

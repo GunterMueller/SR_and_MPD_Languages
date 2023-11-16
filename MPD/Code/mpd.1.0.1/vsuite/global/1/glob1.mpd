@@ -1,0 +1,93 @@
+global Shared
+	type primary_color = int
+	const int red = 1; const int blue = 2; const int green = 3
+	primary_color  color = red  # global var with initialisation
+	string[5] colorname[1:3]    # global var-initialisation done in
+				    # global body; used by A and B
+	const real PI = 3.141592654
+	op sema()               # implemented by resource A; invoked by B
+	op semb()               # implemented by resouce B; invoked by A
+	op semnodelay()         # implemented by A and B; invoked by "Shared"
+	op sendprint(string[*] s) {send} # implemented by "Shared" by "in"
+					   # invoked by A and B
+	op callprint(string[*] s) {call} # implemented by "Shared" by "proc"
+					   # invoked by A and B
+	int i = 1
+
+body Shared
+	string[20] callheader, sendheader, resourcename    # local to Shared
+	colorname[1] = "red"; colorname[2] = "blue"; colorname[3] = "green"
+
+	callheader = "callprint@Shared : "
+
+	process Sharedprint  {
+		write("Sharedprint started")
+		send semnodelay(); send semnodelay()
+		while (true) {
+			sendheader = "sendprint@Shared : "
+			receive sendprint(resourcename)
+			write(sendheader, colorname[color],
+				"This sendprint mesg was from ", resourcename)
+			if (resourcename == " B") { exit }
+		}
+	}
+
+	proc callprint(resourcename)  {
+		write(callheader, colorname[color],
+			"This callprint was called by ", resourcename)
+	}
+end Shared
+
+resource A
+	import Shared
+	const real TWOPI = 2 * PI
+	const real anotherTWOPI = 2 * Shared.PI     # once caused complr malfunction
+
+body A()
+ process a  {
+	primary_color  prevcolor 
+	# shouldn't alter the  "callheader" in Shared's body
+	string[20] callheader = "SCOPE ERROR"
+	write("A: 2*PI is ", TWOPI)
+	write("A: another 2*PI is ", anotherTWOPI)
+
+	receive semnodelay()
+
+	prevcolor = color
+	color = blue
+	write("A: the color was ", colorname[prevcolor])
+	write("A: the color now is ", colorname[color])
+	Shared.color = green
+	write("A: the color now is ", colorname[color])
+	call callprint(" A")
+	send Shared.sendprint(" A")
+
+	send semb()
+
+ }
+end A
+
+
+resource B
+	import A, Shared
+	const real THREEPI = 3 * PI
+
+body B ()
+ process b  {
+	primary_color  prevcolor 
+
+	write("B: 3*PI is ", THREEPI)
+	create A()
+
+	receive semnodelay()
+
+	write("B: before receive semb()")
+	receive semb()
+	prevcolor = color
+	color = red
+	write("B: the color was ", colorname[prevcolor])
+	call callprint(" B")
+	send sendprint(" B")
+
+ }
+end B

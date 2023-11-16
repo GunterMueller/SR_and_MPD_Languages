@@ -1,0 +1,8 @@
+callee : before create A
+A : before `reply; P(global_s1)'
+callee : after create A ... about to V(global_s1) and then P(global_s2)
+A : after `reply; P(global_s1)'
+A : doing V(global_s2)
+callee : after P(global_s2)
+callee : before sending to no_server_op
+callee : after sending to no_server_op

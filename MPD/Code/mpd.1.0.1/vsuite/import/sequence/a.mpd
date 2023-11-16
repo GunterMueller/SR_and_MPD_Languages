@@ -1,0 +1,11 @@
+# test by
+# (1) compiling in order c.mpd, b.mpd, a.mpd.
+# (2) recompile c.mpd.
+# (3) recompile a.mpd.
+# compiler should complain (warn) about b needing to be recompiled.
+# note:  if compiler is ever made to do smart recompilation,
+# then it will not complain.
+resource a
+	import b
+body a()
+end

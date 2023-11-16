@@ -1,0 +1,7 @@
+#  gmt  Mon Oct 10 16:37:57 MST 1988
+0 mpd -c -do sema.mpd
+0 cmp Compiler.std Compiler.out
+0 mpdl semtest
+0 a.out 3 1 4 1 5 9 2 6 5 3 5 8 9 7 9 3 2 3 8 4 6 2 6 4 3 3 >No_input.out
+0 cmp -s No_input.std No_input.out
+0 rm -rf MPDinter core *.out

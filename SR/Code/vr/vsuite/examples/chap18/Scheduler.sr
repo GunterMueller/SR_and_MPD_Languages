@@ -1,0 +1,42 @@
+resource Scheduler
+  op become_active() returns t: real
+  op become_inactive() returns t: real
+  op time() returns t: real
+  op delay(t: real)
+body Scheduler(num_tasks: int)
+  op event_list(go_ahead: cap(); t: real)
+  var clock := 0.0  # the simulation clock
+
+  process event_manager
+    # number of active simulation processes
+    var active := num_tasks
+    do true ->
+      in become_active() returns t ->
+          active++; t := clock
+      [] become_inactive() returns t ->
+          active--; t := clock
+      [] time() returns t ->
+          t := clock
+      [] event_list(go_ahead,t) st active=0 by t ->
+          clock := t; active++; send go_ahead()
+          # awaken any other processes scheduled
+          # for this same time
+          do true ->
+            in event_list(go_ahead,t) st t=clock ->
+                active++; send go_ahead()
+            [] else ->
+                exit  # exit do loop
+            ni
+          od
+      ni
+    od
+  end event_manager
+
+  # provide a simple call interface for processors
+  proc delay(t)
+    op go_ahead()
+    send event_list(go_ahead, t+clock)
+    send become_inactive()
+    receive go_ahead()
+  end
+end Scheduler

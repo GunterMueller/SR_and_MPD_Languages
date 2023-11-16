@@ -1,0 +1,115 @@
+##  runtime error reporting test
+#
+#   usage:  a.out n
+#
+#   This program tests a variety of runtime errors.
+#   Because the errors are fatal, it must be run once for each error.
+#   The argument n selects the nth failure from the list below.
+
+global g; end
+resource r; op foo(); body r(); proc foo(); write("FOO CALLED!"); end end
+
+resource runerrs ()
+    import g, r
+    var n: int
+    if getarg(1,n) ~= 1 ->
+	write (stderr, "usage: a.out n   (must supply choice number)")
+	stop (2)
+    fi
+    writes (stderr, "\n", n, ": ")
+
+    type ptype = ptr any
+    var s : string[10] := "abcde"
+    var t : string[3] := "def"
+    var a[5:8] := chars("ghij")
+    var b[7] := chars("klmnopq")
+    var f : file := null
+    var p : ptype
+    var c : char := 'c'
+    var vc : cap vm := null
+    var opc : cap () := null
+    var oc2 : cap()	# uninitialized
+    var rc: cap r
+    const long_str : string[5000] := string(([5000] '*'))
+    var sa1[5]:string[3], sa2[5:9]:string[7]:=([5]"abc")
+    sem sem1;  var semcap : cap sem
+    op o(), oo()
+#37
+#38
+#39	These lines are reserved for future expansion so that the line
+#40	numbers associated with the errors below can remain unchanged.
+
+    if n=1 -> a[4]			# 1. array subscript too low
+    [] n=2 -> a[9]			# 2. array subscript too high
+    [] n=3 -> s[0]			# 3. string subscript too low
+    [] n=4 -> s[6]			# 4. string subscript too high
+    [] n=5 -> s := "zyxwvutsrqp"	# 5. string too long to assign
+    [] n=6 -> t := string(a)		# 6. too long to assign to string
+    [] n=7 -> a := chars(s)		# 7. too long to assign to array
+    [] n=8 -> b := a			# 8. array too big to assign
+    [] n=9 -> a := b			# 9. array too small to assign
+#      n=10 unused
+#      (2 lines)
+    [] n=11 -> writes(f, "ab")		# 11. operation attempted on NULL file
+#   [] n=12 -> 				# 12. file not open
+#   [] n=13 -> 				# 13. bad read format
+    [] n=14 -> printf("%12") 		# 14. unterminated conv spec in format
+    [] n=15 -> printf("%s %d", "abc") 	# 15. insufficient arg list for format
+    [] n=16 -> printf("%d", "abc") 	# 16. format calls for an int arguent
+    [] n=17 -> printf("%b", "abc") 	# 17. format calls for a bool arguent
+    [] n=18 -> printf("%c", "abc") 	# 18. format calls for a char arguent
+    [] n=19 -> printf("%r", c) 		# 19. string argument expected
+    [] n=20 -> printf("%s", c) 		# 20. format calls for a string argument
+    [] n=21 -> printf("%s", long_str) 	# 21. illegal string length for %s
+    [] n=22 -> printf("%f", "abc") 	# 22. format calls for a real argument
+    [] n=23 -> printf("%p", "a")	# 23. format calls for a ptr argument
+    [] n=24 -> printf("%h", "a") 	# 24. illegal modifier [hlL] in format
+    [] n=25 -> printf("%A", "abc") 	# 25. illegal spec char in format
+    [] n=26 -> printf(" ", 2)	 	# 26. too many arguments for format
+    [] n=27 -> 0.0**0.0			# 27. 0.0**y with non-positive y
+    [] n=28 -> -5.0 **0.5		# 28. x**y with neg x & non-integer y
+    [] n=29 -> 1**-1			# 29. negative integer exponent
+    [] n=30 -> 3.0 mod 0		# 30. (real) x mod y called with zero y
+    [] n=31 -> 3 mod 0			# 31. (int) x mod y called with zero y
+#   [] n=32 -> 				# 32. out of mem (removed / nonportable)
+    [] n=33 -> a[1:5]		 	# 33. illegal slice from array
+    [] n=34 -> a[6:9]		 	# 33. illegal slice from array
+    [] n=35 -> t[0:2] 		 	# 35. illegal slice from string
+    [] n=36 -> t[2:4] 		 	# 36. illegal slice from string
+    [] n=37 -> locate(10, long_str)	# 37. strings too long in locate call
+    [] n=38 -> destroy (vc) 		# 38. attempting to destroy null vm
+    [] n=39 -> oc2()			# 39. invalid operation capability
+    [] n=40 -> sem v := int("-7"); P(v)	# 40. illegal semaphore initializer
+    [] n=41 -> opc()			# 41. invoking null operation
+    [] n=42 -> create runerrs()		# 42. too many active resources
+    [] n=43 -> sa2[7]||:='d'; sa1:=sa2	# 43. element too long to assign
+    [] n=44 -> s :=: t			# 44. length exceeded on string swap
+    [] n=45 -> t :=: s			# 45. length exceeded on string swap
+    [] n=46 -> char(int("256"))		# 46. bad conversion to char
+    [] n=47 -> bool("uncertain")	# 47. bad conversion to bool
+    [] n=48 -> int("twelve")		# 48. bad conversion to int
+    [] n=49 -> real(long_str)		# 49. bad conversion to real
+    [] n=50 -> a :=: b			# 50. wrong sizes for array swap
+    [] n=51 -> var a[5:3] : int		# 51. illegal array bounds
+    [] n=52 -> (1,2,3,4,5,[-3]7)	# 52. illegal repeat count (total ok)
+    [] n=53 -> ([-3]7)			# 53. illegal repeat count (total bad)
+    [] n=54 -> destroy oc2		# 54. can't destroy uninit cap
+    [] n=55 -> destroy (semcap := sem1)	# 55. can't destory sem
+    [] n=56 -> destroy (opc := o)	# 56. can't destory static op
+    [] n=57 -> destroy (opc := oo)	# 57. can't destroy proc
+    [] n=58 -> destroy(opc:=new(op())); destroy opc  # 58. can't destroy twice
+    [] n=59 -> opc:=oo; receive opc()	# 59. can't input from a proc op
+    [] n=60 -> opc:=null; receive opc()	# 60. can't input from null cap
+    [] n=61 -> opc:=noop; receive opc()	# 61. input from noop blocks
+    [] n=62 -> ?(opc:=null)		# 62. query of null cap
+    [] n=63 -> destroy(rc:=create r()); rc.foo()	# 63. call destroyed op
+    [] else ->
+	write (stderr, "no such choice number")
+	stop (2)
+    fi
+
+    write (stderr, "error was not detected")
+    stop (3)
+
+    proc oo() end
+end

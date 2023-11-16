@@ -1,0 +1,17 @@
+resource cs1()
+  op request(int), results(int)
+  process client  {
+    int  y
+    send request(1)
+    # possibly perform some other work
+    receive results(y)
+  }
+  process server  {
+    int  x
+    while (true) {
+      receive request(x)
+      # handle request
+      send results(2)
+    }
+  }
+end

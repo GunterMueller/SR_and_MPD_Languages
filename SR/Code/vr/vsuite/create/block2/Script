@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 sr -c resource.sr
+0 srl global_sem A callee
+0 run 
+0 rm -rf Interfaces core *.out

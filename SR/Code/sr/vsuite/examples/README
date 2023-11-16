@@ -1,0 +1,12 @@
+The chap* directories contain copies of the SR programs and fragments
+appearing in "The SR Programming Language: Concurrency in Practice",
+by Gregory R. Andrews and Ronald A. Olsson (Benjamin/Cummings, 1993,
+ISBN 0-8053-0088-0).  Not all of the files form complete programs;
+examples of complete programs can be found in the full verification
+suite under vsuite/book.
+
+Sample programs for the SR preprocessors are in csp2sr, m2sr, and ccr2sr.
+Some miscellaneous other SR programs are in the "other" subdirectory.
+
+Besides the source files there are Script files, data files, and *.std files.
+These are used by the "srv" program to validate the SR system.

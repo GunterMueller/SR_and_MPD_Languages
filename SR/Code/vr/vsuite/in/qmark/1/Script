@@ -1,0 +1,6 @@
+0 sr -c -do qm1.sr
+0 cmp Compiler.std Compiler.out
+0 srl qm1
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out

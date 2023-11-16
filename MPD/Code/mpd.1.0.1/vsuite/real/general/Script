@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 mpd -c reals.mpd
+0 mpdl reals
+0 run Input1
+0 rm -rf MPDinter core *.out

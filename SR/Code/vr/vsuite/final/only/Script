@@ -1,0 +1,5 @@
+#  gmt  Thu Mar 10 14:33:44 MST 1988
+0 sr -c only.sr
+0 srl a
+0 run
+0 rm -rf Interfaces core *.out

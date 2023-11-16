@@ -1,0 +1,4 @@
+0 mpd -c clone.mpd
+0 mpdl clone
+0 run input1
+0 rm -rf MPDinter core *.out

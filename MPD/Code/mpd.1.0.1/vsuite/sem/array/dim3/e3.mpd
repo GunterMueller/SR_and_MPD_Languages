@@ -1,0 +1,36 @@
+# uses sem array in in stmt
+# (i.e., uses O_IN rather than O_RECEIVE)
+# but still sem optimizable
+resource e2()
+   sem f[3][2][4] = ([3]((1,0,1,1),(0,0,0,0)))
+
+   procedure wf()  {
+      for [ h = 1 to 3, i = 1 to 2 ] {
+	 for [ j = 1 to 4 ] {
+	    writes(?f[h][i][j])
+	 }
+	 write()
+      }
+   }
+
+   wf()
+
+   for [ h = 1 to 3, i = 1 to 2, j = 1 to 4 ] {
+      V(f[h][i][j])
+   }
+
+   wf()
+
+   for [ h = 3 to 1 by -1, i = 2 to 1 by -1, j = 4 to 1 by -1 ] {
+      P(f[h][i][j])
+   }
+
+   wf()
+
+   # should block after 12 iterations
+   # if not, sems could be pointing at junk
+   for [ j = 1 to 20 ] {
+      in f[j%3+1][j%2+1][j%4+1]() -> write ("got",j) ni
+   }
+
+end

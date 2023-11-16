@@ -1,0 +1,4 @@
+# check "spec for res b not found" trap
+1 mpdm *.mpd
+
+0 rm -rf MPDinter core *.out Makefile

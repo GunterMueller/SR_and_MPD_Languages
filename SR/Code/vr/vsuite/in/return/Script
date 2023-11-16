@@ -1,0 +1,2 @@
+0 sr -c enumglob1.sr
+0 rm -rf Interfaces core *.out

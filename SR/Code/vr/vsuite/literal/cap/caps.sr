@@ -1,0 +1,97 @@
+#  test null and noop capabilities
+
+resource Rs
+    op op1 (s : string[*])
+    op op2 (s : string[*])
+body Rs ()
+    proc op1 (s)
+	write ("1:", s)
+	end op1
+    proc op2 (s)
+	write ("2:", s)
+	end op2
+end Rs
+
+resource main ()
+    import Rs
+    var xcap: cap Rs
+    var vmcap: cap vm
+    var gcap: cap ()
+
+    xcap := null
+    if xcap != null -> write("oops 1") fi
+    if null != xcap -> write("oops 1a") fi
+    if xcap = noop -> write("oops 2") fi
+    if noop = xcap -> write("oops 2a") fi
+    xcap := create Rs ()
+    if xcap = null -> write("oops 3") fi
+    if null = xcap -> write("oops 3a") fi
+    if xcap = noop -> write("oops 4") fi
+    if noop = xcap -> write("oops 4a") fi
+    xcap.op1("AAA")
+    xcap.op2("BBB")
+    xcap.op1 := noop
+    if xcap.op1 = null -> write("oops 5") fi
+    if null = xcap.op1 -> write("oops 5a") fi
+    if xcap.op1 != noop -> write("oops 6") fi
+    if noop != xcap.op1 -> write("oops 6a") fi
+    xcap.op1("OOPS 7")
+    xcap.op2("CCC")
+    xcap.op2 := null
+    if xcap.op2 != null -> write("oops 8") fi
+    if null != xcap.op2 -> write("oops 8a") fi
+    if xcap.op2 = noop -> write("oops 9") fi
+    if noop = xcap.op2 -> write("oops 9a") fi
+    xcap := noop
+    if xcap = null -> write("oops 10") fi
+    if null = xcap -> write("oops 10a") fi
+    if xcap != noop -> write("oops 11") fi
+    if noop != xcap -> write("oops 11a") fi
+    if xcap.op2 = null -> write("oops 12") fi
+    if null = xcap.op2 -> write("oops 12a") fi
+    if xcap.op2 != noop -> write("oops 13") fi
+    if noop != xcap.op2 -> write("oops 13a") fi
+    xcap.op1("OOPS 14")
+    xcap.op2("OOPS 15")
+    xcap := null
+    if xcap != null -> write("oops 16") fi
+    if null != xcap -> write("oops 16a") fi
+    if xcap = noop -> write("oops 17") fi
+    if noop = xcap -> write("oops 17a") fi
+    if xcap.op2 != null -> write("oops 18") fi
+    if null != xcap.op2 -> write("oops 18a") fi
+    if xcap.op2 = noop -> write("oops 19") fi
+    if noop = xcap.op2 -> write("oops 19a") fi
+
+    vmcap := null
+    if vmcap != null -> write("oops 20") fi
+    if null != vmcap -> write("oops 20a") fi
+    if vmcap = noop -> write("oops 21") fi
+    if noop = vmcap -> write("oops 21a") fi
+    vmcap := noop
+    if vmcap = null -> write("oops 22") fi
+    if null = vmcap -> write("oops 22a") fi
+    if vmcap != noop -> write("oops 23") fi
+    if noop != vmcap -> write("oops 23a") fi
+    vmcap := create vm()
+    if vmcap = null -> write("oops 24 (create vm() failed?)") fi
+    if null = vmcap -> write("oops 24a (create vm() failed?)") fi
+    if vmcap = noop -> write("oops 25") fi
+    if noop = vmcap -> write("oops 25a") fi
+
+    gcap := null
+    if gcap != null -> write("oops 26") fi
+    if null != gcap -> write("oops 26a") fi
+    if gcap = noop -> write("oops 27") fi
+    if noop = gcap -> write("oops 27a") fi
+    gcap := noop
+    if gcap = null -> write("oops 28") fi
+    if null = gcap -> write("oops 28a") fi
+    if gcap != noop -> write("oops 29") fi
+    if noop != gcap -> write("oops 29a") fi
+
+    null		# test as stand-alone expressions
+    noop
+    write("done!")
+
+end main

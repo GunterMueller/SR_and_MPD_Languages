@@ -1,0 +1,10 @@
+resource a()
+   sem f[2][4]
+
+    write("ho")
+    V(f[2][4])
+    write("hi")
+    P(f[2][4])
+
+    var g: cap (){send} := f[1][1] # disqualifies f as a sem op
+end

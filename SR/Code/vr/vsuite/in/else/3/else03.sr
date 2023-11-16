@@ -1,0 +1,23 @@
+# basic test of else in input statements
+resource a()
+      op f(x:int)
+      send f(100)
+      fa i := 1 to 4 ->
+	 in f(x) -> write("f1",i,x)
+	 [] else -> write("else1",i); send f(1000+i)
+	 ni
+      af
+      fa i := 1 to 5 -> send f(2000+i) af
+      var n := ?f + 2
+      fa i := 1 to n ->
+	 in f(x) and x%2 = 0 by -x -> write("f2",i,x)
+	 [] else -> write("else2",i)
+	 ni
+      af
+      n := ?f + 2
+      fa i := 1 to n ->
+	 in f(x) by -x -> write("f3",i,x)
+	 [] else -> write("else3",i)
+	 ni
+      af
+end

@@ -1,0 +1,49 @@
+#       Pairing problem in MPD; degenerate case: fully connected network
+#       Idea is that each node tries to pair up with 1 other adjacent node.
+#       If none is available, it pairs up with itself.
+
+#       Note: this program tests an old bug with remove
+#       exhibits that bug only for N >=5.
+
+### some write statements are commented out to make the output
+### reproducible (except for its order)
+
+resource pairs()
+    const int N = 5
+    op node (int id )
+    op gab[1:N] (int who, int status ) returns int  partner
+
+    for [ i = 1 to N ] { send node(i) }
+
+    proc node(id)  {
+	int buddy = 0                  # i.e., "paired_with"
+
+	for [ j = 1 to N st (j != id) ] {
+	    if (id > j) {
+		write (id, "invites", j)
+		if (j == gab[j] (id, buddy)) {
+		    buddy = j; # BOTH SINGLE, NOW HITCHED.
+		    # write (id , "got ", j)
+		}
+	    } else if (id < j ) {
+		write (id, "waits for", j)
+		in gab[id] (who, status) returns partner ->
+		    write (id, "receives invitation from ", who)
+		    if (buddy == status) {
+			buddy = who
+			partner = id
+			# write (id, "accepts", who)
+		    } else {
+			partner = 0
+			# write (id, "rejects", who)
+		    }
+		ni
+	    }
+	}
+
+	if (buddy == 0) { buddy = id }
+
+	write ("NODE", id, "finishing up")
+	# write ("NODE", id, "buddy is", buddy)
+    }
+end pairs

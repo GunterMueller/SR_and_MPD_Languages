@@ -1,0 +1,5 @@
+#  gmt  Wed Oct 14 16:30:15 MST 1987
+0 sr -c queens.sr
+0 srl EightQueens
+0 run
+0 rm -rf Interfaces core *.out

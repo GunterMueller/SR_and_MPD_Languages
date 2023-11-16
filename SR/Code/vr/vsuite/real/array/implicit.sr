@@ -1,0 +1,50 @@
+resource implicit()
+	op funcA(int; [1:*] int; real; [1:*] real; string[*]; charvar : char)
+						returns real
+	proc funcA(i, iarr, r, rarr, s, ch)   returns result
+		write("funcA: s is ", s)
+		result := 2*i + r
+		fa j := lb(iarr) to ub(iarr) ->
+		    result := result + iarr[j]
+		af
+		fa j := lb(rarr) to ub(rarr) ->
+		    result := result + rarr[j]
+		af
+		if ch = 'A' -> result := result + 1
+		[] else -> result := result + -1
+		fi
+	end
+
+	var i := 0, iarr[2:4] :int := (2, 3, 4)
+	var r := 5.5, rarr[21:24] : real := (1.1 + r, iarr[3] + 4.7, 8.8, 9.9)
+	var s := "masha the bear", ch := 'A'
+	var x := 3.1*(i := 1)
+
+	var realvar := funcA( i, iarr, r, rarr, s, ch)
+	write ("funcA returns ", realvar)
+
+	# 4x3 array of int
+	var intarr [1:4][1:3] : int :=
+			((1, 2, 3), (4, 5, 6), ([3] 7), ([3] 8))
+	# 4x3 array of reals
+	var realarr [4][3] : real :=
+		((1.1, 2.2, 3.3), (4.4, 5.5, 6.6), ([3] 7.7), (8.0, [2] 8.8))
+
+	procedure factorial(n : int) returns fact : int
+		if n < 0 -> fact := 0
+		[] n = 0 -> fact := 1
+		[] else -> fact := factorial(n-1) * n
+		fi
+	end
+
+	var result := factorial(5)
+	write (result)
+	write (lb(intarr, 1), ub(intarr, 1))
+	write (lb(intarr, 2), ub(intarr, 2))
+	write (lb(realarr, 1), ub(realarr, 1))
+	write (lb(realarr, 2), ub(realarr, 2))
+
+	fa i := 1 to 4, j := 1 to 3 ->
+		write("[", i, ",", j, "]", intarr[i,j], realarr[i,j])
+	af
+end

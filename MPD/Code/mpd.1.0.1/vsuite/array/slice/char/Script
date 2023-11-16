@@ -1,0 +1,4 @@
+#  gmt  Tue Apr 28 18:02:10 MST 1992
+0 mpd cslice.mpd
+0 run
+0 rm -rf MPDinter core *.out

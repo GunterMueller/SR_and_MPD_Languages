@@ -1,0 +1,33 @@
+# test arrays of strings
+
+resource stars()
+	op wrs ( string[*] s )
+	op wr0 ( char a[0:*] )
+	op wr1 ( char a[*] )
+	op wr2 ( char a[*:8] )
+
+	char  c7[2:8] = chars("tuvwxyz")
+	write("c7: ", c7[2], c7[ub(c7)], c7, c7[2:*], c7[3:5], c7[6:*], c7[*:5])
+	wrs(string(c7));  wr0(c7);  wr1(c7);  wr2(c7); write()
+
+	string[12] s9 = "abcdefg"
+	write("s9: ",s9[1],s9[length(s9)],s9,s9[1:*],s9[2:4],s9[5:*],s9[*:4])
+	wrs(s9);  wr0(chars(s9));  wr1(chars(s9));  wr2(chars(s9)); write()
+
+	write ("lit: k q klmnopq ...")
+	wrs("klmnopq"); wr0(chars("klmnopq"));
+		wr1(chars("klmnopq")); wr2(chars("klmnopq"));
+
+proc wrs(s)  {
+	write("wrs:", s[1], s[length(s)], s, s[1:*], s[2:4], s[5:*], s[*:4])
+	}
+proc wr0(a)  {
+	write("wr0:", a[0], a[ub(a)], a, a[0:*], a[1:3], a[4:*], a[*:3])
+	}
+proc wr1(a)  {
+	write("wr1:", a[1], a[ub(a)], a, a[1:*], a[2:4], a[5:*], a[*:4])
+	}
+proc wr2(a)  {
+	write("wr2:", a[lb(a)], a[ub(a)], a, a[2:*], a[3:5], a[6:*], a[*:5])
+	}
+end

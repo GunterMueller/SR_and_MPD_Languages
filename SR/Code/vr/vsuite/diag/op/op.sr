@@ -1,0 +1,373 @@
+#  test error messages related to op declaration or usage
+
+
+% var/res/ref parameter is not a variable
+# using defined constant
+	resource r ()
+	   procedure p (var v : int) v++; end
+	   const k := 6
+	   p (k)
+	end
+
+
+% var/res/ref parameter is not a variable
+# array constructor is a little different case, so test separately
+	resource r ()
+	   procedure p (var a[*]:char) end
+	   p (([5]'*'))
+	end
+
+
+% var/res/ref parameter is not a variable
+# test that function result is not a variable
+	resource oops()
+	    op side(var x:int) returns r:int
+	    process two
+		var z:int := 88
+		call side(side(z))
+	    end
+	    proc side(x) returns r
+		x++
+		r := 9999
+	    end
+	end
+
+
+% assignment target is not a variable
+# in receive
+	resource r3()
+	    op s(x,y:int)
+	    var x:int
+	    receive s(3,x) #illegal
+	end
+
+
+% cannot receive an op that returns a value
+	resource r ()
+	    op o () returns int
+	    send o ()
+	    receive o()
+	end
+
+
+% cannot receive an op having a var or res param
+	resource r ()
+	    op o (var int)
+	    var i, n : int
+	    send o (i)
+	    receive o (n)
+	end
+
+
+% cannot receive an op having a var or res param
+	resource r ()
+	    op o (res int)
+	    var i, n : int
+	    send o (i)
+	    receive o (n)
+	end
+
+
+% requires an operation
+	resource qm3()
+	    op f()
+	    op g() {send}
+	    var c : cap () {send}
+	    c := g
+	    send g()
+	    write( ? f, ? 3 + g)  # bad
+	end
+
+
+% requires an operation
+# array of ops
+	resource a()
+	    op f[1:10]() {send}
+	    write(?f)	# illegal
+	end
+
+
+% not an op: s1
+	global g1
+	    var s1 := 2
+	end g1
+
+	resource a()
+	import g1
+	    in s1() -> ni
+	end a
+
+
+% not an op: f
+	resource a()
+	    op f[1:10]() {send}
+	    send f()	# illegal
+	end
+
+
+% op p declared but not implemented
+	resource star3()
+	    op p( a[1:12] :int ) returns x[1:12]:int
+	end
+
+
+% op foo declared but not implemented
+	resource Main
+	body Main()
+	    var DistTab[1:10, 1:10]: int
+	    op foo(x[1:3, 1:10]: int)
+	    foo(DistTab[1:3])
+	end Main
+
+
+% incorrect subscripting of f
+	resource a()
+	    op f[1:10]() {send}
+	    receive f()		# illegal
+	end
+
+
+% receive: wrong number of arguments
+	resource r3()
+	    op r(x:int)
+	    receive r()		#illegal
+	end
+
+
+% receive: wrong number of arguments
+	resource r3()
+	    op r(x:int)
+	    var y:int
+	    receive r(y,y)	#illegal
+	end
+
+
+% receive: wrong number of arguments
+# too many
+	resource r3()
+	    op p()
+	    var x:int
+	    receive p(x)	#illegal
+	end
+
+
+% receive: wrong number of arguments
+# too few
+	resource r3()
+	    op q(a,b:int;c:char)
+	    var x,y:int
+	    receive q(x,y)	#illegal
+	end
+
+
+% wrong number of arguments
+# too many in proc impl
+	resource r ()
+	    op p (int; int)
+	    proc p (a, b, c) end
+	end
+
+
+% wrong number of arguments
+# too few in proc impl
+	resource r ()
+	    op q (int; int)
+	    proc q (a) end
+	end
+
+
+% p2(): not enough arguments
+	resource c()
+	   process p2 (i:=1 to 3)
+	   end
+	  send p2() # oops
+	end
+
+
+% p2(): argument 1 is incompatible
+	resource c()
+	   process p2 (i:=1 to 3)
+	      write ("in p2")
+	   end
+	   send p2('a') # oops
+	end
+
+
+% p2(): too many arguments
+	resource c()
+	   process p2(i:=1 to 3)
+	      write("in p2")
+	   end
+	  send p2(33,34) # oops
+	end
+
+
+% op is restricted {call}
+# direct send
+	resource res1()
+	    op f() {call}
+	    send f() # illegal
+	    receive f ()
+	end
+
+
+% op is restricted {send}
+# direct call
+	resource res2()
+	    op g() {send}
+	    call g() # illegal
+	    receive g()
+	end
+
+
+% op is restricted {send}
+# co-call
+	resource res3()
+	    op f() {call}
+	    op g() {send}
+	    op h() {call,send}
+	    proc f () end
+	    proc g () end
+	    proc h () end
+
+	    co f()
+	    // g()	# illegal
+	    // h()
+	    oc
+	end
+
+
+% op is restricted {call}
+# send via cap
+	resource res4()
+	    op f() {call}
+	    proc f () end
+	    var c: cap f
+	    c := f
+	    send c()	# illegal
+	end
+
+
+% op is restricted {send}
+# call via cap
+	resource res5()
+	    op g() {send}
+	    proc g () end
+	    var d: cap () {send}
+	    d := g
+	    call d()	# illegal
+	end
+
+
+% incompatible assignment
+# operation restrictions
+	resource res6()
+	    op g() {send}
+	    receive g()
+
+	    var e: cap () {send,call}
+	    e := g		# illegal
+	end
+
+
+% op is restricted {send}
+	resource c()
+	   process p2(i:=1 to 3)
+	      write("in p2")
+	   end
+	   call p2(34) # oops (can't call)
+	end
+
+
+% op is restricted {send}
+	resource s1()
+	    op q(a:int) {send}
+	    in q(n) -> ni
+	    q(5)		# can't call q()
+	end
+
+
+% imported op must be referenced via a capability
+	resource i
+	    sem s
+	body i ()
+	    P(s)
+	end
+
+	resource r ()
+	    import i
+	    V(s)
+	end
+
+
+% a proc cannot implement an imported op
+	global g
+	    op o ()
+	end
+
+	resource r ()
+	    import g
+	    proc o () end
+	end
+
+
+
+% missing return parameter
+	resource r ()
+	    op o () returns r : int
+	    proc o () end
+	end
+
+
+% unexpected return parameter
+	resource r ()
+	    op p ()
+	    proc p () returns q end
+	end
+
+
+% external must be declared at resource level
+	resource r ()
+	   procedure p ()
+	      external puts (s : string[*])
+	   end
+	end
+
+% no subscripts allowed on external
+	resource r ()
+		external e[5]()
+	end
+
+% warning: e(), parameter 1: type precludes returning a result
+	resource r ()
+		external e (var i : int)
+	end
+
+% warning: e(), parameter 2: type precludes returning a result
+	resource r ()
+		external e (val c : char; res d : real)
+	end
+
+
+% illegal reference to formal parameter n
+	resource r ()
+	    procedure p (n : int; a[n] : real)
+	    end
+	end
+
+
+% warning: unnamed parameter is inaccessible
+# there's no way to access the arguments within procedure abc()
+	resource a()
+		procedure abc(real)
+		end abc
+	end a
+
+
+% duplicate implementation of sleep
+	resource a()
+		external sleep()
+		write("hi")
+		in sleep() -> ni
+		write("bye")
+	end

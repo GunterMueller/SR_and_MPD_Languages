@@ -1,0 +1,26 @@
+# constants.
+resource c1()
+    op foo( v: int)
+
+    const a := 5;
+    const b := 6;
+    var c,d: int;
+    const e := a+b*2;
+    c := a;
+    d := b;
+    write(a,b,c,d,e)
+    foo(b);
+    foo(a);
+    c++;
+    d--;
+    write(a,b,c,d,e)
+    const f := c+d*3
+    c := 10101
+    d := f-10
+    write(a,b,c,d,e,f)
+
+    proc foo(v)
+	v++
+	write("foo",v)
+    end
+end

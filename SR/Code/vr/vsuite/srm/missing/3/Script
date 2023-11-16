@@ -1,0 +1,4 @@
+# check "missing resource b" trap
+1 srm *.sr
+
+0 rm -rf Interfaces core *.out Makefile

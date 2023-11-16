@@ -1,0 +1,4 @@
+#  gmt  Thu Jan 28 22:23:27 MST 1993
+0 mpd inalloc.mpd
+0 run
+0 rm -rf MPDinter core *.out

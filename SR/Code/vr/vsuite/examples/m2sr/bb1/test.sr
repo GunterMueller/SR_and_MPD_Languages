@@ -1,0 +1,13 @@
+resource main()
+    import bounded_buffer
+    process prod(i:=1 to 6)
+        write( i, "prod before" )
+        bounded_buffer.deposit(i)
+        write( i, "prod after" )
+    end
+    process cons(i:=1 to 6)
+        write( i, "prod before" )
+        write( bounded_buffer.fetch() )
+        write( i, "prod after" )
+    end
+end

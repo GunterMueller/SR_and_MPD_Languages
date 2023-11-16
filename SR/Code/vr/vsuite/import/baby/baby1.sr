@@ -1,0 +1,36 @@
+# no imports, just a simple record in the spec.
+resource baby1
+	type t = rec(a,b:int)
+body baby1()
+	var x: t
+
+	op init() returns x:t
+	var inita:int:=1001
+	var initb:int:=2001
+	proc init() returns x
+		x.a := inita
+		x.b := initb
+		inita++; initb++
+	end
+
+	op print(x:t)
+	proc print(x)
+		write(x.a,x.b)
+	end
+
+	process p
+		var y:t
+		var z : rec(c,d:int)
+		x.a := 3333
+		x.b := 4444
+		z := x
+		print(x); print(z)
+		y.a := x.a
+		y.b := z.c
+		print(y)
+		x := init(); print(x)
+		y := init(); print(y)
+		z := init(); print(z)
+		print(init())
+	end
+end

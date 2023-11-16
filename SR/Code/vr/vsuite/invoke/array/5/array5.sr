@@ -1,0 +1,19 @@
+# arrays of operations
+# output nondeterministic.
+resource array5()
+	op a[1:10](x:int)
+	op p() {send}
+
+	send p()
+	co (i := 10 downto 1) a[i](100*i) oc
+
+	proc p()
+		fa i := 1 to 10 ->
+			in a[i](x) ->
+				write(333,i,x)
+			[] a[11-i](x) ->
+				write(444,i,x)
+			ni
+		af
+	end
+end

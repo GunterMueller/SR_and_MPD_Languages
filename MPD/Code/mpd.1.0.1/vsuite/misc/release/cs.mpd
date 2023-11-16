@@ -1,0 +1,23 @@
+#
+#       Tests that release of class in mpd_rm_iop in the run time support.
+#       (variation on vsuite/misc/pairs)
+resource cs()
+    const int N = 5
+    op p (int id )
+    op comm[1:N] (int who)
+
+
+    for [ i = 1 to N ] { send p(i) }
+
+
+    proc p(id)  {
+	for [ j = 1 to N st (j != id) ] {
+	    if (id > j) {
+		comm[j] (id)
+	    } else if (id < j ) {
+		in comm[id] (who) ->
+		ni
+	    }
+	}
+    }
+end cs

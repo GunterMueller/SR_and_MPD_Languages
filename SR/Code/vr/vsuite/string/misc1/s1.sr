@@ -1,0 +1,20 @@
+resource s1()
+	op p() returns x[1:20] :char
+	proc p() returns x
+		fa i := lb(x) to ub(x) -> x[i] := 'Z' af
+		x[1:17] := chars("--mellow yellow--")
+	end
+
+	var y[1:30] :char
+	y[1:26] := chars("abcdefghijklmnopqrstuvwxyz")
+	y[27:30] := chars("1234")
+	write(y)
+	y[1:20] := p()
+	write(y)
+	y[1:26] := chars("abcdefghijklmnopqrstuvwxyz")
+	y[27:30] := chars("1234")
+	write(y)
+	y[3:22] := p()
+	write(y)
+
+end

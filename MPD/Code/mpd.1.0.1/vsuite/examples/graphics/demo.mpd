@@ -1,0 +1,230 @@
+# Window demo program
+#
+# Qiang A. Zhao, October 92
+#
+# Usage: demo [SIZE]
+
+resource demo()
+
+  import MPDWin
+
+  const string[13] HEADER = " MPDWin Demo "
+  const string[24] FOOTER = " University of Arizona "
+
+  const int MINS = 200
+  const int IMS = 50
+  const int OFF = 20
+
+  const real TWO_PI = 6.2831853
+
+  int  SIZE = 500;      getarg(1, SIZE)
+  if (SIZE < MINS) {
+    write(stderr, "Invalid size.")
+    stop(1)
+  }
+
+  op    winEventChannel ec
+  int   header_w = 72, footer_w = 138
+  bool  stay = true
+  winWindow  mainwin, win2, win3, win4
+  winEvent  ev
+  winCursor  cur
+  winFont  font
+  winImage  im
+  winPoint  mpt
+  winRectangle  mrect
+  winRectangle  crect[1] 
+		= ([1] winRectangle(OFF, OFF, SIZE-2*OFF, SIZE-2*OFF))
+
+  procedure rand() returns int   rv {
+    rv = int(random(SIZE))
+  }
+
+  ###
+  # open a window called "Demo"; create an image
+  mainwin = WinOpen("", "Demo", ec, UseDefault, SIZE, SIZE)
+  if (mainwin == null) {
+    write("can't open window")
+    stop(1)
+  }
+  im = WinCreateImage(mainwin, UseDefault, IMS, IMS)
+  if (im == null) {
+    write("can't create image")
+    WinClose(mainwin)
+    stop(1)
+  }
+
+  # other contexts
+  win2 = WinNewContext(mainwin)
+  win3 = WinNewContext(mainwin)
+  win4 = WinNewContext(mainwin)
+
+  WinSetForeground(win2, "blue")
+  WinSetForeground(win3, "yellow")
+  WinSetForeground(win4, "cyan")
+  WinSetBackground(win4, "SeaGreen")
+
+  winPixel  lightYellow = WinSetForeground(mainwin, "LightYellow")
+  for [ i = 0 to IMS - 1 ] {
+    for [ j = 0 to IMS - 1 ] {
+      WinPutPixel(im, winPoint(i, j), lightYellow)
+    }
+  }
+
+  # cursor and font
+  cur = WinCreateCursor(mainwin, XC_mouse)
+  if (cur != null) {
+    WinSetCursor(mainwin, cur, "red", "yellow")
+  }
+  font = WinLoadFont(mainwin, "lucidasanstypewriter-18")
+  if (font == null) {
+    font = WinDefaultFont(mainwin)
+    write("OK, I'm trying to use the default font.")
+    write("There should be some error when I try close the default font.")
+  } else {
+    WinSetFont(win4, font)
+  }
+  header_w = WinTextWidth(font, HEADER)
+  footer_w = WinTextWidth(font, FOOTER)
+  if (header_w < SIZE) {
+    WinDrawImageString(win4, winPoint((SIZE-header_w)/2, OFF-5), HEADER)
+  }
+  if (footer_w < SIZE) {
+    WinDrawImageString(win4, winPoint((SIZE-footer_w)/2, SIZE-5), FOOTER)
+  }
+
+  # clip
+  WinSetClipRectangles(win2, winPoint(0, 0), crect)
+  WinSetClipRectangles(win3, winPoint(0, 0), crect)
+  WinSetClipRectangles(win4, winPoint(0, 0), crect)
+
+  # attr's
+  WinSetArcMode(win2, ArcPieSlice)
+  WinSetFillAttr(win3, FillSolid, FillEvenOddRule)
+  WinSetLineAttr(win4, 0, LineOnOffDash, CapRound, JoinRound)
+  WinSetDashes(win4, 0, "\2\5\4\5\6\5\8\5\16\5")
+
+  # set up image
+  WinGetImage(mainwin, im, winRectangle((SIZE-IMS)/2, SIZE-OFF, IMS, OFF),
+	winPoint(0, (IMS-OFF)/2))
+  for [ i = 0 to IMS - 1 ] {
+    for [ j = 0 to i - 1 ] {
+      winPixel  pv1, pv2 
+      pv1 = WinGetPixel(im, winPoint(i, j))
+      pv2 = WinGetPixel(im, winPoint(j, i))
+      WinPutPixel(im, winPoint(i, j), pv2)
+      WinPutPixel(im, winPoint(j, i), pv1)
+    }
+  }
+
+  # info
+  write("a - Arcs")
+  write("b - Clear to black")
+  write("c - Copy legends")
+  write("g - Clear to green")
+  write("h - Hide for a while")
+  write("i - Image")
+  write("l - Lightning")
+  write("q - Quit")
+  write("s - Stars")
+
+  # test events...
+  WinBell(mainwin, -50)
+  WinSetLabels(mainwin, "MPDWin Demonstration Program", "MPDWin")
+  WinSetEventMask(mainwin, Ev_KeyDown)
+  WinSetPoll(mainwin, 50)
+  seed(0)
+  int  tmp 
+  while (stay) {
+    receive ec(ev)
+
+    if (ev.event_type == Ev_KeyDown) {
+      char ch = char(ev.data)
+      write("Key char (", ch, "), keysym (", ev.keysym, ")")
+
+      if (ch == 'q' | ch == 'Q' | ch == '\177' | ch == '\003') {     # quit
+	stay = false
+
+      } else if (ch == 'h' ) {            # unmap/map (hide)
+	WinUnmapWindow(mainwin)
+	nap(1000)
+	WinMapWindow(mainwin)
+
+      } else if (ch == 'b' ) {            # clear to window background
+	WinClearArea(win4, crect[1])
+
+      } else if (ch == 'g' ) {            # clear to green
+	WinEraseArea(win4, crect[1])
+
+      } else if (ch == 'a' ) {            # arc's
+	for [ i = 1 to random(3, 10) ] {
+	  WinDrawArc(win4, winRectangle(rand(), rand(), rand()/2, rand()/2),
+	    int(random(360)), int(random(720)))
+	  WinFillArc(win2, winRectangle(rand(), rand(), rand()/2, rand()/2),
+	    int(random(360)), int(random(360)))
+	}
+
+      } else if (ch == 'i' ) {            # image
+	for [ i = 1 to random(5, 10) ] {
+	  WinPutImage(win4, im, winRectangle(0, 0, IMS, IMS),
+	    winPoint(rand(), rand()))
+	}
+
+      } else if (ch == 's' ) {            # stars
+	for [ i = 1 to random(10, 40) ] {
+	  WinDrawPixel(win4, winPoint(rand(), rand()))
+	}
+	tmp = int(random(2, 5))
+	real x = random(SIZE), y = random(SIZE)
+	int tmp2 = tmp * 2 + 1
+	winPoint  pts[tmp2] 
+	for [ i = 1 to tmp2 ] {
+	  real  randt = random(2, 10)
+	  real  rtmp = TWO_PI*(i-1)*tmp/tmp2
+	  pts[i].x = int(randt*cos(rtmp) + x)
+	  pts[i].y = int(randt*sin(rtmp) + y)
+	}
+	WinFillPolygon(win2, pts)
+	WinDrawPolygon(win4, pts)
+
+      } else if (ch == 'l' ) {            # lightning
+	winPoint  pts[10] 
+	winPoint root = winPoint(int(random(SIZE)), OFF)
+	for [ i= 1 to random(5, 10) ] {
+	  real dir1 = random(-10, 5)
+	  real dir2 = random(dir1, 10)
+	  pts[1] = root
+	  for [ j = 2 to 10 ] {
+	    pts[j].x = pts[j-1].x + int(random(dir1, dir2))
+	    pts[j].y = pts[j-1].y + int(random(5, 15))
+	  }
+	  WinDrawPolyline(win3, pts)
+	  root = pts[int(random(1, 10))]
+	}
+
+      } else if (ch == 'c' ) {            # duplicate legends
+	tmp = (SIZE-OFF-OFF)/OFF
+	for [ i = 1 to tmp/2 + 1] {
+	  WinCopyArea(mainwin, win4,
+	    winRectangle(0, 0, SIZE, OFF), winPoint(0, OFF*i))
+	  WinCopyArea(mainwin, win4,
+	    winRectangle(0, SIZE-OFF, SIZE, OFF), winPoint(0, OFF*(tmp-i+1)))
+	}
+      }
+
+    } else if (ev.event_type == Ev_DeleteWindow ) {
+      stay = false
+    }
+    WinFlush(mainwin)
+  }
+  stop
+
+  ### final
+  final {
+    if (cur != null) { WinFreeCursor(mainwin, cur) }
+    if (font != null) { WinFreeFont(mainwin, font) }
+    WinDestroyImage(im)
+    WinClose(mainwin)
+  }
+
+end demo

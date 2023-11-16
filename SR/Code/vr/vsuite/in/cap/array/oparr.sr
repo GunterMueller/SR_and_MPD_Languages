@@ -1,0 +1,47 @@
+# dynamic arrays of ops
+
+resource r ()
+    optype t (int)
+    const d1 := 3
+    const d2 := 2
+
+    var s := new ([d1,d2] sem)
+    var o := new ([d1] op (int))
+    var p := new ([d2] t)
+
+    fa i := 1 to d1 ->
+	fa j := 1 to d2 ->
+	    V (s[i][j])
+	    send o[i] (100 + 10 * i + j)
+	    send p[j] (200 + 10 * i + j)
+	af
+    af
+
+    fa i := 1 to d1 -> writes (" ", ?o[i]) af;  write ("\t(o)")
+    fa j := 1 to d2 -> writes (" ", ?p[j]) af;  write ("\t(p)")
+
+    fa i := 1 to d1 ->
+	fa j := 1 to d2 ->
+	    writes (" ", ?s[i,j]);
+	    P (s[i,j])
+	    writes ("/", ?s[i,j]);
+	af
+    af
+    write ("\t (s)")
+
+    fa i := 1 to d1 ->
+	fa j := 1 to d2 ->
+	    var n : int
+	    receive o[i] (n);  writes (" ", n)
+	    in p[j] (x) -> writes (" ", x) ni
+	af
+    af
+    write ("\t(o&p)")
+
+    destroy s
+    destroy o
+    destroy p
+
+    write ("done")
+
+end

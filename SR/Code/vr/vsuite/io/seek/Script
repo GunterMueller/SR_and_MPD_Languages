@@ -1,0 +1,4 @@
+0 sr -c io9.sr
+0 srl io9
+0 run
+0 rm -rf Interfaces core *.out silly

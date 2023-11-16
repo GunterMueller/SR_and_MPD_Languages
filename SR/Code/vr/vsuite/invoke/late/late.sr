@@ -1,0 +1,22 @@
+# late invocation
+resource late()
+	var c: cap (x:int)
+
+	var test : bool := true
+	if test ->
+		op p(x:int)
+		op q(x:int)
+		c := p
+		send q(7777)
+		in p(x) -> write(-1111,x)
+		[] q(x) -> write(-2222,x); send c(8888)
+		ni
+		in p(x) -> write(-3333,x)
+		[] q(x) -> write(-4444,x)
+		ni
+	[] else ->
+		write(-5555)
+	fi
+	send c(-9999) # should get complaint about being late.
+
+end

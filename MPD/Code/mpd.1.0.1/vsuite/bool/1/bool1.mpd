@@ -1,0 +1,8 @@
+# simple bool test.
+resource bool1()
+	bool  a,b,c 
+	a = false
+	b = true
+	c = not a
+	write(a,b,c,b or c, a or c,a and b,a xor b,b xor c)
+end

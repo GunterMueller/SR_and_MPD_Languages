@@ -1,0 +1,840 @@
+<html>
+<head>
+<meta name="Content-Style" content="text/css">
+</head>
+<body>
+
+
+<!-- /style/csbanner.ssi: included to render CS header with links -->
+<!-- compatible with /style/simple.css, but does not require it -->
+
+<img src="/style/elements/genheader.gif" width="760" height="148"
+ alt="The University of Arizona / Computer Science / UAScience"
+ style="position:absolute; top:0px; left:10px;">
+
+<div style="position:absolute; top:0px; left:10px; width:493px; height:42px;">
+<a title="The University of Arizona" href="http://www.arizona.edu/">
+<img border="0" alt="The University of Arizona"
+ src="/style/elements/42blu493.gif"></a></div>
+
+<div style="position:absolute; top:56px; left:516px; width:150px; height:43px;">
+<a title="Computer Science" href="http://www.cs.arizona.edu/">
+<img border="0" alt="ComputerScience"
+ src="/style/elements/tplDept.gif" width="150" height="43"></a></div>
+
+<div style="position:absolute; top:99px; left:516px; width:150px; height:23px;">
+<a title="UAScience" href="http://cos.arizona.edu/">
+<img border="0" alt="UAScience"
+ src="/style/elements/tplCollg.gif" width="150" height="23"></a></div>
+
+<div style="position:absolute; top:0px; left:760px; width:10px; height:42px;">
+<a title="Validate" href="http://validator.w3.org/check?uri=referer&amp;ss=1">
+<img border="0" alt=""
+ src="/style/elements/42blu10.gif" width="10" height="42"></a></div>
+
+<div style="padding: 150px 0 0 0;"></div>
+<div class="up150"></div>
+
+<!-- /style/csbanner.ssi: end inclusion -->
+
+
+
+<a href="#Operators">Operators</a><br>
+<a href="#294">294</a><br>
+<a href="#Basic Functions">Basic Functions</a><br>
+<a href="#296">296</a><br>
+<a href="#Math Functions">Math Functions</a><br>
+<a href="#Random Number Generation">Random Number Generation</a><br>
+<a href="#298">298</a><br>
+<a href="#Processes, Resources, and Virtual Machines">Processes, Resources, and Virtual Machines</a><br>
+<a href="#Timing Functions">Timing Functions</a><br>
+<a href="#Type Conversion Functions">Type Conversion Functions</a><br>
+<a href="#302">302</a><br>
+<a href="#File Access Functions">File Access Functions</a><br>
+<a href="#304">304</a><br>
+<a href="#Accessing Command-Line Arguments">Accessing Command-Line Arguments</a><br>
+<a href="#External Operations">External Operations</a><br>
+<a href="#308">308</a><br>
+<!-- Creator     : groff version 1.15  -->
+<!-- CreationDate: Tue Jun 19 14:31:25 2001
+ -->
+<!-- Total number of pages: 17 -->
+<!-- Page: 1 -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<p align=center><img src="groff-html-1-13876.png" align="middle">
+<br>
+</p>
+<p><font size=7> A<sub>PPENDIX</sub> <font size=7>C</p>
+<br><p align=center><img src="groff-html-2-13876.png" align="middle">
+<br>
+</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="2">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="17.8000%">
+</td>
+<td valign="top" align="left"  width="82.2000%">
+<p><font size=7><B><span style=" text-indent: 1.3100in;"></span>Operators and Predefined Functions</p>
+</B></td>
+</tr>
+</table>
+<br><br><br><br><p align=center><img src="groff-html-3-13876.png" align="middle">
+<br>
+</p>
+<br>
+<p><font size=3>SR provides a rich set of operators and predefined functions, both of which are used in expressions. This appendix summarizes the operators and describes the meaning and use of each predefined function.</p>
+<a name="Operators"></a><h2>Operators</h2><p><font size=3>The table on the following pages lists all of SR's operators. These are listed in groups based on precedence and associativity. The first two groups consist of the unary postfix and prefix operators. The other groups consist of binary operators. The table also indicates allowed operand types for each operator. See Chapter 2 for further details and examples (except for the <font size=3><tt>?</tt> <font size=3>operator, which was introduced in Chapter 11).<br>
+<span style=" text-indent: 0.1800in;"></span>The operators within a group have the same precedence. The groups themselves are listed in <font size=3><I>decreasing</I> <font size=3>order of precedence. Thus postfix oper- ators have the highest precedence, followed by prefix operators, and so on; assignment operators have the lowest precedence.<br>
+<span style=" text-indent: 0.1800in;"></span>The operators within a group of binary operators also have the same associativity. Most of the binary operators are left associative, which means that operands are evaluated left to right in an expression involving operators of the same precedence. For example, <font size=3><tt>a*b/c</tt> <font size=3>is evaluated as <font size=3><tt>(a*b)/c</tt><font size=3>. The exponentiation and assignment operators are right associative.<br>
+<span style=" text-indent: 0.1800in;"></span>Parentheses can, as usual, be placed around an expression to give it the highest precedence. Function invocations have precedence above the postfix operators. The dot ``operator,'' which is used to reference fields of<br>
+</p>
+
+<!-- Page: 293  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<p><font size=3>records and unions and to qualify imported names, has precedence equal to that of the postfix operators.</p>
+<br><br><span style=" text-indent: 0.1600in;"></span><p><img src="groff-html-4-13876.png">
+<br>
+</p>
+</B>
+<!-- Page: 294  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<a name="294"></a><h2>294</h2><p><span style=" text-indent: 4.4000in;"></span><font size=2><I>Appendix C</p>
+</I><p><span style=" text-indent: 0.1600in;"></span><font size=3><tt>xor</tt> <font size=3>logical/bit-wise exclusive or boolean, integer</p>
+<br><p align=center><img src="groff-html-5-13876.png" align="middle">
+<br>
+</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="7">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="3.2000%">
+</td>
+<td valign="top" align="left"  width="7.2000%">
+<p><font size=3><tt>:=<br>
+:=:</p>
+</tt><p><font size=3><tt>+:=<br>
+-:=<br>
+*:=<br>
+/:=<br>
+%:=<br>
+**:=<br>
+<span style=" text-indent: 0.0200in;"></span>| :=<br>
+&:=<br>
+||:=<br>
+&lt;&lt;:=<br>
+&gt;&gt;:=</p>
+</tt></td>
+<td valign="top" align="left"  width="8.0000%">
+</td>
+<td valign="top" align="left"  width="33.4000%">
+<p><font size=3>assign<br>
+swap</p>
+<p><font size=3>increment, then assign<br>
+decrement, then assign<br>
+multiply, then assign<br>
+divide, then assign<br>
+remainder, then assign<br>
+exponentiate, then assign<br>
+or, then assign<br>
+and, then assign<br>
+concatenate, then assign<br>
+left shift, then assign<br>
+right shift, then assign</p>
+</td>
+<td valign="top" align="left"  width="6.6000%">
+</td>
+<td valign="top" align="left"  width="27.2000%">
+<p><font size=3>all<br>
+all</p>
+<p><font size=3>integer, real, pointer integer, real, pointer integer, real<br>
+integer, real<br>
+integer, real<br>
+integer, real<br>
+boolean, integer<br>
+boolean, integer<br>
+string, character<br>
+integer<br>
+integer</p>
+</td>
+<td valign="top" align="left"  width="14.4000%">
+</td>
+</tr>
+</table>
+<p align=center><font size=3><B>Table C.1.</B> <font size=3>Operators in decreasing order of precedence (by groups).</p>
+<br><p align=center><img src="groff-html-6-13876.png" align="middle">
+<br>
+</p>
+<a name="Basic Functions"></a><h2>Basic Functions</h2><p><font size=3>The following functions can be applied to arguments having the types specified. (Strictly speaking, <font size=3><tt>low</tt><font size=3>, <font size=3><tt>high</tt><font size=3>, and <font size=3><tt>new</tt> <font size=3>are not functions; their names are keywords and their arguments are type names, not expressions.)</p>
+<p><font size=3><tt>abs(x)</p>
+</tt><p><font size=3>The absolute value of <font size=3><tt>x</tt><font size=3>. Defined for integers and reals.</p>
+<p><font size=3><tt>max(x1, ..., xn)<br>
+min(x1, ..., xn)</p>
+</tt><p><font size=3>The maximum or minimum of the list of arguments. Defined for ordered types and reals. All arguments must be of the same type, except that integers and reals can be mixed (in which case the integers are implicitly converted to reals and the result is a real).</p>
+<p><font size=3><tt>pred(x)<br>
+succ(x)</p>
+</tt><p><font size=3>The predecessor or successor of <font size=3><tt>x</tt><font size=3>. Defined for ordered types.</p>
+<p><font size=3><tt>low(T)</tt><br>
+</p>
+
+<!-- Page: 295  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+
+<table width="100%"  rules="none"  frame="none"  cols="3">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="38.4000%">
+<p><font size=2><I>Operators and Predefined Functions</p>
+</I><p><font size=3><tt>high(T)</p>
+</tt></td>
+<td valign="top" align="left"  width="56.8000%">
+</td>
+<td valign="top" align="left"  width="4.8000%">
+<p><font size=3><B>295</p>
+</B></td>
+</tr>
+</table>
+<p> <font size=3>The smallest or largest value of type <font size=3><tt>T</tt><font size=3>. Defined for ordered types and reals; <font size=3><tt>low(real)</tt> <font size=3>is the smallest representable real value greater than 0.<br>
+</p>
+
+<!-- Page: 296  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<a name="296"></a><h2>296</h2><p><span style=" text-indent: 4.4000in;"></span><font size=2><I>Appendix C</I> <font size=3><tt>lb(a,n)<br>
+ub(a,n)</p>
+</tt><p><font size=3>The lower or upper bound of range <font size=3><tt>n</tt> <font size=3>of array <font size=3><tt>a</tt><font size=3>. Argument <font size=3><tt>n</tt> <font size=3>is optional; the default value is 1. If <font size=3><tt>n</tt> <font size=3>is present, it must be an integer literal.</p>
+<p><font size=3><tt>length(s)</p>
+</tt><p><font size=3>The number of characters in string <font size=3><tt>s</tt><font size=3>.</p>
+<p><font size=3><tt>maxlength(s)</p>
+</tt><p><font size=3>The maximum number of characters that can be stored in string <font size=3><tt>s</tt><font size=3>.</p>
+<p><font size=3><tt>new(T)</p>
+</tt><p><font size=3>Allocates storage for a new object of type <font size=3><tt>T</tt> <font size=3>and returns a pointer to it.</p>
+<p><font size=3><tt>free(p)</p>
+</tt><p><font size=3>Frees the object pointed to by pointer <font size=3><tt>p</tt><font size=3>; the object must have been allocated by <font size=3><tt>new(T)</tt><font size=3>.</p>
+<a name="Math Functions"></a><h2>Math Functions</h2><p><font size=3>The following functions take real arguments--or integers by the implicit conversion rule--and they return a real result. For the trigonometric functions, angles are measured in radians; the return ranges are consistent with ANSI C [ANSI 1989]. In most cases SR just calls C library routines directly, so the handling of erroneous arguments is system dependent.</p>
+<p><font size=3><tt>sqrt(x)</p>
+</tt><p><font size=3>The square root of <font size=3><tt>x</tt><font size=3>, for non-negative <font size=3><tt>x</tt><font size=3>.</p>
+<p><font size=3><tt>log(x,b)</p>
+</tt><p><font size=3>The logarithm of <font size=3><tt>x</tt> <font size=3>with respect to base <font size=3><tt>b</tt><font size=3>, for <font size=3><tt>x</tt> <font size=3>&gt; 0 and <font size=3><tt>b</tt> <font size=3>&gt; 1. Argument <font size=3><tt>b</tt> <font size=3>is optional; the default value is the base <font size=3><I>e</I> <font size=3>of the natural logarithms (i.e., 2.7182...).</p>
+<p><font size=3><tt>exp(x,b)</p>
+</tt><p><font size=3>The value of <font size=3><tt>b</tt> <font size=3>raised to the power <font size=3><tt>x</tt><font size=3>; this is equivalent to <font size=3><tt>b**x</tt><font size=3>, except that the result is always real. Argument <font size=3><tt>b</tt> <font size=3>is optional; the default value is the base <font size=3><I>e</I> <font size=3>of the natural logarithms (i.e., 2.7182...).<br>
+</p>
+
+<!-- Page: 297  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<p><font size=2><I>Operators and Predefined Functions</I> <font size=3><B>297</B> <font size=3><tt>ceil(x)<br>
+floor(x)</p>
+</tt><p><font size=3>The smallest integer not less than <font size=3><tt>x</tt> <font size=3>or the largest integer not greater than <font size=3><tt>x</tt><font size=3>. Both functions return real results.</p>
+<p><font size=3><tt>round(x)</p>
+</tt><p><font size=3>The integer nearest to <font size=3><tt>x</tt> <font size=3>(returned as a real). If <font size=3><tt>x</tt> <font size=3>is halfway between two integers, the real equivalent of the even integer is returned.</p>
+<p><font size=3><tt>sin(r)<br>
+cos(r)<br>
+tan(r)</p>
+</tt><p><font size=3>The sine, cosine, or tangent of <font size=3><tt>r</tt><font size=3>.</p>
+<p><font size=3><tt>asin(x)<br>
+acos(x)<br>
+atan(x,y)</p>
+</tt><p><font size=3>The arc sine or arc cosine of <font size=3><tt>x</tt><font size=3>, or the arc tangent of <font size=3><tt>x/y</tt><font size=3>. For <font size=3><tt>asin</tt><font size=3>, <font size=3><tt>x</tt> <font size=3>must be between <font size=3>-<font size=3>1 and 1, and the result is between <font size=3>-p<font size=3>/2 and <font size=3>p<font size=3>/2. For <font size=3><tt>acos</tt><font size=3>, <font size=3><tt>x</tt> <font size=3>must be between <font size=3>-<font size=3>1 and 1, and the result is between 0 and <font size=3>p<font size=3>. For <font size=3><tt>atan</tt><font size=3>, argument <font size=3><tt>y</tt> <font size=3>is optional (the default value is 1), either <font size=3><tt>x</tt> <font size=3>or <font size=3><tt>y</tt> <font size=3>can be zero (but not both), and the result is between <font size=3>-p <font size=3>and <font size=3>p<font size=3>.</p>
+<a name="Random Number Generation"></a><h2>Random Number Generation</h2><p><font size=3>The following functions produce sequences of (pseudo-) random numbers. A sequence is not reproducible unless it is explicitly seeded with a nonzero value.</p>
+<p><font size=3><tt>random()<br>
+random(ub)<br>
+random(lb,ub)</p>
+</tt><p><font size=3>The first function returns a random number <font size=3><tt>r</tt> <font size=3>such that 0.0 <font size=3>£ <font size=3><tt>r</tt> <font size=3>&lt; 1.0. The second returns an <font size=3><tt>r</tt> <font size=3>such that 0.0 <font size=3>£ <font size=3><tt>r</tt> <font size=3>&lt; <font size=3><tt>ub</tt><font size=3>. The third returns an <font size=3><tt>r</tt> <font size=3>such that <font size=3><tt>lb</tt> <font size=3>£ <font size=3><tt>r</tt> <font size=3>&lt; <font size=3><tt>ub</tt><font size=3>.</p>
+<p><font size=3><tt>seed(x)</p>
+</tt><p><font size=3>Seeds the random number generator with real value <font size=3><tt>x</tt><font size=3>. If <font size=3><tt>x</tt> <font size=3>is zero, an irreproducible value is used.<br>
+</p>
+
+<!-- Page: 298  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<a name="298"></a><h2>298</h2><p><span style=" text-indent: 4.4000in;"></span><font size=2><I>Appendix C</p>
+</I><a name="Processes, Resources, and Virtual Machines"></a><h2>Processes, Resources, and Virtual Machines</h2><p><font size=3>The following functions deal with process priorities, capabilities for resources and virtual machines, and the mapping from virtual to physical machines in a distributed program.</p>
+<p><font size=3><tt>setpriority(n)</p>
+</tt><p><font size=3>Sets the current process's priority to integer value <font size=3><tt>n</tt><font size=3>. This will cause the current process to relinquish the CPU to a higher-priority task.</p>
+<p><font size=3><tt>mypriority()</p>
+</tt><p><font size=3>Returns the executing process's current priority.</p>
+<p><font size=3><tt>myresource()</p>
+</tt><p><font size=3>Returns a capability for the resource in which the function is called.</p>
+<p><font size=3><tt>myvm()</p>
+</tt><p><font size=3>Returns a capability for the virtual machine on which the function is called.</p>
+<p><font size=3><tt>mymachine()</p>
+</tt><p><font size=3>Returns the integer number of the physical machine on which the function is called. By convention, program execution begins on machine 0. Numbers of other machines are installation dependent; see Appendix D for details.</p>
+<p><font size=3><tt>locate(x,s)<br>
+locate(x,s,p)</p>
+</tt><p><font size=3>Defines integer value <font size=3><tt>x</tt> <font size=3>to be synonymous with the network node (machine) named by string <font size=3><tt>s</tt> <font size=3>when used in <font size=3><tt>create vm() on x</tt><font size=3>. If argument <font size=3><tt>p</tt> <font size=3>is present, it is a string specifying a pathname that will be used to load the executable program on machine <font size=3><tt>x</tt><font size=3>; see Appendix D for details.</p>
+<a name="Timing Functions"></a><h2>Timing Functions</h2><p><font size=3>SR provides two functions that enable a program to determine how long it has been executing or to delay execution. The first is useful for timing program execution; the second is used to delay a process.</p>
+<p><font size=3><tt>age()</p>
+</tt><p><font size=3>Returns an integer that gives the elapsed time, in milliseconds, since the local virtual machine was created.<br>
+</p>
+
+<!-- Page: 299  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+
+<table width="100%"  rules="none"  frame="none"  cols="3">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="38.4000%">
+<p><font size=2><I>Operators and Predefined Functions</p>
+</I><p><font size=3><tt>nap(msec)</p>
+</tt></td>
+<td valign="top" align="left"  width="56.8000%">
+</td>
+<td valign="top" align="left"  width="4.8000%">
+<p><font size=3><B>299</p>
+</B></td>
+</tr>
+</table>
+<p> <font size=3>Blocks the executing process for integer value <font size=3><tt>msec</tt> <font size=3>milliseconds. Resched- ules the executing process if <font size=3><tt>msec</tt> <font size=3>is zero or negative; this may or may not cause the process to be preempted, depending on the existence of other ready processes and their priorities.</p>
+<a name="Type Conversion Functions"></a><h2>Type Conversion Functions</h2><p><font size=3>SR provides several functions for converting (casting) values of one type into those of another. Values can be converted to and from types <font size=3><tt>int</tt><font size=3>, <font size=3><tt>real</tt><font size=3>, <font size=3><tt>char</tt><font size=3>, <font size=3><tt>enum</tt><font size=3>, <font size=3><tt>bool</tt><font size=3>, <font size=3><tt>ptr</tt><font size=3>, <font size=3><tt>string</tt><font size=3>, and <font size=3><tt>[]char</tt> <font size=3>(array of <font size=3><tt>char</tt><font size=3>). All combinations are possible, although some (e.g., <font size=3><tt>bool</tt> <font size=3>to <font size=3><tt>ptr</tt><font size=3>) make little sense.<br>
+<span style=" text-indent: 0.1800in;"></span>Conversion functions are also associated with user-defined types that are equivalent to the above types. In addition, a record constructor function is implicitly associated with each user-defined record type.<br>
+<span style=" text-indent: 0.1800in;"></span>The conversion functions have no effect when given an argument of the same type as that returned by the function; e.g., <font size=3><tt>int(5)</tt> <font size=3>returns <font size=3><tt>5</tt><font size=3>. In a conversion from <font size=3><tt>string</tt> <font size=3>or <font size=3><tt>[]char</tt> <font size=3>to anything other than <font size=3><tt>string</tt> <font size=3>or <font size=3><tt>[]char</tt><font size=3>, both leading and trailing whitespace are discarded before inter- pretation; the whitespace characters are blank, tab, newline, return, vertical tab, and formfeed. When converting to and from ordered types, values of type <font size=3><tt>char</tt> <font size=3>are viewed by the conversion functions as small integers, not as short strings.</p>
+<p><font size=3><tt>int(x)</p>
+</tt><p><font size=3>The return value depends on the type of <font size=3><tt>x</tt><font size=3>, as follows:</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="4">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="21.2000%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>real<br>
+<span style=" text-indent: 0.5200in;"></span>char<br>
+<span style=" text-indent: 0.5200in;"></span>bool<br>
+<span style=" text-indent: 0.5200in;"></span>enum<br>
+<span style=" text-indent: 0.5200in;"></span>ptr<br>
+<span style=" text-indent: 0.5200in;"></span>string</p>
+</tt></td>
+<td valign="top" align="left"  width="3.6000%">
+</td>
+<td valign="top" align="left"  width="70.8000%">
+<p><font size=3>integer portion of <font size=3><tt>x</tt><font size=3>, which must not cause overflow<br>
+integer value of <font size=3><tt>x</tt><font size=3>, with no sign extension<br>
+1 for true, 0 for false<br>
+integer value of <font size=3><tt>x</tt><font size=3>; enumeration literals start at 0<br>
+integer value of the address of <font size=3><tt>x<br>
+</tt>converted value; string must be a valid integer literal,<br>
+<span style=" text-indent: 0.1600in;"></span>possibly with a leading <font size=3>- <font size=3>or <font size=3>+ <font size=3>sign;<br>
+<span style=" text-indent: 0.1600in;"></span>octal and hexadecimal literals are allowed</p>
+</td>
+<td valign="top" align="left"  width="4.4000%">
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="21.2000%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>[]char</p>
+</tt><p><font size=3><tt>real(x)</p>
+</tt></td>
+<td valign="top" align="left"  width="3.6000%">
+</td>
+<td valign="top" align="left"  width="70.8000%">
+<p><font size=3>same as for <font size=3><tt>string</p>
+</tt></td>
+<td valign="top" align="left"  width="4.4000%">
+</td>
+</tr>
+</table>
+<p><font size=3>The return value depends on the type of <font size=3><tt>x</tt><font size=3>, as shown in the table at the top of the next page.<br>
+</p>
+
+<!-- Page: 300  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 654 -->
+
+<table width="100%"  rules="none"  frame="none"  cols="8">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="4.7619%">
+<p><font size=3><B>300</p>
+</B></td>
+<td valign="top" align="left"  width="5.5556%">
+</td>
+<td valign="top" align="left"  width="7.1429%">
+</td>
+<td valign="top" align="left"  width="7.1429%">
+</td>
+<td valign="top" align="left"  width="34.1270%">
+</td>
+<td valign="top" align="left"  width="28.5714%">
+</td>
+<td valign="top" align="left"  width="11.9048%">
+<p><font size=2><I>Appendix C</p>
+</I></td>
+<td valign="top" align="left"  width="1.0000%">
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="4.7619%">
+</td>
+<td valign="top" align="left"  width="5.5556%">
+</td>
+<td valign="top" align="left"  width="7.1429%">
+<p><font size=3><tt>int<br>
+char<br>
+bool<br>
+enum ptr</p>
+</tt></td>
+<td valign="top" align="left"  width="7.1429%">
+</td>
+<td valign="top" align="left"  width="34.1270%">
+<p><font size=3>real equivalent of <font size=3><tt>x<br>
+</tt>real equivalent of <font size=3><tt>int(x)</tt> <font size=3>real equivalent of <font size=3><tt>int(x)</tt> <font size=3>real equivalent of <font size=3><tt>int(x)</tt> <font size=3>real equivalent of <font size=3><tt>int(x)</p>
+</tt></td>
+<td valign="top" align="left"  width="28.5714%">
+</td>
+<td valign="top" align="left"  width="11.9048%">
+</td>
+<td valign="top" align="left"  width="1.0000%">
+</td>
+</tr>
+</table>
+
+<table width="100%"  rules="none"  frame="none"  cols="2">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="10.3175%">
+</td>
+<td valign="top" align="left"  width="89.6825%">
+<p><font size=3><tt>string</tt> <font size=3>converted value according to rules of C's <font size=3><tt>scanf("%lf") []char</tt> <font size=3>converted value according to rules of C's <font size=3><tt>scanf("%lf")</p>
+</tt></td>
+</tr>
+</table>
+<p> <font size=3><tt>char(x)</p>
+</tt><p><font size=3>The return value depends on the type of <font size=3><tt>x</tt><font size=3>, as follows:</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="4">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="21.0317%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>int</p>
+</tt></td>
+<td valign="top" align="left"  width="3.5714%">
+</td>
+<td valign="top" align="left"  width="63.6905%">
+<p><font size=3>character constructed from low order 8 bits of <font size=3><tt>x</tt><font size=3>;<br>
+<span style=" text-indent: 0.1600in;"></span>the discarded bits must be all 0 or all 1</p>
+</td>
+<td valign="top" align="left"  width="11.7063%">
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="21.0317%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>real<br>
+<span style=" text-indent: 0.5200in;"></span>enum<br>
+<span style=" text-indent: 0.5200in;"></span>bool<br>
+<span style=" text-indent: 0.5200in;"></span>ptr<br>
+<span style=" text-indent: 0.5200in;"></span>string</p>
+</tt></td>
+<td valign="top" align="left"  width="3.5714%">
+</td>
+<td valign="top" align="left"  width="63.6905%">
+<p><font size=3>same as <font size=3><tt>char(int(x))<br>
+</tt>same as <font size=3><tt>char(int(x))<br>
+</tt>same as <font size=3><tt>char(int(x))<br>
+</tt>same as <font size=3><tt>char(int(x))<br>
+</tt>first non-whitespace character in <font size=3><tt>x</tt><font size=3>; returns <font size=3><tt>\0<br>
+<span style=" text-indent: 0.1600in;"></span></tt>if there is no such character</p>
+</td>
+<td valign="top" align="left"  width="11.7063%">
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="21.0317%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>[]char</p>
+</tt><p><font size=3><tt>bool(x)</p>
+</tt></td>
+<td valign="top" align="left"  width="3.5714%">
+</td>
+<td valign="top" align="left"  width="63.6905%">
+<p><font size=3>same as for <font size=3><tt>string</p>
+</tt></td>
+<td valign="top" align="left"  width="11.7063%">
+</td>
+</tr>
+</table>
+<p><font size=3>The return value depends on the type of <font size=3><tt>x</tt><font size=3>, as follows:</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="4">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="21.0317%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>int<br>
+<span style=" text-indent: 0.5200in;"></span>real<br>
+<span style=" text-indent: 0.5200in;"></span>char<br>
+<span style=" text-indent: 0.5200in;"></span>enum<br>
+<span style=" text-indent: 0.5200in;"></span>ptr<br>
+<span style=" text-indent: 0.5200in;"></span>string</p>
+</tt></td>
+<td valign="top" align="left"  width="3.5714%">
+</td>
+<td valign="top" align="left"  width="74.0079%">
+<p><font size=3>true if <font size=3><tt>x</tt> <font size=3>¹ <font size=3>0; false otherwise<br>
+true if <font size=3><tt>int(x)</tt> <font size=3>¹ <font size=3>0; false otherwise<br>
+true if <font size=3><tt>int(x)</tt> <font size=3>¹ <font size=3>0; false otherwise<br>
+true if <font size=3><tt>int(x)</tt> <font size=3>¹ <font size=3>0; false otherwise<br>
+true if <font size=3><tt>x</tt> <font size=3>¹ <font size=3><tt>null</tt><font size=3>; false otherwise<br>
+true if <font size=3><tt>x</tt> <font size=3>is <font size=3><tt>"t"</tt> <font size=3>or <font size=3><tt>"true"</tt><font size=3>; false if <font size=3><tt>x</tt> <font size=3>is <font size=3><tt>"f"</tt> <font size=3>or <font size=3><tt>"false"</tt><font size=3>;<br>
+<span style=" text-indent: 0.1600in;"></span>fatal error if <font size=3><tt>x</tt> <font size=3>is any other value<br>
+<span style=" text-indent: 0.1600in;"></span>the comparison is case insensitive</p>
+</td>
+<td valign="top" align="left"  width="1.3889%">
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="21.0317%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>[]char</p>
+</tt><p><font size=3><tt>string(x)</p>
+</tt></td>
+<td valign="top" align="left"  width="3.5714%">
+</td>
+<td valign="top" align="left"  width="74.0079%">
+<p><font size=3>same as for <font size=3><tt>string</p>
+</tt></td>
+<td valign="top" align="left"  width="1.3889%">
+</td>
+</tr>
+</table>
+<p><font size=3>Returns a string formatted according to the following rules, which depend<br>
+on the type of <font size=3><tt>x</tt><font size=3>:<br>
+</p>
+
+<!-- Page: 301  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 657 -->
+
+<table width="100%"  rules="none"  frame="none"  cols="4">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="92.7022%">
+<p><font size=2><I>Operators and Predefined Functions</p>
+</I><p><span style=" text-indent: 0.5200in;"></span><font size=3><tt>[]char</tt> <font size=3>the equivalent string<br>
+<span style=" text-indent: 0.5200in;"></span><tt>char</tt> <font size=3>a one-element string containing the character<br>
+<span style=" text-indent: 0.5200in;"></span><tt>int</tt> <font size=3>a string consisting of the equivalent decimal number<br>
+<span style=" text-indent: 0.5200in;"></span><tt>enum</tt> <font size=3>a string consisting of an integer literal that specifies<br>
+<span style=" text-indent: 1.4000in;"></span>the position of enumeration literal <font size=3><tt>x</tt> <font size=3>in the type<br>
+<span style=" text-indent: 0.5200in;"></span><tt>real</tt> <font size=3>a string consisting of an equivalent real literal</p>
+</td>
+<td valign="top" align="left"  width="1.5779%">
+</td>
+<td valign="top" align="left"  width="4.3393%">
+<p><font size=3><B>301</p>
+</B></td>
+<td valign="top" align="left"  width="1.3807%">
+</td>
+</tr>
+</table>
+
+<table width="100%"  rules="none"  frame="none"  cols="3">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="17.3570%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>bool<br>
+<span style=" text-indent: 0.5200in;"></span>ptr</p>
+</tt></td>
+<td valign="top" align="left"  width="7.1006%">
+</td>
+<td valign="top" align="left"  width="75.5424%">
+<p><font size=3>returns <font size=3><tt>"true"</tt> <font size=3>or <font size=3><tt>"false"</tt><font size=3>, depending on the value of <font size=3><tt>x<br>
+</tt>if <font size=3><tt>x</tt> <font size=3>is a null pointer, returns <font size=3><tt>"==null=="</tt><font size=3>; otherwise<br>
+<span style=" text-indent: 0.1600in;"></span>returns the address of <font size=3><tt>x</tt> <font size=3>as a string of eight<br>
+<span style=" text-indent: 0.1600in;"></span>hexadecimal digits</p>
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="17.3570%">
+<p><font size=3><tt>chars(x)</p>
+</tt></td>
+<td valign="top" align="left"  width="7.1006%">
+</td>
+<td valign="top" align="left"  width="75.5424%">
+</td>
+</tr>
+</table>
+
+<table width="100%"  rules="none"  frame="none"  cols="2">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="98.6193%">
+<p><font size=3>Returns the same result as <font size=3><tt>string(x)</tt><font size=3>, but the result is an array of characters instead of a string. Note that <font size=3><tt>chars</tt> <font size=3>is a true predefined function, not a language keyword like previous conversion functions.</p>
+<p><font size=3><tt>T(x)</p>
+</tt><p><font size=3><tt>T</tt> <font size=3>is the name of a user-defined type. If <font size=3><tt>T</tt> <font size=3>names a type equivalent to one of the following, the effect is as indicated:</p>
+</td>
+<td valign="top" align="left"  width="1.3807%">
+</td>
+</tr>
+</table>
+
+<table width="100%"  rules="none"  frame="none"  cols="5">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="10.2564%">
+</td>
+<td valign="top" align="left"  width="10.6509%">
+<p><font size=3><tt>int<br>
+real<br>
+char<br>
+bool<br>
+enum</p>
+</tt></td>
+<td valign="top" align="left"  width="3.5503%">
+</td>
+<td valign="top" align="left"  width="74.5562%">
+<p><font size=3>same as <font size=3><tt>int(x)<br>
+</tt>same as <font size=3><tt>real(x)<br>
+</tt>same as <font size=3><tt>char(x)<br>
+</tt>same as <font size=3><tt>bool(x)<br>
+</tt>same as <font size=3><tt>e(int(x))</tt><font size=3>, where <font size=3><tt>e</tt> <font size=3>is the name of the<br>
+<span style=" text-indent: 0.1600in;"></span>equivalent enumeration type; <font size=3><tt>x</tt> <font size=3>must be a number,<br>
+<span style=" text-indent: 0.1600in;"></span>not an enumeration literal</p>
+</td>
+<td valign="top" align="left"  width="1.0000%">
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="10.2564%">
+</td>
+<td valign="top" align="left"  width="10.6509%">
+<p><font size=3><tt>string<br>
+[]char rec</p>
+</tt></td>
+<td valign="top" align="left"  width="3.5503%">
+</td>
+<td valign="top" align="left"  width="74.5562%">
+<p><font size=3>same as <font size=3><tt>string(x)</tt><font size=3>; resulting length must be legal for <font size=3><tt>T<br>
+</tt>same as <font size=3><tt>chars(x)</tt><font size=3>; resulting length must be legal for <font size=3><tt>T<br>
+</tt>constructs a record of type <font size=3><tt>T</tt><font size=3>; in this case, the conversion<br>
+<span style=" text-indent: 0.1600in;"></span>function has one argument for each field of type <font size=3><tt>T</p>
+</tt></td>
+<td valign="top" align="left"  width="1.0000%">
+</td>
+</tr>
+</table>
+<p><font size=3>If <font size=3><tt>T</tt> <font size=3>names a type equivalent to a pointer type <font size=3><tt>p</tt><font size=3>, the effect depends on the<br>
+type of <font size=3><tt>x</tt><font size=3>, as follows:</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="3">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="10.2564%">
+</td>
+<td valign="top" align="left"  width="87.3767%">
+<p><font size=3><tt>string</tt> <font size=3>if <font size=3><tt>x</tt> <font size=3>is equal to <font size=3><tt>"==null=="</tt> <font size=3>(ignoring whitespace), then<br>
+<span style=" text-indent: 0.8400in;"></span>return <font size=3><tt>null</tt><font size=3>; otherwise interpret <font size=3><tt>x</tt> <font size=3>as a string of<br>
+<span style=" text-indent: 0.8400in;"></span>hexadecimal digits and cast that number to type <font size=3><tt>T<br>
+[]char</tt> <font size=3>same as for <font size=3><tt>string<br>
+</tt>others return <font size=3><tt>int(x)</tt> <font size=3>converted to an address</p>
+</td>
+<td valign="top" align="left"  width="2.3669%">
+</td>
+</tr>
+</table>
+<br>
+<!-- Page: 302  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<a name="302"></a><h2>302</h2><p><span style=" text-indent: 4.4000in;"></span><font size=2><I>Appendix C</p>
+</I><a name="File Access Functions"></a><h2>File Access Functions</h2><p><font size=3>The following functions are used to open, close, or remove a file; to flush a file buffer; or to adjust the read/write pointer on a random access file.</p>
+<p><font size=3><tt>open(pathname,mode)</p>
+</tt><p><font size=3>Opens file <font size=3><tt>pathname</tt> <font size=3>and returns a file descriptor, which is a value of type <font size=3><tt>file</tt><font size=3>. Returns <font size=3><tt>null</tt> <font size=3>if the file cannot be opened. The value of <font size=3><tt>pathname</tt> <font size=3>is a string containing an absolute or relative file name. If <font size=3><tt>mode</tt> <font size=3>is <font size=3><tt>READ</tt><font size=3>, an existing file is opened for reading. If mode is <font size=3><tt>WRITE</tt><font size=3>, a new file is created, or an existing file is truncated. If mode is <font size=3><tt>READWRITE</tt><font size=3>, an existing file is opened for both reading and writing. In all cases, the read/write pointer starts at the beginning of the file. For files opened in <font size=3><tt>READWRITE</tt> <font size=3>mode, <font size=3><tt>seek</tt> <font size=3>must be used when switching access modes. (Files corresponding to terminals that are to be read and written should be opened twice: once for reading from the keyboard and once for writing to the display.)</p>
+<p><font size=3><tt>flush(f)</p>
+</tt><p><font size=3>Flushes the output buffers of file <font size=3><tt>f</tt><font size=3>, which should be open for writing. An unsuccessful <font size=3><tt>flush</tt> <font size=3>is a fatal error. Output statements implicitly flush output buffers, so <font size=3><tt>flush</tt> <font size=3>is not actually needed.</p>
+<p><font size=3><tt>close(f)</p>
+</tt><p><font size=3>Closes file <font size=3><tt>f</tt><font size=3>, which should be open. Open files are implicitly closed when a program terminates. An unsuccessful <font size=3><tt>close</tt> <font size=3>is a fatal error.</p>
+<p><font size=3><tt>remove(pathname)</p>
+</tt><p><font size=3>Removes file <font size=3><tt>pathname</tt> <font size=3>from the file system and returns true if successful, false if not. The value of <font size=3><tt>pathname</tt> <font size=3>is a string containing an absolute or relative file name. If the file is open, its contents will not disappear until the file is closed.</p>
+<p><font size=3><tt>seek(f,stype,offset)</p>
+</tt><p><font size=3>Seeks in file <font size=3><tt>f</tt> <font size=3>and returns the new position of the read/write pointer. The type of seek is determined by the value of <font size=3><tt>stype</tt><font size=3>. If <font size=3><tt>stype</tt> <font size=3>is <font size=3><tt>ABSOLUTE</tt><font size=3>, then the read/write pointer is set to <font size=3><tt>offset</tt><font size=3>. If <font size=3><tt>stype</tt> <font size=3>is <font size=3><tt>RELATIVE</tt><font size=3>, then <font size=3><tt>offset</tt> <font size=3>is added to the read/write pointer. If <font size=3><tt>stype</tt> <font size=3>is <font size=3><tt>EXTEND</tt><font size=3>, then the read/write pointer is set to the end of the file plus <font size=3><tt>offset</tt><font size=3>.</p>
+<p><font size=3><tt>where(f)</p>
+</tt><p><font size=3>Returns the current position of the read/write pointer in file <font size=3><tt>f</tt><font size=3>.<br>
+</p>
+
+<!-- Page: 303  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<p><font size=2><I>Operators and Predefined Functions</I> <font size=3><B>303</B> <font size=4><B>Input/Output Functions</p>
+</B><p><font size=3>SR provides three groups of input/output functions. The first treats a file as a stream of characters, the second provides implicit type conversions and formatting, the third supports user-specified formatting. With the formatting functions, if a particular formatting specification is not supported by the underlying C implementation, the mismatch is not detected and program behavior is unpredictable. Strings (and character arrays) used with formatted I/O may not contain the ASCII NUL character (<font size=3><tt>\0</tt><font size=3>).<br>
+<span style=" text-indent: 0.1800in;"></span>When an SR process calls an input function, it delays until the function returns; however, another process may execute in the meantime. On the other hand, when a process calls an output function, it retains control of the processor. A process is not preempted when doing output, so write state- ments added for debugging will not affect the order in which processes execute. The <font size=3><tt>-A</tt> <font size=3>option to the SR linker <font size=3><B>srl</B> <font size=3>makes output asynchronous; in this case a process might be preempted while waiting for output to complete.</p>
+<p><font size=3><tt>get(str)<br>
+get(f,str)</p>
+</tt><p><font size=3>Reads characters from <font size=3><tt>stdin</tt> <font size=3>or file <font size=3><tt>f</tt> <font size=3>and stores them in <font size=3><tt>str</tt><font size=3>. Argument <font size=3><tt>str</tt> <font size=3>is either a string variable or an array of characters. If <font size=3><tt>str</tt> <font size=3>is a string and the input file contains at least <font size=3><tt>maxlength(str)</tt> <font size=3>more characters, that many are read. Otherwise, all remaining characters are read. If at least one character was read, <font size=3><tt>get</tt> <font size=3>returns a count of the number of characters that were read and sets the length of <font size=3><tt>str</tt> <font size=3>to that value. If end- of-file is encountered immediately, no characters are read and <font size=3><tt>get</tt> <font size=3>returns <font size=3><tt>EOF</tt><font size=3>. The argument to <font size=3><tt>get</tt> <font size=3>can also be a character array, in which case the entire array is filled (unless <font size=3><tt>EOF</tt> <font size=3>is encountered).</p>
+<p><font size=3><tt>put(str)<br>
+put(f,str)</p>
+</tt><p><font size=3>Writes <font size=3><tt>length(str)</tt> <font size=3>characters to <font size=3><tt>stdout</tt> <font size=3>or file <font size=3><tt>f</tt><font size=3>. Argument <font size=3><tt>str</tt> <font size=3>can also be an array of characters, in which case the entire array is written.</p>
+<p><font size=3><tt>read(x,...)<br>
+read(f,x,...)</p>
+</tt><p><font size=3>Reads values from <font size=3><tt>stdin</tt> <font size=3>or file <font size=3><tt>f</tt><font size=3>, stores them in the arguments, and returns the number of values successfully read. If end-of-file is encountered before any value is read, <font size=3><tt>read</tt> <font size=3>returns <font size=3><tt>EOF</tt><font size=3>. It returns 0 if there is an error reading the first value.<br>
+<span style=" text-indent: 0.1800in;"></span>The arguments are assigned values in order. The value assigned to argument <font size=3><tt>x</tt> <font size=3>depends on its type. If <font size=3><tt>x</tt> <font size=3>is a string or array of characters, the<br>
+</p>
+
+<!-- Page: 304  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<a name="304"></a><h2>304</h2><p><span style=" text-indent: 4.4000in;"></span><font size=2><I>Appendix C</I> <font size=3>next input line is read into <font size=3><tt>x</tt><font size=3>. The newline at the end of the line is discarded, not stored. If the line is too long, it is truncated, and the rest of the line remains unread. If <font size=3><tt>x</tt> <font size=3>is a string, its length is set. If <font size=3><tt>x</tt> <font size=3>is of type <font size=3><tt>[]char</tt> <font size=3>and the input line is shorter than the length of the array, extra elements of <font size=3><tt>x</tt> <font size=3>are filled with blanks.<br>
+<span style=" text-indent: 0.1800in;"></span>If <font size=3><tt>x</tt> <font size=3>is any other type <font size=3><tt>T</tt><font size=3>, the next token is read as a string <font size=3><tt>s</tt> <font size=3>and converted to <font size=3><tt>T</tt> <font size=3>using type-conversion function <font size=3><tt>T(s)</tt><font size=3>. A token is defined as a sequence of non-whitespace characters terminated by whitespace. Leading whitespace characters are skipped; trailing whitespace characters are consumed and discarded up to and including the first newline character. If the conversion <font size=3><tt>T(s)</tt> <font size=3>succeeds, <font size=3><tt>read</tt> <font size=3>continues with the next argument (if any). If the conversion fails, <font size=3><tt>read</tt> <font size=3>returns immediately and <font size=3><tt>x</tt> <font size=3>is not modified.</p>
+<p><font size=3><tt>write(x,...)<br>
+write(f,x,...)<br>
+writes(x,...)<br>
+writes(f,x,...)</p>
+</tt><p><font size=3>Formats and writes the arguments to <font size=3><tt>stdout</tt> <font size=3>or file <font size=3><tt>f</tt><font size=3>. For each argument <font size=3><tt>x</tt><font size=3>, the value written is <font size=3><tt>string(x)</tt><font size=3>. For <font size=3><tt>write</tt><font size=3>, one space is written between each pair of output values and a newline is written after the last value. No implicit spaces or newline characters are written by <font size=3><tt>writes</tt><font size=3>.</p>
+<p><font size=3><tt>printf(format,x,...)<br>
+printf(f,format,x,...)</p>
+</tt><p><font size=3>Prints its arguments on <font size=3><tt>stdout</tt> <font size=3>or file <font size=3><tt>f</tt> <font size=3>using the format specified by string value <font size=3><tt>format</tt><font size=3>. The format specification must be acceptable to C's <font size=3><tt>printf</tt> <font size=3>function, except that a new specification has been added for SR's boolean type. An argument <font size=3><tt>x</tt> <font size=3>of the correct type must be supplied for each conversion character. The format characters and corresponding argument types are</p>
+<p><span style=" text-indent: 0.5200in;"></span><font size=3><tt>%d</tt><font size=3>, <font size=3><tt>%i</tt><font size=3>, <font size=3><tt>%o</tt><font size=3>, <font size=3><tt>%q</tt><font size=3>, <font size=3><tt>%x</tt><font size=3>, <font size=3><tt>%X</tt><font size=3>, <font size=3><tt>%u int</tt> <font size=3>or <font size=3><tt>enum</p>
+</tt>
+<table width="100%"  rules="none"  frame="none"  cols="5">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="10.4000%">
+</td>
+<td valign="top" align="left"  width="24.4000%">
+<p><font size=3><tt>%b</tt><font size=3>, <font size=3><tt>%B<br>
+%c<br>
+%s<br>
+%f</tt><font size=3>, <font size=3><tt>%e</tt><font size=3>, <font size=3><tt>%E</tt><font size=3>, <font size=3><tt>%g</tt><font size=3>, <font size=3><tt>%G<br>
+%p<br>
+%n<br>
+%%</p>
+</tt></td>
+<td valign="top" align="left"  width="14.0000%">
+</td>
+<td valign="top" align="left"  width="46.2000%">
+<p><font size=3><tt>bool<br>
+char<br>
+string</tt> <font size=3>or <font size=3><tt>[]char<br>
+real</tt> <font size=3>(or <font size=3><tt>int</tt><font size=3>, by conversion rules)<br>
+any pointer<br>
+not allowed by SR<br>
+(no argument)</p>
+</td>
+<td valign="top" align="left"  width="5.0000%">
+</td>
+</tr>
+</table>
+<p><font size=3>Format <font size=3><tt>%q</tt> <font size=3>is an alternate form of <font size=3><tt>%o</tt><font size=3>. Format <font size=3><tt>%b</tt> <font size=3>writes <font size=3><tt>true</tt> <font size=3>or <font size=3><tt>false</tt><font size=3>, and <font size=3><tt>%B</tt> <font size=3>writes <font size=3><tt>TRUE</tt> <font size=3>or <font size=3><tt>FALSE</tt><font size=3>; width and precision are interpreted as with<br>
+</p>
+
+<!-- Page: 305  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<p><font size=2><I>Operators and Predefined Functions</I> <font size=3><B>305</B> <font size=3><tt>%s</tt><font size=3>. Pointers are written in hexadecimal using <font size=3><tt>%08X</tt> <font size=3>format because <font size=3><tt>%p</tt> <font size=3>is not yet supported by all C implementations.<br>
+<span style=" text-indent: 0.1800in;"></span>All of the ANSI C ``flags'' ("<font size=3><tt>-+ 0#</tt><font size=3>") are allowed and have the same meanings. None of the word size modifiers (<font size=3><tt>"hlL"</tt><font size=3>) is allowed, however. Use of <font size=3><tt>*</tt> <font size=3>as a width or precision specifier is also not allowed. Each conversion is limited to a maximum of 509 characters (as in ANSI C).</p>
+<p><font size=3><tt>sprintf(buffer,format,x...)</p>
+</tt><p><font size=3>Formats and writes its arguments like <font size=3><tt>printf</tt><font size=3>, but the output is placed in string variable <font size=3><tt>buffer</tt><font size=3>. The length of <font size=3><tt>buffer</tt> <font size=3>is set to the length of the output string; it is an error if <font size=3><tt>buffer</tt> <font size=3>is too small.</p>
+<p><font size=3><tt>scanf(format,x,...)<br>
+scanf(f,format,x,...)</p>
+</tt><p><font size=3>Reads formatted input from <font size=3><tt>stdin</tt> <font size=3>or file <font size=3><tt>f</tt><font size=3>, stores it in arguments <font size=3><tt>x</tt><font size=3>, and returns the number of items converted and assigned. If end-of-file is reached before a successful conversion is performed, <font size=3><tt>EOF</tt> <font size=3>is returned. The input format is specified by string value <font size=3><tt>format</tt><font size=3>, which must be acceptable to C's <font size=3><tt>scanf</tt> <font size=3>function.<br>
+<span style=" text-indent: 0.1800in;"></span>Field specifiers in <font size=3><tt>format</tt> <font size=3>are of the form <font size=3><tt>"%[*][</tt><font size=3><I>digits</I><font size=3><tt>]$"</tt><font size=3>, where <font size=3><tt>$</tt> <font size=3>is one of the formats described below. None of C's word size modifiers ("<font size=3><tt>hlL</tt><font size=3>") is allowed. The optional <font size=3><I>digits</I> <font size=3>field specifies the maximum number of characters to be scanned for this field. The optional <font size=3><tt>*</tt> <font size=3>indicates suppression; the input will be read but no assignment will be made. Even if assignment is suppressed, format checking still occurs, so invalid input will cause a failure.<br>
+<span style=" text-indent: 0.1800in;"></span>An argument <font size=3><tt>x</tt> <font size=3>of the correct type must be supplied for each conversion character in <font size=3><tt>format</tt> <font size=3>not accompanied by the <font size=3><tt>*</tt> <font size=3>assignment-suppression flag. Arguments must be SR variables, not pointers to variables as in C. The format characters and corresponding types are</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="2">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="60.4000%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>%d</tt><font size=3>, <font size=3><tt>%i</tt><font size=3>, <font size=3><tt>%o</tt><font size=3>, <font size=3><tt>%q</tt><font size=3>, <font size=3><tt>%u</tt><font size=3>, <font size=3><tt>%x int<br>
+<span style=" text-indent: 0.5200in;"></span>%b bool<br>
+<span style=" text-indent: 0.5200in;"></span>%e</tt><font size=3>, <font size=3><tt>%f</tt><font size=3>, <font size=3><tt>%g real<br>
+<span style=" text-indent: 0.5200in;"></span>%c</tt><font size=3>, <font size=3><tt>%[...]</tt><font size=3>, <font size=3><tt>%s string</tt> <font size=3>or <font size=3><tt>[]char<br>
+<span style=" text-indent: 0.5200in;"></span>%c</tt><font size=3>, <font size=3><tt>%[...] char</tt> <font size=3>if field width is</p>
+</td>
+<td valign="top" align="left"  width="39.4000%">
+<p><font size=3>width is 1</p>
+</td>
+</tr>
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="60.4000%">
+<p><font size=3><tt><span style=" text-indent: 0.5200in;"></span>%p</tt> <font size=3>any pointer (default<br>
+<span style=" text-indent: 0.5200in;"></span><tt>%n</tt> <font size=3>not allowed by SR<br>
+<span style=" text-indent: 0.5200in;"></span><tt>%%</tt> <font size=3>(no argument)</p>
+<p><font size=3>The input expected for each kind of format is:</p>
+<p><span style=" text-indent: 0.5200in;"></span><font size=3><tt>%d</tt><font size=3>, <font size=3><tt>%u</tt> <font size=3>decimal integer</p>
+</td>
+<td valign="top" align="left"  width="36.8000%">
+<p><font size=3> input format <font size=3><tt>%8x</tt><font size=3>)<br>
+SR</p>
+</td>
+</tr>
+</table>
+<p><font size=3><tt>%i</tt> <font size=3>SR integer literal (decimal, octal, or hexadecimal)<br>
+</p>
+
+<!-- Page: 306  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 662 -->
+
+<table width="100%"  rules="none"  frame="none"  cols="3">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="4.6875%">
+<p><font size=3><B>306</p>
+</B></td>
+<td valign="top" align="left"  width="5.4688%">
+</td>
+<td valign="top" align="left"  width="89.8438%">
+<p><font size=2><I><span style=" text-indent: 3.8800in;"></span>Appendix C</p>
+</I><p><font size=3><tt>%o</tt><font size=3>, <font size=3><tt>%q</tt> <font size=3>octal integer, with or without a trailing <font size=3><tt>q</tt> <font size=3>or <font size=3><tt>Q<br>
+%x</tt> <font size=3>hexadecimal integer, with or without a trailing <font size=3><tt>x</tt> <font size=3>or <font size=3><tt>X<br>
+%b true</tt><font size=3>, <font size=3><tt>false</tt><font size=3>, <font size=3><tt>TRUE</tt><font size=3>, or <font size=3><tt>FALSE<br>
+%p</tt> <font size=3>an address specified by a string of hexadecimal digits,<br>
+<span style=" text-indent: 1.3800in;"></span>or the special string <font size=3><tt>==null==</tt> <font size=3>for a null pointer</p>
+</td>
+</tr>
+</table>
+<p> <font size=3>Each of the above formats may have an optional field-width specifier. If a<br>
+field width is specified, up to that many characters are read. For example,<br>
+given a format of <font size=3><tt>%6s</tt> <font size=3>and input string <font size=3><tt>"abraham"</tt><font size=3>, the argument string</p>
+
+<table width="100%"  rules="none"  frame="none"  cols="2">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="97.6562%">
+<p><font size=3>will be assigned <font size=3><tt>"abraha"</tt><font size=3>. The next character read will be <font size=3><tt>"m"</tt><font size=3>.<br>
+<span style=" text-indent: 0.1800in;"></span>The default field width for the integer, real and <font size=3><tt>s</tt> <font size=3>formats is the ANSI limit of 512. For the <font size=3><tt>p</tt> <font size=3>format, the default is 8. For <font size=3><tt>c</tt><font size=3>, it is 1. The <font size=3><tt>b</tt> <font size=3>format has a variable default length: 4 characters for <font size=3><tt>"true"</tt> <font size=3>and 5 for <font size=3><tt>"false"</tt><font size=3>.<br>
+<span style=" text-indent: 0.1800in;"></span>For each argument, <font size=3><tt>scanf</tt> <font size=3>consumes input until the field width is exhausted or a character is read that is not part of a legal value. For example, consider the string <font size=3><tt>"3BAGELS"</tt> <font size=3>scanned using a <font size=3><tt>"%i"</tt> <font size=3>format. This reads <font size=3><tt>3BA</tt> <font size=3>because <font size=3><tt>3BA</tt> <font size=3>is an initial substring of the legal value <font size=3><tt>3BAx</tt><font size=3>. But because <font size=3><tt>3BA</tt> <font size=3>is not legal by itself, nothing is assigned to the corresponding variable, and <font size=3><tt>scanf</tt> <font size=3>returns on the mismatch. Subsequent reads begin at the letter <font size=3><tt>G</tt><font size=3>.</p>
+</td>
+<td valign="top" align="left"  width="2.3438%">
+</td>
+</tr>
+</table>
+
+<table width="100%"  rules="none"  frame="none"  cols="2">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="97.6562%">
+<p><font size=3><span style=" text-indent: 0.1800in;"></span>If argument <font size=3><tt>x</tt> <font size=3>is a string variable and the scanned input string is longer than the maximum length of <font size=3><tt>x</tt><font size=3>, then the input string is truncated before being assigned to <font size=3><tt>x</tt><font size=3>. No warning is given of this, so if in doubt use the optional field width specifier.</p>
+<p><font size=3><tt>sscanf(buffer,format,x...)</p>
+</tt><p><font size=3>Reads and formats input like <font size=3><tt>scanf</tt><font size=3>, but the input is read from string value <font size=3><tt>buffer</tt><font size=3>.</p>
+</td>
+<td valign="top" align="left"  width="2.3438%">
+</td>
+</tr>
+</table>
+<a name="Accessing Command-Line Arguments"></a><h2>Accessing Command-Line Arguments</h2>
+<table width="100%"  rules="none"  frame="none"  cols="2">
+<tr valign="top" align="left">
+<td valign="top" align="left"  width="97.6562%">
+<p><font size=3>Two operations provide access to the arguments of the UNIX command that invoked execution of an SR program.</p>
+<p><font size=3><tt>getarg(n,x)</p>
+</tt><p><font size=3>Reads argument <font size=3><tt>n</tt> <font size=3>into variable <font size=3><tt>x</tt><font size=3>. If <font size=3><tt>n</tt> <font size=3>is 0, <font size=3><tt>x</tt> <font size=3>is assigned the command name itself (<font size=3><tt>argv[0]</tt><font size=3>). If argument <font size=3><tt>n</tt> <font size=3>does not exist, <font size=3><tt>getarg</tt> <font size=3>returns <font size=3><tt>EOF</tt><font size=3>.<br>
+<span style=" text-indent: 0.1800in;"></span>If <font size=3><tt>x</tt> <font size=3>is of type <font size=3><tt>string</tt> <font size=3>or <font size=3><tt>[]char</tt><font size=3>, <font size=3><tt>getarg</tt> <font size=3>copies argument <font size=3><tt>n</tt> <font size=3>into <font size=3><tt>x</tt> <font size=3>until either the argument is consumed or <font size=3><tt>x</tt> <font size=3>is filled. In this case <font size=3><tt>getarg</tt> <font size=3>returns the number of characters that were copied. If <font size=3><tt>x</tt> <font size=3>is a string, its length is set to this same value.</p>
+</td>
+<td valign="top" align="left"  width="2.3438%">
+</td>
+</tr>
+</table>
+<p><font size=3>If <font size=3><tt>x</tt> <font size=3>is of any other type <font size=3><tt>T</tt><font size=3>, the command-line argument is read as a<br>
+string <font size=3><tt>s</tt><font size=3>, converted to type <font size=3><tt>T</tt> <font size=3>using the rules for conversion function <font size=3><tt>T(s)</tt><font size=3>,<br>
+and then assigned to <font size=3><tt>x</tt><font size=3>. If conversion succeeds, <font size=3><tt>getarg</tt> <font size=3>returns 1. If it<br>
+</p>
+
+<!-- Page: 307  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<p><font size=2><I>Operators and Predefined Functions</I> <font size=3><B>307</B> <font size=3>fails, <font size=3><tt>getarg</tt> <font size=3>returns 0 and <font size=3><tt>x</tt> <font size=3>is not modified.</p>
+<p><font size=3><tt>numargs()</p>
+</tt><p><font size=3>Returns the number of command-line arguments, not counting the command name.</p>
+<a name="External Operations"></a><h2>External Operations</h2><p><font size=3>As described in Section 6.4, external operations provide access to procedures or functions written in C or a language compatible with the C calling sequence. (The name of an external should not begin with <font size=3><tt>sr_</tt> <font size=3>since names of that form are used by the SR implementation.) Like an <font size=3><tt>op</tt><font size=3>, an external may be invoked by either call or send statements. An external may also have a return specification and hence may be used to invoke a C function.<br>
+<span style=" text-indent: 0.1800in;"></span>The declaration of an external specifies the type of each argument and how it is passed. An invocation block is allocated to pass parameters to and from an external. Before an external is invoked, <font size=3><tt>val</tt> <font size=3>and <font size=3><tt>var</tt> <font size=3>parameters are copied into the invocation block; for <font size=3><tt>ref</tt> <font size=3>parameters, a pointer to the parameter is copied into the invocation block. If an external is called (not sent), <font size=3><tt>var</tt> <font size=3>and <font size=3><tt>res</tt> <font size=3>parameters are copied back when the call completes.<br>
+<span style=" text-indent: 0.1800in;"></span>The following table indicates the SR data types that can be passed to an external only by value or by reference; these should not be declared as <font size=3><tt>var</tt> <font size=3>or <font size=3><tt>res</tt> <font size=3>parameters.</p>
+<br><br><span style=" text-indent: 0.5200in;"></span><p><img src="groff-html-7-13876.png">
+<br>
+</p>
+</tt><p><span style=" text-indent: 0.1800in;"></span><font size=3>All four parameter passing modes may be used for <font size=3><tt>string</tt><font size=3>, <font size=3><tt>rec</tt><font size=3>, and array types. To an external, they always appear to be passed by reference using a <font size=3><tt>(char *)</tt> <font size=3>pointer. For a string declared as a <font size=3><tt>val</tt> <font size=3>or <font size=3><tt>var</tt> <font size=3>parameter, SR ensures that the string is terminated by a <font size=3><tt>'\0'</tt> <font size=3>character before the external is invoked.<br>
+<span style=" text-indent: 0.1800in;"></span>Care should be taken when passing an external an array of strings or array of records because individual elements are not converted. In this<br>
+</p>
+
+<!-- Page: 308  -->
+<!-- left  margin: 150 -->
+<!-- right margin: 650 -->
+<a name="308"></a><h2>308</h2><p><span style=" text-indent: 4.4000in;"></span><font size=2><I>Appendix C</I> <font size=3>case the programmer needs to determine the internal representation used by the SR implementation.<br>
+<span style=" text-indent: 0.1800in;"></span>For externals that have return specifications, the allowed SR return types and the corresponding C function types are as follows:</p>
+<br><br><span style=" text-indent: 0.5200in;"></span><p><img src="groff-html-8-13876.png">
+<br>
+</p>
+</tt><p><font size=3>If a C function returns a pointer to a null-terminated character string, it may be described in SR as returning <font size=3><tt>string[n]</tt> <font size=3>as long as <font size=3><tt>n</tt> <font size=3>is large enough to accept the largest string ever expected. (If <font size=3><tt>n</tt> <font size=3>turns out to be insufficiently large, the returned string will be silently truncated.) If the C function returns a null pointer, an empty string will be returned to the SR program. For return values--and <font size=3><tt>var</tt> <font size=3>or <font size=3><tt>res</tt> <font size=3>parameters--declared as <font size=3><tt>string</tt><font size=3>, the C <font size=3><tt>strlen()</tt> <font size=3>function is called implicitly to set the SR string length after the C function returns.<br>
+</p>
+</body>
+</html>

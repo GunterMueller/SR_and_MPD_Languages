@@ -1,0 +1,39 @@
+# tests empty statement lists, etc.
+# no output.
+resource n0
+body n0() separate
+resource n1()
+	op p()
+	op q()
+	proc p()  {
+	}
+	proc q()  {
+		int  a = 1
+		int  b = 2
+		if (a < b) {
+		} else if (a == b ) {
+		} else if (a > b ) {
+		    while (true) {
+			if (a > 0) {
+				a --
+			} else if (a == 111 ) {
+			} else {
+				exit
+			}
+		    }
+		}
+		if (a == 77) {
+			if (b == 88) {
+				char  c 
+			} else if (b == 999 ) {
+			} else {
+			}
+		}
+	}
+
+
+	final {
+	}
+end
+body n0
+end

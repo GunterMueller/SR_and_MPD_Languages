@@ -1,0 +1,40 @@
+# reply in initial
+resource i
+	op f(int x) returns int  y{call,send}
+body i(int x)
+
+	write("in i's initial",x)
+	reply
+	in f(xx) returns y ->
+		y = 1000*xx + x
+		reply
+		x = x+x+xx
+		y = 999999
+	ni
+	in f(xx) returns y ->
+		y = x
+		reply
+		x = xx
+		y = 999999
+	ni
+
+	final {
+		write("in i's final",x)
+	}
+end
+
+resource main
+	import i
+body main()
+
+		cap i  c
+		c = create i(10)
+		write( c.f(3) )
+		write( c.f(4) )
+		destroy c
+		c = create i(20)
+		send c.f(5)
+		write( c.f(6) )
+		destroy c
+
+end

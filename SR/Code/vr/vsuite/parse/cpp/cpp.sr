@@ -1,0 +1,10 @@
+#  The following SR program found an apparent bug in the Sun C
+#  preprocessor; works fine on Vax.  We've isolated the bug as shown
+#  below.  It is very sensitive to the location of newlines, but this is
+#  like the code that sr generates.
+
+resource main()
+    op str() returns str :string[10]
+    proc str() returns str  str := ""  end
+    initial write("'"||str()) end
+end

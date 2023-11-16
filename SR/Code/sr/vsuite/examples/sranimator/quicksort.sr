@@ -1,0 +1,255 @@
+#  quicksort animation
+#
+#  usage:  quicksort [n_items [max_val [n_cpu]]]
+
+resource quicksort()
+   import SRanimator
+   procedure print_nums(ref a[1:*] : int; left, right : int)
+      const MAX_PER_LINE : int := 15
+      var count : int := 0
+      fa i := left to right -> writes(" ", a[i]); count++
+         if count mod MAX_PER_LINE = 0 -> writes("\n") fi
+      af
+      if count mod MAX_PER_LINE != 0 -> writes("\n") fi
+   end print_nums
+
+   var N : int := 50;     getarg(1, N)
+   var RANGE : int := 100; getarg(2, RANGE)
+   var NCPU : int := 4;    getarg(3, NCPU)
+   if NCPU > 6 -> write(stderr, "too many CPUs, must be <= 6"); stop(1) fi
+   write("sorting", N, "numbers between 1 and", RANGE, "using", NCPU, "CPUs")
+   var nums[1:N] : int
+
+##### animator #####v
+   procedure scale_x(x : int) returns x_scaled : real
+      x_scaled := real(x)/(N+1)
+   end scale_x
+
+   procedure scale_y(y : int) returns y_scaled : real
+      y_scaled := real(y)/(RANGE+1)
+   end scale_y
+
+   procedure maxx(ref number[1:*] : int; left, right : int) returns mx : int
+      mx := number[left]
+      fa i := left+1 to right -> if number[i] > mx -> mx := number[i] fi af
+   end maxx
+
+   procedure minn(ref number[1:*] : int; left, right : int) returns mn : int
+      mn := number[left]
+      fa i := left+1 to right -> if number[i] < mn -> mn := number[i] fi af
+   end minn
+
+   # set up colors
+   var colors[1:6] : string[16]  # := ("red   ", "green ", "blue  ", "orange",
+                                 #     "maroon", "yellow")
+                                 # trailing blanks confuse SRanimator
+   colors[1] := "red"
+   colors[2] := "green"
+   colors[3] := "blue"
+   colors[4] := "orange"
+   colors[5] := "maroon"
+   colors[6] := "yellow"
+   const CPU_object : int := 1000;
+   var worker_object : int := 100000    # race condition possible!
+##### animator #####^
+
+   op task(left, right : int)
+   op done_count()
+
+   procedure qs(worker_id, left, right : int)
+      if right-left <= 0 -> write(stderr, "right-left<=0, error!"); return fi
+      var pivot := nums[left]
+      var l := left, r := right
+
+##### animator #####v
+      setpriority(1)		# grab hold of CPU for drawing operations
+      # enclose what this worker is working on in a black outline rectangle
+      var rectangle_id : int := worker_object++
+      var ymin := minn(nums, left, right)
+      var ymax := maxx(nums, left, right)
+      var xpos, ypos, xsize, ysize : real
+      xpos := scale_x(left); ypos := scale_y(ymin)
+      xsize := scale_x(right-left); ysize := scale_y(ymax-ymin)
+      # enclose what this worker is working on in a black outline rectangle
+      call A_rectangle(rectangle_id, xpos, ypos, xsize, ysize, "black",
+         "outline")
+      # change items sorted to this worker's color
+      fa i := left to right ->
+         call A_color(i, colors[worker_id])
+         call A_fill(i, "solid")
+      af
+      # make pivot half color
+      call A_fill(left, "half")
+      # draw a black horizontal dotted line from the pivot across the rectangle
+      var line_id_h : int := worker_object++
+      xpos := scale_x(left); ypos := scale_y(pivot)
+      xsize := scale_x(right-left); ysize := 0.0
+      call A_line(line_id_h, xpos, ypos, xsize, ysize, "black", "thin",
+         "dotted", "none")
+      # draw two vertical dashed lines at left+1 and right
+      var line_id_v_l : int := worker_object++
+      var line_id_v_r : int := worker_object++
+      xpos := scale_x(l+1); ypos := scale_y(pivot)
+      xsize := 0.0; ysize := scale_y(ymax-pivot)
+      call A_line(line_id_v_l, xpos, ypos, xsize, ysize, "black", "thin",
+         "dashed", "none")
+      xpos := scale_x(r); ypos := scale_y(ymin)
+      xsize := 0.0; ysize := scale_y(pivot-ymin)
+      call A_line(line_id_v_r, xpos, ypos, xsize, ysize, "black", "thin",
+         "dashed", "none")
+      setpriority(0)
+##### animator #####^
+
+      var not_done := true
+      do not_done ->
+         if nums[l+1] > pivot ->  # needs to be moved to other end of nums
+            do (r > l+1) and (nums[r] > pivot) -> r--  # find one to swap
+
+##### animator #####v
+               # move the right vertical line one to the left
+               if not_done ->
+                  call A_jumprelative(line_id_v_r, scale_x(-1), 0.0)
+               fi
+##### animator #####^
+
+            od
+            if r > l+1 -> l++; nums[r] :=: nums[l]; not_done := l < r-1
+
+##### animator #####v
+               # swap locations and ids of the objects
+               call A_jump(r, scale_x(l), scale_y(nums[l]))
+               call A_jump(l, scale_x(r), scale_y(nums[r]))
+               call A_swapid(r, l)
+##### animator #####^
+
+##### animator #####v
+               # move the left vertical line one to the right
+               if not_done ->
+                  call A_jumprelative(line_id_v_l, scale_x(1), 0.0)
+               fi
+##### animator #####^
+
+            [] else -> not_done := false  # if can't find one to swap, then
+            fi                            # nums now partitioned; we are done
+         [] else -> l++; not_done := l < r  # need not be moved to other end
+
+##### animator #####v
+            # move the left vertical line one to the right
+            if not_done ->
+               call A_jumprelative(line_id_v_l, scale_x(1), 0.0)
+            fi
+##### animator #####^
+
+         fi
+      od # when this loop finishes, nums[left] is the pivot,
+         # nums[left:l] <= pivot and nums[l+1,right] > pivot
+         #
+                              #   [pivot, <= | > ]
+                              #    ^        ^ ^ ^
+                              #    |        | | |
+                              # left        l r right
+                              #    |        | | |
+                              #    v        v v v
+      nums[left] :=: nums[l]  #   [<=, pivot | > ]
+         # nums[left,l-1] <= pivot, nums[l] = pivot, and nums[l+1,right] > pivot
+
+##### animator #####v
+      # swap locations and ids of the objects
+      call A_jump(left, scale_x(l), scale_y(nums[l]))
+      call A_jump(l, scale_x(left), scale_y(nums[left]))
+      call A_swapid(left, l)
+##### animator #####^
+
+      if right-(l+1) > 0 -> send task(l+1, right)
+      [] right-(l+1) = 0 -> send done_count() # nums[l+1:right] singleton sorted
+
+##### animator #####v
+         # color the object solid black to indicate it is in final position
+         call A_color(right, "black")
+         call A_fill(right, "solid")
+##### animator #####^
+
+      fi
+
+##### animator #####v
+      # delete the line and rectangle objects
+      call A_delete(rectangle_id)
+      call A_delete(line_id_h)
+      call A_delete(line_id_v_l)
+      call A_delete(line_id_v_r)
+##### animator #####^
+
+      send done_count() # nums[l] = pivot is singleton so sorted
+
+##### animator #####v
+      # color the object solid black to indicate it is in final position
+      call A_color(l, "black")
+      call A_fill(l, "solid")
+##### animator #####^
+
+##    if (l-1)-left > 0 -> qs(worker_id, left, l-1)  # replace all recursion
+##                                                   # with tasks
+      if (l-1)-left > 0 -> send task(left, l-1)
+      [] (l-1)-left = 0 -> send done_count() # nums[left:l-1] singleton sorted
+
+##### animator #####v
+         # color the object solid black to indicate it is in final position
+         call A_color(left, "black")
+         call A_fill(left, "solid")
+##### animator #####^
+
+      fi
+   end qs
+
+   sem worker_alive := 0
+
+   process worker(id := 1 to NCPU)
+      var left, right : int
+      # writes("*DEBUG* worker: id=", id, " is alive", "\n")
+      V(worker_alive)
+      do true ->
+         receive task(left, right)
+         # writes("*DEBUG* worker: id=", id, " received task, left=", left,
+         #   " right=", right, "\n")
+         call A_fill(CPU_object+id, "solid")
+         qs(id, left, right)
+         call A_fill(CPU_object+id, "outline")
+      od
+   end worker
+
+   fa id := 1 to NCPU -> P(worker_alive) af
+
+#  seed(42.0)   # leave in for reproducible random numbers for debugging
+   fa i := 1 to N -> nums[i] := int(random(RANGE)+1) af
+   write("original numbers"); print_nums(nums, 1, N)
+
+##### animator #####v
+   # change coordinates so there is room for CPU busy circles
+   call A_coords(0.0, 0.0, 1.0, 1.2)
+   # display original numbers
+   fa i := 1 to N ->
+      A_circle(i, scale_x(i), scale_y(nums[i]), 0.75*scale_x(1), "black",
+         "outline")
+   af
+   # draw a line separating data from CPU busy circles
+   call A_line(CPU_object, 0.0, 1.0, 1.0, 0.0, "black", "thin", "solid",
+      "none")
+   # draw outline circles for each CPU
+   fa i := 1 to NCPU ->
+      call A_circle(CPU_object+i, 0.0+0.1*i, 1.1, 0.05, colors[i], "outline")
+   af
+   call A_text(CPU_object+NCPU+1, 0.0+0.1*(NCPU+1), 1.1, 0, "black",
+      "busy CPUs are solid")
+##### animator #####^
+
+   send task(1, N)
+   var count : int, total : int := 0
+   do total < N ->
+      receive done_count()
+      total++
+   od
+   write("sorted   numbers"); print_nums(nums, 1, N)
+   nap(100) # wait a bit for animations to finish
+   call A_end()
+   stop
+end quicksort

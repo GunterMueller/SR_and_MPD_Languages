@@ -1,0 +1,39 @@
+# interresource call
+# This test times a simple call between resources.  The resources are
+# on the same machine.   
+
+resource server
+  op dummy()
+body server()
+
+  proc dummy()  {
+  }
+
+end
+
+resource caller()
+
+  import server
+
+  int  limit, factor, base, trials 
+  cap server  sc 
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit = factor * base
+
+  sc = create server()
+
+  process test  {
+    int  start, finish 
+
+    for [ t = 1 to trials ] {
+	start = age()
+	for [ i = 1 to limit ] { sc.dummy() }
+	finish = age()
+	printf("%d times   %d ms\n",limit,finish-start)
+    }
+  }
+
+end

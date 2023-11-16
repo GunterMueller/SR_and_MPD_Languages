@@ -1,0 +1,22 @@
+# basic test of else in input statements
+resource a()
+   op f()
+   op g()
+
+   send f()
+   send g()
+   in f() -> write("f1")
+   ni
+   in f() -> write("f2")
+   [] else -> write("else2")
+   ni
+   send f(); send f()
+   in f() -> write("f3")
+   [] g() -> write("g3")
+   [] else -> write("else3")
+   ni
+   in f() -> write("f4")
+   ni
+   in f() -> write("f5")
+   ni
+end

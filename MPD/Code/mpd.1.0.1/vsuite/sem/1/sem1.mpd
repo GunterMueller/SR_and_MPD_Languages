@@ -1,0 +1,46 @@
+# test semaphore operations
+resource sem1
+	op s1() {send} # shouldn't be because it's exported
+body sem1()
+	op s2() {send} # should be sem
+	op s3() {send} # shouldn't be because it's assigned to cap
+	op s4() {send} # should be sem
+	op s5() {send} # shouldn't be because it's has sched expr
+	op s6() {send} # shouldn't be because it's not in class by itself
+	op s7(int x) {send} # shouldn't be because it has parameter
+	op s8() {call,send} # should be -- never *really* called
+	op foo(cap s3 x)
+
+	cap s3  c 
+	c = s3
+	send c()
+	send foo(c)
+
+	process invoker  {
+		send s1(); send s2(); send s4(); send s5();
+		send s6(); send s7(4); send s8()
+	}
+	process p  {
+		int  i
+		op t() {send} # shouldn't be because it's not resource level
+		write(1111)
+		send t()
+		receive s1()
+		receive s2()
+		receive s3()
+		send s2()
+		write(8888)
+		in s2() -> write(9999) ni
+		write(7777)
+		receive s4()
+		in s5() by 3 -> ni
+		receive s6()
+		receive s7(i); write(i)
+		receive s8()
+		receive t()
+		in foo(x) -> write("foo")
+		[] s6() -> write("s6")
+		ni
+		write("done")
+	}
+end

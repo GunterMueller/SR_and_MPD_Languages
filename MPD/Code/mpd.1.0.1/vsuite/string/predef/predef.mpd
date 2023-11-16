@@ -1,0 +1,56 @@
+# test of string arguments to predefined functions
+
+resource predef()
+
+    string[22] s
+    char  c[1:7]
+    int  n
+    file  f
+
+    for [ i = 0 to numargs() ] {
+	n = getarg(i,s)
+	write("arg",i,": ",s," (",n,")")
+    }
+
+    s = "Philadelphia"
+    write("len:",length(s)," max:",maxlength(s)," val:",s)
+    c = chars("Oshkosh")
+    write("len:",ub(c)," max:",ub(c)," val:",c)
+    write("len:",length("Ajo")," max:",maxlength("Ajo")," val:","Ajo")
+    s = ""
+    write("len:",length(s)," max:",maxlength(s)," val:",s)
+
+    s = "/tmp/mpd.predef.test1"
+    f = open(s,WRITE)
+    if (f ~= null) {
+	write("opened:",s)
+	close(f)
+	if (remove(s)) {
+		write("removed:",s)
+	}
+    }
+
+    f = open("/tmp/mpd.predef.test2",WRITE)
+    if (f != null) {
+	write("opened:","/tmp/mpd.predef.test2")
+	close(f)
+	if (remove("/tmp/mpd.predef.test2")) {
+		write("removed:","/tmp/mpd.predef.test2")
+	}
+    }
+
+    writes(char(43))
+    writes(char(45))
+    write(char(42))
+
+    writes("Beautiful Downtown")
+    write(" Burbank")
+
+    get(s)
+    put(s)
+    put("\n")
+
+    while (read(s) != EOF) {
+	write(s)
+    }
+end

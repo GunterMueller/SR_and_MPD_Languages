@@ -1,0 +1,13 @@
+argtype: 7
+format: '%s'
+  7 < 1>: 'abraham   '
+  7 < 1>: 'abraham   '
+format: '%s'
+  7 < 1>: 'abraham   '
+format: '%2c'
+  7 < 1>: ' a        '
+format: '%10c'
+  7 < 1>: ' abraham l'
+format: '%*s%c'
+  7 < 1>: '          '
+finished

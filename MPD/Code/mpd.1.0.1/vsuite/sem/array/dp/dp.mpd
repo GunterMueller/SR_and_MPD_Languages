@@ -1,0 +1,24 @@
+resource main()
+
+   int N = 5
+
+   sem forke [N] = ([N] 1)
+
+   # just some fun with subscripting...
+   int  l[N], r[N]
+   for [ id = 1 to N-1 ] { l[id] = id   }
+   for [ id = 1 to N-1 ] { r[id] = id+1 }
+   # asymmetry: r[N] gets what would have been l[N] and vice versa.
+   r[N] = N; l[N] = 1
+
+   process dp [ id = 1 to N ] {
+      for [ j = 1 to 10 ] {
+	   #think
+	   P(forke[l[id]])
+	   P(forke[r[id]])
+	   #eat
+	   V(forke[l[id]])
+	   V(forke[r[id]])
+      }
+   }
+end

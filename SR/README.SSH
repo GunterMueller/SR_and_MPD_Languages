@@ -1,0 +1,56 @@
+Date: Thu, 1 Oct 1998 03:25:53 -0700
+From: John Wagner <wagner@itd.ucdavis.edu>
+To: sr-project@cs.arizona.edu
+Subject: ssh vs. rsh
+
+Hi!
+I needed to build sr to use ssh rather than rsh.  It was fairly simple,
+but required a couple changes.
+
+First, in Configuration, put
+	RSHCMD = /usr/bin/ssh
+Then, in rts/srx.c, when calling execl (for remote machine startup of a vm)
+you need to switch the order of the hostname (p->hostname) and the "-n" flag.
+
+Also, the conditional compilation for linux of an extra "--"
+arg needs to be removed when calling ssh.  That is, the call needs to
+evaluate out to:
+    execl("/usr/bin/ssh", "/usr/bin/ssh", "-n", "hostname.cs.arizona.edu", ...);
+Also, the "--" doesn't appear to be needed in my version of linux; as I
+recall, this was fixed long ago.
+
+Sorry I didn't piece this together as a patch file; I don't have the time
+right now, and it probably requires the addition of an extra define in
+Configuration, like
+	#define USE_SSH 1
+(and I really don't have the time).
+
+Anyway, this is what I had to do to get sr to build on my Alpha running linux
+and using ssh instead of rsh.
+
+Sincerely,
+John Wagner
+Chief Scientific Programmer
+Institute of Theoretical Dynamics
+University of California, Davis
+
+
+
+Date: Thu, 1 Oct 1998 22:23:16 -0700
+From: John Wagner <wagner@itd.ucdavis.edu>
+
+Please feel free to post it to the web site, and keep my name
+and email address on it, maybe add that I'd be more than happy
+to give others a hand if they run into problems with it.
+
+NB, though--our resident linux guru told me today that one can
+build ssh so that it takes rsh args.  I havent' verified it,
+but our other guru thought it was the case as well.  So,
+that is probably a better sol'n.
+
+Regards,
+John Wagner
+Chief Scientific Programmer
+Institute of Theoretical Dynamics
+University of California, Davis
+

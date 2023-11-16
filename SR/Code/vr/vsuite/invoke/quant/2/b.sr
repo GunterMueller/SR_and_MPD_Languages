@@ -1,0 +1,26 @@
+# test quantifiers on processes and arrays of operations
+# note: order of output is nondeterministic
+resource b()
+   const N := 7
+   op f[1:N](x:int)
+   process p0
+      write("in p0")
+      fa i := 1 to N -> send f[i](1000+i)  af
+   end
+   process p4(i:=1 to N)
+      in f[i](x) -> write("in p4",i,x)  ni
+   end
+   process p2(i:=1 to 0)
+      write("shouldn't happen",i)
+   end
+   process p3(i:=1 to 2)
+      write("in p3", i)
+   end
+
+     write("initial starting")
+
+   process p5
+      send p3(1989)
+      send p3(1234567)
+   end
+end

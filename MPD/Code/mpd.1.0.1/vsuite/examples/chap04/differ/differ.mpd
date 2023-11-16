@@ -1,0 +1,29 @@
+# Determine first place strings s1 and s2 differ
+# Return 0 if strings are the same
+
+resource main()
+
+  op differ(string[100], string[100]) returns int
+
+  proc differ(s1, s2) returns first_place  {
+    int i = 1
+    int len = min(length(s1),length(s2))
+    while (i <= len & s1[i] == s2[i]) { i++ }
+    if (i > len & length(s1) == length(s2)) {
+      first_place = 0
+    } else {
+      first_place = i
+     }
+  }
+
+  string[100] s1, s2
+  int  result 
+  # writes("enter string 1 "); 
+  read (s1)
+  # writes("enter string 2 ");
+  read (s2)
+  result = differ(s1,s2)
+  write(result)
+
+end
+

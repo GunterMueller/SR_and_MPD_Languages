@@ -1,0 +1,251 @@
+##  Distributed calculation of the Mandelbrot set
+#   using SR for parallel programming, and C for number crunching
+#
+#   Gregg Townsend   (gmt@Arizona.EDU)
+#   Department of Computer Science
+#   University of Arizona
+#   October, 1988; February, 1982
+#
+#   Usage: a.out [-mp] [x [y [side [n]]] [host ...]
+#	-m:	generate mff(1) output and pipe into mff
+#	-p:	generate PostScript output
+#	x,y:	center of region to display
+#	side:	horizontal dimension of area displayed
+#	n:	maximum number of iterations  (default 32, maximum 255)
+#	host:	list of host names on which to calculate  (default: local host)
+#
+#   Output is a greyscale image.
+#
+#   See Computer Recreations, Scientific American, August, 1985
+#
+#   Interesting displays  (some with references to the article)
+#	-.7   0.0   2.6		the whole set  (p.17)   (THIS IS THE DEFAULT)
+#	-.92   .265  .06	edge of the set  (front cover)
+#	-.73   .25   .05	another edge  (near 18a)
+#	 .2649 .0034 .002	near cusp of cardioid
+#	-.738  .208  .01	spiral arms just outside the edge
+#	-.7375 .2085 .001	the eye at the center (like 19e)
+#	-.234  .827  .01	mini-set in a filament  (like 19f)
+#	-1.579 .006  .025	a portion of the negative x axis
+#	-1.57525  0  .0052	mini-set with 8 radiating arms
+#	-.19  1.09   .08	the very top edge of the set
+#	-.1    .958  .02	a fork near the top
+
+resource main ()
+
+import remote
+
+external backend (path: string[*])
+external gethostname (res s: string[*]; namelen: int)
+external strchr (s: string[*]; c: char) returns p: ptr char
+
+op out: outproc
+op start (m: int; c: config)
+op hungry (m: int)
+
+# defaults for command parameters
+const DEFITER := 32			# default iteration limit
+const DEFX := -0.7			# default x
+const DEFY :=  0.0			# default y
+const DEFSIDE := 2.6			# default side
+
+# configuration parameters
+const MAXREM := 64			# maximum number of remote machines
+const AHEAD := 2			# number of anticipatory sends
+const NAMLEN := 50			# max length of a machine name
+
+# the unit of distributed processing is a cell of CWIDTH by CHEIGHT pixels
+########## NOTE: these numbers are for testing.  Use 32, e.g., for real. #####
+const CWIDTH := 8			# cell width in pixels - must be even
+const CHEIGHT := 8			# cell height
+
+# the total displayed area is NWIDE x NHIGH cells
+const NWIDE := 9			# output width, in number of cells
+const NHIGH := 9			# output height
+
+# other constants
+const WIDTH := NWIDE * CWIDTH		# total width, in pixels
+const HEIGHT := NHIGH * CHEIGHT		# total height
+const DATALEN := CWIDTH * CHEIGHT	# length of data for one cell
+
+# PostScript stuff
+var PostScript := true			# PostScript output flag
+const PSHEIGHT := 792			# page height
+const PSWIDTH := 612			# page width
+const LLX := (PSWIDTH - WIDTH) / 2	# coords of LL corner of image
+const LLY := (PSHEIGHT - HEIGHT) / 2	# coords of LL corner of image
+
+# other resource variables
+var nvm := 0				# number of virtual machines
+var rcap[MAXREM]: cap remote		# caps for their resources
+var name[MAXREM]: string[NAMLEN]	# their host names
+var tally[MAXREM]: int			# number of cells computed by each
+
+# mapping from iteration count to greyscale
+var hex[0:255]: char := chars (
+    "3579BDEF89ABCDEF8899AABBCCDDEEFF888999AAABBBCCCDDDEEEFFF88889999" ||
+    "AAAABBBBCCCCDDDDEEEEFFFF888888999999AAAAAABBBBBBCCCCCCDDDDDDEEEE" ||
+    "EEFFFFFF88888888BBBBBBBBCCCCCCCCDDDDDDDDEEEEEEEEFFFFFFFF88888888" ||
+    "8999999999AAAAAAAAABBBBBBBBBCCCCCCCCCDDDDDDDDDEEEEEEEEEFFFFFFFFF")
+
+
+
+#  start(m,c) - start up virtual machine m with configuration c
+
+proc start (m,c)
+    var o: cap outproc := out
+    var mcap: cap vm
+
+    tally[m] := 0				# zero the output counter
+    locate(m,name[m])				# set hostname
+    mcap := create vm() on m			# create virtual machine
+    if mcap = null ->				# check for success
+	write(stderr,"can't create vm on",name[m])
+	stop
+    fi
+    rcap[m] := create remote(m,o) on mcap	# create remote server process
+    send rcap[m].init(c)			# initialize it
+    if nvm > 1 ->
+	write(stderr,"ready on",name[m])	# announce it
+	fi
+    fa j := 0 to AHEAD ->
+	send hungry(m)				# give it an initial work queue
+    af
+end start
+
+
+
+#  the dispatcher gives out work assignments upon request
+
+process dispatcher
+    var m : int
+    fa i := 0 to NWIDE-1 ->		# do columns from left to right
+	fa j := NHIGH-1 downto 0 ->	# do each column from top to bottom
+	    receive hungry(m)		# get next request
+	    send rcap[m].docell(i,j)	# send cell coordinates to machine
+	af
+    af
+    do true ->				# gobble up and ignore extra requests
+	receive hungry(m)
+    od
+end dispatcher
+
+
+
+#  the output process receives iteration counts from the various machines,
+#  translates them into mff form, and writes them to standard output
+
+process output
+    var i, j, m: int
+    var d[DATALEN]: char		# data buffer
+
+    # receive all the cells of the image
+    fa n := 1 to NHIGH * NWIDE ->
+	receive out(m,i,j,d)		# get a cell of data from machine m
+	tally[m]++			# bump its counter
+	hungry(m)			# give it another cell to work on
+	write (CWIDTH*i,CHEIGHT*j,CWIDTH,CHEIGHT,CWIDTH,CHEIGHT,4,"raster")
+					# write header w/ cell size, locn, fmt
+	var c := 0
+	fa y := 1 to CHEIGHT ->
+	    fa x := 1 to CWIDTH ->
+		c++
+		writes (hex[int(d[c])])	# translate count to greyscale
+	    af
+	    write ()			# terminate scan line with newline
+	af
+    af
+
+    # when all cells have been output, write statistics & terminate the program
+    if PostScript ->
+	write("showpage")
+	fi
+    if nvm > 1 ->
+	fa n := 1 to nvm ->
+	    writes(stderr,name[n],": ",tally[n],"\n")
+	af
+    fi
+    stop
+end output
+
+
+
+#  overall initialization
+
+    var c: config		# set up record with configuration parameters
+    c.cwidth := CWIDTH
+    c.cheight := CHEIGHT
+    c.nwide := NWIDE
+    c.nhigh := NHIGH
+    c.niter := DEFITER
+
+    var xc : real := DEFX	# region parameters
+    var yc : real := DEFY
+    var side : real := DEFSIDE
+
+    var s: string[NAMLEN]	# argument buffer
+    var nna := 0		# number of numeric arguments seen so far
+    fa i := 1 to numargs() ->	# process arg list
+	getarg(i,s)			# get next arg
+	if strchr("-0.123456789",s[1]) ~= null ->
+	    if s = "-p" ->		# "-p" sets PostScript mode
+		PostScript := true
+	    [] s = "-m" ->		# "-m" sets mff mode
+		PostScript := false
+	    [] else ->
+		nna++			# process numeric value
+		if nna = 1 -> getarg(i,xc)	# 1st one is x value
+		[] nna = 2 -> getarg(i,yc)	# 2nd one is y value
+		[] nna = 3 -> getarg(i,side)	# 3rd one is side dimension
+		[] nna = 4 -> getarg(i,c.niter)	# 4th one is iteration limit
+		[] else ->
+		    nvm++
+		    name[nvm] := s	# must be a host number
+		fi
+	    fi
+	[] else ->
+	    nvm++		# nonnumeric args are just added to host list
+	    name[nvm] := s
+	fi
+    af
+
+    c.delta := side / (c.cwidth * c.nwide)
+    c.xll := xc - (side / 2)
+    c.yll := yc - c.delta * (c.nhigh * c.cheight / 2);
+
+    if c.niter > 255 ->
+	write(stderr,"sorry, can't handle over 255 iterations")
+	stop
+	fi
+
+    if nvm = 0 ->		# if no hosts named, use self
+	nvm := 1
+	gethostname(name[1],maxlength(name[1]))
+    fi
+
+    hex[c.niter] := '0'		# adjust count mapping to make max map to black
+
+    if PostScript ->		# write header for PostScript output
+	write("%!PS-Adobe-2.0 EPSF-1.2")
+	write("%%BoundingBox",LLX,LLY,LLX+WIDTH,LLY+HEIGHT)
+	write()
+	write("/raster { ")
+	write("  /f exch def  /h exch def  /w exch def  /buf w string def")
+	write("  /buf w string def")
+	write("  gsave 4 2 roll translate scale")
+	write("  w h f [w 0 0 h neg 0 h]")
+	write("    {currentfile buf readhexstring pop} image grestore")
+	write("} def")
+	write()
+	write(LLX,LLY,"translate")
+    [] else ->
+	backend("/usr/local/mff")  # initialize graphics backend (pipe into mff)
+	write ("1 metafile")	   # write metafile header and image dimensions
+	write (WIDTH-1, HEIGHT-1, "128 128 128 init")
+    fi
+
+    fa i := 1 to nvm ->		# start a vm on each host (in parallel)
+	send start(i,c)
+    af
+
+end main

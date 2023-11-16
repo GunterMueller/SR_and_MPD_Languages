@@ -1,0 +1,60 @@
+# test noop opcaps
+# also some misc. tests of query ("?") operator
+
+resource r ()
+    op report (int; string[*])
+    op intop (int)
+    var x, y, z: cap (int)
+    var j : int
+    var rcap := report
+
+    x := new (op (int))
+    y := intop
+    z := noop
+
+    report (?report, "begin")
+    send intop (1)		# load the op queue
+    send x (2)
+    send y (3)
+    send z (4)
+    report (?rcap, "sent")	# query queue sizes
+
+    fa i := 1 to 2 ->		# try with queue full and with it empty
+	do true ->		# receive in FIFO order until no more
+	    in x (i) -> report (i, "got x")
+	    [] y (i) -> report (i, "got y")
+	    [] z (i) -> report (i, "OOPS -- got z!")	# shouldn't happen
+	    [] else -> report (0, "got nothing"); exit
+	    ni
+	od
+    af
+
+    send z(99)
+    in z (k) -> report (k, "OOPS -- got input from noop!")
+    [] else -> report (0, "else worked")
+    ni
+
+    destroy z			# destroy of noop is a noop
+
+    send x (5)			# should never be received:
+    destroy x			# op is destroyed
+    x := new (op (int))		# and replaced with new one
+
+    send intop (6)		# load queue again
+    send x (7)
+    send y (8)
+    send z (9)
+    report (?rcap, "sent")
+
+    receive intop (j); report (j, "got intop")
+    receive x (j); report (j, "got x")
+    receive y (j); report (j, "got y")
+    report (?report, "hanging")
+    receive z (j)		# should hang here
+    write ("OOPS -- didn't block on input from noop!")
+
+    proc report (v, s)
+	# print int arg; queue sizes; and string arg
+	printf ("-%d-  %d,%d,%d  %s\n", v, ?x, ?y, ?z, s)
+    end
+end

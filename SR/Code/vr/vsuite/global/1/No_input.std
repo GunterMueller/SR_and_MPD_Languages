@@ -1,0 +1,13 @@
+Sharedprint started
+B: 3*PI is  9.42478
+A: 2*PI is  6.28319
+A: another 2*PI is  6.28319
+A: the color was  red
+A: the color now is  blue
+A: the color now is  green
+callprint@Shared :  green This callprint was called by   A
+sendprint@Shared :  green This sendprint mesg was from   A
+B: before receive semb()
+B: the color was  green
+callprint@Shared :  red This callprint was called by   B
+sendprint@Shared :  red This sendprint mesg was from   B

@@ -1,0 +1,4 @@
+0 sr -c const1.sr
+0 srl const1
+0 run
+0 rm -rf Interfaces core *.out

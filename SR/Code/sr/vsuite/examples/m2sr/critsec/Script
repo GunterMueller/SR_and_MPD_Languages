@@ -1,0 +1,21 @@
+0 m2sr -sc a.m
+0 sr a.sr test.sr
+0 a.out >sc.out 2>&1
+0 scmp all.std sc.out
+
+0 m2sr -sw a.m
+0 sr a.sr test.sr
+0 a.out >sw.out 2>&1
+0 scmp all.std sw.out
+
+0 m2sr -su a.m
+0 sr a.sr test.sr
+0 a.out >su.out 2>&1
+0 scmp all.std su.out
+
+0 m2sr -sx a.m
+0 sr a.sr test.sr
+0 a.out >sx.out 2>&1
+0 scmp all.std sx.out
+
+0 rm -rf Interfaces core *.out a.sr

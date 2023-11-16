@@ -1,0 +1,31 @@
+#  test variably-sized array of ops
+
+resource main
+	import factorial, gl
+body main()
+
+	cap factorial fc = create factorial()
+	write("A Program to Compute Factorials")
+	int  n 
+	put("how many numbers?  "); read(n); write()
+	int  a[1:n,1:2] 
+	op gl.answer myanswer[1:n]
+
+	write("enter", n, "numbers, separated by whitespace")
+	for [ i = 1 to n ] {
+		read(a[i,1])
+	}
+
+	write()
+	for [ i = 1 to n ] {
+		send fc.fact(a[i,1],myanswer[i])
+	}
+
+	for [ i = 1 to n ] {
+		receive myanswer[i](a[i,2])
+	}
+
+	for [ i = 1 to n ] {
+		write(a[i,1], "factorial is", (a[i,2]));
+	}
+end

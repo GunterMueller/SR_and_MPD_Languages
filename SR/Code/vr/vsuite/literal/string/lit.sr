@@ -1,0 +1,20 @@
+# test of string and char literal interpretation
+resource lit()
+    put("this string has two\
+	embedded\
+	newlines\n");
+    put("embedded apos'phe and escaped \"quotes\" in doubly quoted string\n");
+    put("sharp sign # number sign # pound sign # octothorp # whatever\n");
+    put("back\\slash (\s\o\met\i\me\s \i\gn\ore\d)\n");
+    put("\aalerts\a\n");
+    put("vertical\vtab\n");
+    put("form\ffeed\n");
+    put("         return\rcarriage\n");
+    put("        e\b\bc\b\ba\b\bp\b\bs\b\bk\b\bc\b\ba\b\bb\n");	# backspace
+    put("\e[7mescapes\e[m\n");
+    put("tab\tand \0074 b\7e\07l\007ls\n");			# octals
+    put("turning on the \270\364\350\240\342\351\364\n");	# 8th bit
+    put("hex\x61\x64\x65\x63\x69\x6d\x61\x6C\x9\x21\xa");	# hexadecimal
+    writes('c','h','a','\162','\x61','c','t','e','r','s','\n');	# chars
+    put("done\n");
+end

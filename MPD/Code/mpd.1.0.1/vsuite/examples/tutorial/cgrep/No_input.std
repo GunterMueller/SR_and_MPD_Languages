@@ -1,0 +1,4 @@
+Script: 0 a.out out Script cgrep.mpd >No_input.out 2>&1
+Script: 0 scmp No_input.std No_input.out
+Script: 0 rm -rf MPDinter core *.out
+cgrep.mpd:     # if line contains pattern, write out line

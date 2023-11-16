@@ -1,0 +1,61 @@
+##  potato.sr -- pass around a message like a hot potato
+#
+#   usage:  a.out nvm seq
+#
+#   nvm    number of virtual machines to create
+#   seq    sequence of machines to pass msg to, e.g. "12344321"
+#
+#   The main purpose of this is to test the "CALLME" message to SRX.
+#   This is tested by the default nvm/seq combination (among others).
+
+
+resource spud
+    op msg (n : int; seq : string[*])
+    op init (mach [1:*]: cap spud)
+
+body spud (myid : int; nvm : int)
+    var mach [1:nvm]: cap spud
+
+    write (myid, "created")
+    flush(stdout)
+    reply
+    receive init (mach)
+
+    proc msg (n, seq)
+	writes(myid," ",seq[1:n]," ",seq[n+1:*],"\n");
+	flush(stdout)
+	if n < length(seq) ->
+	    var i := int(seq[n+1]) - int('0')
+	    mach[i].msg(n+1,seq)
+	    fi
+	writes(myid," ",seq[1:n]," ",seq[n+1:*],"\n");
+	flush(stdout)
+    end msg
+end
+
+
+resource maine			# yes, they don't just come from idaho
+    import spud
+
+body maine ()
+    var nvm : int := 4			 	# default of 4 VMs
+    var seq : string[1000] := "41323421" 	# default call sequence
+
+    getarg(1,nvm)
+    getarg(2,seq)
+
+    var virt [1:nvm]: cap vm
+    var mach [1:nvm]: cap spud
+
+    fa i := 1 to nvm ->
+	virt[i] := create vm ()
+	mach[i] := create spud (i, nvm) on virt[i]
+    af
+
+    fa i := 1 to nvm ->
+	mach[i].init (mach)
+    af
+
+    var i := int(seq[1]) - int('0')
+    mach[i].msg (1,seq)
+end

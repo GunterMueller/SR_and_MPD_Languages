@@ -1,0 +1,6 @@
+# aprasad  Jun 91
+
+0 sr -c reals.sr
+0 srl reals
+0 run Input1
+0 rm -rf Interfaces core *.out

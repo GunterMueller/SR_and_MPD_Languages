@@ -1,0 +1,37 @@
+#	Makefile created by SRM
+
+
+SR = sr
+SRFLAGS = 
+I = ./Interfaces
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/gries.o
+	srl  -o a.out gries
+
+compile: $I/gries.o
+
+run: link
+	a.out 
+
+$I/gries.o: $I/gries.spec gries.sr
+	$(SR) $(SRFLAGS) -b gries.sr
+
+$I/gries.spec: gries.sr
+	$(SR) $(SRFLAGS) -s gries.sr
+
+clean:
+	rm -rf $I 
+
+cleanx: clean
+	rm -f core a.out
+
+ls:
+	@echo gries.sr
+
+make:
+	srm gries.sr
+

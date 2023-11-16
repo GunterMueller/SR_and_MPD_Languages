@@ -1,0 +1,28 @@
+resource matrix()
+  # read command line arguments and open files
+  var n: int; getarg(1, n)
+  var namea: string[20]; getarg(2, namea)
+  var nameb: string[20]; getarg(3, nameb)
+  var filea := open(namea, READ)
+  var fileb := open(nameb, READ)
+  # declare and initialize matrices a, b, and c
+  var a[1:n,1:n], b[1:n,1:n]: real
+  var c[1:n,1:n]: real := ([n] ([n] 0.0) )
+  fa i := 1 to n, j := 1 to n ->
+      read(filea, a[i,j]); read(fileb, b[i,j])
+  af
+
+  # compute n**2 inner products in parallel
+  process compute(i := 1 to n, j := 1 to n)
+    fa k := 1 to n ->
+        c[i,j] := c[i,j] + a[i,k]*b[k,j]
+    af
+  end
+
+  final    # print c, one row per line
+    fa i := 1 to n ->
+      fa j := 1 to n -> writes(c[i,j], " ") af
+      write()    # force new line
+    af
+  end
+end matrix

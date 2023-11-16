@@ -1,0 +1,38 @@
+resource sieve()
+  type Wrets = rec(cap (int num) feed; cap () done)
+  op worker() returns Wrets  c
+
+  begin { # initial code to start up pipeline
+    int n = 50
+    Wrets  c 
+    c = worker()
+    for [ i = 2 to n ] { send c.feed(i) }
+    send c.done()
+  }
+
+  # Each worker receives a stream of integers.
+  # It keeps the first, discards multiples, and
+  # passes the rest onto the next worker, its `child'.
+  proc worker() returns c  {
+    op filter(int x), done(); int n
+    c.feed = filter; c.done = done
+    reply
+    receive filter(n)
+    write(n)
+    Wrets child
+    bool child_exists = false
+    while (true) {
+      in filter(y) ->
+	if (y % n != 0) {
+	  if (not child_exists) {
+	    child = worker(); child_exists = true
+	  }
+	  send child.feed(y)
+	}
+      [] done() ->
+	exit
+      ni
+    }
+    if (child_exists) { send child.done() }
+  }
+end

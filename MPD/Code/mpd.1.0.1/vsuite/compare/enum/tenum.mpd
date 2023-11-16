@@ -1,0 +1,38 @@
+resource tenum()
+	type e = enum( e1,e2,e3,e4,e5)
+	op f(e x) returns string[2] y
+	proc f(x) returns y  {
+		if (x == e1) { y = "e1"
+		} else if (x == e2 ) { y = "e2"
+		} else if (x == e3 ) { y = "e3"
+		} else if (x == e4 ) { y = "e4"
+		} else if (x == e5 ) { y = "e5"
+		} else { y = "??"
+		}
+	}
+
+	e  a,b 
+	a= e2
+	b= e4
+	write(f(a),f(b), "  <",a<b, "   <=",a<=b, "   =",a==b,
+		   "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a= e3
+	b= e3
+	write(f(a),f(b), "  <",a<b, "   <=",a<=b, "   =",a==b,
+		   "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a= e3
+	b= e1
+	write(f(a),f(b), "  <",a<b, "   <=",a<=b, "   =",a==b,
+		   "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	if (a <= b) {
+		write("OOPS. Really bad", a <= b)
+	} else {
+		write( "ok", a <= b )
+	}
+	bool  c = a <= b
+	if (c) {
+		write("OOPS. Really bad", c, a <= b)
+	} else {
+		write( "ok", c, a <= b )
+	}
+end

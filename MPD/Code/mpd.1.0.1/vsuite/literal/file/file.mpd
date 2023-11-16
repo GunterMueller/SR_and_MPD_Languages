@@ -1,0 +1,22 @@
+# test null and noop files and other file literals
+
+resource filetest ()
+    file  f 
+    int  i 
+
+    f = null
+    if (f != null) { write ("oops 1") }
+    if (f == noop) { write ("oops 2") }
+    f = noop
+    if (f == null) { write ("oops 3") }
+    if (f != noop) { write ("oops 4") }
+    if (read(f,i) != EOF) { write ("oops 5") }
+    close(f)
+    f = stdout
+    if (f == null) { write ("oops 6") }
+    if (f == noop) { write ("oops 7") }
+    write(f,47)
+    f = stderr
+    close(f)
+    write("done!")
+end filetest

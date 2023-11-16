@@ -1,0 +1,44 @@
+# resource parameters, etc.
+resource r1
+	op p(var x:int)
+body r1(a:int; s:string[*]; b:int)
+	var t : string[10]
+	process p1
+		if length(s) >= 10 ->
+			t := s[1:10]
+		[] else ->
+			t := "1234567890"
+			t[1:length(s)] := s
+		fi
+		write(a,b,s,t)
+	end
+	proc p(x)
+		x := 100*x+a
+	end
+end
+
+resource r2
+	import r1
+body r2(x:cap r1; a:int; s:string[*])
+	write(9999,a,s)
+	x.p(a)
+	write(-9999,a,s)
+end
+
+resource r3
+	import r1,r2
+body r3()
+	var c,d:cap r1
+	var e:cap r2
+	var mcap: cap vm
+
+	write(8888)
+	c := create r1(6,"alpha beta gamma",8)
+	e := create r2(c,333,"delta epsilon") on myvm()
+	mcap := myvm()
+	d := create r1(7,"phi psi",9) on mcap
+	var y:int := 55
+	var z:int := 66
+	c.p(y); d.p(z)
+	write(-8888,y,z)
+end

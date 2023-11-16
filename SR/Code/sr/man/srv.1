@@ -1,0 +1,106 @@
+.TH SRV 1 "24 February 1993" "University of Arizona"
+.SH NAME
+srv \- verify correct functioning of SR system
+.SH SYNOPSIS
+\fBsrv [ \-\fRoption ...\fB ] [ \fRdir ...\fB ]\fP
+.SH DESCRIPTION
+.I Srv
+executes verification scripts in subdirectories of
+the SR verification suite.
+It is part of the SR installation process and is not used by SR programmers.
+.LP
+If one or more
+.I dir
+arguments are given, testing is restricted to those directories
+and descendents;
+otherwise the entire suite is searched.
+Within each subdirectory, a
+.B Script
+file directs the verification process.
+Each line contains an expected status code followed by a command.
+If the command returns an unexpected status, the test fails and
+(except for a
+.B run
+command) the script is abandoned.
+Empty lines, and lines beginning with
+.BR # ,
+are ignored.
+.LP
+For
+.BR sr ,
+.BR srl ,
+.BR srm ,
+.BR srprof ,
+.BR srgrind ,
+.BR srtex ,
+.BR srlatex ,
+.BR ccr2sr ,
+.BR m2sr ,
+and
+.B csp2sr
+commands,
+production or experimental versions are selected according to
+.I srv
+options, and output is redirected to reserved file names.
+A
+.B run
+command executes
+.BR a.out ,
+redirecting standard input if a file is named;
+output is directed to a related file and the results are compared with
+what was expected.
+Differences report a failure and disable
+.B rm
+commands but do not abandon the script.
+Other commands are simply executed by the shell with no special handling.
+.LP
+.I Srv
+normally finds binaries in the source hierarchy.
+The
+.B \-p
+option selects instead the production (installed) version of the system.
+The options
+.BR \-c ,
+.BR \-l ,
+.BR \-r ,
+and
+.B \-t
+individually select the production versions of the
+compiler, linker, runtime system, and other tools
+respectively.
+.LP
+The
+.B \-v
+option echoes each Script line as it is read.
+.SH FILES
+.nf
+.ta 16n
+Script	verification script
+Compiler.out	compiler output
+Linker.out	linker output
+Maker.out	makefile maker output
+Profiler.out	profiler output
+Grinder.out	troff grinder output
+Texer.out	TeXer output
+Latexer.out	LaTeXer output
+CCR.out	ccr2sr output
+M.out	m2sr output
+CSP.out	csp2sr output
+xxxxx.std	expected output from input file `xxxxx'
+xxxxx.out	actual output from input file `xxxxx'
+.fi
+.SH SEE ALSO
+srvi(1), sr(1), srl(1), srm(1), srprof(1),
+srgrind(1), srtex(1), srlatex(1), ccr2sr(1), m2sr(1), csp2sr(1).
+.SH DIAGNOSTICS
+.I Srv
+lists the SR system files to be used, and aborts if any are inaccessible.
+Each directory is listed as testing begins.
+Any additional messages indicate a test failure.
+.SH CAVEATS
+.I Srv
+does not detect infinite loops.
+.LP
+A full run starts slowly due to pipeline delays.
+.LP
+Quoted arguments don't work with the specially recognized commands.

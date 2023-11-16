@@ -1,0 +1,27 @@
+_program(d)
+  const N := 100
+  _specs
+    _process_spec1(A, 1,N)
+      _port(A,goo, ())
+
+    _process_spec(B)
+      _port(B,foo, (x, i:int))
+  _specs_end
+
+  _process_body1(A, i)
+    write("start of A", i)
+    _stmt_o(B,foo,(-i,i))
+    _stmt_i(B,goo,())
+  _process_end
+
+  _process_body(B)
+    write("start of B")
+    fa i := 1 to N-2 ->
+      var x, which: int
+      _stmt_iq1(i, 1,N, A[i],foo, (x, which))
+      write(x)
+      _stmt_o(A[which],goo, ())
+    af
+  _process_end
+
+_program_end

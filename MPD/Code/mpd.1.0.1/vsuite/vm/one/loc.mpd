@@ -1,0 +1,14 @@
+# Check distributed termination dectection for a process with just one VM
+# This is accomplished by doing "locate" and nothing else.
+
+resource l ()
+    write ("locating 1")
+    locate (1, "giga.cs.esu.edu")
+    write ("locating 2")
+    locate (2, "holly.cs.vcu.edu")
+    write ("finished locating")
+
+    final {
+	write ("done")
+    }
+end

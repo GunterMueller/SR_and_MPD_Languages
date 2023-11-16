@@ -1,0 +1,29 @@
+#  test string expressions and substrings
+
+resource expr()
+
+    char  c5 [1:5] 
+    char  c7 [1:7] 
+    string[10] s1, s2, s3
+
+    s1 = "alpha"
+    s2 = "epsilon"             # string const var assigned to string
+    s3 = s1                    # string assignment
+    c5 = chars(s1)             # string var assigned to char var
+    c7 = chars("upsilon")      # string const var assigned to char var
+    write(c5,c7,s1,s2,s3)
+    s1 :=: s2                   # string swap
+    write(s1,s2)
+    s1 = string(c5)            # char var assigned to string
+    s2 = string(c7)
+    s3 = "*"
+    write(s1,s2,s3)
+    s1 = "123"
+    s2 = "45"
+    s1 = "rotorooter"
+    c5 = chars(s1[1:5])        # substring reference
+    c7 = chars(s1[3:9])
+    s1[2:7] = "espira"         # substring assignment
+    s1[9] = char(111)          # substring gets char expression
+    write(c5,c7,s1)
+end

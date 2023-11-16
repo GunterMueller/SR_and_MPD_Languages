@@ -1,0 +1,4 @@
+# this is an interactive program
+# so we just compile without linking or executing
+0 mpd -c window.hello.mpd
+0 rm -rf MPDinter core *.o Compiler.out

@@ -1,0 +1,4 @@
+#  gmt  Wed Jan 27 17:06:17 MST 1993
+0 mpd sepglob.mpd
+0 run
+0 rm -rf MPDinter core *.out

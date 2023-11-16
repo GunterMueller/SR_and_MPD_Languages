@@ -1,0 +1,16 @@
+resource main()
+
+  op fact(int) returns int
+
+  proc fact(n) returns prod  {
+    prod = 1
+    for [ i = 1 to n ] { prod *= i }
+  }
+
+  int i = 1
+  while (i <= 10) {
+    write("the factorial of ",i," is ",fact(i))
+    i++
+  }
+
+end

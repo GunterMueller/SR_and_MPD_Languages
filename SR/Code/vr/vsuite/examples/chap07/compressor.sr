@@ -1,0 +1,8 @@
+resource compressor
+  op compress(filename: string[*])
+body compressor()
+  proc compress(filename)
+      # open file filename, compress its contents,
+      # and then close it.
+  end
+end

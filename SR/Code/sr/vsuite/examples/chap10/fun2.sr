@@ -1,0 +1,14 @@
+resource fun()
+  op f(x: int) returns z: int
+  op g(y: int) returns z: int
+  process p
+    var a := f(1); write(a)
+  end
+  proc f(x) returns z
+    forward g(2*x)
+     ...  # continue executing, perhaps changing x
+  end
+  proc g(y) returns z
+    z := y+10
+  end
+end

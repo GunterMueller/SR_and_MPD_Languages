@@ -1,0 +1,4 @@
+argtype: 1
+format: '%0i%6i'
+RTS abort: file scan.mpd, line 45:
+   field width must be greater than zero

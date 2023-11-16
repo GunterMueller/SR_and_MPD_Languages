@@ -1,0 +1,4 @@
+#  gmt  Wed Jan 27 17:06:17 MST 1993
+0 sr sepglob.sr
+0 run
+0 rm -rf Interfaces core *.out

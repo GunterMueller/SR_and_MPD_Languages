@@ -1,0 +1,148 @@
+resource CmdInterpreter
+  import Defs, Utilities, Login, DirServer
+body CmdInterpreter(name user, int myhost, file ttyin, file ttyout,
+	name host[*], cap DirServer dscap[*], cap () done)
+
+  # command "cr filename"
+  procedure cmd_cr(name fname, int server)  {
+    file_descriptor fd = dscap[server].fcreate(user, fname, WRITE)
+    if (fd.w == null) { write(ttyout, "cannot create file", fname); return }
+    # read from ttyin and write to fd
+    write(ttyout, "Enter contents; Last line should be a single dot")
+    line  ln
+    read(ttyin, ln)
+    while (ln != ".") {
+      fd.w(ln); read(ttyin, ln)
+    }
+    fd.c()
+  }
+
+  # command "cat filename"
+  procedure cmd_cat(name fname, int server)  {
+    file_descriptor fd = dscap[server].fopen(user, fname, READ)
+    if (fd.r == null) { write(ttyout, "cannot read file", fname); return }
+    # read from fd and write to ttyout
+    line  ln
+    while (fd.r(ln) != EOF) { write(ttyout, ln) }
+    fd.c()
+  }
+
+  # command "rm filename"
+  procedure cmd_rm(name fname, int server)  {
+    if (dscap[server].fremove(user, fname)) { return }
+    write(ttyout, "cannot remove file", fname)
+  }
+
+  # command "cp filename1 filename2"
+  procedure cmd_cp(name f1, int s1, name f2, int s2)  {
+    file_descriptor fd1 = dscap[s1].fopen(user, f1, READ)
+    if (fd1.r == null) { write(ttyout, "cannot read file", f1); return }
+    file_descriptor fd2 = dscap[s2].fcreate(user, f2, WRITE)
+    if (fd2.w == null) { write(ttyout, "cannot write file", f2); return }
+    # read from file fd1 and write to file fd2
+    line  ln
+    while (fd1.r(ln) != EOF) { fd2.w(ln) }
+    fd1.c(); fd2.c()
+  }
+
+  process CI  {
+    line cmdline
+    name args[3]
+    int cur_host = myhost
+    write(ttyout)
+    while (true) {
+      writes(ttyout, "% "); read(ttyin, cmdline)
+      string[100] cmd = get_arg(cmdline)
+      if (cmd == "cr") {    # create a new file
+	  string[100] arg = get_arg(cmdline)
+	  if (arg == "") {
+	    write(ttyout, "Useage:  cr filename"); next
+	  }
+	  name  machine, fname
+	  parse_filename(arg, machine, fname)
+	  int server = cur_host
+	  if (machine != "") {
+	    if ((server = lookup(machine, host)) == 0) {
+	      write(ttyout, "invalid host"); next
+	    }
+	  }
+	  cmd_cr(fname, server)
+      } else if (cmd == "cat" ) {    # print an existing file
+	  string[100] arg = get_arg(cmdline)
+	  if (arg == "") {
+	    write(ttyout, "Useage:  cat filename"); next
+	  }
+	  name  machine, fname
+	  parse_filename(arg, machine, fname)
+	  int  server
+	  if (machine == "") { server = cur_host
+	  } else { server = lookup(machine, host)
+	  }
+	  if (server == 0) {
+	    write(ttyout, "invalid host"); next
+	  }
+	  cmd_cat(fname, server)
+      } else if (cmd == "rm" ) {    # remove a file
+	  string[100] arg = get_arg(cmdline)
+	  if (arg == "") {
+	    write(ttyout, "Useage:  rm filename"); next
+	  }
+	  name  machine, fname
+	  parse_filename(arg, machine, fname)
+	  int  server
+	  if (machine == "") { server = cur_host
+	  } else { server = lookup(machine, host)
+	  }
+	  if (server == 0) {
+	    write(ttyout, "invalid host"); next
+	  }
+	  cmd_rm(fname, server)
+      } else if (cmd == "cp" ) {    # copy one file to another
+	  string[100] arg1 = get_arg(cmdline)
+	  string[100] arg2 = get_arg(cmdline)
+	  if (arg1 == "" or arg2 == "") {
+	    write(ttyout, "Useage:  cp file1 file2"); next
+	  }
+	  name  m1, f1, m2, f2
+	  int  s1, s2
+	  parse_filename(arg1, m1, f1)
+	  parse_filename(arg2, m2, f2)
+	  if (m1 == "") { s1 = cur_host
+	  } else { s1 = lookup(m1, host)
+	  }
+	  if (m2 == "") { s2 = cur_host
+	  } else { s2 = lookup(m2, host)
+	  }
+	  if (s1 == 0 or s2 == 0) {
+	    write(ttyout, "invalid host"); next
+	  }
+	  cmd_cp(f1, s1, f2, s2)
+      } else if (cmd == "ls" ) {    # list contents of current directory
+	  int server = cur_host    # default for ls command
+	  string[100] machine = get_arg(cmdline)
+	  if (machine != "") {
+	    server = lookup(machine, host)
+	  }
+	  if (server == 0) {
+	    write(ttyout, "invalid host"); next
+	  }
+	  name  files[FILES]
+	  int nfiles = dscap[server].list(user, files)
+	  for [ i = 1 to nfiles ] { write(ttyout, files[i]) }
+      } else if (cmd == "pwd" ) {    # print name of current directory
+	  write(ttyout, host[cur_host])
+      } else if (cmd == "cd" ) {    # change directory
+	  string[100] machine = get_arg(cmdline)
+	  if (machine == "") { cur_host = myhost; next }
+	  int new_host = lookup(machine, host)
+	  if (new_host == 0) { write(ttyout, "invalid host", machine)
+	  } else { cur_host = new_host
+	  }
+      } else if (cmd == "exit" ) {    # exit interpreter
+	  send done(); exit
+      } else { write(ttyout, "invalid command")
+      }
+    }
+  }
+
+end  CmdInterpreter

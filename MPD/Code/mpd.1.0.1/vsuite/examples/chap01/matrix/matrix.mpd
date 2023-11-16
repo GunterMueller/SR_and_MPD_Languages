@@ -1,0 +1,28 @@
+resource matrix()
+  # read command line arguments and open files
+  int n = 4 # getarg(1, n)
+  # string[20] namea; getarg(2, namea)
+  # string[20] namea; getarg(3, nameb)
+  file filea = open("matrixa", READ)
+  file fileb = open("matrixb", READ)
+  # declare and initialize matrices a, b, and c
+  real a[1:n,1:n], b[1:n,1:n]
+  real c[1:n,1:n] = ([n] ([n] 0.0))
+  for [ i = 1 to n, j = 1 to n ] {
+      read(filea, a[i,j]); read(fileb, b[i,j])
+  }
+
+  # compute n**2 inner products in parallel
+  process compute [ i = 1 to n, j = 1 to n ] {
+    for [ k = 1 to n ] {
+	c[i,j] = c[i,j] + a[i,k]*b[k,j]
+    }
+  }
+
+  final {    # print c, one row per line
+    for [ i = 1 to n ] {
+      for [ j = 1 to n ] { writes(c[i,j], " ") }
+      write()    # force new line
+    }
+  }
+end matrix

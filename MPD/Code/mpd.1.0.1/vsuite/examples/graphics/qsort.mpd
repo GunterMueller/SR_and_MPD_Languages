@@ -1,0 +1,230 @@
+# Quick Sort
+#
+# Qiang A. Zhao, October 92
+#
+# Usage: qsort WindowSize Points DotSize
+
+resource qsort()
+
+  const int JS = 4                         # number of job servers
+  import MPDWin
+
+  op banner(winWindow win, string[*] str)
+  op regenerate()
+  op drawDot(winWindow win, int idx, int value, int slp)
+  op part(int id, int left, int right,
+      var int x, var int y, var int w, var int h) returns int mid
+  op job(int left, int right)
+  op done(int)
+
+  int SIZE = 500;      getarg(1, SIZE)
+  int NP = SIZE/2;     getarg(2, NP)
+  int DOT = 6;         getarg(3, DOT)
+
+  if ((SIZE < 100) or (NP < 10)) {
+    write("Invalid Value, sorry...")
+    stop(1)
+  }
+
+  const int OFF = 40
+  const int  DOT2 = DOT/2
+  const real  SCALE = real(SIZE-DOT)/real(NP-1)
+
+  const string[40] MSG_READY = "Press 'SPACE' to go"
+  const string[40] MSG_RUNNING = "Running: '+'/'-' to adjust speed"
+  const string[40] MSG_DONE = "Done, 'r' to regenerate numbers"
+
+  int  numbers[NP] 
+  winWindow  mainwin, ww, boxw, textw
+  winWindow  cwins[1:JS] 
+  string[6] colors[1:JS]
+	colors[1] = "red"
+	colors[2] = "yellow"
+	colors[3] = "green"
+	colors[4] = "cyan"
+  op winEventChannel ec
+  winEvent  ev
+  int  slp = 0
+  bool started = false
+
+  ## Draw a string at the bottom
+  proc banner(win, str)  {
+    WinClearArea(mainwin, winRectangle(0, SIZE+DOT, SIZE, OFF-DOT))
+    WinDrawString(win, winPoint(OFF, SIZE+30), str)
+  }
+
+  ## Generate random numbers
+  proc regenerate()  {
+    WinClearArea(mainwin, winRectangle(0, 0, SIZE, SIZE+DOT))
+    for [ i= 1 to NP ] {
+      numbers[i] = int(random(SIZE)+1)
+      drawDot(ww, i, numbers[i], 0)
+    }
+  }
+
+  ## Draw a box stands for a point being sorted
+  proc drawDot(win, idx, value, slp)  {
+    if (slp > 0) { nap(slp) }
+    WinDrawRectangle(win,
+      winRectangle(int(SCALE*(idx-1)), SIZE-value-DOT2, DOT, DOT))
+  }
+
+  ###
+  # Partition
+  proc part(id, left, right, x, y, w, h) returns mid  {
+    int minv = SIZE+1, maxv = -1
+    int  i 
+    for [ i = left to right ] {
+      minv = min(minv, numbers[i])
+      maxv = max(maxv, numbers[i])
+    }
+    x = int((left-1) * SCALE + DOT2)
+    h = maxv - minv + 1
+    y = SIZE - minv - h
+    w = int((right-left) * SCALE)
+    #
+    WinDrawRectangle(boxw, winRectangle(x, y, w, h))
+    # recolor to my color
+    for [ i= left to right ] {
+      drawDot(cwins[id], i, numbers[i], 0)
+    }
+    WinSync(mainwin, false)             # intended to slow things down
+    #
+    int pivot = numbers[left]
+    int lx = left+1, rx = right
+    while (lx <= rx) {
+      if (numbers[lx] <= pivot) { lx++
+      } else if (numbers[lx] > pivot ) {
+	drawDot(mainwin, lx, numbers[lx], 0)
+	drawDot(mainwin, rx, numbers[rx], 0)
+	numbers[lx] :=: numbers[rx]
+	drawDot(cwins[id], lx, numbers[lx], slp)
+	drawDot(cwins[id], rx, numbers[rx], slp)
+	WinSync(mainwin, false)         # intended to slow things down
+	rx--
+      }
+    }
+    if (rx > left) {
+      drawDot(mainwin, left, numbers[left], 0)
+      drawDot(mainwin, rx, numbers[rx], 0)
+      numbers[rx] :=: numbers[left]
+      drawDot(cwins[id], left, numbers[left], slp)
+      drawDot(cwins[id], rx, numbers[rx], slp)
+    }
+    #
+    mid = rx
+    return
+  }
+
+  #####################################################################
+  # open main window
+  mainwin = WinOpen("", "Quick Sort", ec, UseDefault, SIZE, SIZE+OFF)
+  if (mainwin == null) {
+    write("Ouch, can't open window")
+    stop(1)
+  }
+  WinSetEventMask(mainwin, Ev_KeyUp)
+  ww = WinNewContext(mainwin)
+  boxw = WinNewContext(mainwin)
+  textw = WinNewContext(mainwin)
+  for [ i= 1 to JS ] {
+    cwins[i] = WinNewContext(mainwin)
+    WinSetForeground(cwins[i], colors[i])
+  }
+  WinSetForeground(mainwin, "black")
+  WinSetForeground(boxw, "orange")
+  WinSetForeground(textw, "lightyellow")
+  WinSetLineAttr(boxw, 0, LineDoubleDash, CapButt, JoinMiter)
+
+  ## a taste of flavor
+  seed(0)
+
+  ## sorting control
+  regenerate()
+  banner(textw, MSG_READY)
+  slp = 40
+
+  ## workers, get job from bag...
+  process worker [ id = 1 to JS ] {
+    int  lo, mid, hi
+    int  x, y, w, h
+    int  mywork = 0
+
+    receive job(lo, hi)
+    while (true) {
+      mid = part(id, lo, hi, x, y, w, h)
+      WinDrawRectangle(boxw, winRectangle(x, y, w, h))
+      if (lo < mid - 1) {
+	if (mid + 1 < hi) {
+	  send job(mid+1, hi)
+	} else {
+	  mywork += hi - mid + 1
+	}
+	hi = mid -1
+      } else {
+	mywork += mid - lo + 1
+	if (mid + 1 < hi) {
+	  lo = mid + 1
+	} else {
+	  mywork += hi - mid + 1
+	  if (lo == hi) { mywork -- }            # one work counted twice
+	  send done(mywork)
+	  mywork = 0
+	  receive job(lo, hi)
+	}
+      }
+    }
+  }
+
+  ##########
+  int  got, tmp 
+  while (true) {
+    in ec(ev) ->
+      if (ev.event_type == Ev_KeyUp) {
+
+	char ch = char(ev.data)
+	if (ch == 'q' | ch == 'Q' | ch == '\177' | ch == '\003') {
+	  stop
+	} else if (ch == ' ' ) {
+	  if (not started) {
+	    started = true
+	    WinClearArea(mainwin, winRectangle(0, 0, SIZE, SIZE+DOT))
+	    banner(textw, MSG_RUNNING)
+	    got = 0
+	    send job(1, NP)
+	  } else {
+	    WinBell(mainwin, 0);
+	  }
+	} else if (ch == '-' ) {
+	  slp += 5
+	} else if (ch == '+' ) {
+	  slp = max(slp - 5, 0)
+	} else if (ch == 'r' ) {
+	  if (not started) {
+	    regenerate()
+	    banner(textw, MSG_READY)
+	  } else {
+	    WinBell(mainwin, 0)
+	  }
+	}
+
+      } else if (ev.event_type == Ev_DeleteWindow ) {
+	stop
+      }
+
+    [] done(tmp) ->             # in
+      got += tmp
+      if (got >= NP) {
+	banner(textw, MSG_DONE)
+	started = false
+      }
+    ni
+  }
+
+  ### Final
+  final {
+    WinClose(mainwin)
+  }
+
+end qsort
+

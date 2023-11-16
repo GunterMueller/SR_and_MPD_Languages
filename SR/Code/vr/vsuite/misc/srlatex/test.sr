@@ -1,0 +1,44 @@
+#
+# #<{\bf\large This is a test program for {\em srlatex}.}>#
+#
+# Check handling of special characters in comment:
+#
+# \{}~*><^"$&#%_->[]>=<=!=://
+#
+#wwwwww	world!
+#
+#	An indented comment.
+#
+resource foo
+body foo(var a1: int)
+   var i, j: int
+
+   op a(); b(); c();
+
+   fa i := 1 to n ->
+      if i = 1 ->
+	   a(i); b(i)
+      [] i = 2 ->
+	   c(i)
+      [] i > 3 and i <= 100 ->
+	   co p1(i)
+	   // p2(i)
+	   // p3(i)
+	   oc
+	   write("parallel stuff done")
+      fi
+   af
+   do tas(locked)	->	skip od
+end foo
+
+# test FT-SR stuff:
+persistent resource ftsr
+   op doit(args) {primary}
+   var pcap: private cap foo
+body ftsr()
+   monitor foo send op(args)
+   monitorend foo
+   create (i := 1 to n) foo(args) on vmlist
+   restart (i := 1 to n) foo(args) on vmlist
+   call {doit,failure}(args)
+end ftsr

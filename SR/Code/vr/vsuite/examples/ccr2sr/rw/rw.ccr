@@ -1,0 +1,38 @@
+/* output nondeterministic,
+ * but should be all readers followed by writers
+ */
+_resource(rw)
+  var nr := 0, nw := 0
+_resource_end(rw)
+
+resource main()
+  process reader(i := 1 to 4)
+fa k := 1 to 5 ->
+    /* obtain access */
+      _region(rw, nw=0)
+        nr++
+      _region_end(rw)
+    /* read database */
+      write("reader", i); nap(100)
+    /* release access */
+      _region(rw, true)
+        nr--
+      _region_end(rw)
+af
+    end
+  process writer(i := 1 to 4)
+    nap(10)
+fa k := 1 to 5 ->
+    /* obtain access */
+      _region(rw, nw=0 and nr=0)
+        nw++
+      _region_end(rw)
+    /* write database */
+      write("writer", i); nap(100)
+    /* release access */
+      _region(rw, true)
+        nw--
+      _region_end(rw)
+af
+  end
+end

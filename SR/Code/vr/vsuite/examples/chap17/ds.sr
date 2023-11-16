@@ -1,0 +1,75 @@
+# manage the files on one host
+resource DirServer
+  import Defs, Utilities, FileServer
+  op fcreate(user, fname: name; m: accessmode) returns fd: file_descriptor
+  op fopen(user, fname: name; m: accessmode) returns fd: file_descriptor
+  op fremove(user, fname: name) returns result: bool
+  op check(user: name) returns valid: bool
+  op list(user: name; res files[FILES]: name) returns cnt: int
+body DirServer()
+
+  var accounts[USERS]: name
+  var files[USERS,FILES]: name
+  var nfiles[USERS]: int
+
+  # read in names of users and their files
+  var f := open("dfs/Accounts", READ)
+  var nusers := 0
+  do read(f, accounts[nusers+1]) != EOF -> nusers++ od
+  fa u := 1 to nusers ->
+    var f := open("dfs/" || accounts[u] || "/Files", READ)
+    if f = null -> nfiles[u] := 0; next fi  # no files
+    var j := 1
+    do read(f, files[u,j]) != EOF -> j++ od
+    nfiles[u] := j-1
+  af
+
+  proc check(user) returns valid
+    valid := true
+    if lookup(user, accounts) = 0 -> valid := false fi
+  end
+
+  proc list(user, fls) returns cnt
+    var u := lookup(user, accounts)
+    fls := files[u]; cnt := nfiles[u]
+  end
+
+  process ds
+    do true ->
+      in fcreate(user, fname, m) returns fd ->
+          # look up user's index in accounts
+          var u := lookup(user, accounts)
+          # see if file exists; if not, add it to database
+          var f := lookup(fname, files[u,*])
+          if f = 0 -> nfiles[u]++
+                      files[u, nfiles[u]] := fname
+          fi
+          # create file server and forward open to it
+          var fscap := create FileServer()
+          forward fscap.fopen(user, fname, WRITE)
+      [] fopen(user, fname, m) returns fd ->
+          # create file server and forward open to it
+          var fscap := create FileServer()
+          forward fscap.fopen(user, fname, m)
+      [] fremove(user, fname) returns result ->
+          # look up user's index in accounts
+          var u := lookup(user, accounts)
+          # look up file name in database of files
+          var f := lookup(fname, files[u,*])
+          if f = 0 -> result := false; exit fi
+          # remove file name from database
+          files[u,f] := files[u,nfiles[u]]
+          nfiles[u]--; result := true
+      ni
+    od
+  end
+
+  final
+    fa i := 1 to nusers ->
+      var f := open("dfs/" || accounts[i] || "/Files", WRITE)
+      fa j := 1 to nfiles[i] ->
+        write(f, files[i,j])
+      af
+    af
+  end
+end DirServer

@@ -1,0 +1,27 @@
+#  Date: Mon, 5 Dec 88 10:27:44 MST
+#  From: "Gerhard Mehldau" <gerhard>
+
+#  Bus error (core dumped)
+
+#  gen_free belonging at end of p()
+#  is placed inside beginning of initial code!
+
+resource fall ()
+    op p ()
+    op f (s: string(*)) returns b: bool
+
+    proc f(s) returns b
+	b := true
+    end
+
+    proc p()
+	var s: string[512]
+
+	do true ->
+	    if f(s) -> exit fi
+	od
+    end
+
+    write("hello")
+    p()
+end

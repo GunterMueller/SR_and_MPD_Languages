@@ -1,0 +1,18 @@
+
+===============  mutex  ===============
+
+ops:
+  xGu  SYM2 mutex.r_emutex: K_OP T_OP(){send}:T_VOID
+  xGu  SYM2 mutex.r_dmutex: K_OP T_OP(){send}:T_VOID
+  xGu  SYM2 mutex.r_gmutex: K_OP T_OP(){send}:T_VOID
+
+===============  foo  ===============
+
+ops:
+   Rp  SYM2 p: K_OP T_OP(T_INT){send}:T_VOID
+   Gi  SYM5 mutex.r_emutex: K_OP T_OP(){send}:T_VOID
+   Gi  SYM5 mutex.r_dmutex: K_OP T_OP(){send}:T_VOID
+   Gi  SYM5 mutex.r_gmutex: K_OP T_OP(){send}:T_VOID
+   Gi  SYM5 mutex.r_emutex: K_OP T_OP(){send}:T_VOID
+   Gi  SYM5 mutex.r_dmutex: K_OP T_OP(){send}:T_VOID
+   Gi  SYM5 mutex.r_gmutex: K_OP T_OP(){send}:T_VOID

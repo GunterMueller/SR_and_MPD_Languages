@@ -1,0 +1,18 @@
+resource bool2()
+	bool  r1,r2
+
+	bool  b, c 
+	b = true
+	c = false
+	b = c & ~b | false
+	write(b,c)
+	r1 = true
+	r2 = false
+	write( r2 & r1 | false xor (r2 | r1 | false | r2) )
+	b = true
+	c = false
+	r1 = true
+	r2 = true
+	write( c & b| false )
+	write( b xor c, b xor r1, r1 & r2, b | r2 & c, r2 & c | b )
+end

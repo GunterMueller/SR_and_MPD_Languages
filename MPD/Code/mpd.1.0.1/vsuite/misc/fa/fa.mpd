@@ -1,0 +1,191 @@
+# collected from several discrete tests in the previous version
+
+resource forall ()
+
+    # fa0: new test with explicit exits if messed up
+    write ("fa0")
+    for [ j= 3 downto -1 by -2 ] {         # should terminate w/o if
+	write(j)
+	if (j > 8) { exit  }
+    }
+    for [ j= 3 downto -1 ] {               # should terminate w/o if
+	write(j)
+	if (j > 8) { exit  }
+    }
+    for [ j= 3 downto -1 by 2 ] {          # shouldn't terminate w/o if
+	write(j)
+	if (j > 8) { exit  }
+    }
+
+    # fa1: "just checking"
+    write ("\nfa1")
+    for [ i = 1 to 4 ] {
+	write(i)
+    }
+
+    # fa2: "just checking"
+    write ("\nfa2")
+    for [ i = 1 to 4 ] {
+	for [ j = 10 to 12 ] {
+	    write(i,j)
+	}
+    }
+
+    # fa4: nested for-all.
+    write ("\nfa4")
+    for [ i = 1 to 5,
+       j = 22 to 24 ] {
+	    write(i,j)
+	    for [ k = i-2 downto 1 ] {
+		    write(k)
+	    }
+    }
+
+    # fa6: exit in for-all.
+    write ("\nfa6")
+    for [ i = 1 to 6,
+       j = 2 to 6 st i > j ] {
+	    write(i,j)
+	    if (i == 5) { exit }
+    }
+
+    # fa7: next in for-all.
+    write ("\nfa7")
+    for [ i = 1 to 10,
+       j = 2 to 8 st j < 4 | j > 5 ] {
+	    write("<",i,j)
+	    if (i == 4 ) { next }
+	    write(">",i,j)
+    }
+
+    # fa8: nested next.
+    write ("\nfa8")
+    for [ i = 1 to 4,
+       j = 2 to 3 ] {
+	    write("before",i,j)
+	    if (i == 3) { next }
+	    for [ k = -3 to -2,
+	       l = -1 to 0 ] {
+		    write("    <",k,l)
+		    if (k == -2) { next }
+		    write("    >",k,l)
+	    }
+	    write("after",i,j)
+    }
+
+    # fa9: nested exit.
+    write ("\nfa9")
+    for [ i = 1 to 4,
+      j = 2 to 3 ] {
+	write("before",i,j)
+	if (i == 3) { exit }
+	for [ k = -3 to -2,
+	   l = -1 to 0 ] {
+		write("    <",k,l)
+		if (k == -2) { exit }
+		write("    >",k,l)
+	}
+	write("after",i,j)
+    }
+
+    # fa10: for-all, do, and exit.
+    write ("\nfa10")
+    for [ i = 1 to 4  ] {
+	int  j = i
+	write(i)
+	while (true) {
+	    write("\t",j)
+	    j--
+	    if (j == 0) { exit }
+	}
+	write(-i)
+    }
+
+    # fa11: nested for-all's and do, and next and exit
+    # "and the kitchen sink?"
+    write ("\nfa11")
+    for [ i = 1 to 4 ] {
+	int  j = i
+	write(i)
+	while (true) {
+	    for [ k = j downto 0 ] {
+		write("  ",k)
+		if (k == 2) { next }
+		write("  ",-k)
+	    }
+	    j--
+	    if (j == 0) { exit }
+	}
+	write(-i)
+    }
+
+    # fa14: two quantifiers, each with a such-that.
+    write ("\nfa14")
+    for [ i = 1 to 3 st i != 2,
+       j = i+1 downto 0 st j != 1 ] {
+	    write(i,j)
+    }
+
+    # fa15: simple next
+    write ("\nfa15")
+    for [ i = 1 to 10 ] {
+	write(i)
+	if (i % 2 == 0) { next }
+	write(-i)
+    }
+
+    # fa16: nested next
+    write ("\nfa16")
+    for [ i = 1 to 5,
+       j = -1 downto -5 ] {
+	    write(i,j)
+	    if (i != -j) { next }
+	    write("-=-")
+    }
+
+    # fa17: simple exit
+    write ("\nfa17")
+    for [ i = 1 to 10 ] {
+	write(i)
+	if (i == 5) { exit }
+	write(-i)
+    }
+
+    # by: uses to, downto, by, st, next, exit with nesting of for's
+    write ("\nfa18")
+    for [ a = 1 to 2,
+       b = 210 to 309 by 10,
+       c = 31 to 40 by 1 st c <= 33 ] {
+	    if (b > 230) { next }
+	    # the follg statement tests scope of c
+	    for [ c = 600 downto 401 by 5*-2 st 1 == 1 ] { skip }
+	    for [ d = 600 downto 401 by (-4*5)/2 st d <= 430 ] {
+		for [ e = 490 to 600 by 2 st e>=510 and e%10==0 ] {
+		    if (e > 530) { exit
+		    } else { write(a, b, c, 430-d+410, e)
+		    }
+		}
+	    }
+    }
+
+    # real: same thing with real-valued quantifier vars
+    write ("\nfa19")
+    for [ a = 1.0 to 2.0,
+       b = 2.10 to 3.09 by .10,
+       c = .2 to .8 by .2 st c < .7 ] {
+	    # "b > 2.3" may be true even if b = 2.3 due to
+	    # roundoff errors
+	    if (b > 2.31) { next }
+	    # the follg statement tests scope of c
+	    for [ c = 6.00 downto 4.01 by 5.0*2/-100 st 1==1 ] {skip }
+	    for [ d = 6.00 downto 4.01 by -4.0*5/200 st d < 4.31 ] {
+		for [ e = 4.90 to 6.00 by .1 st e>5.09 ] {
+		    if (e > 5.301) { exit
+		    } else { write(a, b, 3+c/2, 4.30-d+4.10, e)
+		    }
+		}
+	    }
+    }
+
+    write ("\ndone")
+end

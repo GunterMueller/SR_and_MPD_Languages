@@ -1,0 +1,17 @@
+#  Date: Tue, 8 Mar 1988 20:58 PST
+#  From: olsson@ivy.ucdavis.edu (Ron Olsson)
+#
+#  Also, should the attached program execute its final code? It doesn't.
+#
+#  [final code should be called even if initialization never completes.]
+
+resource b()
+
+	op foo()
+	receive foo()
+
+	final
+		write("in final")
+		flush(stdout)
+	end
+end

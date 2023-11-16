@@ -1,0 +1,32 @@
+
+tanon:
+v0: 47
+v1: 31 32 33
+v2: 29 true !
+v3: 53 false abcd
+v4: 59 61 67 #==#567 abcdefghijklmnopqrst
+
+tlocal:
+u0: 11 222 3333
+ua: ijkl ijkl ijkl ijkl ijkl
+r3: ijkl
+u4: abcdefghij 8 pqrst
+va: 101 704 1205
+va: zyxwvutsrqponmlkjihgfedcba+++
+va: 0+1+2+3+4+5+6+7+8+9+0
+
+tresource:
+rt0: 57
+rt1: 41 42 43
+rt2: 39 false ?
+rt3: 63 true efgh
+rv3: efgh
+rt4: 69 71 77 ?!#%123 ghijklmnopqrstuvwxyz
+
+tglobal:
+a: 12457 mnop
+b: mnop
+c: mnop
+c: qrst
+b: qrst
+a: qrst

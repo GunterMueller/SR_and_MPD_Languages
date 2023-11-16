@@ -1,0 +1,13 @@
+#  bad free after short-circuit evaluation of boolean expression
+#
+#  atoi is never called, and no invocation block is allocated,
+#  but it gets freed anyway -- leading to a core dump.
+
+resource d ()
+    external atoi (s: string[*]) returns i: bool
+
+    var s:= "abcdefghij"
+    if length(s) != 3 | atoi(s[5:*]) ->
+	write(s)
+    fi
+end

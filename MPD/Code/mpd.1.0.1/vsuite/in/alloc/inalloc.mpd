@@ -1,0 +1,44 @@
+# test expressions in by and st clauses that allocate memory
+# it used to be that the memory was freed improperly
+# (though, even then, noticeable failure was chancy)
+
+resource r ()
+    op o(int)
+    procedure p (int a) returns int b { b = a ; reply }
+
+    in o(a) st p(a)>15 ->
+	write ("?!?! a=", a)
+    [] else ->
+	skip
+    ni
+
+    in o(a) by p(a) ->
+	write ("?!?! a=", a)
+    [] else ->
+	skip
+    ni
+
+    send o(14)
+    send o(17)
+    send o(15)
+    send o(12)
+    send o(16)
+    send o(13)
+
+    while (true) {
+	in o(a) st p(a)>15 ->
+	    write("st:",a)
+	[] else ->
+	    exit
+	ni
+    }
+
+    write ("------")
+
+    while (true) {
+	in o(a) by p(a) ->
+	    write("by:",a)
+	ni
+    }
+    write("done")
+end

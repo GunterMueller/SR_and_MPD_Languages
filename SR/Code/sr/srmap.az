@@ -1,0 +1,21 @@
+#  University of Arizona "srmap" file
+#  last updated 31-oct-2000/gmt
+#
+#  hostname:filename	resulting netpath
+#  -----------------	----------------------
+
+#  Home directories can all be accessed as /home/username, but
+#  may appear in different forms when automounted.
+
+*:/tmp_mnt/net/sal/home/**	/home/$2
+*:/tmp_mnt/net/sin/home/**	/home/$2
+*:/tmp_mnt/home/**		/home/$2
+*:/net/sal/home/**		/home/$2
+*:/net/sin/home/**		/home/$2
+*:/sal/home/**			/home/$2
+*:/sin/home/**			/home/$2
+
+#  For anything unrecognized, we'll just use the file name as given
+#  and hope that it works identically on the remote machine.
+
+*:**				$2

@@ -1,0 +1,20 @@
+resource main()
+  op f(x: int), g(u: real) returns v: real
+  process p1
+     ...
+    call f(y)
+     ...
+  end
+  process p2
+     ...
+    w := g(3.8)
+     ...
+  end
+  process q
+     ...
+    in f(x) -> z +:= x
+    [] g(u) returns v -> v := u*u-9.3
+    ni
+     ...
+  end
+end

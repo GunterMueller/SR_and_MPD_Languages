@@ -1,0 +1,4 @@
+argtype: 8
+format: '%g%g'
+  8 < 1>: 190, -1
+end

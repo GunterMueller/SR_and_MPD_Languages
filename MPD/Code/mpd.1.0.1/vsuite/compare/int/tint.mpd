@@ -1,0 +1,26 @@
+resource tint()
+	int  a,b 
+	a= 4
+	b= 5
+	write(a,b, "  <",a<b, "   <=",a<=b, "   =",a==b,
+		   "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a= 888
+	b= 888
+	write(a,b, "  <",a<b, "   <=",a<=b, "   =",a==b,
+		   "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a= 88
+	b= 77
+	write(a,b, "  <",a<b, "   <=",a<=b, "   =",a==b,
+		   "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	if (a <= b) {
+		write("OOPS. Really bad", a <= b)
+	} else {
+		write( "ok", a <= b )
+	}
+	bool  c = a <= b
+	if (c) {
+		write("OOPS. Really bad", c, a <= b)
+	} else {
+		write( "ok", c, a <= b )
+	}
+end

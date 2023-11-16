@@ -1,0 +1,32 @@
+_program(b)
+
+  _specs
+    _process_spec2(A, 1,2, 1,3)
+      _port(A,o1, (x: int))
+
+    _process_spec(B)
+      _port(B,o2, (x: int) )
+  _specs_end
+
+/* this is used only for debugging csp2sr. */
+  _dump_pidx
+
+  _process_body2(A, i, j)
+    var x: int
+    write("start of A", i, j)
+    _stmt_i(B,o1,(x))
+    write("in middle of A")
+    _stmt_o(B,o2,(17))
+    write(x)
+  _process_end
+
+  _process_body(B)
+    var x: int
+    write("start of B")
+    _stmt_o(A[2][2],o1,(3))
+    write("in middle of B")
+    _stmt_i(A[2][2],o2,(x))
+    write(x)
+  _process_end
+
+_program_end

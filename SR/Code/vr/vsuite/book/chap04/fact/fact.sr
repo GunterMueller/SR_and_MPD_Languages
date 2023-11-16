@@ -1,0 +1,16 @@
+resource main()
+
+  op fact(int) returns int
+
+  proc fact(n) returns prod
+    prod := 1
+    fa i := 1 to n -> prod *:= i af
+  end
+
+  var i := 1
+  do i <= 10 ->
+    write("the factorial of ",i," is ",fact(i))
+    i++
+  od
+
+end

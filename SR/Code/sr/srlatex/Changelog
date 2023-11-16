@@ -1,0 +1,58 @@
+Mon Feb 15 16:13:44 1993  Gregg Townsend  (gmt@owl)
+
+	* minor changes for portability and SR coding style
+
+Mon Nov 30 10:16:23 1992  David Mosberger  (davidm@antigua)
+
+	* scan.l: keyword "recovery" added for FT-SR
+
+Sun Nov 29 21:08:12 1992  David Mosberger  (davidm@antigua)
+
+	* scan.l, print.c: added support for FT-SR
+
+	* srlatex.h: created, contains global definitions
+
+	* print.c: changed colon() such that it is printed in text mode
+	and surrounded by \, space (it's generated as "\,:\," now...)
+
+Mon Oct 19 11:23:58 1992  David Mosberger  (davidm@antigua)
+
+	* srlatex.sty: merged OFSS and NFSS versions; now there is only
+	one style file for both font selection schemes
+
+	* srlatex.sty: added \leavevmode to \srTeXmb command
+
+	* Makefile: added install target and a couple of macros to
+	configure the installation process
+
+Sun Oct 18 23:07:44 1992  David Mosberger  (davidm@antigua)
+
+	* srlatex.sty: if text doesn't fit into computed width, issue
+	warning *plus input line number* (not just warning)
+
+Tue Feb  4 14:39:26 1992  David Mosberger  (davidm at cheltenham)
+
+	* print.c: default values for option latex and SR are now
+	determined by program name; if first two letters are ``sr'' option
+	SR is set, if the second and third letter are ``la'' option latex
+	is set.
+
+	* option ``-s'' controls if plain SR or the programming logic PL
+	is to be typeset (PL has more keywords, for example)
+
+Mon Feb  3 10:53:37 1992  David Mosberger  (davidm at cheltenham)
+
+	* print.c: option `-f' introduced, if set, causes page break after
+	program text (this was the default behavior before
+
+	* print.c: all boolean options are now toggles; latex is now true
+	by default
+
+Sun Feb  2 15:17:34 1992  David Mosberger  (davidm at cheltenham)
+
+	* print.c, scan.l: added await as keyword (not really an SR
+	keyword but useful for homeworks...)
+
+	* print.c, scan.l: added support for literal (La-)TeX text; text
+	enclosed between #< and ># is passed literally (nesting is
+	supported...)

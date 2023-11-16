@@ -1,0 +1,14 @@
+# mutual_imports
+resource A
+     const int x = 10
+     import B
+     op foo(cap B c )
+end
+
+resource B
+   import A
+body B ()
+   const int v = 2*A.x
+   write (v)
+end B
+

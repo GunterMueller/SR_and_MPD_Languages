@@ -1,0 +1,114 @@
+#  Build a binary tree of processes by reading input, then send down
+#  a message when ready to read the data back out.
+
+#  Originally written by Mike Coffin (see below), who found a bug in
+#  in input termination after a reply.  Along the way a problem with
+#  record construction was also uncovered.  Later we discovered that
+#  this is perhaps the only vsuite test that reads input from multiple
+#  MPD processes (it found a MultiSR bug doing this).
+
+
+#  Date: Fri, 1 Nov 91
+#  From: Michael Coffin 
+#
+#  ...I have a program that works correctly when an operation is sent to.
+#  But when I try a simple transformation: call the operation and have the
+#  operation immediately execute "reply" ... I get deadlock or core dumps.
+
+
+
+# resource bsort reads integers from stdin until EOF is read,
+# sorts them, and prints them out.
+
+# It does so by creating a binary tree of processes.
+# Each process has a pivot value and a left and right subtree that
+# are each a process.  Values less than the pivot are passed down to
+# the left; values greater are passed to the right.  Printing is done
+# in the obvious way: first print the values in the left subtree, then
+# the pivot, and then the right subtree.
+
+resource bsort()
+   type pair = rec(cap (int x) store; cap(cap (int x) z) sendup)
+   op sorter(int x) returns pair  p
+   op quit()
+
+   process main  {
+      pair  root
+      int  v
+
+      read(v)
+      root = sorter(v)         # create a sort tree
+
+      while (read(v) > 0) {
+	  root.store(v)         # store number in sort tree
+      }
+
+      op get(int x)                # make a place to receive results
+
+      root.sendup(get)              # ...and send it to sorter,
+
+      while (true) {
+	   in get(i) ->  write(i)   # ...and then use it
+	   [] quit() ->  exit       # quit only on deadlock
+	   ni
+      }
+      write("loop finished")
+   }
+
+   proc sorter(pivot) returns myops  {
+      op store(int x)           # operation to accept ints from above
+      op sendup(cap (int x) c)  # accept a place to send ints up
+      op get(int x)             # place to accept ints from below
+
+      int lcnt = 0              # number in left subtree
+      int rcnt = 0              #   "    in right   "
+      pair l, r                 # pairs representing subtrees
+
+      myops = pair (store, sendup)     # build my pair and return it
+      reply
+
+      # execute server loop
+      while (true) {
+	   in store(i) ->
+		if (i < pivot) {
+		     if (lcnt == 0) { l = sorter(i)
+		     } else { l.store(i)
+		     }
+		     lcnt++
+		} else if (i >= pivot ) {
+		     if (rcnt == 0) { r = sorter(i)
+		     } else { r.store(i)
+		     }
+		     rcnt++
+		}
+	   [] sendup(ret) ->
+		reply
+
+		# generate values
+		if (lcnt > 0) {
+		     l.sendup(get)
+
+		     while (lcnt > 0) {
+			  in get(i) ->
+			       ret(i); lcnt--;
+			  ni
+		     }
+		}
+		ret(pivot)
+
+		if (rcnt > 0) {
+		     r.sendup(get)
+
+		     while (rcnt > 0) {
+			  in get(i) ->
+			       ret(i); rcnt--;
+			  ni
+		     }
+		}
+		exit
+	   ni
+      }
+   }
+
+   final { quit() }
+end bsort

@@ -1,0 +1,13 @@
+resource bug()
+	type aoo = enum(a1)
+	aoo  a[1:2] = (a1, a1)
+	write( int(a[1]), int(a[2]))
+
+	type boo = enum(b1,b2,b3)
+	boo  b[1:3] = (b2, b1, b3)
+	write( int(b[1]), int(b[2]), int(b[3]) )
+
+	type coo = enum(c1,c2,c3)
+	coo  c[1:4] = (c2, c1, c3, c2)
+	write( int(c[1]), int(c[2]), int(c[3]), int(c[4]) )
+end

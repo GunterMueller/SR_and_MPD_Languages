@@ -1,0 +1,52 @@
+# bunch of miscellaneous stuff
+resource c()
+    op putty(line[1:*]: char)
+
+
+    var a[1:35]: char;
+    var i: int := 5;
+    var b[1:i]: char;
+
+    b[1:*] := chars("abcde");
+    fa i := 1 to 5 ->
+	write(b[i])
+    af
+
+    a[1] := 'a'; a[2] := 'b'; a[3] := 'c'; a[4] := 'd'
+    fa i := 1 to 4 ->
+	write(a[i]);
+    af
+
+    a[1:8] := chars("abcd\n\t\r\035");
+    fa i := 1 to 5 ->
+	write(a[i]);
+    af
+
+    a[1:27] := chars("abcdefghijklmnopqrstuvwxyz\n")
+    putty(a)
+    putty(chars("hello, world\n"))
+
+    var aa,bb: enum(e0, e2, e3, e4, e5);
+
+    aa := e2; bb := e2;
+    if aa = bb -> write("y")
+    [] else -> write("n")
+    fi
+    if aa = e2 -> write("y")
+    [] else -> write("n")
+    fi
+    if (aa < e4) -> write("y")
+    [] else -> write("n")
+    fi
+    if (aa <= e0) -> write("n")
+    [] else -> write("y")
+    fi
+
+proc putty(line)
+    write("----", lb(line),ub(line));
+    fa i := lb(line) to ub(line) ->
+	write(line[i])
+	if line[i] = '\n' -> exit fi
+    af
+end
+end

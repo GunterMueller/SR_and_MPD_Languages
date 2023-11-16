@@ -1,0 +1,27 @@
+# output nondeterministic (shuffled).
+resource d6()
+
+	op worker( )
+	op filter()
+
+
+	worker()
+	for [ i = 1 to 3 ] {
+		send filter()
+		write("sent",i)
+	}
+	write("initial done")
+
+
+	proc worker()  {
+		write("worker before reply")
+		reply
+		write("worker after reply")
+		for [ i = 1 to 3 ] {
+			write("before receive",i)
+			receive filter()
+			write("after receive",i)
+		}
+		write("worker after fa")
+	}
+end

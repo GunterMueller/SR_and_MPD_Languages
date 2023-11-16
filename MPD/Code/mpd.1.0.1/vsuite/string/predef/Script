@@ -1,0 +1,4 @@
+0 mpd -c predef.mpd
+0 mpdl predef
+0 run input1
+0 rm -rf MPDinter core *.out

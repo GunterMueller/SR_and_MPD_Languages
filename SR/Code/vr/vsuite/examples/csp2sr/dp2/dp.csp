@@ -1,0 +1,61 @@
+/* dining philosophers
+ */
+_program(dp)
+  const N := 5, rounds := 4
+  _specs
+
+    _process_spec1(waiter,0,N-1)
+      _port(waiter,need, ())
+      _port(waiter,hungry, ())
+      _port(waiter,full, ())
+
+    _process_spec1(phil,0,N-1)
+      _port(phil,eat, ())
+
+  _specs_end
+
+  _process_body1(waiter,i)
+    var peating := false, phungry := false
+    var haveL, haveR: bool
+    if i = 0   -> haveL := haveR := true
+    [] i = N-1 -> haveL := haveR := false
+    [] else    -> haveL := false; haveR := true
+    fi
+    var dirtyL := false, dirtyR := false
+    const L := (i-1) mod N
+    const R := (i+1) mod N
+    _do
+      _guard_i(true, phil[i],hungry, ()) ->
+        phungry := true
+      _guard(phungry & haveL & haveR) ->
+        phungry := false
+        peating := dirtyL := dirtyR := true
+        _stmt_o(phil[i],eat, ())
+      _guard_o(phungry & not haveL, waiter[L],need, ()) ->
+        haveL := true
+      _guard_o(phungry & not haveR, waiter[R],need, ()) ->
+        haveR := true
+      _guard_i(haveL & not peating & dirtyL, waiter[L],need, ()) ->
+        haveL := dirtyL := false
+      _guard_i(haveR & not peating & dirtyR, waiter[R],need, ()) ->
+        haveR := dirtyR := false
+      _guard_i(true, phil[i],full, ()) ->
+        peating := false
+    _od
+  _process_end
+
+  _process_body1(phil,i)
+    fa k := 1 to rounds ->
+      if i = 0 -> nap(1000)
+      [] else  -> nap(10*(N-i+2)+k)
+      fi
+      _stmt_o(waiter[i],hungry, ())
+      nap(20*i+k)
+      _stmt_i(waiter[i],eat, ())
+      write(i, "eating", k)
+      nap(30*(N-i+2)+k)
+      _stmt_o(waiter[i],full, ())
+    af
+  _process_end
+
+_program_end

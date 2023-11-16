@@ -1,0 +1,20 @@
+resource factorial
+	import gl
+	op fact(k : int; ans : cap gl.answer) {send}
+body factorial()
+
+   proc fact(k, ans)
+	op myanswer  gl.answer
+	var kfact : int
+
+	if k<0 -> send ans(-1)
+	[] k=0 or k=1 -> send ans(1)
+	[] else ->
+		# k is greater than 1 so compute k!
+		send fact(k-1,myanswer)
+		receive myanswer(kfact)
+		send ans(k*kfact)
+	fi
+   end
+
+end

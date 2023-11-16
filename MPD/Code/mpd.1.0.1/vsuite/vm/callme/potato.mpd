@@ -1,0 +1,61 @@
+##  potato.mpd -- pass around a message like a hot potato
+#
+#   usage:  a.out nvm seq
+#
+#   nvm    number of virtual machines to create
+#   seq    sequence of machines to pass msg to, e.g. "12344321"
+#
+#   The main purpose of this is to test the "CALLME" message to MPDX.
+#   This is tested by the default nvm/seq combination (among others).
+
+
+resource spud
+    op msg (int n , string[*] seq)
+    op init (cap spud mach[1:*])
+
+body spud (int myid , int nvm )
+    cap spud  mach [1:nvm]
+
+    write (myid, "created")
+    flush(stdout)
+    reply
+    receive init (mach)
+
+    proc msg (n, seq)  {
+	writes(myid," ",seq[1:n]," ",seq[n+1:*],"\n");
+	flush(stdout)
+	if (n < length(seq)) {
+	    int i = int(seq[n+1]) - int('0')
+	    mach[i].msg(n+1,seq)
+	    }
+	writes(myid," ",seq[1:n]," ",seq[n+1:*],"\n");
+	flush(stdout)
+    }
+end
+
+
+resource maine                  # yes, they don't just come from idaho
+    import spud
+
+body maine ()
+    int  nvm = 4                          # default of 4 VMs
+    string[1000] seq = "41323421"         # default call sequence
+
+    getarg(1,nvm)
+    getarg(2,seq)
+
+    cap vm  virt [1:nvm]
+    cap spud  mach [1:nvm]
+
+    for [ i = 1 to nvm ] {
+	virt[i] = create vm ()
+	mach[i] = create spud (i, nvm) on virt[i]
+    }
+
+    for [ i = 1 to nvm ] {
+	mach[i].init (mach)
+    }
+
+    int i = int(seq[1]) - int('0')
+    mach[i].msg (1,seq)
+end

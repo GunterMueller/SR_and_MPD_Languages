@@ -1,0 +1,5 @@
+#  mcnamee  Tue Feb 21 13:52:28 PST 1989
+0 mpd -c else09.mpd
+0 mpdl a
+0 run
+0 rm -rf MPDinter core *.out

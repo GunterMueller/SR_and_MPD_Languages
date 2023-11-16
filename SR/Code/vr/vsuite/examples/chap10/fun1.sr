@@ -1,0 +1,13 @@
+resource fun()
+  op f(x: int) returns y: int
+  process p
+     ...
+    z := f(10)
+     ...
+  end
+  proc f(x) returns y
+    y := x*8
+    reply
+    y := 0
+  end
+end

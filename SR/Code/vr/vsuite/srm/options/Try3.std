@@ -1,0 +1,49 @@
+#	Makefile created by SRM
+
+
+SR = sr
+SRFLAGS = -I mpala amel
+I = mpala/Interfaces
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/main.o $I/node.o $I/printer.o
+	srl ion -o a.out -I mpala node printer main
+
+compile: $I/main.o $I/node.o $I/printer.o
+
+run: link
+	a.out hinocerous
+
+$I/main.o: $I/node.spec $I/printer.spec $I/main.spec main.sr
+	$(SR) $(SRFLAGS) -b main.sr
+
+$I/main.spec: main.sr
+	$(SR) $(SRFLAGS) -s main.sr
+
+$I/node.o: $I/printer.spec $I/node.spec node.sr
+	$(SR) $(SRFLAGS) -b node.sr
+
+$I/node.spec: node.sr
+	$(SR) $(SRFLAGS) -s node.sr
+
+$I/printer.o: $I/printer.spec printer.sr
+	$(SR) $(SRFLAGS) -b printer.sr
+
+$I/printer.spec: printer.sr
+	$(SR) $(SRFLAGS) -s printer.sr
+
+clean:
+	rm -rf $I 
+
+cleanx: clean
+	rm -f core a.out oology
+
+ls:
+	@echo main.sr node.sr printer.sr
+
+make:
+	srm -f Try3.tmp -Zoology main.sr node.sr printer.sr
+

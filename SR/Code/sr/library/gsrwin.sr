@@ -1,0 +1,1082 @@
+##  gsrwin.sr -- global SRWin for interfacing SR to X windows
+
+global	SRWin
+
+    # default polling interval
+    const	DefaultPoll	:= 100
+    const	UseDefault	:= 0
+    const	OffScreen	:= 1
+
+    type winVoid	= ptr any
+    type winWindow	= winVoid
+    type winFont	= winVoid		# XFontStruct *
+    type winImage	= winVoid		# XImage *
+
+    type winInitialState	= int
+    type winError	= int
+
+    type winPoint	= rec (	x, y: int)
+    type winRectangle	= rec ( x, y, w, h: int)
+
+    #
+    # Note: the order of the items in each constant-lists must be exactly
+    #       the same as that of their counterparts in "SRWin.h"
+    #
+
+    type winEventType	= int
+    const	Ev_None			:= 0
+    const	Ev_ButtonDown		:= 1
+    const	Ev_ButtonUp		:= 2
+    const	Ev_KeyDown		:= 4
+    const	Ev_KeyUp		:= 8
+    const	Ev_PointerMove		:= 16
+    const	Ev_EnterWindow		:= 32
+    const	Ev_ExitWindow		:= 64
+    const	Ev_DeleteWindow		:= 128
+    const	Ev_All			:= Ev_ButtonDown |
+					   Ev_ButtonUp |
+					   Ev_KeyDown |
+					   Ev_KeyUp |
+					   Ev_PointerMove |
+					   Ev_EnterWindow |
+					   Ev_ExitWindow |
+					   Ev_DeleteWindow
+
+    type winButtonKeyStatus = int
+    const	BK_None		:= 0
+    const	BK_Button1	:= 1
+    const	BK_Button2	:= 2
+    const	BK_Button3	:= 4
+    const	BK_Button4	:= 8
+    const	BK_Button5	:= 16
+    const	BK_SHIFT	:= 32
+    const	BK_LOCK		:= 64
+    const	BK_CNTRL	:= 128
+    const	BK_Mod1		:= 256
+    const	BK_Mod2		:= 512
+    const	BK_Mod3		:= 1024
+    const	BK_Mod4		:= 2048
+    const	BK_Mod5		:= 4096
+
+    type winLineStyle	= enum(	LineSolid,
+				LineDoubleDash,
+				LineOnOffDash )
+
+    type winCapStyle	= enum(	CapNotLast,
+				CapButt,
+				CapRound,
+				CapProjecting )
+
+    type winJoinStyle	= enum(	JoinMiter,
+				JoinRound,
+				JoinBevel )
+
+    type winFillStyle	= enum(	FillSolid,
+				FillTiled,
+				FillOpaqueStippled,
+				FillStippled )
+
+    type winFillRule	= enum(	FillEvenOddRule,
+				FillWindingRule )
+
+    type winArcMode	= enum(	ArcChord,
+				ArcPieSlice )
+
+    type winStdCursor	= enum(
+		XC_X_cursor,		XC_arrow,
+		XC_based_arrow_down,	XC_based_arrow_up,
+		XC_boat,		XC_bogosity,
+		XC_bottom_left_corner,	XC_bottom_right_corner,
+		XC_bottom_side,		XC_bottom_tee,
+		XC_box_spiral,		XC_center_ptr,
+		XC_circle,		XC_clock,
+		XC_coffee_mug,		XC_cross,
+		XC_cross_reverse,	XC_crosshair,
+		XC_diamond_cross,	XC_dot,
+		XC_dotbox,		XC_double_arrow,
+		XC_draft_large,		XC_draft_small,
+		XC_draped_box,		XC_exchange,
+		XC_fleur,		XC_gobbler,
+		XC_gumby,		XC_hand1,
+		XC_hand2,		XC_heart,
+		XC_icon,		XC_iron_cross,
+		XC_left_ptr,		XC_left_side,
+		XC_left_tee,		XC_leftbutton,
+		XC_ll_angle,		XC_lr_angle,
+		XC_man,			XC_middlebutton,
+		XC_mouse,		XC_pencil,
+		XC_pirate,		XC_plus,
+		XC_question_arrow,	XC_right_ptr,
+		XC_right_side,		XC_right_tee,
+		XC_rightbutton,		XC_rtl_logo,
+		XC_sailboat,		XC_sb_down_arrow,
+		XC_sb_h_double_arrow,	XC_sb_left_arrow,
+		XC_sb_right_arrow,	XC_sb_up_arrow,
+		XC_sb_v_double_arrow,	XC_shuttle,
+		XC_sizing,		XC_spider,
+		XC_spraycan,		XC_star,
+		XC_target,		XC_tcross,
+		XC_top_left_arrow,	XC_top_left_corner,
+		XC_top_right_corner,	XC_top_side,
+		XC_top_tee,		XC_trek,
+		XC_ul_angle,		XC_umbrella,
+		XC_ur_angle,		XC_watch,
+		XC_xterm,		XC_None )
+
+    type winCursor	= winVoid			# Cursor -> XID
+
+    type winColor	= string[*]
+    type winPixel	= winVoid
+
+    ## Draw-ops, used directly in C code, must be consistent with <X11/X.h>
+    type winDrawOp	= enum(	Op_Clear,		# 0x0
+				Op_And,			# 0x1
+				Op_AndReverse,		# 0x2
+				Op_Copy,		# 0x3
+				Op_AndInverted,		# 0x4
+				Op_Noop,		# 0x5
+				Op_Xor,			# 0x6
+				Op_Or,			# 0x7
+				Op_Nor,			# 0x8
+				Op_Equiv,		# 0x9
+				Op_Invert,		# 0xA
+				Op_OrReverse,		# 0xB
+				Op_CopyInverted,	# 0xC
+				Op_OrInverted,		# 0xD
+				Op_Nand,		# 0xE
+				Op_Set )		# 0xF
+
+    type winEvent	= rec ( event_type:	winEventType;
+				window:		winWindow;
+				x, y:		int;	# the pointer
+				bk_status:	int;	# buttons & keys
+				data:		int;	# other
+				keysym:		int	# KeySym
+			)
+
+    optype winEventChannel(winEvent) {send}
+
+    ##
+    ## op declarations
+    ##
+
+    op	WinOpen(display:	string[*];
+		title:		string[*];
+		evchannel:	cap winEventChannel;
+		state:		winInitialState;
+		w, h:		int)	returns win: winWindow
+
+    op	WinClose(win: winWindow)
+
+    op  WinCreateSubwindow(oldwin: winWindow; evchannel: cap
+	winEventChannel; state: winInitialState; x, y, w, h: int)
+	returns newwin: winWindow
+
+    op	WinDestroyWindow(win: winWindow)
+
+    op  WinSetBorder(win: winWindow; width: int; color: winColor)
+	returns pv: winPixel
+
+    op	WinNewContext(oldwin: winWindow) returns newwin: winWindow
+    op	WinCopyContext(srcwin, destwin: winWindow)
+
+    op	WinFlush(win: winWindow)
+    op	WinSync(win: winWindow; discard: bool)
+
+    op	WinBell(win: winWindow; percent: int)
+
+    op	WinDrawPixel(win: winWindow; pt: winPoint)
+
+    op	WinDrawLine(win: winWindow; pt1, pt2: winPoint)
+    op	WinDrawPolyline(win: winWindow; pts[*]: winPoint)
+    op	WinDrawPolygon(win: winWindow; pts[*]: winPoint)
+    op	WinFillPolygon(win: winWindow; pts[*]: winPoint)
+
+    op	WinDrawRectangle(win: winWindow; rect: winRectangle)
+    op	WinFillRectangle(win: winWindow; rect: winRectangle)
+
+    op	WinDrawArc(win: winWindow; box: winRectangle; a1, a2: int)
+    op	WinFillArc(win: winWindow; box: winRectangle; a1, a2: int)
+
+    op	WinClearArea(win: winWindow; area: winRectangle)
+    op	WinEraseArea(win: winWindow; area: winRectangle)
+    op  WinCopyArea(srcw, destw: winWindow; src_rect: winRectangle;
+		destp: winPoint)
+
+    op	WinSetLabels(win: winWindow; wlab, ilab: string[*])
+
+    op	WinSetPoll(win: winWindow; ticks: int)
+    op	WinSetEventMask(win: winWindow; em: int)
+
+    op	WinMapWindow(win: winWindow)
+    op	WinUnmapWindow(win: winWindow)
+    op	WinMapSubwindows(win: winWindow)
+    op	WinUnmapSubwindows(win: winWindow)
+    op	WinRaiseWindow(win: winWindow)
+    op	WinLowerWindow(win: winWindow)
+    op	WinMoveWindow(win: winWindow; pt: winPoint)
+    op	WinEnableOutput(win: winWindow)
+    op	WinDisableOutput(win: winWindow)
+    op	WinUpdateWindow(win: winWindow)
+
+    op	WinSetForeground(win: winWindow; fg: winColor) returns pv: winPixel
+    op	WinSetBackground(win: winWindow; bg: winColor) returns pv: winPixel
+    op	WinSetForegroundByPixel(win: winWindow; pv: winPixel)
+    op	WinSetBackgroundByPixel(win: winWindow; pv: winPixel)
+
+    op  WinSetClipRectangles(win: winWindow; origin: winPoint; rects[*]:
+		winRectangle)
+
+    op  WinSetLineAttr(win: winWindow; line_width: int; line_style:
+	winLineStyle; cap_style: winCapStyle; join_style: winJoinStyle)
+    op  WinSetFillAttr(win: winWindow; fill_style: winFillStyle;
+	fill_rule: winFillRule)
+    op  WinSetDashes(win: winWindow; dash_offset: int; dash_list: string[*])
+    op	WinSetArcMode(win: winWindow; arc_mode: winArcMode)
+    op	WinSetDrawOp(win: winWindow; dop: winDrawOp)
+
+    op	WinDefaultFont(win: winWindow) returns font: winFont
+    op	WinLoadFont(win: winWindow; fontname: string[*]) returns font: winFont
+    op	WinSetFont(win: winWindow; font: winFont)
+    op	WinFreeFont(win: winWindow; font: winFont)
+
+    op	WinTextWidth(font: winFont; str: string[*]) returns width: int
+    external	WinFontAscent(winFont) returns int
+    external	WinFontDescent(winFont) returns int
+
+    op	WinDrawString(win: winWindow; pt: winPoint; str: string[*])
+    op	WinDrawImageString(win: winWindow; pt: winPoint; str: string[*])
+
+    op  WinCreateCursor(win: winWindow; stdcursor: winStdCursor)
+		returns cur: winCursor
+    op  WinSetCursor(win: winWindow; cursor: winCursor; fg, bg:
+		winColor) returns err: winError
+    op	WinFreeCursor(win: winWindow; cursor: winCursor)
+
+    op	WinCreateImage(win: winWindow; depth, w, h: int) returns im: winImage
+    op	WinGetPixel(im: winImage; pt: winPoint) returns pv: winPixel
+    op	WinPutPixel(im: winImage; pt: winPoint; pv: winPixel)
+    op	WinAddPixel(im: winImage; pv: winPixel)
+    op	WinPutImage(win: winWindow; im: winImage; src_rect: winRectangle;
+		dest: winPoint)
+    op	WinGetImage(win: winWindow; im: winImage; src_rect: winRectangle;
+		dest: winPoint)
+    op	WinDestroyImage(im: winImage)
+
+
+body	SRWin
+
+    ##
+    ## private data structures for this global
+    ##
+
+    const	CopyGCmasks	:= 077777777Q
+
+    type xGC		= winVoid		# GC
+    type xPtDisplay	= winVoid		# *Display
+    type xColormap	= winVoid		# Colormap -> unsigned long
+    type xAtom		= winVoid		# Atom -> unsigned long
+    type xWindow	= winVoid		# Window -> unsigned long
+    type xPixmap	= winVoid		# Pixmap -> unsigned long
+
+    type winList	= rec (			# identical to C part
+				w, h:	int
+				xw:	xWindow
+				xparent:xWindow
+				pm:	xPixmap
+				srw:	winVoid	# PtContextRec
+				evchan:	cap winEventChannel
+				nextw:	ptr winList
+			)
+    type PtWinList	= ptr winList
+
+    # note: don't use bool, use int, to correspond to C part's expectations
+    type winDispWinRec	= rec (			# identical to C part
+				display:xPtDisplay
+				poll:	int
+				stay:	int	# bool
+				blkgc:	xGC
+				cmap:	xColormap
+				delw:	xAtom
+				enabled:int	# bool
+				mapped:	int	# bool
+				draw2win: int	# bool
+				wlist:	winList
+			)
+    type PtDispWinRec	= ptr winDispWinRec
+
+    type winContextRec	= rec (			# identical to C part
+				dispw:	PtDispWinRec	# to core
+				xw:	xWindow		# XID
+				pm:	xPixmap		# XID
+				gc:	xGC		# GC
+			)
+    type PtContextRec	= ptr winContextRec
+
+    sem update := 1				# mutual exclusion
+
+    ##
+    ## a bunch of externals, from "srwin_c.c" and Xlib
+    ##
+
+    # actually opens the display & window
+    external    SRWin_Open(PtContextRec; string[*]; int; int)
+		returns bool
+
+    # check to see whether there's anything pending
+    external	XPending(xPtDisplay) returns int
+
+    # create a subwindow
+    external	SRWin_CreateSubwindow(PtContextRec; int; int; int; int; bool)
+		returns PtWinList
+
+    # window border
+    external	SRWin_SetBorder(PtContextRec; int; winColor) returns winPixel
+
+    # create a GC for the opened window
+    external	SRWin_NewGC(PtContextRec) returns xGC
+    external	XCopyGC(xPtDisplay; xGC; int; xGC)
+    external	XFreeGC(xPtDisplay; xGC)
+
+    # process events, refresh accordingly
+    external	SRWin_NextEvent(PtDispWinRec; ptr winEvent) returns PtWinList
+
+    # destroy a subwindow
+    external	SRWin_DestroyWindow(PtContextRec) returns bool
+
+    # close display & window
+    external	SRWin_Close(PtContextRec)
+
+    # ring the bell
+    external	XBell(xPtDisplay; int)
+
+    # flush output buffer
+    external	XFlush(xPtDisplay)
+    external	XSync(xPtDisplay; bool)
+
+    # set color
+    external    SRWin_SetColor(PtContextRec; winColor; bool) returns winPixel
+    external	XSetForeground(xPtDisplay; xGC; winPixel)
+    external	XSetBackground(xPtDisplay; xGC; winPixel)
+
+    # draw a single pixel at (x, y)
+    external    SRWin_DrawPixel(PtContextRec; int; int)
+
+    # drawing line
+    external    SRWin_DrawLine(PtContextRec; ptr winPoint; ptr winPoint)
+
+    # draw many lines. last arg: true if closed (polygon)
+    external    SRWin_DrawPolyline(PtContextRec; ptr winPoint; int; bool)
+
+    # fill polygon
+    external    SRWin_FillPolygon(PtContextRec; ptr winPoint; int)
+
+    # draw/fill polygon
+    external	SRWin_Rectangle(PtContextRec; int; int; int; int; bool)
+
+    # draw/fill arc
+    external	SRWin_Arc(PtContextRec; int; int; int; int; int; int; bool)
+
+    # clear area
+    external	SRWin_ClearArea(PtContextRec; int; int; int; int)
+
+    # erase area
+    external	SRWin_EraseArea(PtContextRec; int; int; int; int)
+
+    # copy area
+    external	SRWin_CopyArea(PtContextRec; PtContextRec;
+		ptr winRectangle; ptr winPoint)
+
+    # set event mask
+    # be sure to include refreshing related...
+    external	SRWin_SetEventMask(PtContextRec; winEventType)
+
+    # set labels, window and icon
+    external	SRWin_SetLabels(PtDispWinRec; string[*]; string[*])
+
+    # map/unmap window
+    external	XMapWindow(xPtDisplay; xWindow)
+    external	XUnmapWindow(xPtDisplay; xWindow)
+    external	XMapSubwindows(xPtDisplay; xWindow)
+    external	XUnmapSubwindows(xPtDisplay; xWindow)
+    external	XRaiseWindow(xPtDisplay; xWindow)
+    external	XLowerWindow(xPtDisplay; xWindow)
+    external	XMoveWindow(xPtDisplay; xWindow; int; int)
+    external	SRWin_UpdateWindow(PtDispWinRec)
+
+    # set line attr
+    external    SRWin_SetLineAttr(PtContextRec; int;
+		winLineStyle; winCapStyle; winJoinStyle)
+
+    # set filling attr
+    external    SRWin_SetFillAttr(PtContextRec; winFillStyle; winFillRule)
+
+    # set dashes
+    external    SRWin_SetDashes(PtContextRec; int; string[*]; int)
+
+    # set arc mode
+    external	SRWin_SetArcMode(PtContextRec; winArcMode)
+
+    # set GC function -- draw-op
+    external	SRWin_SetDrawOp(PtContextRec; winDrawOp)
+
+    # set clip rectangles
+    external    SRWin_SetClipRectangles(PtContextRec; int; int; ptr
+		winRectangle; int)
+
+    # fonts
+    external	SRWin_DefaultFont(PtDispWinRec) returns winFont
+    external	SRWin_LoadFont(PtDispWinRec; string[*]) returns winFont
+    external	SRWin_SetFont(PtContextRec; winFont)
+    external	SRWin_FreeFont(PtDispWinRec; winFont)
+
+    # string width
+    external	XTextWidth(winFont; string[*]; int) returns int
+
+    # draw text string
+    external	SRWin_DrawString(PtContextRec; int; int; string[*]; int)
+    external	SRWin_DrawImageString(PtContextRec; int; int; string[*]; int)
+    # cursors
+    external	SRWin_CreateCursor(PtDispWinRec; winStdCursor) returns winCursor
+    external    SRWin_SetCursor(PtContextRec; winCursor; winColor; winColor)
+		returns winError
+    external	SRWin_FreeCursor(PtDispWinRec; winCursor)
+
+    # Image manipulate functions
+    external	SRWin_CreateImage(PtDispWinRec; int; int; int) returns winImage
+    external	XDestroyImage(winImage)
+    external	XPutPixel(winImage; int; int; winPixel)
+    external	XGetPixel(winImage; int; int) returns winPixel
+    external	XAddPixel(winImage; winPixel)
+    external	SRWin_PutImage(PtContextRec; winImage; ptr winRectangle;
+		ptr winPoint)
+    external	SRWin_GetImage(PtContextRec; winImage; ptr winRectangle;
+		ptr winPoint)
+
+    ##
+    ## op implementations
+    ##
+
+    # open and initialize a window
+    proc WinOpen(display, title, evchannel, state, w, h) returns win
+	var	ngcwin: winDispWinRec
+	var	gcwin: winContextRec
+	var	ev: winEvent
+	var	wstruct: PtWinList
+
+	ngcwin.wlist.evchan := evchannel
+	ngcwin.poll := DefaultPoll
+	ngcwin.stay := int(true)
+	ngcwin.enabled := int(false)
+	ngcwin.draw2win := int(false)
+	gcwin.dispw := @ngcwin
+	win := @gcwin
+	P(update)
+	if not SRWin_Open(@gcwin, display, w, h) ->
+	    V(update)
+	    win := null				# error
+	    return
+	fi
+	if (gcwin.gc := SRWin_NewGC(@gcwin)) = null ->
+	    V(update)
+	    win := null				# error
+	    return
+	fi
+	SRWin_SetLabels(@ngcwin, title, "SRWin")
+	if evchannel != null and state != OffScreen ->
+	    SRWin_SetEventMask(@gcwin, Ev_All)
+	fi
+	if state != OffScreen ->
+	    XMapWindow(ngcwin.display, gcwin.xw)
+	    ngcwin.enabled := int(true)
+	fi
+	V(update)
+	# return window pointer to user program
+	# stay as a hidden process to handle events
+	reply
+
+	# enter event handling loop
+	P(update)
+	do bool(ngcwin.stay) ->
+	    # get event - call a C function, refresh when necessary
+	    # till no event pending
+	    do XPending(ngcwin.display) > 0 ->
+	      wstruct := SRWin_NextEvent(@ngcwin, @ev)
+	      # if not refreshing-related, let SR dispatch...
+	      if (ev.event_type > Ev_None) and (wstruct^.evchan != null) ->
+	        send wstruct^.evchan(ev)
+	      fi
+	    od
+	    V(update)
+	    # sleep for a while
+	    nap(ngcwin.poll)
+	    P(update)
+	od
+	V(update)
+	# if ngcwin.stay is false, someone must have called "winClose"
+	# all the related X resources have been deallocated...
+    end
+
+    # close a window, destroy/free associated X resources.
+    proc WinClose(win)
+	# check whether win points to a legitimate structure?
+	P(update)
+	PtContextRec(win)^.dispw^.stay := int(false)
+	PtContextRec(win)^.dispw^.poll := DefaultPoll
+	SRWin_Close(PtContextRec(win))
+	V(update)
+    end
+
+    # create a subwindow
+    proc WinCreateSubwindow(oldwin, ec, state, x, y, w, h) returns newwin
+	var	wstruct : PtWinList
+	var     newgc : xGC
+
+	# check validity?
+	newwin := new(winContextRec)
+	PtContextRec(newwin)^.dispw := PtContextRec(oldwin)^.dispw
+	# pass old xw using newwin
+	PtContextRec(newwin)^.xw := PtContextRec(oldwin)^.xw
+	P(update)
+	wstruct := SRWin_CreateSubwindow(PtContextRec(newwin),
+		x, y, w, h, (ec = null))
+	if wstruct = null ->
+	    V(update)
+	    free(newwin)
+	    newwin := null			# error
+	    return
+	fi
+	wstruct^.evchan := ec
+	newgc := SRWin_NewGC(PtContextRec(oldwin))
+	V(update)
+	if newgc = null ->
+	    P(update)
+	    SRWin_DestroyWindow(PtContextRec(newwin))
+	    V(update)
+	    free(newwin)
+	    newwin := null			# error
+	    return
+	fi
+	PtContextRec(newwin)^.gc := newgc
+	P(update)
+	XCopyGC(PtContextRec(oldwin)^.dispw^.display,
+		PtContextRec(oldwin)^.gc, CopyGCmasks, newgc)
+	if ec != null and state != OffScreen ->
+	    SRWin_SetEventMask(PtContextRec(newwin), Ev_All)
+	fi
+	V(update)
+	if state != OffScreen ->
+	    P(update)
+	    XMapWindow(PtContextRec(newwin)^.dispw^.display,
+		PtContextRec(newwin)^.xw)
+	    V(update)
+	fi
+	return
+    end
+
+    # border
+    proc WinSetBorder(win, width, c) returns pv
+	# check validity?
+	P(update)
+	pv := SRWin_SetBorder(PtContextRec(win), width, c)
+	V(update)
+    end
+
+    # bind a new graphics context
+    proc WinNewContext(oldwin) returns newwin
+	var     newgc : xGC
+	# check validity?
+	P(update)
+	newgc := SRWin_NewGC(PtContextRec(oldwin))
+	V(update)
+	if newgc = null ->
+	    newwin := null			# error
+	    return
+	fi
+	P(update)
+	XCopyGC(PtContextRec(oldwin)^.dispw^.display,
+		PtContextRec(oldwin)^.gc, CopyGCmasks, newgc)
+	V(update)
+	newwin := new(winContextRec)
+	PtContextRec(newwin)^.gc := newgc
+	PtContextRec(newwin)^.xw := PtContextRec(oldwin)^.xw
+	PtContextRec(newwin)^.pm := PtContextRec(oldwin)^.pm
+	PtContextRec(newwin)^.dispw := PtContextRec(oldwin)^.dispw
+	return
+    end
+
+    # copy GC from src to dest
+    proc WinCopyContext(srcwin, destwin)
+	# check validity?
+	P(update)
+	XCopyGC(PtContextRec(destwin)^.dispw^.display,
+		PtContextRec(srcwin)^.gc, CopyGCmasks,
+		PtContextRec(destwin)^.gc)
+	V(update)
+    end
+
+    # destroy a subwindow
+    proc WinDestroyWindow(win)
+	# check validity?
+	P(update)
+	if SRWin_DestroyWindow(PtContextRec(win)) ->
+	    free(win)
+	fi
+	V(update)
+    end
+
+    # flush the output buffer
+    proc WinFlush(win)
+	# check validity?
+	P(update)
+	XFlush(PtContextRec(win)^.dispw^.display)
+	V(update)
+    end
+
+    # sync with the X server
+    proc WinSync(win, discard)
+	# check validity?
+	P(update)
+	XSync(PtContextRec(win)^.dispw^.display, discard)
+	V(update)
+    end
+
+    # ring the bell
+    proc WinBell(win, percent)
+	# check validity?
+	percent := max(percent, -100)
+	percent := min(percent,  100)
+	P(update)
+	XBell(PtContextRec(win)^.dispw^.display, percent)
+	V(update)
+    end
+
+    # draw a line from pt1 to pt2
+    proc WinDrawLine(win, pt1, pt2)
+	# check validity?
+	P(update)
+	SRWin_DrawLine(PtContextRec(win), @pt1, @pt2)
+	V(update)
+    end
+
+    # draw polyline
+    proc WinDrawPolyline(win, pts)
+	# check validity?
+	P(update)
+	SRWin_DrawPolyline(PtContextRec(win), @pts[1], ub(pts), false)
+	V(update)
+    end
+
+    # draw polygon
+    proc WinDrawPolygon(win, pts)
+	# check validity?
+	P(update)
+	SRWin_DrawPolyline(PtContextRec(win), @pts[1], ub(pts), true)
+	V(update)
+    end
+
+    # fill polygon
+    proc WinFillPolygon(win, pts)
+	# check validity?
+	P(update)
+	SRWin_FillPolygon(PtContextRec(win), @pts[1], ub(pts))
+	V(update)
+    end
+
+    # draw pixel
+    proc WinDrawPixel(win, pt)
+	# check validity?
+	P(update)
+	SRWin_DrawPixel(PtContextRec(win), pt.x, pt.y)
+	V(update)
+    end
+
+    # draw rectangle
+    proc WinDrawRectangle(win, rect)
+	# check validity?
+	P(update)
+	SRWin_Rectangle(PtContextRec(win),
+		rect.x, rect.y, rect.w, rect.h, false)
+	V(update)
+    end
+
+    # fill rectangle
+    proc WinFillRectangle(win, rect)
+	# check validity?
+	P(update)
+	SRWin_Rectangle(PtContextRec(win),
+		rect.x, rect.y, rect.w, rect.h, true)
+	V(update)
+    end
+
+    # draw arc
+    proc WinDrawArc(win, box, a1, a2)
+	# check validity?
+	P(update)
+	SRWin_Arc(PtContextRec(win),
+		box.x, box.y, box.w, box.h, a1, a2, false)
+	V(update)
+    end
+
+    # fill arc
+    proc WinFillArc(win, box, a1, a2)
+	# check validity?
+	P(update)
+	SRWin_Arc(PtContextRec(win),
+		box.x, box.y, box.w, box.h, a1, a2, true)
+	V(update)
+    end
+
+    # clear area
+    proc WinClearArea(win, area)
+	# check validity?
+	P(update)
+	SRWin_ClearArea(PtContextRec(win), area.x, area.y, area.w, area.h)
+	V(update)
+    end
+
+    # erase area
+    proc WinEraseArea(win, area)
+	# check validity?
+	P(update)
+	SRWin_EraseArea(PtContextRec(win), area.x, area.y, area.w, area.h)
+	V(update)
+    end
+
+    # copy area
+    proc WinCopyArea(srcw, destw, src_rect, destp)
+	# check validity?
+	P(update)
+	SRWin_CopyArea(PtContextRec(srcw), PtContextRec(destw),
+		@src_rect, @destp)
+	V(update)
+    end
+
+    # set labels of window/icon
+    proc WinSetLabels(win, wlab, ilab)
+	# check validity?
+	P(update)
+	SRWin_SetLabels(PtContextRec(win)^.dispw, wlab, ilab)
+	V(update)
+    end
+
+    # set polling interval
+    proc WinSetPoll(win, ticks)
+	# check validity?
+	P(update)
+	PtContextRec(win)^.dispw^.poll := max(1, ticks)
+	V(update)
+    end
+
+    # set event mask for the window
+    proc WinSetEventMask(win, em)
+	# check validity?
+	P(update)
+	SRWin_SetEventMask(PtContextRec(win), em)
+	V(update)
+    end
+
+    # set foreground
+    proc WinSetForeground(win, fg) returns pv
+	# check validity?
+	P(update)
+	pv := SRWin_SetColor(PtContextRec(win), fg, true)
+	V(update)
+    end
+
+    # set background
+    proc WinSetBackground(win, bg) returns pv
+	# check validity?
+	P(update)
+	pv := SRWin_SetColor(PtContextRec(win), bg, false)
+	V(update)
+    end
+
+    # set foreground
+    proc WinSetForegroundByPixel(win, pv)
+	P(update)
+	XSetForeground(PtContextRec(win)^.dispw^.display,
+	    PtContextRec(win)^.gc, pv)
+	V(update)
+    end
+
+    # set background
+    proc WinSetBackgroundByPixel(win, pv)
+	P(update)
+	XSetBackground(PtContextRec(win)^.dispw^.display,
+	    PtContextRec(win)^.gc, pv)
+	V(update)
+    end
+
+    # map a window
+    proc WinMapWindow(win)
+	# check validity?
+	P(update)
+	XMapWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    end
+
+    # unmap a window
+    proc WinUnmapWindow(win)
+	# check validity?
+	P(update)
+	XUnmapWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    end
+
+    # map all subwindow
+    proc WinMapSubwindows(win)
+	# check validity?
+	P(update)
+	XMapSubwindows(PtContextRec(win)^.dispw^.display,
+		PtContextRec(win)^.xw)
+	V(update)
+    end
+
+    # unmap all subwindow
+    proc WinUnmapSubwindows(win)
+	# check validity?
+	P(update)
+	XUnmapSubwindows(PtContextRec(win)^.dispw^.display,
+		PtContextRec(win)^.xw)
+	V(update)
+    end
+
+    # raise window
+    proc WinRaiseWindow(win)
+	# check validity?
+	P(update)
+	XRaiseWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    end
+
+    # lower window
+    proc WinLowerWindow(win)
+	# check validity?
+	P(update)
+	XLowerWindow(PtContextRec(win)^.dispw^.display, PtContextRec(win)^.xw)
+	V(update)
+    end
+
+    # move a window
+    proc WinMoveWindow(win, pt)
+	# check validity?
+	P(update)
+	XMoveWindow(PtContextRec(win)^.dispw^.display,
+		PtContextRec(win)^.xw, pt.x, pt.y)
+	V(update)
+    end
+
+    # enable
+    proc WinEnableOutput(win)
+	# check validity?
+	var dispw := PtContextRec(win)^.dispw
+	P(update)
+	dispw^.enabled := int(true)
+	dispw^.draw2win := dispw^.mapped
+	V(update)
+    end
+
+    # disable
+    proc WinDisableOutput(win)
+	# check validity?
+	var dispw := PtContextRec(win)^.dispw
+	P(update)
+	dispw^.enabled := int(false)
+	dispw^.draw2win := int(false)
+	V(update)
+    end
+
+    # update
+    proc WinUpdateWindow(win)
+	# check validity?
+	P(update)
+	SRWin_UpdateWindow(PtContextRec(win)^.dispw)
+	V(update)
+    end
+
+    # set dash-offset and dash-list for dashed line styles
+    proc WinSetDashes(win, dash_offset, dash_list)
+	# check validity?
+	P(update)
+	SRWin_SetDashes(PtContextRec(win), dash_offset, dash_list,
+		length(dash_list))
+	V(update)
+    end
+
+    # set line attributes
+    proc WinSetLineAttr(win, line_width, line_style, cap_style, join_style)
+	# check validity?
+	P(update)
+	SRWin_SetLineAttr(PtContextRec(win), line_width, line_style,
+		cap_style, join_style)
+	V(update)
+    end
+
+    # set filling attributes
+    proc WinSetFillAttr(win, fill_style, fill_rule)
+	# check validity?
+	P(update)
+	SRWin_SetFillAttr(PtContextRec(win), fill_style, fill_rule)
+	V(update)
+    end
+
+    # set clip rectangles
+    proc WinSetClipRectangles(win, origin, rects)
+	# check validity?
+	P(update)
+	SRWin_SetClipRectangles(PtContextRec(win),
+		origin.x, origin.y, @rects[1], ub(rects))
+	V(update)
+    end
+
+    # set arc mode
+    proc WinSetArcMode(win, arc_mode)
+	# check validity?
+	P(update)
+	SRWin_SetArcMode(PtContextRec(win), arc_mode)
+	V(update)
+    end
+
+    # set draw op
+    proc WinSetDrawOp(win, dop)
+	# check validity?
+	P(update)
+	SRWin_SetDrawOp(PtContextRec(win), dop)
+	V(update)
+    end
+
+    # load font
+    proc WinLoadFont(win, fontname) returns font
+	# check validity?
+	P(update)
+	font := SRWin_LoadFont(PtContextRec(win)^.dispw, fontname)
+	V(update)
+    end
+
+    # check default font
+    proc WinDefaultFont(win) returns font
+	# check validity?
+	P(update)
+	font := SRWin_DefaultFont(PtContextRec(win)^.dispw)
+	V(update)
+    end
+
+    # set font
+    proc WinSetFont(win, font)
+	# check validity?
+	P(update)
+	SRWin_SetFont(PtContextRec(win), font)
+	V(update)
+    end
+
+    # free font
+    proc WinFreeFont(win, font)
+	# check validity?
+	P(update)
+	SRWin_FreeFont(PtContextRec(win)^.dispw, font)
+	V(update)
+    end
+
+    # compute pixel-width
+    proc WinTextWidth(font, str) returns width
+	# check validity?
+	width := XTextWidth(font, str, length(str))
+    end
+
+    # draw text string
+    proc WinDrawString(win, pt, str)
+	# check validity?
+	P(update)
+	SRWin_DrawString(PtContextRec(win), pt.x, pt.y, str, length(str))
+	V(update)
+    end
+
+    # draw text string
+    proc WinDrawImageString(win, pt, str)
+	# check validity?
+	P(update)
+	SRWin_DrawImageString(PtContextRec(win), pt.x, pt.y, str, length(str))
+	V(update)
+    end
+
+    # create std cursor
+    proc WinCreateCursor(win, stdcursor) returns cur
+	# check validity?
+	P(update)
+	cur := SRWin_CreateCursor(PtContextRec(win)^.dispw, stdcursor)
+	V(update)
+    end
+
+    # set cursor
+    proc WinSetCursor(win, cursor, fg, bg) returns err
+	# check validity?
+	P(update)
+	err := SRWin_SetCursor(PtContextRec(win), cursor, fg, bg)
+	V(update)
+    end
+
+    # free cursor
+    proc WinFreeCursor(win, cursor)
+	# check validity?
+	P(update)
+	SRWin_FreeCursor(PtContextRec(win)^.dispw, cursor)
+	V(update)
+    end
+
+    # create an image
+    proc WinCreateImage(win, depth, w, h) returns im
+	# check validity?
+	P(update)
+	im := SRWin_CreateImage(PtContextRec(win)^.dispw, depth, w, h)
+	V(update)
+    end
+
+    # destroy image
+    proc WinDestroyImage(im)
+	# check validity?
+	P(update)
+	XDestroyImage(im)
+	V(update)
+    end
+
+    # set pixel value in an image
+    proc WinPutPixel(im, pt, pv)
+	# check validity?
+	# non-locking: parallel.
+	XPutPixel(im, pt.x, pt.y, pv)
+    end
+
+    # get pixel value in an image
+    proc WinGetPixel(im, pt) returns pv
+	# check validity?
+	# non-locking: parallel.
+	pv := XGetPixel(im, pt.x, pt.y)
+    end
+
+    # add pixel value in an image
+    proc WinAddPixel(im, pv)
+	# check validity?
+	# non-locking: parallel.
+	XAddPixel(im, pv)
+    end
+
+    # get image from a rectangle area of a drawable
+    proc WinGetImage(win, im, src_rect, dest)
+	# check validity?
+	P(update)
+	# winImage is a pointer to the X image, so im could get updated
+	SRWin_GetImage(PtContextRec(win), im, @src_rect, @dest)
+	V(update)
+    end
+
+    # combine an image with a rectangle of a drawable on the display
+    proc WinPutImage(win, im, src_rect, dest)
+	# check validity?
+	P(update)
+	SRWin_PutImage(PtContextRec(win), im, @src_rect, @dest)
+	V(update)
+    end
+
+end
+

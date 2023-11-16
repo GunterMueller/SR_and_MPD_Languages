@@ -1,0 +1,10 @@
+0 m2sr -sc barrier.m
+0 sr -C barrier.sr test.sr
+
+0 m2sr -sw barrier.m
+0 sr -C barrier.sr test.sr
+
+0 m2sr -su barrier.m
+0 sr -C barrier.sr test.sr
+
+0 rm -rf Interfaces core *.out barrier.sr

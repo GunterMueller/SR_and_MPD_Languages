@@ -1,0 +1,4 @@
+0 mpd -c priority2.mpd
+0 mpdl defs res2 priority2
+0 run 
+0 rm -rf MPDinter core *.out

@@ -1,0 +1,4 @@
+0 sr -c bool2.sr
+0 srl bool2
+0 run
+0 rm -rf Interfaces core *.out

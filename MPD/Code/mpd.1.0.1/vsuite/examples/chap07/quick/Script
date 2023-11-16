@@ -1,0 +1,4 @@
+0 mpd quick.mpd
+0 a.out <in1 >in1.out 2>&1
+0 scmp in1.std in1.out
+0 rm -rf MPDinter core *.out

@@ -1,0 +1,26 @@
+begin inner loop; ?terminate = 3
+  delta = 4
+  delta = 1
+  delta = 2
+  delta = 3
+begin inner loop; ?terminate = 3
+  delta = 4
+  delta = 1
+  delta = 2
+  delta = 3
+begin inner loop; ?terminate = 3
+  delta = 4
+  delta = 1
+  delta = 2
+  delta = 3
+begin inner loop; ?terminate = 3
+  delta = 4
+  delta = 1
+  delta = 2
+  delta = 3
+begin inner loop; ?terminate = 3
+  delta = 4
+  delta = 1
+  delta = 2
+  delta = 3
+RTS warning: blocked process: Jacobi.coordinator : file sched.mpd, line 17

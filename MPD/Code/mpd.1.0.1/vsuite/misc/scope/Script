@@ -1,0 +1,4 @@
+0 mpd -c scope.mpd
+0 mpdl scope
+0 run
+0 rm -rf MPDinter core *.out

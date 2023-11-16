@@ -1,0 +1,64 @@
+
+# another test of else with multiple processes
+# note: processes synchronize so execution is deterministic;
+# output is also deterministic.
+resource a()
+   op bozo(int t);op hoho(int t, int x);op blocker() returns bool b;op f(int x)
+   op done()
+   # control[t,i] is 0 if else present for hoho(i) during try t
+   # otherwise it is value to send to f
+      int control[1:5,1:5] =
+	  (( 29, 28, 27, 26, 25),
+	    (24,  0, 23,  0, 22),
+	    (21,  0,  0, 20, 19),
+	     (0,  0,  0,  0,  0),
+	     (0,  0, 18, 17,  0 ))
+      int output[1:5,1:5] = ([5]([5] -1))
+
+      for [ t = 1 to 5 ] {
+	  write("****Try",t)
+	  send f(9999)
+	  for [ i = 1 to 5 st control[t,i] != 0 ] { send f(control[t,i])  }
+	  call bozo(t)
+	  for [ i = 1 to 5 ] { call hoho(t,i) }
+	  for [ k = 1 to 5 ] { receive done() }
+      }
+      for [ k = 1 to 5 ] {
+	 for [ l = 1 to 5 ] {
+	    writes(output[k,l])
+	    if (l == 5) { write()
+	    } else { writes(" ")
+	    }
+	 }
+      }
+      for [ k = 1 to 5,
+	  l = 1 to 5 st control[k,l] != output[k,l] ] {
+	    write("oops",k,l); stop(1)
+      }
+
+   proc bozo(t)  {
+      write("bozo",t)
+      reply
+      # don't try this at home boys and girls
+      in f(x) and blocker() ->
+      ni
+   }
+   proc hoho(t,i)  {
+      reply
+      if (control[t,i] == 0) {
+	  in f(x) and x == -98765 /* always false */ -> output[t,i] = x
+	  [] else -> output[t,i] = 0
+	  ni
+      } else {
+	  in f(x) st control[t,i] == x -> output[t,i] = x
+	  ni
+      }
+      send done()
+   }
+   # the idea is to block bozo so that the hoho's get put on
+   # the new process list for f.
+   proc blocker() returns b  {
+      b = true
+      nap(1000)
+   }
+end

@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+#  m2sr - convert monitor notation to SR code
+
+NAME=m2sr
+OPTIONS="[-sc] [-sw] [-su] [-sx]"
+PATTERN="-s[cwux]"
+EXTENSION=.m

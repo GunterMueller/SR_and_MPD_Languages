@@ -1,0 +1,60 @@
+global sizes
+  var N := 6    # matrix dimension, default 6
+body sizes
+  getarg(1, N)
+end
+
+resource point    # one instance per point
+  op compute(left, up: cap point)
+  op rowval(value: real), colval(value: real)
+body point(i, j: int)
+  import sizes
+  var aij: real := i, bij: real := j, cij := 0.0
+
+  proc compute(left, up)
+    # shift values in aij circularly left i columns
+    fa k := 1 to i ->
+      send left.rowval(aij); receive rowval(aij)
+    af
+    # shift values in bij circularly up j rows
+    fa k := 1 to j ->
+      send up.colval(bij); receive colval(bij)
+    af
+    cij := aij*bij
+    fa k := 1 to N-1 ->
+      # shift aij left, bij up, then multiply
+      send left.rowval(aij); send up.colval(bij)
+      receive rowval(aij); receive colval(bij)
+      cij +:= aij*bij
+    af
+  end
+
+  final writes(cij, " ") end
+end point
+
+resource main()
+  import sizes, point
+  var pcap[N,N]: cap point
+
+  procedure prev(index: int) returns lft: int
+    lft := (index-2) mod N + 1
+  end
+
+  # create points
+  fa i := 1 to N, j := 1 to N ->
+    pcap[i,j] := create point(i, j)
+  af
+  # give each point capabilities for its left
+  # and upward neighbors
+  fa i := 1 to N, j := 1 to N ->
+    send pcap[i,j].compute(pcap[i,prev(j)],
+                           pcap[prev(i),j])
+  af
+
+  final
+    fa i := 1 to N ->
+      fa j := 1 to N -> destroy pcap[i,j] af
+      write()
+    af
+  end
+end

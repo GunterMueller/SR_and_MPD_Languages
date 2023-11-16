@@ -1,0 +1,41 @@
+resource Servant
+  op getforks(int id)  # called by Philosophers
+  op relforks(int id)
+body Servant(int n)
+  process server  {
+    bool eating[1:n] = ([n] false)
+    while (true) {
+      in getforks(id) st not eating[(id mod n) + 1]
+	  and not eating[((id-2) mod n) + 1] ->
+	      eating[id] = true
+      [] relforks(id) ->
+	      eating[id] = false
+      ni
+    }
+  }
+end
+
+resource Philosopher
+  import Servant
+body Philosopher(cap Servant s, int id, int t)
+  process phil  {
+    for [ i = 1 to t ] {
+      s.getforks(id)
+      write("Philosopher", id, "is eating")   # eat
+      s.relforks(id)
+      write("Philosopher", id, "is thinking") # think
+    }
+  }
+end
+
+resource Main()
+  import Philosopher, Servant
+  int n= 5
+  int t= 5
+  # create the Servant and Philosophers
+  cap Servant  s
+  s = create Servant(n)
+  for [ i = 1 to n ] {
+    create Philosopher(s, i, t)
+  }
+end

@@ -1,0 +1,38 @@
+resource tenum()
+	type e = enum( e1,e2,e3,e4,e5)
+	op f(x:e) returns y:string[2]
+	proc f(x) returns y
+		if x = e1 -> y := "e1"
+		[] x = e2 -> y := "e2"
+		[] x = e3 -> y := "e3"
+		[] x = e4 -> y := "e4"
+		[] x = e5 -> y := "e5"
+		[] else -> y := "??"
+		fi
+	end
+
+	var a,b : e
+	a:= e2
+	b:= e4
+	write(f(a),f(b), "  <",a<b, "   <=",a<=b, "   =",a=b,
+	           "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a:= e3
+	b:= e3
+	write(f(a),f(b), "  <",a<b, "   <=",a<=b, "   =",a=b,
+	           "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a:= e3
+	b:= e1
+	write(f(a),f(b), "  <",a<b, "   <=",a<=b, "   =",a=b,
+	           "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	if a <= b ->
+		write("OOPS. Really bad", a <= b)
+	[] else ->
+		write( "ok", a <= b )
+	fi
+	var c:bool := a <= b
+	if c ->
+		write("OOPS. Really bad", c, a <= b)
+	[] else ->
+		write( "ok", c, a <= b )
+	fi
+end

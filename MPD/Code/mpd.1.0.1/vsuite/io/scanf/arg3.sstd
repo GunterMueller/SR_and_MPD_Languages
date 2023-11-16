@@ -1,0 +1,4 @@
+argtype: 1
+format: '%c'
+RTS abort: file sscan.mpd, line 47:
+   arguments do not match format string

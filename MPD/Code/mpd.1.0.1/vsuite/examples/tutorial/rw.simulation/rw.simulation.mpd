@@ -1,0 +1,60 @@
+# A simple readers and writers simulation.
+# The database is protected using semaphores as in Figure 4.10
+# of the MPD book.
+
+# usage:
+#   a.out numReaders numWriters rounds
+
+global DataBase
+  op read(var int data)      # read a value
+  op write(val int data)     # write a value
+body DataBase
+  int database = 0     # the "value" of the database
+
+  sem rw = 1, mutexR = 1
+  int nr = 0
+
+  procedure startread() {
+    P(mutexR); nr++; if (nr > 0) { P(rw) }; V(mutexR)
+  }
+
+  procedure endread() {
+    P(mutexR); nr--; if (nr == 0) { V(rw) }; V(mutexR)
+  }
+
+  proc read(data) {
+    startread(); data = database; endread()
+  }
+
+  proc write(data) {
+    P(rw); database = data; V(rw)
+  }
+end DataBase
+
+resource main()
+  import DataBase
+
+  int numReaders; getarg(1, numReaders)
+  int numWriters; getarg(2, numWriters)
+  int rounds; getarg(3, rounds)
+
+  process Reader[i = 1 to numReaders] {
+    int myvalue
+    nap(int(random()*1000))   # to let everybody get created
+    for [j = 1 to rounds] {
+      DataBase.read(myvalue)
+      write("reader", i, "read", myvalue)  
+      nap(int(random()*1000))
+    }
+  }
+
+  process Writer[i = 1 to numWriters] {
+    int myvalue = i
+    nap(int(random()*1000))   # to let everybody get created
+    for [j = 1 to rounds] {
+      DataBase.write(myvalue)
+      write("writer", i, "wrote", myvalue)  
+      nap(int(random()*1000))
+    }
+  }
+end

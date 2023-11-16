@@ -1,0 +1,226 @@
+##  primes.sr - find prime numbers.  (a larger, sequential SR program.)
+#
+#   usage:  primes [limit]	default is 1000
+#				(if limit is negative, just calc, don't print)
+#
+#   Gregg Townsend.  July 19, 1981.  (Pascal version for CS 242, P. Downey)
+#   Gregg Townsend.  May 6, 1987.    (Converted into SR)
+#   Gregg Townsend.  August 6, 1987. (Added no-print option)
+#
+#   This program will find and print all primes up to a given limit,
+#   limited only by memory space.  The method is from:
+#   	A Linear Sieve Algorithm for finding Prime Numbers
+#   	David Gries and Jayadev Misra
+#   	CACM 21,2 (December, 1978), 999-1003.
+#
+#   Any composite number x can be expressed as  x = p**k * q.  The algorithm
+#   steps through various combinations of p, k, and q without forming any
+#   particular composite number twice.  This is embodied in the "calc"
+#   subroutine.
+#
+#   The array s has one entry for each integer under consideration.  To
+#   save space, integers divisible by 2 and 3 are eliminated, so the
+#   elements of s with indices 1, 2, 3... correspond to the integers
+#   5, 7, 11, 13, 17, 19....  These are related as follows:
+#   	num(i) = 3*i + i % 2 + 1	[ex: num(3) = 11]
+#   	ind(n) = n / 3			[ex: ind(11) = 3]
+#
+#   The array "s" represents the set S of remaining [potential] primes
+#   as a linked list.  To save space, offsets to the closest remaining
+#   entries in either direction are kept instead of actual indices.
+#       1.  If num(i) is no longer in S we don't care about it any more.
+#       2.  If num(i) is still in S, put offset to successor in s[i]
+#   	    and put offset to predecessor in s[i-1].
+#       3.  If num(i-1) is still in S this does not cause trouble because
+#   	    then s[i-1] = 1 representing offsets both for successor of
+#   	    num(i-1) and predecessor of num(i).
+
+
+
+
+resource primes()
+    op setup ()
+    op calc ()
+    op print()
+    op prt (n: int)
+    op puti (n, w: int)
+    op num (i: int) returns n: int
+    op ind (n: int) returns i: int
+    op pred (n: int) returns p: int
+    op succ (n: int) returns sc: int
+    op remove (n: int)
+
+    const max := 100000			# maximum limit value
+    const outcol := 10			# number of output columns
+
+    var s [(max+2)/3+1] : char		# see notes above
+    var limit := 1000			# highest prime to return
+    var last: int			# highest int <= limit repr in table
+    var nleft: int			# number of potential primes left
+    var col: int			# current output column
+
+    var verbose: bool := true		# print all the primes?
+
+
+# main logic
+
+    setup()
+    calc()
+    print()
+
+
+
+# setup - general initialization.
+
+proc setup ()
+    var i: int
+    if getarg(1,i) = 1 ->
+	limit := i
+	fi
+    if limit < 0 ->
+	verbose := false
+	limit := -limit
+	fi
+    if limit > max ->
+	write("maximum limit is",max)
+	stop (1)
+	fi
+    last := num((limit-2)/3)
+    if limit % 6 = 1 ->
+	last := last + 2
+	fi
+    fa i := 1 to ind(last)+1 ->
+	s[i] := char(1)
+	af
+    nleft := ind(last) + 2	# +2 for primes 2 and 3 not in table
+    end setup
+
+
+
+# calc - calculate the primes by removing the composites.
+
+proc calc ()
+    var p, q, x: int
+    p := 5
+    do p * p <= last ->
+	q := p
+	do p * q <= last ->
+	    x := p * q
+	    do x <= last ->
+		remove(x)
+		x := p * x
+		od
+	    q := succ(q)
+	    od
+	p := succ(p)
+	od
+    end calc
+
+
+
+# print - print all the primes.
+
+proc print ()
+    var p: int
+    col := 0
+    write(nleft,"primes from 1 to",pred(num(ind(last)+1)))
+    if verbose ->
+	prt(2)
+	prt(3)
+	p := 5
+	do p <= last ->
+	    prt(p)
+	    p := succ(p)
+	    od
+	write()
+	fi
+    end print
+
+
+
+# prt(n) - print one prime.
+
+proc prt(n)
+    puti(n,4)
+    col := col + 1
+    if col < outcol ->
+	put(" ")
+    [] else ->
+	put("\n")
+	col := 0
+    fi
+    end prt
+
+
+
+# puti(n,w) - output integer n in a field of Z(w).
+#
+# this is not really necessary, and not all that general,
+# but it sure seems to catch compiler bugs!
+
+proc puti(n,w)
+    var n10 := n / 10
+    if w > 1 or n10 > 0 ->
+        puti(n10,w-1)
+        fi
+    if n = 0 ->
+        put(" ")
+    [] else ->
+        writes(char(n%10+int('0')))
+    fi
+    end puti
+
+
+
+# num(i) - return number represented by index.
+
+proc num(i) returns n
+    n := (3 * i) + (i % 2) + 1
+    end num
+
+
+
+# ind(n) - convert int to array index.
+
+proc ind(n) returns i
+    i := n / 3
+    end ind
+
+
+
+# pred(n) - find predecessor of an int.
+
+proc pred(n) returns p
+    var i: int
+    i := ind(n)
+    p := num(i - int(s[i-1]))
+    end pred
+
+
+
+# succ(n) - find successor of an int.
+
+proc succ(n) returns sc
+    var i: int
+    i := ind(n)
+    sc := num(i + int(s[i]))
+    end succ
+
+
+
+# remove(n) - remove int from consideration as a prime.
+
+proc remove(n)
+    var i, d, pr, sc: int
+    i := ind(n)
+    pr := i - int(s[i-1])
+    sc := i + int(s[i])
+    d := sc - pr
+    s[pr] := char(d)
+    s[sc-1] := char(d)
+    nleft := nleft - 1
+    end remove
+
+
+
+end primes

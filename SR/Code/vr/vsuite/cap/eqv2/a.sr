@@ -1,0 +1,36 @@
+# structual equivalence of resources
+resource a
+	op f(x:int)
+	const x := 10
+	op g() returns x:int
+body a()
+	proc f(z)  write("a's f",x,z) end
+	proc g() returns z  write("a's g",x); z := 2*x end
+end
+resource b
+	op i(x:int)
+	op h() returns y:int
+	type foo = rec(a,b:int)
+body b(z:int)
+	op j(x:int)
+
+	write("b",z)
+	h(); i(19); j(87)
+
+	proc h() returns y  write("h",z); y := 2*z end
+	proc i(x)  write("b's i",x,z) end
+	proc j(x)  write("b's j",x,z) end
+end
+resource main
+	import a, b
+body main()
+	write("main starts")
+	var cb:cap b
+	cb := create b(56)
+	cb.i(87)
+	var ca:cap a
+	ca := create a()
+	ca.f(999)
+	cb := ca
+	cb.i(77)
+end

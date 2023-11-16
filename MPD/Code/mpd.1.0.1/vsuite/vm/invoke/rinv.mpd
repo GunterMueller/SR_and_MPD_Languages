@@ -1,0 +1,97 @@
+# test various forms of remote invocation
+
+resource Client
+    import Scheduler
+body Client(cap Scheduler sched)
+    process client  {
+	write("Client requests to enter a server") 
+	sched.request()
+    }
+end Client
+
+resource Scheduler
+    op request()
+body Scheduler()
+    proc request()  {
+	write("got request")
+	op go_ahead()
+	write("awaiting go_ahead")
+	receive go_ahead()
+    }
+    write("Scheduler ready")
+end Scheduler
+
+
+resource r
+    op hello (string[*]) returns int
+    op hang (string[*])
+body r (int n, cap () callback)
+
+    sem never
+
+    proc hello (s) returns i  {
+	write ("hello", n, ": ", s)
+	i = n
+    }
+
+    proc hang (s)  {
+	write ("hang", n, ": ", s)
+	P (never)
+    }
+
+    write ("r", n, "here")
+    callback ()
+    write ("r", n, "ready")
+
+    if ((n == 3)) {               # on VM 3, reply then hang
+	reply
+	P(never)
+	V(never)
+    }
+end
+
+
+resource m ()
+    import r, Client, Scheduler
+
+    op call2(); op call3(); op nothing()
+
+    process p  {
+	write ("awaiting callback 2")
+	receive call2 ()
+	write ("awaiting callback 3")
+	in call3 () ->
+	    write ("got callback 3")
+	    reply
+	ni
+    }
+
+    proc nothing ()  {
+	write ("nothing here")
+    }
+
+    write ("creating #2")
+    cap r r2 = create r (2, call2) on create vm ()
+
+    write ("creating #3")
+    cap r r3 = create r (3, call3) on create vm ()
+
+    write ("creating #4")
+    cap r r4 = create r (4, nothing) on create vm ()
+
+    r2.hello("call")
+    r3.hello("call")
+    send r4.hello("send")
+
+    cap r ra[2:4] = (r2, r3, r4)
+    int  hn[2:4] 
+
+    co [ i = 2 to 4 ] hn[i] = ra[i].hello ("cocall") oc
+    co [ i = 2 to 4 ] send ra[i].hello ("cosend") oc
+
+    # following tests correct resource parentage of remote invocations
+    # should hang in Scheduler awaiting request
+    nap(500)
+    cap Scheduler sched = create Scheduler ()
+    create Client (sched) on create vm ()
+end

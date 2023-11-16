@@ -1,0 +1,16 @@
+# question mark operator on semaphore operation.
+resource qm8()
+    op semop() {send}
+
+    write(?semop)
+    send semop()
+    send semop()
+    send semop()
+    send semop()
+    send semop()
+    write(?semop)
+    do ?semop != 0 ->
+	write("receiving", ?semop)
+	receive semop()
+    od
+end

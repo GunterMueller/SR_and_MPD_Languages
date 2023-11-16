@@ -1,0 +1,16 @@
+# test receive statement
+resource rcv2()
+	op p(int x)
+	int  N
+	write(1111)
+	read(N)
+	for [ i = 1 to N ] {
+		send p(-i)
+	}
+	write(2222)
+	for [ i = 1 to N ] {
+		int  z
+		receive p(z)
+		write(z)
+	}
+end

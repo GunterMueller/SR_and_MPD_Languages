@@ -1,0 +1,29 @@
+# semicolons as declaration terminators
+resource a3(xx:int;)
+	type t1 = rec (a:int;b:int;)
+	type t2 = rec (a:int;b:int)
+	type t3 = rec (a:int;b:int;)
+	type t4 = rec (a:int;b:int)
+
+	var a,b,c:int
+	b := 2222
+	a := b; b := 90 ;c := 100; c := b;
+	write(a,b,c);
+
+	var x,y : int;
+	var z:char
+	var zz:char;
+	op f(c:int;d:int;);
+	proc f(cc,dd)
+		skip;
+	end;
+	final
+	end;
+end;
+resource a33
+	import a3
+body a33()
+	initial
+		var c : cap a3;	c := create a3(4444)
+	end
+end;

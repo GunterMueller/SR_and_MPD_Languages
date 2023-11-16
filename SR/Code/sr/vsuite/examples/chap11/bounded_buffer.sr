@@ -1,0 +1,20 @@
+resource bounded_buffer
+  op deposit(item: int)
+  op fetch() returns item: int
+body bounded_buffer(size: int)
+  var buf[0:size-1]: int
+  var count := 0, front := 0, rear := 0
+  process worker
+    do true ->
+      in deposit(item) st count < size ->
+          buf[rear] := item
+          rear := (rear+1) % size
+          count++
+      [] fetch() returns item st count > 0 ->
+          item := buf[front]
+          front := (front+1) % size
+          count--
+      ni
+    od
+  end
+end

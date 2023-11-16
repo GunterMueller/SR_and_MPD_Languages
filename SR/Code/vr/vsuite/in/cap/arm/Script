@@ -1,0 +1,4 @@
+#  gmt  Mon May 24 16:42:22 MST 1993
+0 sr armcap.sr
+0 run
+0 rm -rf Interfaces core *.out

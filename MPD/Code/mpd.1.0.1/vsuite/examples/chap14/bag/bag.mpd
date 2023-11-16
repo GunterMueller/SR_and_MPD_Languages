@@ -1,0 +1,41 @@
+global sizes
+  int N = 6    # matrix dimension, default 10
+  int W = 2     # number of workers, default 2
+body sizes
+  getarg(1, N); getarg(2, W)
+end
+
+resource mult()
+  import sizes
+  real  a[N,N], b[N,N], c[N,N]
+  op bag(int row)
+
+  # initialize the arrays and bag of tasks
+  for [ i = 1 to N ] {
+    for [ j = 1 to N ] {
+      a[i,j] = 1.0; b[i,j] = 1.0
+    }
+    send bag(i)
+  }
+
+  process worker [ id = 1 to W ] {
+    int i    # index of row of c to compute
+    while (true) {
+      receive bag(i)
+      for [ j = 1 to N ] {
+	real inner_prod = 0.0
+	for [ k = 1 to N ] {
+	    inner_prod += a[i,k]*b[k,j]
+	}
+	c[i,j] = inner_prod
+      }
+    }
+  }
+
+  final {
+    for [ i = 1 to N ] {
+      for [ j = 1 to N ] { writes(c[i,j], " ") }
+      write()
+    }
+  }
+end

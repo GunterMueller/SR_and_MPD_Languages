@@ -1,0 +1,6 @@
+#  gmt  Mon May 22 12:54:28 MST 1989
+0 sr -c slice1.sr
+0 srl -L 1000 slice1
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out

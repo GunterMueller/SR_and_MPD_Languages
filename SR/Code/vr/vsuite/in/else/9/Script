@@ -1,0 +1,5 @@
+#  ron  Fri Mar 31 07:40:16 MST 1989
+0 sr -c else13.sr
+0 srl a
+0 run
+0 rm -rf Interfaces core *.out

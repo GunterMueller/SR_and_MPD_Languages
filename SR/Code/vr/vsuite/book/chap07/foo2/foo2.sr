@@ -1,0 +1,15 @@
+resource foo()
+  var x := 0
+  op p1() {send}
+  send p1()      # fork p1
+  proc p1()
+      x +:= 3
+  end
+  var a[10]: int
+  fa i := 1 to 10 -> a[i] := i af
+  op p2() {send} 
+  send p2()      # fork p2
+  proc p2()
+      x +:= 4
+  end
+end

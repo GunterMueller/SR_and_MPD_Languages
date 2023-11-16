@@ -1,0 +1,10 @@
+process RW_allocator
+  var nr := 0, nw := 0
+  do true ->
+    in start_read() st nw = 0 -> nr++
+    [] end_read() -> nr--
+    [] start_write() st nr = 0 and nw = 0 -> nw++
+    [] end_write() -> nw--
+    ni
+  od
+end

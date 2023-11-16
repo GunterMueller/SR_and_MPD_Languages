@@ -1,0 +1,88 @@
+# checks related to lb() , ub() for multidim arrays
+resource lb_ub
+	op fill1d(int a[1:*])
+	op fill1d_unsp_lb(int a[*])
+	op fill2d(int a[1:*][1:*])
+	op fill3d(int a[1:*][1:*][1:*])
+	op fill3d_unsp_lb(int a[1:*][*][1:*])   # some lb's are unspecified
+
+body lb_ub()
+
+proc fill1d(a)  {
+	write ("1D array ")
+	write (lb(a), ub(a))
+	write (lb(a, 1), ub(a, 1))
+	for [ i = lb(a, 1) to ub(a, 1) ] {
+		a[i] = i
+		writes(a[i], " ")
+	}
+	put("\n")
+}
+
+proc fill1d_unsp_lb(a)  {
+	write ("1D array : unspecified range w/o lb")
+	write (lb(a), ub(a))
+	write (lb(a, 1), ub(a, 1))
+	for [ i = lb(a, 1) to ub(a, 1) ] {
+		a[i] = i
+		writes(a[i], " ")
+	}
+	put("\n")
+}
+
+proc fill2d(a)  {
+	write ("2D array ")
+	write (lb(a), ub(a), lb(a[1]), ub(a[1]))
+	write (lb(a, 1), ub(a, 1), lb(a, 2), ub(a, 2))
+	for [ i = lb(a, 1) to ub(a, 1), j = lb(a, 2) to ub(a, 2) ] {
+		a[i, j] = (i - 1) * ub(a) + j
+		writes(a[i,j], " ")
+	}
+	put("\n")
+}
+
+proc fill3d(a)  {
+	write ("3D array ")
+	write (lb(a), ub(a), lb(a[1]), ub(a[1]),
+				     lb(a[1][lb(a,2)]), ub(a[1][ub(a,2)]))
+	write (lb(a, 1), ub(a, 1), lb(a, 2), ub(a, 2), lb(a, 3), ub(a, 3))
+	for [ i = lb(a, 1) to ub(a, 1),
+	   j = lb(a, 2) to ub(a, 2),
+	   k = lb(a, 3) to ub(a, 3) ] {
+		a[i, j, k] = (i - 1) * ub(a) * ub(a[1]) +
+				(j - 1) * ub(a[1]) + k
+		writes(a[i,j,k], " ")
+	}
+	put("\n")
+}
+
+proc fill3d_unsp_lb(a)  {
+	write ("3D array : unspecified range w/o lb")
+	write (lb(a), ub(a), lb(a[1]), ub(a[1]),
+				     lb(a[1][lb(a,2)]), ub(a[1][ub(a,2)]))
+	write (lb(a, 1), ub(a, 1), lb(a, 2), ub(a, 2), lb(a, 3), ub(a, 3))
+	for [ i = lb(a, 1) to ub(a, 1),
+	   j = lb(a, 2) to ub(a, 2),
+	   k = lb(a, 3) to ub(a, 3) ] {
+		a[i, j, k] = (i - 1) * ub(a) * ub(a[1]) +
+				(j - 1) * ub(a[1]) + k
+		writes(a[i,j,k], " ")
+	}
+	put("\n")
+}
+
+[31:32][33:34][35:36]int a
+[22:23] int b[20:21]
+int c[10:11] 
+
+fill1d(c); fill1d_unsp_lb(c)
+fill2d(b)
+fill3d(a); fill3d_unsp_lb(a)
+
+final {
+    # used to have a problem with variably-sized arrays in final code
+    char d[1:ub(c)]
+    write ("d:", lb(d), ub(d))
+}
+
+end lb_ub

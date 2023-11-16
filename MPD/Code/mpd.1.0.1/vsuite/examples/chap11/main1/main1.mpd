@@ -1,0 +1,11 @@
+resource main()
+  op f(int x)
+  process p  {
+    int  y
+    call f(y)
+  }
+  process q  {
+    int  x,z 
+    in f(x) -> z += x ni
+  }
+end

@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<link rel="StyleSheet" type="text/css" href="/style/simple.css">
+<TITLE> The MPD Programming Language -- Synopsis </TITLE>
+</HEAD>
+<BODY BGCOLOR="#F7FFFF">
+
+
+<!-- /style/csbanner.ssi: included to render CS header with links -->
+<!-- compatible with /style/simple.css, but does not require it -->
+
+<img src="/style/elements/genheader.gif" width="760" height="148"
+ alt="The University of Arizona / Computer Science / UAScience"
+ style="position:absolute; top:0px; left:10px;">
+
+<div style="position:absolute; top:0px; left:10px; width:493px; height:42px;">
+<a title="The University of Arizona" href="http://www.arizona.edu/">
+<img border="0" alt="The University of Arizona"
+ src="/style/elements/42blu493.gif"></a></div>
+
+<div style="position:absolute; top:56px; left:516px; width:150px; height:43px;">
+<a title="Computer Science" href="http://www.cs.arizona.edu/">
+<img border="0" alt="ComputerScience"
+ src="/style/elements/tplDept.gif" width="150" height="43"></a></div>
+
+<div style="position:absolute; top:99px; left:516px; width:150px; height:23px;">
+<a title="UAScience" href="http://cos.arizona.edu/">
+<img border="0" alt="UAScience"
+ src="/style/elements/tplCollg.gif" width="150" height="23"></a></div>
+
+<div style="position:absolute; top:0px; left:760px; width:10px; height:42px;">
+<a title="Validate" href="http://validator.w3.org/check?uri=referer&amp;ss=1">
+<img border="0" alt=""
+ src="/style/elements/42blu10.gif" width="10" height="42"></a></div>
+
+<div style="padding: 150px 0 0 0;"></div>
+<div class="up150"></div>
+
+<!-- /style/csbanner.ssi: end inclusion -->
+
+
+
+
+<IMG SRC="cairn.jpg" ALT="" ALIGN=right WIDTH=120 HEIGHT=120>
+<H1> MPD Language Synopsis </H1>
+
+<p> This page summarizes the main components of the MPD language
+and gives their syntactic forms.
+Plurals and ellipses are used to indicate zero or more occurrences of items.
+Many items are optional.
+Items within resources, globals, and blocks can appear in any order.
+
+<h3> Semicolons and Comments </h3>
+
+<p> Semicolons can be used -- as in C or Java -- to terminate declarations,
+statements, or expressions.
+However, they are optional in MPD in the sense that they can <i>always</i>
+be replaced by newline characters.
+
+<p> MPD provides two kinds of comments.
+A one-line comment begins with the sharp symbol <tt>#</tt> and
+ends at the next newline character.
+Bracketed comments are like those in C:  they begin with <tt>/*</tt> and
+end with the corresponding occurrence of <tt>*/</tt>.
+Bracketed comments can span multiple lines and can be nested.
+
+<h3> Resources </h3>
+
+<pre>
+   resource identifier                    # general combined spec and body
+      import or extend component_identifiers
+      constant, type, or operation declarations
+   body identifier(parameters)
+      import component_identifiers
+      declarations and statements
+      procs, procedures, and processes
+      final { block }
+   end identifier
+
+
+   resource identifier(parameters)        # simple combined spec and body
+      resource body portion
+   end identifier
+
+
+   resource identifier                    # abstract spec
+      resource spec portion
+   end identifier
+
+   resource identifier                    # separate concrete spec
+      resource spec portion
+   body identifier(parameters) separate
+
+
+   body identifier                        # separate body
+      resource body portion
+   end identifier
+</pre>
+
+<h3> Globals </h3>
+
+<pre>
+  global identifier                       # combined spec and body
+    import component_identifiers    
+    constant, type, variable, or operation declarations
+  body identifier
+    import component_identifiers
+    declarations and statements
+    procs, procedures, and processes
+    final { block }
+  end identifier
+
+  global identifier                       # spec only; no body
+    global spec portion
+  end identifier
+
+  global identifier                       # separate spec
+    global spec portion
+  body identifier separate
+
+  body identifier                         # separate body
+    global body portion
+  end identifier
+</pre>
+
+<h3> Procs, Procedures, and Processes </h3>
+
+<pre>
+  proc identifier(formal_identifiers) returns result_id {
+    block
+  }
+
+  procedure identifier(parameters) returns type result_id {
+    block
+  }
+
+  process identifier {
+    block
+  }
+
+  process identifier[quantifiers] {
+    block
+  }
+</pre>
+
+<p> Blocks contain declarations and statements (in any order).
+
+<p> Formal parameter declarations are like variable declarations without
+initialization expressions.
+Parameter declarations are separated by commas.
+
+<h3> Types, Constants, and Variables </h3>
+
+<pre>
+  bool                           # basic types
+  int
+  char
+  real or double
+  string[maximum_length]
+  file
+
+  enum(enumeration_literals)     # user-defined types
+  rec(field_definitions)
+  union(field_definitions)
+  ptr type_definition, or ptr any
+  cap resource_id, cap vm, cap operation_id, cap sem, cap optype_id,
+     cap operation_specification
+  [ranges] type_definition
+  type identifier = type_definition
+
+  const type identifier[subscripts] = expression
+  type identifier[subscripts] = expression, ...
+</pre>
+
+<h3> Operations and Operation Types </h3>
+
+<pre>
+  op identifier[subscripts] (parameters) returns type result_id {op_restriction}
+  op optype_identifier identifier[subscripts]  
+  sem identifier[subscripts] = expression
+  external identifier(parameters) returns type
+
+  optype identifier = (parameters) returns type result_id (op_restriction)
+</pre>
+
+<p> An operation restriction is <tt>{call}</tt>,
+<tt>{send}</tt>, or <tt>{call, send}</tt>.
+
+<h3> Quantifiers </h3>
+
+<pre>
+  bound_variable = start to finish by step st boolean_expr
+  bound_variable = start downto finish by step st boolean_expr
+</pre>
+
+
+<h3> Assignment and Swapping Operators </h3>
+
+<pre>
+  variable = expression
+  variable += expression    # also -=, *=, ...
+  variable++
+  variable--
+  ++variable
+  --variable
+  variable :=: variable     # swap statement
+</pre>
+
+<h3>Sequential Statements </h3>
+
+<pre>
+  expression
+  skip
+  stop (expression)    # halt program execution
+
+  if (boolean_expression) { block }      # the braces are required
+
+  if (boolean_expression) { block }      # again, the braces are required
+  else if (boolean_expression) { block }
+    ... 
+  else { block }
+
+  while (boolean_expression) { block }   # the braces are required
+
+  for [quantifiers] { block }            # the braces are required
+
+  exit           # break out of enclosing while or for statement
+  next           # continue with next execution of enclosing loop
+
+  begin { block }    # the braces are required
+</pre>
+
+<h3> Interaction Statements </h3>
+
+<pre>
+  call operation(actuals)
+  send operation(actuals)
+  fork operation(actuals)       # means same thing as send
+  forward operation(actuals)
+
+  receive operation(variables)
+
+  in [quantifier] operation_id(formal_identifiers)
+       st synchronization_expr by scheduling_expr -> block
+  []  ...
+  [] else -> block
+  ni
+
+  V(semaphore)
+  P(semaphore)
+
+  return
+  reply
+
+  resource_capability = create resource_id(actuals) on vm_capability
+  vm_capability = create vm() on physical_machine
+  destroy(capability)
+
+  co [quantifiers] invocation -> block // ... oc
+</pre>
+
+<h3> Keywords </h3>
+
+<pre>
+  and  any
+  begin  body  bool  by
+  call  cap  char  co  const  create
+  destroy  double  downto
+  else  end  enum  exit  extend  external
+  false  file  final  for  fork  forward
+  global
+  high
+  if  import  in  int
+  low
+  mod
+  new  next  ni  noop  not  null
+  oc  on  op  optype  or
+  P  proc  procedure  process  ptr  
+  real  rec  receive  ref  reply  res  resource  return  returns
+  sem  send  separate  skip  st  stderr  stdin  stdout  stop  string
+  to  true  type
+  union
+  V  val  var  vm
+  while
+  xor
+</pre>
+
+
+<BR> <BR> <BR>
+<SMALL>
+Last updated February 12, 2002
+</SMALL>
+
+<p>
+<a href="./">MPD home page</a>
+
+</BODY>
+</HTML>

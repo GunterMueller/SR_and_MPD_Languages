@@ -1,0 +1,233 @@
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== recursing ======
+creating stack for foo
+creating stack for bar
+creating stack for baz
+creating stack for boo
+creating stack for stir
+ 1. boo1(one,two,three,four)
+ 2. boo2(one,two,three,four)
+ 3. boo3(one,two,three,four)
+ 4. boo4(one,two,three,four)
+ 5. foo1(one)
+ 6. bar1(two,three)
+ 7. baz1(one,two,three)
+ 8. foo2(one)
+ 9. baz2(one,two,three)
+10. bar2(two,three)
+===== checking floating point =====
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+mul3...stirring...returning
+====== finishing up ======
+now expect underflow error:
+csw: stack underflow

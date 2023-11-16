@@ -1,0 +1,49 @@
+#	Makefile created by MPDM
+
+
+MPD = mpd
+MPDFLAGS = -I mpala amel
+I = mpala/MPDinter
+
+.SUFFIXES:
+
+link: a.out
+
+a.out: $I/main.o $I/node.o $I/printer.o
+	mpdl ion -o a.out -I mpala node printer main
+
+compile: $I/main.o $I/node.o $I/printer.o
+
+run: link
+	a.out hinocerous
+
+$I/main.o: $I/node.spec $I/printer.spec $I/main.spec main.mpd
+	$(MPD) $(MPDFLAGS) -b main.mpd
+
+$I/main.spec: main.mpd
+	$(MPD) $(MPDFLAGS) -s main.mpd
+
+$I/node.o: $I/printer.spec $I/node.spec node.mpd
+	$(MPD) $(MPDFLAGS) -b node.mpd
+
+$I/node.spec: node.mpd
+	$(MPD) $(MPDFLAGS) -s node.mpd
+
+$I/printer.o: $I/printer.spec printer.mpd
+	$(MPD) $(MPDFLAGS) -b printer.mpd
+
+$I/printer.spec: printer.mpd
+	$(MPD) $(MPDFLAGS) -s printer.mpd
+
+clean:
+	rm -rf $I 
+
+cleanx: clean
+	rm -f core a.out oology
+
+ls:
+	@echo main.mpd node.mpd printer.mpd
+
+make:
+	mpdm -f Try3.tmp -Zoology main.mpd node.mpd printer.mpd
+

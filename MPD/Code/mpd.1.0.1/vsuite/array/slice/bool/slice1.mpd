@@ -1,0 +1,30 @@
+# slices of boolean matrix
+resource slice1()
+	op print(bool x[1:*])
+	proc print(x)  {
+		for [ i = lb(x) to ub(x) ] {
+# do it this way to exercise compiler
+# -- it previously had problems with x[i] in conditional.
+			if (x[i]) { put("T")
+			} else { put("F")
+			}
+		}
+		write()
+	}
+	bool  b[1:4,1:3] 
+	for [ r = lb1(b) to ub1(b), c = lb2(b) to ub2(b) ] {
+		b[r,c] = r > c
+	}
+	write("b by rows:")
+	for [ r = lb1(b) to ub1(b) ] {
+		print( b[r,lb2(b):ub2(b)] )
+	}
+	bool  bb[1:5,1:4] 
+	for [ r = lb1(bb) to ub1(bb), c = lb2(bb) to ub2(bb) ] {
+		bb[r,c] = (r+c) % 2 == 0
+	}
+	write("bb by rows:")
+	for [ r = lb1(bb) to ub1(bb) ] {
+		print( bb[r,lb2(bb):ub2(bb)] )
+	}
+end

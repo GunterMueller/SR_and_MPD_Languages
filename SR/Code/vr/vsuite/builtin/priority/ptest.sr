@@ -1,0 +1,129 @@
+#  Check process priorities in various ways.
+#
+#  There are some deficiencies exhibited here.
+#     Part 2 executes p1 then p2 then p3 instead of p3 then p2 then p1.
+#     In Part 3, p2d should appear before p1f.
+#  Both of those are undesirable but very difficult to fix,
+#  so the status quo is accepted by the test at this time.
+
+resource ptest()
+
+   var errcount := 0
+
+   procedure ckpri (label : string[*]; expected : int)
+      var p := mypriority()
+      if p = expected ->
+	 writes (label, ": ", p, "\n")
+      [] else -> 
+	 writes (label, ": priority ", p, ", expected ", expected, "\n")
+	 errcount++
+      fi
+   end
+
+   ckpri ("main", 0)
+
+   ################################  part 1  ################################
+
+   sem ready, done
+   sem go1, go2, go3, go4	# not array -- need separate classes
+ 
+   procedure start(i:int)
+      V(ready)
+      write("process", i, "blocking, priority", mypriority())
+   end
+ 
+   procedure finish(i:int)
+      write("process", i, "executing, priority", mypriority())
+      V(done)
+   end
+ 
+   process tst1; setpriority(7); start(1); P(go1); finish(1); end
+   process tst2; setpriority(9); start(2); P(go2); finish(2); end
+   process tst3; setpriority(6); start(3); P(go3); finish(3); end
+   process tst4; setpriority(4); start(4); P(go4); finish(4); end
+ 
+   setpriority(10)
+   write("part 1: main waiting")
+   fa i := 1 to 4 -> P(ready) af
+   write("main sending")
+   V(go1)
+   V(go2)
+   V(go3)
+   V(go4)
+   write("main blocking")
+   fa i := 1 to 4 -> P(done) af
+   write("going on")
+   setpriority(0)
+   write()
+
+   ################################  part 2  ################################
+
+   sem go[3]
+
+   process p(i := 1 to 3)
+      setpriority(i)
+      V(ready)
+      P(go[i])
+      write("process", i, "executing, priority", mypriority())
+      V(done)
+   end
+
+   setpriority(10)
+   write("part 2: main waiting")
+   fa i := 1 to 3 -> P(ready) af
+   write("main sending")
+   fa i := 3 downto 1 -> V(go[i]) af
+   write("main blocking")
+   fa i := 1 to 3 -> P(done) af
+   write("going on")
+   setpriority(0)
+   write()
+
+   ################################  part 3  ################################
+
+   var  checkNum : int := 0
+   op   p2()
+   op   changePri()
+   sem  block
+
+   write ("part 3:")
+
+   process p1
+      ckpri ("p1a", 0)
+      setpriority (10)
+      ckpri ("p1b", 10)
+      send p2 ()
+      ckpri ("p1c", 10)
+      setpriority (-20)
+      ckpri ("p1d", -20)
+      call changePri ()
+      ckpri ("p1e", -20)
+      P (block)
+      ckpri ("p1f", -20)
+   end p1
+
+   proc p2 ()
+      ckpri ("p2a", 10)
+      setpriority(-5)
+      ckpri ("p2b", -5)
+      setpriority(-30)
+      ckpri ("p2c", -30)
+      V(block)			# should context switch to p1 (?)
+      ckpri ("p2d", -30)
+   end p2
+
+   proc changePri()		# *should* have no effect on caller
+      ckpri ("chp", -20)
+      setpriority(100)
+      ckpri ("chp", 100)	
+   end changePri
+
+   final
+      if errcount > 0 ->
+	 stop(1)
+      [] else ->
+	 write("done")
+      fi
+   end
+
+end ptest

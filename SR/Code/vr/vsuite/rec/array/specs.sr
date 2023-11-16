@@ -1,0 +1,5 @@
+resource ChServer
+   import Io
+   op copen (port_number: int) returns io_desc: Io.IoDesc
+   op done ()
+body ChServer (read_ports: int) separate

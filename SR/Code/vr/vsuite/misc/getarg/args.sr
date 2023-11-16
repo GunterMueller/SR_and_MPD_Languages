@@ -1,0 +1,20 @@
+resource ArgType
+
+body ArgType()
+   process main
+      var b : bool := false
+      var c : char := '?'
+      var n : int := 47
+      var p : ptr any := null
+      var r : real := 2.7183
+      var rc : int
+
+      rc := getarg(1, b); write(rc, b)
+      rc := getarg(2, c); write(rc, c)
+      rc := getarg(3, n); write(rc, n)
+      rc := getarg(4, p); write(rc, p)
+      rc := getarg(5, r); write(rc, r)
+      write ()
+
+   end
+end

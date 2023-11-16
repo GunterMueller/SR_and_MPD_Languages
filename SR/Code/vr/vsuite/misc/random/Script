@@ -1,0 +1,17 @@
+#  gmt  Wed Apr 17 13:48:19 MST 1991
+0 sr random.sr
+# check for expected results with known seeds
+# these should be consistent on all architectures
+0 a.out 1 >arg1.out
+0 a.out 2 >arg2.out
+0 cmp -s arg1.std arg1.out
+0 cmp -s arg2.std arg2.out
+# make sure a seed of 0 is *not* consistent
+0 a.out 0 1 >z1.out
+0 a.out 0 1 >z2.out
+1 cmp -s z1.out z2.out
+# make sure it's inconsistent within same program
+0 sed -n 1p z1.out >z1a.out
+0 sed -n 12p z1.out >z1b.out
+1 cmp -s z1a.out z1b.out
+0 rm -rf Interfaces core *.out

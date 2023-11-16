@@ -1,0 +1,30 @@
+resource e1
+	type t = rec (a,b:int)
+	op f(x:t;y:cap e1)
+	optype print = (x:t) returns y:int
+	op printa, printb: print
+body e1() separate
+
+resource e2
+	import e1
+body e2()
+	var s:e1.t
+	var c:cap e1
+
+	c := create e1()
+	s.a := 8888888; s.b := 44444444
+	call c.f(s,c)
+end
+
+body e1
+	proc f(x,y)
+		write("f",printa(x),printb(x))
+		write("f",y.printa(x),y.printb(x))
+	end
+	proc printa(x) returns y
+		y := x.a
+	end
+	proc printb(x) returns y
+		y := x.b
+	end
+end

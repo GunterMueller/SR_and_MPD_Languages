@@ -1,0 +1,36 @@
+# a recursive MPD program for approximating the integral
+# of f(x) from x==a to x==b for f(x) = sin(x)*exp(x)
+
+# usage:  a.out epsilon a b
+
+resource recursive_quad()
+
+  real epsilon; getarg(1, epsilon);
+  real a, b; getarg(2, a); getarg(3, b);
+
+  procedure f(real x) returns real fx {
+    fx = sin(x) * exp(x);
+  }
+
+  procedure quad(real left, real right, real fleft, real fright, real lrarea)
+                          returns real area {
+    real mid = (left+right)/ 2;
+    real fmid = f(mid);
+    real larea = (fleft + fmid) * (mid-left) / 2;     # left area
+    real rarea = (fmid + fright) * (right-mid) / 2;   # right area
+    if (abs((larea+rarea) - lrarea) > epsilon) {
+      # recurse to integrate both halves
+      larea = quad(left, mid, fleft, fmid, larea);
+      rarea = quad(mid, right, fmid, fright, rarea);
+    }
+    area = larea + rarea;
+  }
+
+  int start = age();    # start time, in milliseconds
+  real area = quad(a, b, f(a), f(b), (f(a)+f(b))*(b-a)/2);
+  int finish = age();   # finish time, in milliseconds
+
+  write("epsilon =", epsilon," a =", a, " b = ", b);
+  write(" area =", area);	# " time = ",finish-start);
+
+end

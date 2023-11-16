@@ -1,0 +1,9 @@
+# semicolons as statement terminators
+resource a1()
+
+	int  a,b,c
+	b = 2222
+	a = b; b = 90; c = 100; c = b;
+	write(a,b,c);
+
+end;

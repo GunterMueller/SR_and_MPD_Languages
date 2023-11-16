@@ -1,0 +1,22 @@
+# see if we free invocations
+resource f ()
+	op p (a: int) returns x:int
+
+	var j, n: int
+	write (-9999)
+	fa i := 1 to 10000 ->
+		j := i
+		n := p(i)
+		if n + j ~= 7 ->
+			write (i, j, n)
+			stop
+		fi
+	af
+	write (-1111)
+
+
+	proc p (a) returns x
+		x := -a+7
+		a := -876
+	end
+end

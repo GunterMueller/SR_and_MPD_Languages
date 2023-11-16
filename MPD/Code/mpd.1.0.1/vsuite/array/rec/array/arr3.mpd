@@ -1,0 +1,17 @@
+resource arr3()
+    const int size = 5
+    type rectype = rec(int a0; int a1[1:size]);
+    rectype a[1:size]
+
+    for [ i = 1 to size ] {
+	a[i].a0 = 1000*i;
+	for [ j = 1 to size ] {
+		a[i].a1[j] = 1000*i + j;
+	}
+    }
+    a[4].a1[3] = 37
+    a[3].a0 = 36
+    for [ i = 1 to size, j = 1 to size ] {
+	write( a[i].a0, a[i].a1[j] )
+    }
+end

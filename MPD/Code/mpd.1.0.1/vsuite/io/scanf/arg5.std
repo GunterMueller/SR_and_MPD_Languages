@@ -1,0 +1,4 @@
+argtype: 1
+format: '%b'
+RTS abort: file scan.mpd, line 45:
+   arguments do not match format string

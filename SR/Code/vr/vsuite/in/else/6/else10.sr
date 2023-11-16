@@ -1,0 +1,45 @@
+# test of else in nested input statements
+resource a()
+      op f(x:int);  op g();  op h(x:int)
+      send f(100); send g()
+      fa i := 1 to 4 ->
+	 in f(x) -> write("f1",i,x)
+	 [] else ->
+	      write("else1",i); send f(1000+i)
+	      in g() -> write("g1")
+	      [] h(x) -> write("h1",x)
+	      [] else -> write("else11")
+	      ni
+	 ni
+      af
+      fa i := 1 to 5 -> send f(2000+i) af
+      var n := ?f + 2
+      fa i := 1 to n ->
+	 in f(x) and x%2 = 0 by -x -> write("f2",i,x)
+	      in g() -> write("g2")
+	      [] h(x) -> write("h2",x)
+	      [] else -> write("else21"); send h(9999)
+	      ni
+	 [] else -> write("else2",i)
+	      in g() -> write("g3")
+	      [] h(x) -> write("h3",x);  send g()
+	      [] else -> write("else31")
+	      ni
+	 ni
+      af
+      send g()
+      n := ?f + 2
+      fa i := 1 to n ->
+	 in f(x) by -x -> write("f3",i,x)
+	      in g() -> write("g4");  send h(8888)
+	      [] h(x) -> write("h4",x)
+	      [] else -> write("else41")
+	      ni
+	 [] else -> write("else3",i)
+	      in g() -> write("g5")
+	      [] h(x) -> write("h5",x)
+	      [] else -> write("else51")
+	      ni
+	 ni
+      af
+end

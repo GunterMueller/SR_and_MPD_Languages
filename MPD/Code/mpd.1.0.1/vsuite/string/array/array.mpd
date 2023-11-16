@@ -1,0 +1,69 @@
+# test arrays of strings
+
+resource array()
+
+procedure dump10 (string[10] s[*]) {           # dump array of string[10]
+    for [ i = 1 to ub(s) ] { put(s[i]); put(" ") }
+    put("\n")
+}
+
+procedure dumpany ([*]string[*] s) {           # dump array of any string size
+    write ("s [", lb(s), ":", ub(s), "] : string [", maxlength(s[1]), "]")
+    for [ i = lb(s) to ub(s) ] { write (" ", s[i]) }
+}
+
+    # test fixed bounds, array arguments, conversions to/from char arrays, etc.
+    string[10] a, b, c, d[1:3]
+    string[17] e[3]
+    char  x[1:10]
+    a = "pepperoni "
+    b = "sausage   "
+    c = "mushrooms "
+    d = (a, b, c)
+    dump10(d)
+    d[2] = "linguisa  "
+    dump10(d)
+    x = chars("cappocolla")
+    d[1] = string(x)
+    dump10(d)
+    d = ("onions    ", "peppers   ", "olives    ")
+    dump10(d)
+    d = ([3] "anchovies ")
+    dump10(d)
+    dump10(([1] d[1]))
+    dump10(([2] "pizza!!!!!"))
+    dump10(("mozarrella", "provolone ", "parmesan  "))
+    x = ([10] 'z')
+    write(x)
+
+    # now test [*]string[*] formals
+    dumpany(d)
+    dumpany(("hi", "ho", "hi", "ho"))
+    dumpany(([1]"off to work we go"))
+    const int n = 3
+    string[15] s[n]
+    for [ i = 1 to n ] { s[i] = "dig," }
+    for [ i = 1 to n ] { write(i,s[i]) }
+    dumpany(s)
+    for [ i = 2 to n ] { s[i] = s[i-1] || s[i] }
+    for [ i = 1 to n ] { write(i,s[i]) }
+
+    # test element-wise assignment of strings of dissimilar maxlength
+    dumpany(s)
+    e = d
+    dumpany(e)
+    e = s
+    dumpany (e)
+    d[2:3] = e[1:2]    # and now... a slice assignment!
+    dumpany (d)
+
+    # test two-dimensional arrays, both variable and constant
+    string[6] a1[2][2] = (("sleepy", "grumpy"), ("blinky", "sleazy"))
+    int v = 2
+    int l = 6
+    string[l] a2[v,v] 
+    for [ i = 1 to 2 ] { for [ j = 1 to 2 ] { writes(" ", a1[i,j]) } }
+    a2 = a1
+    for [ i = 1 to 2 ] { for [ j = 1 to 2 ] { writes(" ", a2[i,j]) } }
+    write()
+end

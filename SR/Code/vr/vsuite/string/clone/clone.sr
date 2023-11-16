@@ -1,0 +1,30 @@
+
+resource r ()
+
+    var n := 10
+    var x := ([n] '*')
+    var y : string[n]
+    y := string(x)	# <== error here in SR v1 (using implicit conversion)
+    write(x,y)
+
+    var s:string[10]
+    s := "abcdefg"
+    write(s)
+    s := string(([3] '.'))   # <== signature mismatch err in v1 (implicit conv)
+    write(s)
+
+#  double evaluation of clone count
+#  (function called twice when should be called just once)
+
+    op howmany() returns n : int
+
+    write("cloning characters")
+    var c[5] : char := ([howmany()] 'x')
+    write(c)
+
+    proc howmany () returns n
+	write(" howmany() returning 5")
+	n := 5
+	return
+    end
+end

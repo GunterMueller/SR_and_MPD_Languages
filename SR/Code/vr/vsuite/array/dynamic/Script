@@ -1,0 +1,4 @@
+0 sr -c t4.sr
+0 srl t4
+0 run input1
+0 rm -rf Interfaces core *.out

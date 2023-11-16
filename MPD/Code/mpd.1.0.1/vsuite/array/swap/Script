@@ -1,0 +1,5 @@
+#  gmt  Thu Sep 26 17:55:40 MST 1991
+0 mpd -c aswap.mpd
+0 mpdl aswap
+0 run
+0 rm -rf MPDinter core *.out

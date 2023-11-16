@@ -1,0 +1,32 @@
+# slices of boolean matrix
+resource slice1()
+	op print( x[1:*] : bool )
+	proc print(x)
+		fa i := lb(x) to ub(x) ->
+# do it this way to exercise compiler
+# -- it previously had problems with x[i] in conditional.
+			if x[i] -> put("T")
+			[] else -> put("F")
+			fi
+		af
+		write()
+	end
+	var b[1:4,1:3] :bool
+	fa r := lb1(b) to ub1(b),
+	   c := lb2(b) to ub2(b) ->
+		b[r,c] := r > c
+	af
+	write("b by rows:")
+	fa r := lb1(b) to ub1(b) ->
+		print( b[r,lb2(b):ub2(b)] )
+	af
+	var bb[1:5,1:4] :bool
+	fa r := lb1(bb) to ub1(bb),
+	   c := lb2(bb) to ub2(bb) ->
+		bb[r,c] := (r+c) % 2 = 0
+	af
+	write("bb by rows:")
+	fa r := lb1(bb) to ub1(bb) ->
+		print( bb[r,lb2(bb):ub2(bb)] )
+	af
+end

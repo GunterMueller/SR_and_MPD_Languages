@@ -1,0 +1,11 @@
+resource foo()
+  int x = 0
+  process p1  {
+      x += 3
+  }
+  int  a[10]
+  for [ i = 1 to 10 ] { a[i] = i }
+  process p2  {
+      x += 4
+  }
+end

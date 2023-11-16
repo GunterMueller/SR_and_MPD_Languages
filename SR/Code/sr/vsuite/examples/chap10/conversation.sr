@@ -1,0 +1,21 @@
+resource conversation()
+  op server(n: int) returns c: cap(s: string[10])
+  process client(i := 1 to ...)
+    var s[20]: string[10]
+     ...
+    var c: cap(s: string[10])
+    c := server(20)
+    fa i := 1 to 20 -> send c(s[i]) af
+     ...
+  end
+  proc server(n) returns c
+    op line(s: string[10])
+    c := line
+    reply   # pass back capability for line
+    fa i := 1 to n ->
+      var s: string[10]
+      receive line(s)
+      # do something with s, e.g., print it
+    af
+  end
+end

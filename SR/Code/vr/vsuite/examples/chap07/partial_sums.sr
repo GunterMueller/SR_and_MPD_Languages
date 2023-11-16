@@ -1,0 +1,21 @@
+resource partial_sums()
+  op save(i: int), update(i: int)
+  var n := 20 /* default */, d := 1
+  const N := 200
+  var sum[N], old[N]: int
+  getarg(1,n)
+  if n > N -> write(stderr,"n exceeds", N); stop fi
+  fa i := 1 to n -> sum[i] := i af
+  do d < n ->
+      co (i := 1 to n) save(i) oc
+      co (i := 1 to n) update(i) oc
+      d := 2*d
+  od
+  fa i := 1 to n -> write(i, sum[i]) af
+  proc save(i)
+      old[i] := sum[i]
+  end
+  proc update(i)
+      if i-d >= 1 -> sum[i] +:= old[i-d] fi
+  end
+end

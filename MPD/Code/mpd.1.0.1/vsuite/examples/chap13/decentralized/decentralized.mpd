@@ -1,0 +1,99 @@
+resource Servant
+  op getforks() {call},  # invoked by philosophers
+     relforks() {call}
+  op needL() {send},     # invoked by neighboring
+     needR() {send},     # servants.
+     passL() {send},
+     passR() {send}
+  op links(cap Servant l, cap Servant r)  # links to neighbors
+  op forks(bool haveL, bool dirtyL, bool haveR, bool dirtyR)
+	# initial fork values passed from main
+body Servant(int id)
+  bool  haveL, dirtyL, haveR, dirtyR
+  cap Servant  l, r
+  op hungry() {send}, eat() {send}
+
+  proc getforks()  {
+    send hungry() # tell server Philosopher is hungry
+    receive eat() # wait for permission to eat
+  }
+
+  process server  {
+    receive links(l, r)
+    receive forks(haveL, dirtyL, haveR, dirtyR)
+    while (true) {
+      in hungry() ->
+	  # ask for forks I don't have; I ask my
+	  # right neighbor for his left fork,
+	  # and my left neighbor for his right fork
+	  if (~haveR) { send r.needL() }
+	  if (~haveL) { send l.needR() }
+	  # wait until I have both forks
+	  while (~(haveL and haveR)) {
+	    in passR() ->
+		haveR = true; dirtyR = false
+	    [] passL() ->
+		haveL = true; dirtyL = false
+	    [] needR() st dirtyR ->
+		haveR = false; dirtyR = false
+		send r.passL(); send r.needL()
+	    [] needL() st dirtyL ->
+		haveL = false; dirtyL = false
+		send l.passR(); send l.needR()
+	    ni
+	  }
+	  # let my Philosopher eat;
+	  # then wait for it to finish
+	  send eat(); dirtyL = true; dirtyR = true
+	  receive relforks()
+      [] needR() ->
+	  # right neighbor needs his left fork,
+	  # which is my right fork
+	  haveR = false; dirtyR = false
+	  send r.passL()
+      [] needL() ->
+	  # left neighbor needs his right fork,
+	  # which is my left fork
+	  haveL = false; dirtyL = false
+	  send l.passR()
+      ni
+    }
+  }
+end
+
+resource Philosopher
+  import Servant
+body Philosopher(cap Servant s, int id, int t)
+  process phil  {
+    for [ i = 1 to t ] {
+      s.getforks()
+      write("Philosopher", id, "is eating")   # eat
+      s.relforks()
+      write("Philosopher", id, "is thinking") # think
+    }
+  }
+end
+
+resource Main()
+  import Philosopher, Servant
+  int n = 5 , t= 5
+  cap Servant  s[1:n]
+  # create the Servants and Philosophers
+  for [ i = 1 to n ] {
+    s[i] = create Servant(i)
+    create Philosopher(s[i], i, t)
+  }
+  # give each Servant capabilities for
+  # its two neighboring Servants
+  for [ i = 1 to n ] {
+    send s[i].links(s[((i-2) mod n) + 1],
+		    s[(i mod n) + 1])
+  }
+  # initialize each Servant's forks;
+  # it is asymmetric to prevent deadlock
+  send s[1].forks(true, false, true, false)
+  for [ i = 2 to n-1 ] {
+    send s[i].forks(false, false, true, false)
+  }
+  send s[n].forks(false, false, false, false)
+end

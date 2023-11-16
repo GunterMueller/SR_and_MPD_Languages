@@ -1,0 +1,5 @@
+0 m2sr -sc barrier.m
+0 sr barrier.sr test.sr
+0 a.out >sc.out 2>&1
+0 scmp sc.std sc.out
+0 rm -rf Interfaces core *.out barrier.sr

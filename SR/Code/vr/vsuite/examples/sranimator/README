@@ -1,0 +1,35 @@
+This directory contains several programs illustrating the use of SRanimator.
+(Note that SRanimator requires XTANGO, which must first be built separately.)
+
+A Makefile is provided; you'll need to set the TLIB variable to point to the
+location of xtango.o on your system.  Running "make" with no arguments builds
+the non-trivial animations.  Remember to run "xrdb -merge XTANGO/xtango.res"
+before running the animations.
+
+The files included here are:
+
+bubblesort.sr
+quicksort.sr
+	Two animations of sorting algorithms.
+
+dining.sr
+	Distributed dining philosophers, based on section 13.3 of the SR book.
+
+bbdriver.sr
+bbproc.sr
+bbin.sr
+	The bounded buffer problem.  bbin uses rendezvous; bbproc uses calls.
+
+rwdriver.sr
+rwfair.sr
+rwstarve.sr
+	Two readers-writers animations.  rwstarve starves the writers;
+	rwfair is more fair.
+
+hello.sr
+tfonts.sr
+tlines.sr
+tresize.sr
+tsteps.sr
+tzoom.sr
+	Simple tests, not built by default.

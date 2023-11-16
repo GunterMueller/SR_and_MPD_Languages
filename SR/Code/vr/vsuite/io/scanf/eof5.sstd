@@ -1,0 +1,4 @@
+argtype: 4
+format: '%c%s'
+  4 <-1>: *, 'beef'
+EOF reached

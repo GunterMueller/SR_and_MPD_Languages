@@ -1,0 +1,35 @@
+# context switch using semaphores
+# Two processes run simultaneously.  p1 blocks until p2 releases.
+# p2 then blocks waiting for p1 to release.  Blocking is done by
+# semaphores.  The reported number of times is twice the loop limit
+# because two context switches occur on each pass.
+
+resource context()
+
+  sem up, down
+  int  limit, factor, base, trials 
+
+  getarg(1,factor)
+  getarg(2,base)
+  getarg(3,trials)
+  limit = factor * base / 2
+
+  process p1  {
+    int  start, finish 
+
+    for [ i = 1 to trials ] {
+	start = age()
+	for [ i = 1 to limit ] { V(up); P(down) }
+	finish = age()
+	printf("%d times   %d ms\n", 2*limit, finish-start)
+    }
+
+  }
+
+  process p2  {
+    for [ i = 1 to trials ] {
+	for [ i = 1 to limit ] { P(up); V(down) }
+    }
+  }
+
+end

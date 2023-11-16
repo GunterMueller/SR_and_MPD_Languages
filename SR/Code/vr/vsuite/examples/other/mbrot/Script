@@ -1,0 +1,9 @@
+#  gmt  Tue Oct 25 17:24:13 MST 1988
+
+# two separate C compiles so no message from compiler on stdout/stderr
+0 cc -c bkend.c
+0 cc -c mbrot.c
+0 sr remote.sr main.sr bkend.o mbrot.o
+0 a.out 0 1 1 10 $HOST1 >No_input.out 2>&1
+0 scmp No_input.out No_input.std
+0 rm -rf Interfaces core *.o *.out

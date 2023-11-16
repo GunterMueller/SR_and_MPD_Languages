@@ -1,0 +1,40 @@
+
+
+resource arr8(size: int)
+    var a[1:10], b[1:4, 1:4]:
+	rec(ssn: int; period_amt[1:6]: int; other: int);
+
+
+    fa i := 1 to 10 ->
+	a[i].ssn := 484807295 - i;
+	fa j := 1 to size ->
+		a[i].period_amt[j] := a[i].ssn - j;
+	af
+	a[i].other := -a[i].ssn;
+    af
+    fa i := 1 to 3 ->
+	fa j := 2 to 4 ->
+		b[i,j] := a[3*i+j-4];
+	af
+    af
+    fa i := 1 to 3 ->
+	fa j := 2 to 4 ->
+		write(i,':',j,b[i,j].ssn);
+		fa k := 1 to size ->
+			write(b[i,j].period_amt[k]);
+		af
+		write(b[i,j].other);
+	af
+    af
+end
+
+resource main
+	import arr8
+body main()
+    var c : cap arr8
+
+    fa i := 0 to 3 ->
+	c := create arr8(2*i);
+    af
+
+end

@@ -1,0 +1,16 @@
+resource cs()
+  op request(...)
+  const N := 20  # number of processes
+  process client(i := 1 to N)
+     ...
+    call request(...)
+     ...
+  end
+  process server
+    do true ->
+      in request(...) ->
+        # handle request; assign to result parameters
+      ni
+    od
+  end
+end

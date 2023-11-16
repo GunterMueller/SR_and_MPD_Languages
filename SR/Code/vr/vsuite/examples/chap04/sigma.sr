@@ -1,0 +1,4 @@
+procedure sigma(n: int) returns sum: int
+    sum := 0
+    fa i := 1 to n -> sum +:= i  af
+end

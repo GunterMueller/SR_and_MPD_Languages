@@ -1,0 +1,21 @@
+# some simple options
+0 mpdm -f Try1.tmp -Idir -oexe -m main -C -O -L-T -R arg -Z clean.me *.mpd test.c
+0 sed 's/mpdm -w -c [^ ]* /mpdm /' Try1.tmp >Try1.out
+0 cmp -s Try1.std Try1.out
+
+# try changing main resource
+# check warning "resource main not imported by any other resource"
+0 mpdm -f Try2.tmp -m node *.mpd
+0 sed 's/mpdm -w -c [^ ]* /mpdm /' Try2.tmp >Try2.out
+0 cmp -s Try2.std Try2.out
+
+# try setting options with MPDMOPTS
+# (builds some illegal commands.  don't try this at home, boys and girls.)
+0 export MPDMOPTS
+0 MPDMOPTS="-Camel -Lion -Rhinocerous -Impala -Zebra"
+0 mpdm -f Try3.tmp -Zoology *.mpd
+0 sed 's/mpdm -w -c [^ ]* /mpdm /' Try3.tmp >Try3.out
+0 MPDMOPTS=
+0 cmp -s Try3.std Try3.out
+
+0 rm -rf MPDinter core *.out *.tmp Makefile

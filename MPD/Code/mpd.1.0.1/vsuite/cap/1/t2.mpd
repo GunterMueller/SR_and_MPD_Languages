@@ -1,0 +1,68 @@
+# invocation of operations through capability variables
+
+resource rrr()
+
+	# semaphore capabilities
+
+	sem m
+
+	type xscap = cap sem            # explicit sem cap
+	type iscap = cap () {send}      # implicit sem cap
+
+	xscap  p 
+	iscap  q 
+	cap () {send} r
+	cap sem  s 
+
+	p = q = r = s = m
+	send p(); V(p)
+	send q(); V(q)
+	send r(); V(r)
+	send s(); V(s)
+	write ("sem m holds", ?m)
+	while (?m > 0) { write ("P(m)"); P(m) }
+	write ("sem m holds", ?m)
+
+
+	# slightly more complex
+
+	op eleven(int x) returns int  y
+	proc eleven(x) returns y  {
+		write("eleven", x)
+		y = x * 11
+	}
+
+	int  x
+	cap (int x) returns int y f
+	x = eleven(4);
+	write("eleven(4) =", x);
+	f = eleven;
+	x = f(7);
+	write("<cap>(7) =", x);
+
+
+	# these caused problems under V1
+
+	type simplest = cap()
+	op caparg(simplest c)          # caused malf in V1
+	op noarg()
+	cap (simplest c) ocap
+	cap noarg zcap 
+
+	caparg(noarg)
+
+	ocap = caparg
+	zcap = noarg
+	ocap(zcap)
+
+	proc caparg(c)  {
+	    write ("caparg calling c()")
+	    c()
+	}
+
+	proc noarg ()  {
+	    write ("noarg here")
+	}
+
+	write ("done")
+end

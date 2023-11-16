@@ -1,0 +1,28 @@
+#  gmt  Wed Oct 14 17:13:18 MST 1987
+0 sr -c printer.sr node.sr main.sr
+0 srl omutex printer node main
+0 a.out input1   >in1.1.out 2>&1
+0 scmp in1.1.std in1.1.out
+0 a.out input1 3 >in1.3.out 2>&1
+0 scmp in1.3.std in1.3.out
+0 a.out input2 2 >in2.2.out 2>&1
+0 scmp in2.2.std in2.2.out
+0 a.out input2 4 >in2.4.out 2>&1
+0 scmp in2.4.std in2.4.out
+0 a.out input3 3 >in3.3.out 2>&1
+0 scmp in3.3.std in3.3.out
+0 a.out input4 5 >in4.5.out 2>&1
+0 scmp in4.5.std in4.5.out
+0 a.out input4 4 >in4.4.out 2>&1
+0 scmp in4.4.std in4.4.out
+0 a.out input4 3 >in4.3.out 2>&1
+0 scmp in4.3.std in4.3.out
+0 a.out input5   >in5.1.out 2>&1
+0 scmp in5.1.std in5.1.out
+0 a.out input5 4 >in5.4.out 2>&1
+0 scmp in5.4.std in5.4.out
+0 a.out input6 2 >in6.2.out 2>&1
+0 scmp in6.2.std in6.2.out
+0 a.out input6 7 >in6.7.out 2>&1
+0 scmp in6.7.std in6.7.out
+0 rm -rf Interfaces core *.out

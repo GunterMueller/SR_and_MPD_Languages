@@ -1,0 +1,8 @@
+#  gmt  Tue Mar 22 17:07:01 MST 1988
+#
+#  output is host- and pid-dependent so we'll just check the exit status.
+0 sr -c remote.sr
+0 srl remote main
+# too many systems on the next line will thrash small systems...
+0 a.out $HOST1 $HOST2 >No_input.out 2>&1
+0 rm -rf Interfaces core *.out

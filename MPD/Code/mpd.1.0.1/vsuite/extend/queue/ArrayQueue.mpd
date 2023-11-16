@@ -1,0 +1,24 @@
+resource ArrayQueue
+	extend Queue
+body ArrayQueue(int size)
+	int store[0:size-1]
+	int  front = 0; int rear = 0; int count = 0
+	proc insert(item)  {
+		if (count < size) {
+			store[rear] = item
+			rear = (rear+1)%size
+			count++
+		} else {
+			write("overflow")
+		}
+	}
+	proc remove() returns item  {
+		if (count > 0) {
+			item = store[front]
+			front = (front+1)%size
+			count--
+		} else {
+			write("underflow")
+		}
+	}
+end ArrayQueue

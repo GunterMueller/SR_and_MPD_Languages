@@ -1,0 +1,4 @@
+# this particular co-test IS deterministic.
+0 sr co5.sr
+0 run
+0 rm -rf Interfaces core *.out

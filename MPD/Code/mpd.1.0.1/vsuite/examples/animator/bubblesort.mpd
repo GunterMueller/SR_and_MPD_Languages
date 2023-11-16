@@ -1,0 +1,37 @@
+#  a simple animation of a bubble sort
+#
+#  usage:  bubblesort [n_items]
+
+resource bubblesort
+    import MPDanimator
+body bubblesort ()
+
+    # initialize problem size and scaling
+    const int MAX = 1000
+    int N = 25
+    getarg (1, N)
+    real xscale = 0.9 / MAX
+    real yscale = 1.0 / (N + 1)
+
+    # initialize array of random integers
+    int  nums[1:N] 
+    int  id[1:N] 
+    for [ i = 1 to N ] {
+	id[i] = i
+	nums[i] = int (random (MAX))
+	A_line (id[i], 0.5 - nums[i] * xscale / 2, yscale * i,
+	    nums[i] * xscale, 0, "black", "thick", "solid", "none")
+    }
+
+    # sort the array
+    for [ i = N downto 2 ] {
+	for [ j = 2 to i ] {
+	    if (nums[j-1] < nums[j]) {
+	       nums[j-1] :=: nums[j]
+	       A_exchangepos (id[j-1], id[j])
+	       id[j-1] :=: id[j]
+	    }
+	}
+    }
+
+end bubblesort

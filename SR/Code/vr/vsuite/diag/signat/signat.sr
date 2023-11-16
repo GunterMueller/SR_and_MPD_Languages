@@ -1,0 +1,546 @@
+#  test signature errors and related problems
+
+
+% illegal use of predefined function
+	resource r ()
+	    write
+	end
+
+
+% resources can only have value parameters
+	resource r (var i : int)
+	end
+
+
+% assignment target is not a variable
+	resource r ()
+	   const k := 1
+	   k := 47
+	end
+
+
+% expr++: not a variable
+	resource r ()
+	   const k := 2
+	   k++
+	end
+
+
+% expr--: not a variable
+	resource r ()
+	   const k := 3
+	   k--
+	end
+
+
+% --expr: not a variable
+	resource r ()
+	   const k := 4
+	   --k
+	end
+
+
+% ++expr: not a variable
+	resource r ()
+	   const k := 5
+	   ++k
+	end
+
+
+% not a variable
+	resource r ()
+	   const k := 7
+	   read (k)
+	end
+
+
+% not a variable
+	resource r ()
+	   const k := 8
+	   scanf ("%d", k)
+	end
+
+
+% not a variable
+	resource r ()
+	   const s := "abcdefghi"
+	   sprintf (s, "%d", 12)
+	end
+
+
+% not a variable
+	resource r ()
+	   getarg (1, 47)
+	end
+
+
+% not a variable
+	resource r ()
+	    var a[100] : char
+	    read (a[10:90])
+	end
+
+
+% result arg must be a variable
+	resource r ()
+	    get ("abcdefghi")
+	end
+
+
+% not a variable
+	resource x ()
+	    type a = rec (i : int)
+	    write (a.i)
+	end
+
+
+% object of .@. is not a variable
+	resource r ()
+	    @ 3
+	end
+
+
+% incompatible assignment
+# used to get segmentation fault checking ptr to imported type
+	resource ostk
+	    type otype = ptr rec(value:char)
+	end
+
+	resource main()
+	  import ostk
+	  var btree := ostk.otype
+	  btree := new( ostk.otype )
+	end main
+
+
+% incompatible assignment
+# test cap for abstract resource
+	resource a
+	    op f(x:int)
+	    op g()
+	end
+	resource b
+	    extend a
+	    op h()
+	body b(z:int)
+	    proc f(x) end
+	    proc g()  end
+	    proc h()  end
+	    var ca:cap a
+	    var cb:cap b
+	    cb := ca	# illegal since b has extra operation.
+	end
+
+
+% incompatible assignment
+# see if predef's can be bound to caps.
+# shouldn't be allowed
+	resource a()
+	    var c : cap (x:int) returns ret:int
+	    c := abs                # bogus
+	    write( c(-99) )
+	end
+
+
+% incompatible assignment
+	resource r()
+	    var c: cap r
+	    c := r
+	end
+
+
+% incompatible assignment
+	resource r()
+	    type ta = rec(a:int)
+	    type tb = rec(a,b:int)
+	    var a:ta
+	    var b: tb
+	    a := b	# illegal.
+	end
+
+
+% incompatible semaphore initializer
+	resource r ()
+	    sem s := 3.141592
+	end
+
+
+% illegal initializer
+	resource r ()
+	    var v := null
+	end
+
+
+% illegal initializer
+	resource r ()
+	    op f ()
+	    var x := f()
+	    receive f()
+	end
+
+
+% illegal initializer
+	resource a ()
+	    op f(x:int)
+	    const z := f(4)
+	    proc f(x)
+	    end
+	end
+
+
+% illegal conversion
+	resource x ()
+	    type t = int
+	    t()
+	end
+
+
+% illegal conversion
+	resource x ()
+	    type t = int
+	    t(1,2)
+	end
+
+
+% illegal conversion
+	resource x ()
+	    type t = int
+	    t(myresource())
+	end
+
+
+% p(): argument 2 is incompatible
+#      (however, arg 1 is a legal implicit conversion)
+	resource x ()
+		procedure p (r : real; i : int) end
+		p (7, 3.14159)
+	end
+
+
+% p(): argument 1 is incompatible
+	resource x ()
+		procedure p (a : [*]real) end
+		p (([3] 2))
+	end
+
+
+% wrong number of items for rec constructor
+	resource x ()
+	    type r = rec (i : int)
+	    r()
+	end
+
+
+% wrong number of items for rec constructor
+	resource x ()
+	    type r = rec (i : int)
+	    r(1,2)
+	end
+
+
+% item 1 of rec constructor is incompatible
+	resource x ()
+	    type r = rec (i : int)
+	    r(myresource())
+	end
+
+
+% not a type
+	resource r ()
+	    var c:char
+	    high(c)
+	end
+
+
+% not a type
+	resource r ()
+	    var p : ptr r
+	end
+
+
+% not a type
+	resource r ()
+	    var self : ptr self
+	end
+
+
+% not a type
+	resource r ()
+	    op p() returns r
+	end
+
+
+% not a type
+	resource r ()
+	    var p : ptr r
+	end
+
+
+% not a type
+	resource r ()
+	   var btree : int
+	   op foo (btree)
+	   proc foo (b) end
+	end
+
+
+% not a type
+# an optype is not a type
+	resource r ()
+	    optype t ()
+	    procedure p (a : t) end
+	end
+
+
+% not an optype
+	resource r ()
+	    type t = int
+	    op o : t
+	end
+
+
+% incompatible initialization
+	resource b()
+	    var i : int := .6
+	end b
+
+
+% incompatible initialization
+	global a
+	    var r : real := 'a'
+	end a
+
+	resource b()
+	    import a
+	end b
+
+
+% incompatible assignment
+	resource x(n:int)
+	    var created[1:n] : bool := ([n] false)
+	    created := true
+	end
+
+
+% incompatible assignment
+	resource bug()
+	    var x:int; var y[1:20]:char
+	    y[1:x] := char(0)
+	end
+
+
+% cannot dereference a .ptr any.
+	resource r ()
+	    var s: ptr any
+	    s^ := noop
+	end
+
+
+
+% illegal object of capability
+	resource Central()
+	    type Node_ops = rec ( found : cap () )
+	    var other_nodes[ 1: 4] : cap Node_ops  # bogus, should use ptr
+	end Central
+
+
+% illegal object of capability
+	resource Central()
+	    type Node_ops = rec ( found : cap ( ) )
+	    var other_nodes[ 1: 4] : cap Node_ops
+	    send other_nodes[ 3].found()
+	end Central
+
+
+% enum literal duplicates id .alpha.
+#%#% is this bogus?
+	resource a_stub
+	   type e_type = enum (alpha, beta, gamma)
+	end a_stub
+
+	resource other
+	   import a_stub
+	   op hello(a_cap:cap a_stub; x:e_type)
+	body other()
+	end other
+
+	resource a
+	   type e_type = enum (alpha, beta, gamma)
+	   import other
+	body a(o_cap:cap other)
+	end a
+
+
+% incompatible comparison
+	resource a()
+	   var s:string[10]
+	   s := "abc"
+	   write (3 <= "ajk")
+	end
+
+
+% illegal comparison for unordered type
+	resource r ()
+	    var a, b : cap r
+	    a < b
+	end
+
+
+% illegal type for comparison
+	resource r ()
+	    var a, b : rec (i : int)
+	    a = b
+	end
+
+
+% illegal type for comparison
+	resource r ()
+	    var a, b : [12]int
+	    a = b
+	end
+
+
+% illegal object of capability
+	resource test_random()
+	    var cr: cap random # bogus
+	end
+
+
+% subscripted object is not an array
+	resource b()
+	    type t = enum(m0,m1,m2,m3,m4,m5,m6)
+	    var x:t
+	    x[2] := m1
+	end
+
+
+% wrong subscript type
+	resource bug ()
+	    op backsub (b: [*]real)
+	    proc backsub(b)
+		b[3.2]
+	    end backsub
+	end bug
+
+
+% illegal bounds type
+# do decls require ordered type as subs?
+	resource d1()
+	    var tt[myresource():myresource()] : int
+	end
+
+
+% ub(), argument 1: not an array
+	resource a ()
+	    var i : int
+	    write(ub(i))
+	end a
+
+
+% ub(), argument 2: array does not have that many dimensions
+	resource a()
+	    var arr1[1][2] : int
+	    write(ub(arr1,3))
+	end a
+
+
+% ub(), argument 2: not integer literal
+	resource a()
+	    var arr[1] : int
+
+	    var i := ub(arr, 1+2)
+	    write(i)
+	end a
+
+
+% ub(), argument 2: value must be greater than zero
+	resource a ()
+	    var arr[1] : int
+	    write (ub(arr,0))
+	end a
+
+
+% subscripted object is not an array
+	resource Main ()
+	    type array = rec (buf [1:10]: char)
+	    var buf: array
+	    buf[3] := char (17)
+	end
+
+
+% illegal quantifier type
+	resource r()
+	    fa b := "soup" to "nuts"-> skip af
+	end
+
+
+% illegal quantifier increment
+	resource r()
+	    fa a := 1 to 4 by true	-> skip af
+	end
+
+
+% incompatible quantifier increment
+	resource r ()
+	    fa i := 1 to 2 by 0.2 -> skip af
+	end
+
+
+% incompatible quantifier limit
+	resource r()
+	    fa c := true to 7	-> skip af
+	end
+
+
+% incompatible quantifier limit
+	resource r()
+	    fa d := 8 downto false	-> skip af
+	end
+
+
+% incompatible quantifier limit
+	resource r()
+	    fa e := 3 to 'a'	-> skip af
+	end
+
+
+% .by. expression must be ordered type
+	resource r ()
+	    op foo (s : string[10])
+	    in foo (s) by s -> ni
+	end
+
+
+% .st. expression must be boolean
+	resource r ()
+	fa i := 1 to 10 st 1952 -> skip af
+	end
+
+
+% guard expression is not boolean
+# in "do": it's an int
+	resource do1()
+	    var x : int
+	    x := 4
+	    do x -> write(9999)    # bogus
+	    od
+	end
+
+
+% guard expression is not boolean
+# in "do": it's a resource!
+	resource do2()
+	    var c : cap do2
+	    c := myresource()
+	    do c -> write(9999)     # bogus
+	    od
+	end
+
+
+% guard expression is not boolean
+# in "if"
+	resource if1()
+	    var x := 4
+	    if x -> write(9999)    # bogus
+	    fi
+	end

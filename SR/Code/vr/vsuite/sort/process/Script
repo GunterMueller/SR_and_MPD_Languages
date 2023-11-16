@@ -1,0 +1,7 @@
+#  gmt  Thu Nov 14 08:57:09 MST 1991
+0 sr -c psort.sr
+0 srl bsort
+0 run input1
+0 run input2
+0 run input3
+0 rm -rf Interfaces core *.out

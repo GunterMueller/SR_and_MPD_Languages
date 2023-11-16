@@ -1,0 +1,6 @@
+#  gmt  Tue Sep 24 17:48:38 MST 1991
+0 mpd e.mpd
+#  run with MPD_PARALLEL=0 to avoid problems with mforked C library on Sequent
+0 (MPD_PARALLEL=0 a.out >No_input.out 2>&1)
+0 cmp -s No_input.std No_input.out
+0 rm -rf MPDinter core *.[ao] *.out

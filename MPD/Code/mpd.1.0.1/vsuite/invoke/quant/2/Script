@@ -1,0 +1,6 @@
+#  olsson  Thu Mar  2 20:15:00 PST 1989
+0 mpd -c b.mpd
+0 mpdl b
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf MPDinter core *.out

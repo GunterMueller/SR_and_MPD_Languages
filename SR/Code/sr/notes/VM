@@ -1,0 +1,64 @@
+The Implementation of Virtual Machines in SR v1.0
+17-Feb-88 gmt
+
+
+
+The Old System
+    virtual machines did exist
+	(so protocols for remote creation, proc call, etc. already in place)
+    usage was not dynamic --
+	machines listed at compile time, assigned resources at link time
+    with VM usage, many things different about the program
+	"package" file (pointers to multiple executables)
+	run by srx command, no args
+    srx would start up executables, then drop out
+    executables would connect to all others before running
+
+The New Design
+    -- wanted more uniformity with "normal" SR programs
+    -- wanted flexibility to specify everything dynamically
+    single executable, run "a.out" with args
+    create virtual machines on the fly
+    assign resources to VMs dynamically
+
+Implementation Approach
+    nothing special at compile or link time
+    executable includes all resources
+    first hint of VM usage causes RTS to fire up srx (create/destroy/locate VM)
+    srx is separate process, stays around to act as overall coordinator
+    machines connect to each other as needed, then talk directly
+
+VM creation on current host:
+    call srx to supervise
+    initialize communications with first VM
+    srx forks to exec a.out
+    when a.out sends "hello", srx sends back vmcap (just an int) to creator
+
+srx
+    loops processing requests from callers
+	create:   start up a new VM
+	    remember creator; fork and exec rsh
+	hello:    register a new VM
+	    send ACK back to creator
+	find:     return address of a VM
+	destroy:  destroy a VM
+	stop:     stop all VMs (normal or error)
+    catches deaths of children
+
+New VM on n:
+    what is n?  might as well use an existing list (network numbers)
+    for flexibility would like to specify n
+	srx maintains registry
+	update via locate() call
+	because registry in srx, effect is global and immediate
+    can't just exec a.out; use rsh (exists, does what we need)
+    how find a.out over there?
+	here --  /usr/barney/path -> /r/host/usr/barney/path
+	UC Davis: /usr/grads/fred/path -> ~fred/path
+	general -- config file creates "network pathname" for a.out
+	    patterns, templates   (example:   yucca:/usr**  /r/bas/usr$1)
+	-- works automatically with NFS
+	-- note need to turn path on "yucca" into /r/bas/....
+	-- without NFS, must copy manually  (e.g. Davis)
+	-- because we use rsh, can use ~ in filename (assuming csh)
+	when all else fails, can put in locate() call

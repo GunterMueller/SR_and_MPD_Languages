@@ -1,0 +1,38 @@
+/** this should fail during SR compilation.
+ ** see comment below.
+ **/
+_resource(mutex)
+   var xfree := true
+_resource_end(mutex)
+_resource(mutex2)
+   var xfree := true
+_resource_end(mutex2)
+
+resource foo()
+  process p(i := 1 to 10)
+    nap(10-i)
+    _region(mutex,xfree)
+      write(i); nap(1)
+      xfree := false
+    _region_end(mutex)
+    nap(2)
+    _region(mutex,true)
+      write(i, "done"); nap(1)
+      xfree := true
+    _region_end(mutex)
+  end
+  process p2(i := 1 to 10)
+    nap(10-i)
+    _region(mutex2,xfree)
+      write(i); nap(1)
+      xfree := false
+    _region_end(mutex2)
+    nap(2)
+/* test that can't access xfree here. */
+    xfree := true
+    _region(mutex2,true)
+      write(i, "dones"); nap(1)
+      xfree := true
+    _region_end(mutex2)
+  end
+end

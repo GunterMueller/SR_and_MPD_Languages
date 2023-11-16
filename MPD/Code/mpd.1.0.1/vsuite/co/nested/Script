@@ -1,0 +1,4 @@
+# this particular co-test IS deterministic.
+0 mpd co5.mpd
+0 run
+0 rm -rf MPDinter core *.out

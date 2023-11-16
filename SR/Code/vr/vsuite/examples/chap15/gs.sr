@@ -1,0 +1,53 @@
+global size
+  var N := 8    # grid dimension
+body size
+  getarg(1, N)
+end
+
+global data
+  import size
+  var grid[0:N+1,0:N+1]: real := ([N+2] ([N+2] 0.0))
+  op print()
+body data
+  var left, top, right, bottom: real
+  writes("enter 4 border values: ");
+  read(left, top, right, bottom)
+  fa i := 0 to N+1 -> grid[i,0] := left af
+  fa i := 0 to N+1 -> grid[0,i] := top af
+  fa i := 0 to N+1 -> grid[i,N+1] := right af
+  fa i := 0 to N+1 -> grid[N+1,i] := bottom af
+
+  proc print()
+    write()
+    fa i := 1 to N ->
+      fa j := 1 to N -> writes(grid[i,j], " ") af
+      write()
+    af
+  end
+end
+
+resource gauss_seidel()
+  import data, size
+  var diff: real
+  var epsilon: real           # convergence
+  writes("enter epsilon: "); read(epsilon)
+
+  procedure update()
+    var newgrid: real
+    diff := 0.0
+    fa i := 1 to N, j := 1 to N ->
+      newgrid := (grid[i-1,j] + grid[i,j-1] + grid[i+1,j] + grid[i,j+1]) / 4
+      diff := max(diff, abs(newgrid - grid[i,j]))
+      grid[i,j] := newgrid
+    af
+  end
+
+  var iters := 0
+  do true ->
+    iters++
+    update()
+    if diff <= epsilon -> exit fi
+  od
+  write("convergence after", iters, "iterations")
+  print()
+end

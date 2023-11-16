@@ -1,0 +1,8 @@
+This directory is a collection of notes about SR, especially SR V2.
+
+More formal documentation is in ../ps, including a description of
+the runtime system interface.
+
+Some of these are design documents and ARE NOT NOW ACCURATE.
+
+Caveat emptor.

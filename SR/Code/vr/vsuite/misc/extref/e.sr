@@ -1,0 +1,60 @@
+#  test external parameters passed by reference
+#
+#  Because of externals to printf and puts, which write to the (unshared)
+#  stdout buffer, this test cannot be run using multiprocessing on the Sequent.
+#  This is disabled by "SR_PARALLEL=0" in the Script file.
+
+resource e ()
+    type timeval = rec (sec, usec: int)
+    type timezone = rec (minw, dst: int)
+    external gettimeofday (ref tv: timeval; ref tz: timezone)
+    external mktemp (ref path: string[*])
+    external printf (ref c: char)
+    external puts (ref c: [*]char)
+    external time (ref t: int) returns n: int
+
+    var s: string[100]
+    var c[10]: char;
+    var t1, t2, n: int
+    var tv: timeval;
+    var tz: timezone;
+
+    write("begin external reference test")
+
+    # test "ref int" argument
+    t1 := 1
+    t2 := 2
+    t1 := time(t2)
+    if t1 ~= t2 | t1 < 1000000000 | t1 > 2000000000 ->   # valid ~2002 - ~2034
+	write("time is wrong: t1 =",t1,"  t2 =",t2)
+    [] else->
+	write("time looks plausible")
+    fi
+
+    # test record arguments
+    gettimeofday(tv,tz)		# assume this happens no more than 5 sec later
+    n := tv.sec - t1
+    if n < 0 or n > 5 ->
+	write("gettimeofday: sec =",tv.sec,"  usec = ",tv.usec,"  vs. t1 =",t1)
+    [] else ->
+	write("gettimeofday agrees")
+    fi
+
+    # test string argument; length WILL NOT CHANGE when called by ref
+    s := "TEMPXXXXXX\0"
+    mktemp(s)
+    if length(s) != 11 | s[1:4] != "TEMP" | s[6:7] = "XX" ->
+	write("mktemp returned", s)
+    [] else ->
+	write("mktemp worked")
+    fi
+
+    # test char array by reference
+    c := chars("delicious\0")
+    puts (c)
+
+    # test char by ref; should point to first entry of array
+    c := chars ("souvlaki\n\0")
+    printf (c[1])
+
+end

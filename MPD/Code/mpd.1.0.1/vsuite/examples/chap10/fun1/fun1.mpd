@@ -1,0 +1,13 @@
+resource fun()
+  op f(int x) returns int  y
+  process p  {
+    int  z 
+    z = f(10)
+    write("z = ",z)
+  }
+  proc f(x) returns y  {
+    y = x*8
+    reply
+    y = 0
+  }
+end

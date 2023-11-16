@@ -1,0 +1,67 @@
+README file for ftp.CS.Arizona.EDU:/sr
+
+This directory contains Version 2.3.3 of the SR programming language and
+the archives of the Info-SR mailing list.  Remember to use binary mode
+when transferring compressed files.  Tar files should be unpacked in
+a new, empty directory.
+
+info-sr.yyyy	Archives of the Info-SR mailing list for the given year.
+		The Info-SR mailing list ran from 1989 to 2002.
+
+release.ps	Release notes for SR 2.3, in PostScript.
+		(Version 2.3.3 is a minor update with no new release notes.)
+
+sr.tar.Z	The SR programming language, including source code,
+		documentation in PostScript and troff form, checkout
+		programs, and examples.
+
+vs.tar.Z	The extended verification suite, needed only if you're
+		going to modify the system or port it to a new architecture.
+
+For further information about SR, visit the web page at
+	http://www.cs.arizona.edu/sr/
+
+
+Here's a description of SR:
+
+   SR (Synchronizing Resources) is a language for writing concurrent programs.
+The main language constructs are resources and operations.  Resources encapsu-
+late processes and variables they share; operations provide the primary mechan-
+ism for process interaction.  SR provides a novel integration of the mechanisms
+for invoking and servicing operations.  Consequently, all of local and remote
+procedure call, rendezvous, message passing, dynamic process creation, multi-
+cast, and semaphores are supported.  SR also supports shared global variables
+and operations.
+
+   SR has been used at a number of universities and labs for course work and
+research projects involving concurrent programming.  It has been used in con-
+current programming courses to reinforce concepts with small programming pro-
+jects and with larger projects such as experiments with parallel algorithms,
+replicated databases, distributed simulations, and parts of distributed operat-
+ing systems such as file systems and command interpreters.  SR has also been
+used as a tool in several masters theses and doctoral dissertations to conduct
+experiments in parallel and distributed programming and to implement larger sys-
+tems such as a system for mixed language programming, one for distributed imple-
+mentation of graph algorithms, experiments with load balancing algorithms, and
+experiments with upcall program structures.
+
+Documentation
+
+   SR is described in The SR Programming Language: Concurrency in Practice, by
+Gregory R. Andrews and Ronald A. Olsson (Benjamin/Cummings, 1993, ISBN 0-8053-
+0088-0).  An overview of version 1 of the language and implementation appeared
+in the January, 1988, issue of ACM TOPLAS (10,1, 51-86).  Information about con-
+current programming in general can be found in Concurrent Programming: Princi-
+ples and Practice, by Gregory R. Andrews (Benjamin/Cummings, 1991, ISBN 0-8053-
+0086-4).  These books can be ordered through your local bookstore or by
+telephoning 1-800-950-2665 or 1-415-594-4400.
+
+The Implementation
+
+   An SR program runs on one or more networked machines of the same architec-
+ture.  True multiprocessing is supported on Sun Solaris, Silicon Graphics,
+and x86 Linux systems.  Multiprocessing is simulated on other platforms,
+which include AIX, Digital Unix, Alpha Linux, and HP-UX.  To allow additional
+hands-on experience, three preprocessors convert notations for CCRs, monitors,
+and CSP into SR code.  The latest implementation of SR is version 2.3.3,
+released in January, 2005.

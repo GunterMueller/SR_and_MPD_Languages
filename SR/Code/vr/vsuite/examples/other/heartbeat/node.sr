@@ -1,0 +1,70 @@
+resource node
+  import omutex, printer
+  op neighbors(links[1:*] : cap node; indices[1:*] : int)
+  op start()
+  op update(who, topology[1:*, 1:*] : int)
+  op done(who : int)
+body node(n, myid: int; pr : cap printer) separate
+
+body node
+
+  var links[1:n] : cap node
+  var indices[1:n] : int
+
+  proc neighbors(Links,Indices)
+    links := Links; indices := Indices
+    P(output_mutex)
+    writes("neighbors of node ", myid, ":  ")
+    fa i := 1 to n st indices[i]~= 0 -> writes(indices[i]," ") af
+    write()
+    V(output_mutex)
+  end
+
+  proc start()
+    P(output_mutex)
+    write("started node", myid)
+    V(output_mutex)
+
+    var mytop[1:n,1:n] : int := ([n] ([n] 0))
+    mytop[myid,1:*] := indices
+    var need_answer[1:n] : bool := ([n] false)
+    var active : int := 0
+    var change : bool
+
+    do true ->
+        fa k := 1 to n st indices[k]~=0 ->	# send update to active nodes
+            send links[k].update(myid,mytop)
+	    need_answer[k] := true; active++
+        af
+	change := false
+        do active>0 ->
+	    in update(who,othertop) and need_answer[who] ->
+		var ot[1:n,1:n] : int := othertop
+                fa i := 1 to n, j := 1 to n st mytop[i,j]=0 and ot[i,j]~=0 ->
+                       mytop[i,j] := ot[i,j]; change := true
+                af
+		need_answer[who] := false
+	    [] done(who) and need_answer[who] ->
+		indices[who] := 0
+		need_answer[who] := false
+	    ni
+	    active--
+	od
+	if ~change ->
+		fa i := 1 to n st indices[i]~=0 ->
+		    send links[i].done(myid)
+		af
+		exit
+	fi
+    od
+
+    # send final topology to printer
+    send pr.print(myid,mytop)
+
+    P(output_mutex)
+    write("node", myid, "has terminated")
+    V(output_mutex)
+
+  end
+
+end

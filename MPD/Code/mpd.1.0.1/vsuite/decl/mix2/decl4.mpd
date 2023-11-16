@@ -1,0 +1,22 @@
+resource decl4()
+	int  a = 99, b = 222
+	int  i = 1
+	int  j = a+1
+	write(a); write(b)
+	write(i); write(j)
+	char  c = 'C'
+	type t = rec( int t1, t2; char  t3)
+	t  x 
+	int  d = a+b
+
+	destroy myresource()
+	final {
+		x.t1 = b
+		x.t2 = a
+		x.t3 = c
+		write(x.t2)
+		write(x.t1)
+		writes(x.t3)
+		write(d)
+	}
+end

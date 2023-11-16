@@ -1,0 +1,26 @@
+resource tbool()
+	var a,b : bool
+	a:= false
+	b:= true
+	write(a,b, "  <",a<b, "   <=",a<=b, "   =",a=b,
+	           "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a := true
+	b := true
+	write(a,b, "  <",a<b, "   <=",a<=b, "   =",a=b,
+	           "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	a:= true
+	b:= false
+	write(a,b, "  <",a<b, "   <=",a<=b, "   =",a=b,
+	           "  !=",a!=b, "   >=",a>=b, "   >",a>b)
+	if a <= b ->
+		write("OOPS. Really bad", a <= b)
+	[] else ->
+		write( "ok", a <= b )
+	fi
+	var c:bool := a <= b
+	if c ->
+		write("OOPS. Really bad", c, a <= b)
+	[] else ->
+		write( "ok", c, a <= b )
+	fi
+end

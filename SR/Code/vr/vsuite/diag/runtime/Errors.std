@@ -1,0 +1,184 @@
+
+0: no such choice number
+
+1: RTS abort: file runerrs.sr, line 42:
+   illegal subscript [4] of array with bounds [5:8]
+
+2: RTS abort: file runerrs.sr, line 43:
+   illegal subscript [9] of array with bounds [5:8]
+
+3: RTS abort: file runerrs.sr, line 44:
+   illegal subscript [0] of string[10] with current length 5
+
+4: RTS abort: file runerrs.sr, line 45:
+   illegal subscript [6] of string[10] with current length 5
+
+5: RTS abort: file runerrs.sr, line 46:
+   string of length 11 is too long to assign to string[10]
+
+6: RTS abort: file runerrs.sr, line 47:
+   string of length 4 is too long to assign to string[3]
+
+7: RTS abort: file runerrs.sr, line 48:
+   size mismatch on array assignment:  [5:8] := [1:5]
+
+8: RTS abort: file runerrs.sr, line 49:
+   size mismatch on array assignment:  [1:7] := [5:8]
+
+9: RTS abort: file runerrs.sr, line 50:
+   size mismatch on array assignment:  [5:8] := [1:7]
+
+10: no such choice number
+
+11: RTS abort: file runerrs.sr, line 53:
+   operation attempted on null file
+
+12: no such choice number
+
+13: no such choice number
+
+14: RTS abort: file runerrs.sr, line 56:
+   unterminated conversion spec (%...) in format
+
+15: abc RTS abort: file runerrs.sr, line 57:
+   insufficient argument list for format
+
+16: RTS abort: file runerrs.sr, line 58:
+   format calls for an int argument
+
+17: RTS abort: file runerrs.sr, line 59:
+   format calls for a bool argument
+
+18: RTS abort: file runerrs.sr, line 60:
+   format calls for a char argument
+
+19: RTS abort: file runerrs.sr, line 61:
+   string argument expected
+
+20: RTS abort: file runerrs.sr, line 62:
+   format calls for a string argument
+
+21: RTS abort: file runerrs.sr, line 63:
+   illegal string length for %s
+
+22: RTS abort: file runerrs.sr, line 64:
+   format calls for a real argument
+
+23: RTS abort: file runerrs.sr, line 65:
+   format calls for a pointer argument
+
+24: RTS abort: file runerrs.sr, line 66:
+   illegal size modifier (h/l/L) in format spec
+
+25: RTS abort: file runerrs.sr, line 67:
+   illegal specification character in format
+
+26:  RTS abort: file runerrs.sr, line 68:
+   too many arguments for format
+
+27: RTS abort: file runerrs.sr, line 69:
+   0.0**y with y<=0
+
+28: RTS abort: file runerrs.sr, line 70:
+   x**y with x<0 and y not an integer
+
+29: RTS abort: file runerrs.sr, line 71:
+   i**j with j<0
+
+30: RTS abort: file runerrs.sr, line 72:
+   x mod y with y=0.0
+
+31: RTS abort: file runerrs.sr, line 73:
+   i mod j with j=0
+
+33: RTS abort: file runerrs.sr, line 75:
+   illegal slice [1:5] of array with bounds [5:8]
+
+34: RTS abort: file runerrs.sr, line 76:
+   illegal slice [6:9] of array with bounds [5:8]
+
+35: RTS abort: file runerrs.sr, line 77:
+   illegal slice [0:2] of string[3] with current length 3
+
+36: RTS abort: file runerrs.sr, line 78:
+   illegal slice [2:4] of string[3] with current length 3
+
+37: [vm 1] RTS abort: file runerrs.sr, line 79:
+   strings too long in locate call
+
+38: RTS abort: file runerrs.sr, line 80:
+   attempting to destroy null vm
+
+39: RTS abort: file runerrs.sr, line 81:
+   invalid operation capability
+
+40: RTS abort: file runerrs.sr, line 82:
+   illegal semaphore initializer value: -7
+
+41: RTS abort: file runerrs.sr, line 83:
+   invalid operation capability
+
+42: 
+42: RTS abort: too many active resources
+
+43: RTS abort: file runerrs.sr, line 85:
+   element 7 (length=4) is too long to assign to string[3]
+
+44: RTS abort: file runerrs.sr, line 86:
+   string of length 5 is too long to assign to string[3]
+
+45: RTS abort: file runerrs.sr, line 87:
+   string of length 5 is too long to assign to string[3]
+
+46: RTS abort: file runerrs.sr, line 88:
+   illegal conversion: char(256)
+
+47: RTS abort: file runerrs.sr, line 89:
+   illegal conversion: bool("uncertain")
+
+48: RTS abort: file runerrs.sr, line 90:
+   illegal conversion: int("twelve")
+
+49: RTS abort: file runerrs.sr, line 91:
+   illegal conversion: real("********************...")
+
+50: RTS abort: file runerrs.sr, line 92:
+   size mismatch on array assignment:  [5:8] := [1:7]
+
+51: RTS abort: file runerrs.sr, line 93:
+   illegal bounds [5:3] for array creation
+
+52: RTS abort: file runerrs.sr, line 94:
+   illegal repetition count -3 in array constructor
+
+53: RTS abort: file runerrs.sr, line 95:
+   illegal repetition count -3 in array constructor
+
+54: RTS abort: file runerrs.sr, line 96:
+   invalid operation capability
+
+55: RTS abort: file runerrs.sr, line 97:
+   not a dynamic op
+
+56: RTS abort: file runerrs.sr, line 98:
+   not a dynamic op
+
+57: RTS abort: file runerrs.sr, line 99:
+   not a dynamic op
+
+58: RTS abort: file runerrs.sr, line 100:
+   op no longer exists
+
+59: RTS abort: file runerrs.sr, line 101:
+   cannot input from a proc operation
+
+60: RTS abort: file runerrs.sr, line 102:
+   null operation capability
+
+61: RTS warning: blocked process: runerrs.body : file runerrs.sr, line 103
+
+62: RTS abort: file runerrs.sr, line 104:
+   null operation capability
+
+63: RTS abort: file runerrs.sr, line 105:
+   attempting to invoke operation that no longer exists

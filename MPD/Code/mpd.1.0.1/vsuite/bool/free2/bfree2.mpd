@@ -1,0 +1,17 @@
+#  bad free after short-circuit eval of boolean expression
+#  led to a segmentation fault
+
+resource a()
+    op signal() returns bool  b
+
+    process p  {
+	in signal() returns b -> b = false ni
+    }
+
+    int pin = 0; int bout = 0
+    if ((bout + 1) <= pin and signal()) {
+	skip
+    } else {
+	write ("looks okay")
+    }
+end

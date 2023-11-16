@@ -1,0 +1,25 @@
+# we weren't searching symbol table correctly within global.
+global g00
+	type t = rec(char a,b)
+	optype opt = (t x)
+	type opt_cap =  cap opt
+end
+
+resource g0
+	import g00
+body g0()
+	op opt f
+	opt_cap c
+
+	t x
+	x.a = 'A'
+	x.b = 'B'
+	f(x)
+	c = f
+	x.a++; x.a++; x.b = 'W'
+	c(x)
+
+	proc f(x)  {
+		write("in f",x.a,x.b)
+	}
+end

@@ -1,0 +1,19 @@
+$a 6
+$f%b %b
+$d false true
+$d falsetrue
+$d TRUEFALSE
+$f%b%b
+$d truefalse
+$d falsetrue
+$d TRUEFALSE
+$d FALSETRUE
+$f%1b%1b
+$d ft
+$d FT
+$d TT
+$d t t
+$d F T
+$d false true
+$d f true
+#

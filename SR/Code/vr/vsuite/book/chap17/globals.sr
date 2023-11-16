@@ -1,0 +1,54 @@
+global Defs           # common definitions
+  const USERS := 5    # max number of accounts
+  const FILES := 10   # max number of files per account
+  type name = string[20]
+  type line = string[100]
+  # operations on files
+  optype fread(res ln: line) returns status: int
+  optype fwrite(ln: line)
+  optype fclose()
+  type file_descriptor = rec( r: cap fread;
+                    w: cap fwrite; c: cap fclose)
+end Defs
+
+global Utilities   # library procedures
+  import Defs
+  op get_arg(var cmdline: line) returns arg: name
+  op parse_filename(arg: name; res machine, fname: name)
+  op lookup(id: name; table[*]: name) returns index: int
+body Utilities
+
+  # extract first argument from command line, if any
+  # set cmdline to the remainder of the line 
+  proc get_arg(cmdline) returns arg
+    var lc := length(cmdline)
+    var f := 1    # position of first non-blank
+    do f <= lc & cmdline[f] = ' ' -> f++ od
+    if f > lc -> arg := ""; return fi
+    var r := f    # position of end of argument
+    do r < lc & cmdline[r+1] != ' ' -> r++ od
+    arg := cmdline[f:r]
+    cmdline := cmdline[r+1:lc]
+  end
+
+  # arg is "machine:filename" or "filename"; separate
+  # it into its two components
+  proc parse_filename(arg, machine, fname)
+    var i := 1    # position of colon in arg
+    do i <= length(arg) & arg[i] != ':' -> i++ od
+    if i > length(arg) ->    # no colon in arg
+        machine := ""; fname := arg
+    [] else -> machine := arg[1:i-1]
+               fname := arg[i+1:length(arg)]
+    fi
+  end
+
+  # if name id is in table, return its index
+  proc lookup(id, table) returns index
+    fa i := 1 to ub(table) st id = table[i] ->
+      index := i; return
+    af
+    index := 0
+  end
+
+end Utilities

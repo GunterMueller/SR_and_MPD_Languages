@@ -1,0 +1,46 @@
+resource rw()
+
+op start_read()
+op end_read()
+op start_write()
+op end_write()
+
+process RW_allocator
+  var nr := 0, nw := 0
+  do true ->
+    in start_read() st nw = 0 -> nr++
+    [] end_read() -> nr--
+    [] start_write() st nr = 0 and nw = 0 -> nw++
+    [] end_write() -> nw--
+    ni
+  od
+end
+
+process one
+
+  fa i := 1 to 5 ->
+    start_read()
+    # read
+    write("process one is reading")
+    end_read()
+  af
+  
+end
+
+process two
+
+  start_read()
+  # read
+  write("process two is reading")
+  end_read()
+
+  fa i := 1 to 3 ->
+    start_write()
+    # write
+    write("process two is writing")
+    end_write()
+  af
+
+end
+
+end

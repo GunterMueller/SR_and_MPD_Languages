@@ -1,0 +1,63 @@
+# input from cap using multiple arms
+
+resource r ()
+    sem a, b, c, d, e, f, g
+    op report (string[*])
+
+    var ca := a
+    var cb := b
+    var cc : cap () {send}
+    var cd : cap sem
+    var cx := new(sem)
+    cc := c
+    cd := d
+    var ce : cap sem := e
+
+    procedure never ()
+	# never called, but forces f into b's class
+	in b() ->
+	[] f() ->
+	ni
+    end
+
+    V(f)	# something in same class to be bypassed
+    V(g)	# something in another class
+    V(a)	# this one counts
+    V(f)	# two more to skip
+    V(g)
+    report("here goes")
+    do true ->
+	in a() ->
+	    V(c)
+	    report ("got a")
+	[] b() ->
+	    V(d)
+	    report ("got b")
+	[] c() -> 
+	    V(b)
+	    report ("got c")
+	[] cd() ->
+	    V(cx)
+	    report ("got d via cap")
+	[] ce() ->
+	    report ("got e via cap")
+	    # no more; take else next time
+	[] cx() ->
+	    V(e)
+	    report ("got x via cap")
+	[] else ->
+	    report ("got nothing")
+	    exit
+	ni
+    od
+    report ("exit `in'")
+    P(f)
+    P(g)
+    report ("done")
+
+
+    proc report (s)
+	printf ("%-20s %d%d%d%d%d%d%d-  --%d%d%d--%d\n",
+	    s, ?a,?b,?c,?d,?e,?f,?g, ?cc, ?cd, ?ce, ?cx)
+    end
+end

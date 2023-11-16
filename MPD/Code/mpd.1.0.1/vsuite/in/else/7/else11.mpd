@@ -1,0 +1,38 @@
+# test of else with arrays of ops
+resource a()
+      const int N = 5
+      op f[1:N](int x);  op g()
+      send f[3](100); send g()
+      for [ i = 1 to 4 ] {
+	 in f[i](x) -> write("f1",i,x)
+	 [] g() -> write("g1",i)
+	 [] else -> write("else1",i)
+	 ni
+      }
+      for [ i = 1 to 4 ] {
+	 in [ k = 1 to N ] f[k](x) -> write("f2",i,k,x)
+	 [] g() -> write("g2",i)
+	 [] else -> write("else2",i)
+	 ni
+      }
+      send g();  send f[2](99);  send f[3](98)
+      for [ i = 1 to 4 ] {
+	 in [ k = 1 to N ] f[k](x) -> write("f3",i,k,x)
+	 [] g() -> write("g3",i)
+	 [] else -> write("else3",i)
+	 ni
+      }
+      for [ i = 1 to 4 ] {
+	 in f[i](x) -> write("f4",i,x)
+	 [] g() -> write("g4",i)
+	 [] else -> write("else4",i);  if (i == 2) { send g()  }
+	 ni
+      }
+      send f[1](76); send f[3](75); send f[5](74)
+      for [ i = 1 to 5 ] {
+	 in f[i](x) -> write("f5",i,x)
+	 [] g() -> write("g5",i)
+	 [] else -> write("else5",i);  if (i == 2) { send g()  }
+	 ni
+      }
+end

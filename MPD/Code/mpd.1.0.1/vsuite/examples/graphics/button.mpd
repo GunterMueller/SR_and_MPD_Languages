@@ -1,0 +1,124 @@
+# Implementing a button
+#
+# Qiang A. Zhao, March 93
+#
+
+global Button
+
+  import MPDWin
+
+  type buttonRec = rec (
+		winWindow window
+		int x, y, w, h, border
+	)
+
+  optype buttonCallBack(buttonRec, string[*])
+
+  op button(    buttonRec but,
+		winColor borderColor,
+		winColor buttonColor,
+		winColor labelColor,
+		string[*] labelstring,
+		cap buttonCallBack cb)
+
+body Button
+
+  import MPDWin
+
+  ### A button
+  proc button(but, borderColor, buttonColor, labelColor, labelString, cb)  {
+    winFont  labelFont = WinDefaultFont(but.window)
+
+    int x = but.x + but.border
+    int y = but.y + but.border
+    int w = but.w - but.border * 2
+    int h = but.h - but.border * 2
+    int labx = (w - WinTextWidth(labelFont, labelString)) / 2
+    int laby = (h + WinFontAscent(labelFont) - WinFontDescent(labelFont)) / 2
+
+    winWindow  mywin
+    op winEventChannel evchan
+    mywin = WinCreateSubwindow(but.window, evchan, OffScreen, x, y, w, h)
+    if (mywin == null) {
+      write(stderr, "Button: '", labelString, "' cannot be created")
+      return
+    }
+
+    WinSetEventMask(mywin, Ev_ButtonDown | Ev_ButtonUp |
+	Ev_EnterWindow | Ev_ExitWindow)
+
+    winWindow  normalw = WinNewContext(mywin)
+    WinSetForeground(normalw, labelColor)
+    WinSetBackground(normalw, buttonColor)
+
+    winWindow  revw = WinNewContext(mywin)
+    WinSetForeground(revw, buttonColor)
+    WinSetBackground(revw, labelColor)
+
+    WinSetBorder(normalw, but.border, buttonColor)
+    WinEraseArea(normalw, winRectangle(0, 0, w, h))
+    WinDrawString(normalw, winPoint(labx, laby), labelString)
+    WinMapWindow(normalw)               # same as mapping 'mywin'
+
+    bool  pressed = false
+    while (true) {
+      winEvent  ev
+      receive evchan(ev)
+
+      if (ev.event_type == Ev_ButtonDown) {
+	pressed = true
+	WinSetBorder(mywin, but.border, borderColor)
+	WinEraseArea(revw, winRectangle(0, 0, w, h))
+	WinDrawString(revw, winPoint(labx, laby), labelString)
+
+      } else if (ev.event_type == Ev_ButtonUp ) {
+	WinSetBorder(mywin, but.border, borderColor)
+	WinEraseArea(normalw, winRectangle(0, 0, w, h))
+	WinDrawString(normalw, winPoint(labx, laby), labelString)
+	if (pressed) {
+	  cb(but, labelString)
+	}
+	pressed = false
+
+      } else if (ev.event_type == Ev_EnterWindow ) {
+	WinSetBorder(mywin, but.border, borderColor)
+
+      } else if (ev.event_type == Ev_ExitWindow ) {
+	pressed = false
+	WinSetBorder(normalw, but.border, buttonColor)
+	WinEraseArea(normalw, winRectangle(0, 0, w, h))
+	WinDrawString(normalw, winPoint(labx, laby), labelString)
+      }
+
+      WinFlush(mywin)
+    }
+  }
+end Button      ### global
+
+resource ButtonTest()
+  import MPDWin, Button
+
+  op buttonCallBack cb1, buttonCallBack cb2
+
+  proc cb1(b, str)  {
+    write("Hello")
+  }
+
+  proc cb2(b, str)  {
+    write("Quit")
+    stop(0)
+  }
+
+  winWindow  mywin
+  mywin = WinOpen("", "Button Test", null, UseDefault, 130, 80)
+  WinFlush(mywin)
+  send button(buttonRec(mywin, 10, 10, 50, 40, 2),
+	"red", "white", "blue", "Hello", cb1)
+  send button(buttonRec(mywin, 70, 10, 50, 40, 2),
+	"green", "blue", "white", "Quit", cb2)
+
+final {
+  WinClose(mywin)
+}
+end ButtonTest
+

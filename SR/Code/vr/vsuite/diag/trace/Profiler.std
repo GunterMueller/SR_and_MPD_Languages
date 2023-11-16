@@ -1,0 +1,32 @@
+trc.sr,   4   BODY:1  ENDBODY:1
+trc.sr,   6   SEND:1  PROC:1  ENDPROC:1
+trc.sr,  10   FINAL:1  ENDFINAL:1
+trc.sr,  14   BODY:1  ENDBODY:1
+trc.sr,  16   CREATEG:1
+trc.sr,  19   FINAL:1  ENDFINAL:1
+trc.sr,  23   BODY:1  ENDBODY:1
+trc.sr,  26   CREATES:1  INITS:1
+trc.sr,  27   CREATES:1
+trc.sr,  31   PROC:3  ENDPROC:3
+trc.sr,  34   PROC:4  ENDPROC:4
+trc.sr,  35   RETURN:1
+trc.sr,  36   REPLY:1
+trc.sr,  37   FORWARD:1
+trc.sr,  40   P:1  CONTP:1
+trc.sr,  41   V:1
+trc.sr,  42   P:1  CONTP:1
+trc.sr,  43   V:1
+trc.sr,  45   SEND:1
+trc.sr,  46   IN:1  ARM:1  NI:1
+trc.sr,  48   SEND:1
+trc.sr,  49   SEND:1
+trc.sr,  51   IN:3  NI:3
+trc.sr,  52   ARM:1
+trc.sr,  54   ARM:1
+trc.sr,  56   ARM:1
+trc.sr,  60   CO:1  CALL:2  OC:1
+trc.sr,  62   CALL:4
+trc.sr,  66   CREATER:1
+trc.sr,  67   DESTROYR:1
+trc.sr,  69   CREATEV:1  DESTROYV:1
+trc.sr,  72   FINAL:1  ENDFINAL:1

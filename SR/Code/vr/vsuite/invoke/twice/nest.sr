@@ -1,0 +1,15 @@
+#  assertion failure from nested string-valued function calls
+#  what I was really looking for was to see if the inner call called twice
+
+resource nest ()
+	op quote(s:string[*]) returns v:string[50]
+
+	var s : string[100]
+	s := quote(quote("xyz"))
+	write(s)
+
+	proc quote (s) returns v
+		writes("in quote(",s,")\n")
+		v := "'" || s || "'"
+	end
+end nest

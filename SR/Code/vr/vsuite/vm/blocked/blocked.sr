@@ -1,0 +1,32 @@
+# test detection and reporting of blocked processes
+# spread over multiple virtual machines
+
+#  When this program terminates, messages are produced on all three VMs.
+#  Unfortunately, some kernels don't always properly merge the simultaneous
+#  writes.  Occasional losses have been seen under Irix 4.0, and zeroed
+#  bytes have been seen under Dynix 3.2. 
+
+resource r ()
+    write ("resource r here")
+    sem s
+    process p (i := 1 to 3)
+       P(s)
+       V(s)
+    end
+    reply
+    P(s)
+end
+
+resource l ()
+    import r
+    write ("resource l here")
+    create r() on create vm ()
+    create r() on create vm ()
+    sem s
+    process q (i := 1 to 3)
+       P(s)
+       V(s)
+    end
+    write ("resource l ready to hang")
+    P(s)
+end

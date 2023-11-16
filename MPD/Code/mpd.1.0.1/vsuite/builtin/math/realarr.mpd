@@ -1,0 +1,76 @@
+# Math functions: tests sqrt(), log(), sin() etc and also getarg()
+# Also uses real arrays
+# invoke as "a.out 3.14159 6.28319 9.42478"
+
+resource realarr()
+
+    real REL_ERR = 1e-5 # allowed relative error, [was] implicit declaration
+    procedure fuzrcmp(real r1, real r2)  returns bool   result {
+	# if one wants to get an idea of the relative error print ...
+	# write(r1, r2, abs((r1-r2)/r2))
+	if (abs((r1 - r2)/r1) < REL_ERR) { result = true ;
+	} else { result = false;
+	}
+    }
+
+    # getarg() reals
+    real r = 2*1 + 2*555.e1  # [was] implicit declaration of a real var
+
+
+    getarg(1, r)
+    write(fuzrcmp(r, 3141.59265e-3))
+
+    getarg(2, r)
+
+    bool result = fuzrcmp(r, 2*3141592.65e-6) # [was] implicit decl of a bool
+    write(result)
+
+    getarg(3, r)
+    result = fuzrcmp(r, 3*.314159265e+1)
+    write(result)
+
+    # read() reals
+    real  stdrarr [2 : 12] 
+
+    procedure cmp_1d_rarr(string[*] s, real rarr [2:12])  {
+	for [ i = lb(rarr) to ub(rarr) ] {
+		result = fuzrcmp(rarr[i], stdrarr[i])
+		if (not result) { write("error in ", s) }
+	}
+    }
+
+    real  rarr [2 : 12] 
+
+    # tests log()
+    for [ i = lb(rarr) to ub(rarr) ] { rarr[i] = log(i) }
+    for [ i = lb(stdrarr) to ub(stdrarr) ] { read(stdrarr[i]) }
+    cmp_1d_rarr("log()", rarr)
+
+    # tests sqrt()
+    for [ i = lb(rarr) to ub(rarr) ] { rarr[i] = sqrt(i) }
+    for [ i = lb(stdrarr) to ub(stdrarr) ] { read(stdrarr[i]) }
+    cmp_1d_rarr("sqrt()", rarr)
+
+    # tests sin(), cos(), tan()
+    for [ i = lb(rarr) to ub(rarr) ] { rarr[i] = sin(i) }
+    for [ i = lb(stdrarr) to ub(stdrarr) ] { read(stdrarr[i]) }
+    cmp_1d_rarr("sin()", rarr)
+
+    for [ i = lb(rarr) to ub(rarr) ] { rarr[i] = cos(i) }
+    for [ i = lb(stdrarr) to ub(stdrarr) ] { read(stdrarr[i]) }
+    cmp_1d_rarr("cos()", rarr)
+
+
+    for [ i = lb(rarr) to ub(rarr) ] { rarr[i] = tan(i) }
+    for [ i = lb(stdrarr) to ub(stdrarr) ] { read(stdrarr[i]) }
+    cmp_1d_rarr("tan()", rarr)
+
+
+    # sin, cos
+    if (not fuzrcmp(sin(3.141592/2), sin(30)*sin(30) + cos(30)*cos(30))) {
+	write("sin^2 30 + cos^2 30 is not equal to one")
+    }
+    if (not fuzrcmp(tan(30), sin(30) / cos(30))) {
+	write("sin 30 / cos 30 is not equal to tan(30)")
+    }
+end realarr

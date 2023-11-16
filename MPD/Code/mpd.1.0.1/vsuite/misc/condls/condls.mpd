@@ -1,0 +1,174 @@
+#  test conditionals using various syntactic forms
+#  (this test is less interesting when braces are always required) 
+
+resource condls ()
+
+    procedure testif(int x, int y) {
+	writes("testif(",x,",",y,"): ")
+	if (x <= y) { writes("a") }
+	if (x <= y) { writes("b"); }
+	if (x <= y)
+	    { writes("c") }
+	if (x <= y)
+	    { writes("d"); }
+	if (x <= y) { writes("e") }
+	if (x <= y) { writes("f"); }
+	if (x <= y)
+	    { writes("g") }
+	if (x <= y)
+	    { writes("h"); }
+	if (x <= y) {
+	    writes("i")
+	}
+	if (x <= y) {
+	    writes("j");
+	}
+	write(".")
+    }
+
+    procedure testelse(int x, int y) {
+	writes("testelse(",x,",",y,"): ")
+	if (x <= y) { writes("a") } else { writes("A") }
+	if (x <= y) { writes("b"); } else { writes("B"); }
+	if (x <= y)
+	    { writes("c") }
+	else
+	    { writes("C") }
+	if (x <= y)
+	    { writes("d"); }
+	else
+	    { writes("D"); }
+	if (x <= y) { writes("e") } else { writes("E") }
+	if (x <= y) { writes("f"); } else { writes("F"); }
+	if (x <= y)
+	    { writes("g") }
+	else
+	    { writes("G") }
+	if (x <= y)
+	    { writes("h"); }
+	else
+	    { writes("H"); }
+	if (x <= y) {
+	    writes("i")
+	} else {
+	    writes("I")
+	}
+	if (x <= y) {
+	    writes("j");
+	} else {
+	    writes("J");
+	}
+	if (x <= y) {
+	    writes("k")
+	    writes("k")
+	} else
+	    { writes("K") }
+	if (x <= y)
+	    { writes("l") }
+	else {
+	    writes("L")
+	    writes("L")
+	}
+	if (x <= y) {
+	    writes("m");
+	    writes("m");
+	} else
+	    { writes("M"); }
+	if (x <= y)
+	    { writes("n"); }
+	else {
+	    writes("N");
+	    writes("N");
+	}
+	write(".")
+    }
+
+    procedure testfor(int n) {
+	writes("testfor(",n,"):")
+	writes(" a")
+	for [ i = 1 to n ] {
+	    ;		
+	}
+	writes(" b")
+	for [ i = 1 to n ] 
+	    { }
+	writes(" c")
+	for [ i = 1 to n ] 
+	    { skip }
+	writes(" d")
+	for [ i = 1 to n ]
+	    { writes(i) }
+	writes(" e")
+	for [ i = 1 to n ]
+	    { writes(i); }
+	writes(" f")
+	for [ i = 1 to n ] { writes(i); }
+	writes(" g")
+	for [ i = 1 to n ] { writes(i); }
+	writes(" h")
+	for [ i = 1 to n ]
+	    { writes(i); }
+	writes(" i")
+	for [ i = 1 to n ] {
+	    writes(i);
+	    }
+	write(" .")
+    }
+
+    procedure cmod(char c, int m) returns bool b {
+    	b = int(c) % m != 0
+    }
+
+    procedure testwhile(int m) {
+    	char c = 'C';
+	writes("testwhile(",m,"): ")
+	writes(" X")
+	while (cmod(++c, m))
+	    { skip }
+	writes(" Y")
+	while (cmod(++c, m))
+	    { ; }
+	writes(" Z")
+	writes(" 1")
+	while (cmod(++c, m)) { writes(c) }
+	writes(" 2")
+	while (cmod(++c, m)) { writes(c); }
+	writes(" 3")
+	while (cmod(++c, m))
+	   { writes(c) }
+	writes(" 4")
+	while (cmod(++c, m))
+	   { writes(c); }
+	writes(" 5")
+	while (cmod(++c, m)) { writes(c) }
+	writes(" 6")
+	while (cmod(++c, m)) { writes(c); }
+	writes(" 7")
+	while (cmod(++c, m)) {
+	   writes(c)
+	}
+	writes(" 8")
+	while (cmod(++c, m)) {
+	   writes(c);
+	}
+	writes(" 9")
+	while (cmod(++c, m))
+	   { writes(c) }
+	write(" .")
+    }
+
+    testif(2, 5)
+    testif(4, 4)
+    testif(6, 3)
+    testelse(2, 5)
+    testelse(4, 4)
+    testelse(6, 3)
+    testfor(0)
+    testfor(1)
+    testfor(3)
+    testwhile(1)
+    testwhile(2)
+    testwhile(3)
+    testwhile(4)
+
+end

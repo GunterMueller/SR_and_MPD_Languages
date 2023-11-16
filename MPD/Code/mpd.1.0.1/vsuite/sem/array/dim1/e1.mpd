@@ -1,0 +1,40 @@
+# uses sem array in in stmt
+# (i.e., uses O_IN rather than O_RECEIVE)
+# but still sem optimizable
+resource e1()
+   sem f[4] = (1,0,1,1)
+
+   procedure wf()  {
+	 for [ j = 1 to 4 ] {
+	    writes(?f[j])
+	 }
+	 write()
+   }
+
+   wf()
+
+   for [ j = 1 to 4 ] {
+      V(f[j])
+   }
+
+   wf()
+
+   for [ j = 4 to 1 by -1 ] {
+      P(f[j])
+   }
+
+   wf()
+
+   for [ j = 1 to 4 ] {
+      V(f[j])
+   }
+
+   wf()
+
+   # should block after 8 iterations
+   # if not, sems could be pointing at junk
+   for [ j = 1 to 20 ] {
+      in f[j%4+1]() -> write ("got",j) ni
+   }
+
+end

@@ -1,0 +1,4 @@
+resource Queue
+	op insert(item:int)
+	op remove() returns item:int
+end Queue

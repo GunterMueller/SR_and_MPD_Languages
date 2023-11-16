@@ -1,0 +1,30 @@
+resource Read
+
+body Read()
+
+   process main  {
+      bool  b 
+      char  c 
+      int  rc, n, l 
+      ptr any  p 
+      real  r 
+      file  f 
+      string[50] filename
+
+      if (getarg(1, filename) == EOF) { write("read  usage<filename>"); stop }
+      f = open(filename, READ)
+      if (f == null) { write("cannot open file"); stop }
+
+
+      while (true) {
+	 rc = read(f, b); write(rc, b)
+	 if (rc == EOF) { stop }
+
+	 rc = read(f, c); write(rc, c)
+	 rc = read(f, n); write(rc, n)
+	 rc = read(f, p); write(rc, p)
+	 rc = read(f, r); write(rc, r)
+	 write()
+    }
+   }
+end

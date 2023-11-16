@@ -1,0 +1,11 @@
+# make sure that else in input statements doesn't get optimized to semaphore
+resource a()
+   op f() {send}     # it may look like a sem
+
+   send f()       # and smell like a sem
+   receive f()
+   in f() ->
+   [] else ->     # but it ain't a sem
+   ni
+   write("okey dokey")
+end

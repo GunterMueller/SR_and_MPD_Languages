@@ -1,0 +1,14 @@
+hello from main
+hello from a
+hello from b
+hello from c
+c done
+hello from d
+hello from e
+e done
+main done
+hello from final
+RTS warning: blocked process: deadlock.final : file deadlock.mpd, line 49
+RTS warning: blocked process: deadlock.d : file deadlock.mpd, line 29
+RTS warning: blocked process: deadlock.b : file deadlock.mpd, line 27
+RTS warning: blocked process: deadlock.a : file deadlock.mpd, line 26

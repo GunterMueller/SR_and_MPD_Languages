@@ -1,0 +1,40 @@
+#  create several resources in parallel, then kill them.
+#  repeat this several times.
+#
+#  usage:  a.out nres ntimes
+
+
+resource r (int n )
+    write ("  resource", n, "here")
+
+    final {
+	write ("  resource", n, "done")
+    }
+end
+
+
+resource main ()
+    import r
+
+    procedure makeres (int n ) returns cap r   c {
+	c = create r (n)
+    }
+
+    int nres = 10
+    int ntimes = 5
+
+    getarg (1, nres)
+    getarg (2, ntimes)
+
+    cap r  rcap[nres] 
+
+    write ("resource stress test")
+    write ("  nres =", nres)
+    write ("  ntimes =", ntimes)
+
+    for [ i = 1 to ntimes ] {
+	write ("round", i)
+	co [ i = 1 to nres ]  rcap[i] = makeres (i) -> destroy rcap[i] oc
+    }
+    write ("exiting")
+end

@@ -1,0 +1,5 @@
+# gmt Wed Jun 26 14:37:09 MST 1991
+0 sh ../makelong.sh part1.sr '	"' '{c#o?w%a@b!u&n$g*a&d=u}' part2.sr >temp.sr
+1 sr -c temp.sr
+0 cmp Compiler.std Compiler.out
+0 rm -rf Interfaces core *.out temp.sr

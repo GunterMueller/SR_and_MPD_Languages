@@ -1,0 +1,4 @@
+#  gmt  Tue May 25 16:43:47 MST 1993
+0 sr noopcap.sr
+0 run
+0 rm -rf Interfaces core *.out

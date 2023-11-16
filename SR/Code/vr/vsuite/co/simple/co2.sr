@@ -1,0 +1,29 @@
+# simple co.
+# output nondeterministic.
+
+resource co2()
+	op p(a,b:int)
+	op q()
+
+	var x: int := -5
+	var y: int := -6
+
+	write ("begin")
+	co call p(x,y) ->
+		write("after p(x,y)")
+	// call p(-44,-55) ->
+		write("after p(-44,-55)")
+	// p(-77,-88) ->
+		write("after p(-77,-88)")
+	// q()
+	oc
+	write ("after co:", x, y)
+
+	proc p(a,b)
+		write("in p:",a,b)
+	end
+
+	proc q()
+		write("in q")
+	end
+end

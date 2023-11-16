@@ -1,0 +1,15 @@
+body ChServer
+   op lclose (port: int)
+   var ports[0:read_ports]: rec (i:int; c:char)
+
+   process channel
+      do true -> in copen(port) returns io_desc -> ni od
+   end
+
+   proc lclose (port)
+   end
+
+   proc done ()
+   end
+
+end

@@ -1,0 +1,215 @@
+f(1.000) = 3.000
+f(9.000) = 99.000
+f(5.000) = 35.000
+f(3.000) = 15.000
+f(7.000) = 63.000
+f(2.000) = 8.000
+f(4.000) = 24.000
+f(6.000) = 48.000
+f(8.000) = 80.000
+f(1.500) = 5.250
+f(2.500) = 11.250
+f(3.500) = 19.250
+f(4.500) = 29.250
+f(5.500) = 41.250
+f(6.500) = 55.250
+f(7.500) = 71.250
+f(8.500) = 89.250
+f(1.250) = 4.063
+f(1.750) = 6.563
+f(2.250) = 9.563
+f(2.750) = 13.063
+f(3.250) = 17.063
+f(3.750) = 21.563
+f(4.250) = 26.563
+f(4.750) = 32.063
+f(5.250) = 38.063
+f(5.750) = 44.563
+f(6.250) = 51.563
+f(6.750) = 59.063
+f(7.250) = 67.063
+f(7.750) = 75.563
+f(8.250) = 84.563
+f(8.750) = 94.063
+f(1.125) = 3.516
+f(1.375) = 4.641
+f(1.625) = 5.891
+f(1.875) = 7.266
+f(2.125) = 8.766
+f(2.375) = 10.391
+f(2.625) = 12.141
+f(2.875) = 14.016
+f(3.125) = 16.016
+f(3.375) = 18.141
+f(3.625) = 20.391
+f(3.875) = 22.766
+f(4.125) = 25.266
+f(4.375) = 27.891
+f(4.625) = 30.641
+f(4.875) = 33.516
+f(5.125) = 36.516
+f(5.375) = 39.641
+f(5.625) = 42.891
+f(5.875) = 46.266
+f(6.125) = 49.766
+f(6.375) = 53.391
+f(6.625) = 57.141
+f(6.875) = 61.016
+f(7.125) = 65.016
+f(7.375) = 69.141
+f(7.625) = 73.391
+f(7.875) = 77.766
+f(8.125) = 82.266
+f(8.375) = 86.891
+f(8.625) = 91.641
+f(8.875) = 96.516
+f(1.063) = 3.254
+f(1.188) = 3.785
+f(1.313) = 4.348
+f(1.438) = 4.941
+f(1.563) = 5.566
+f(1.688) = 6.223
+f(1.813) = 6.910
+f(1.938) = 7.629
+f(2.063) = 8.379
+f(2.188) = 9.160
+f(2.313) = 9.973
+f(2.438) = 10.816
+f(2.563) = 11.691
+f(2.688) = 12.598
+f(2.813) = 13.535
+f(2.938) = 14.504
+f(3.063) = 15.504
+f(3.188) = 16.535
+f(3.313) = 17.598
+f(3.438) = 18.691
+f(3.563) = 19.816
+f(3.688) = 20.973
+f(3.813) = 22.160
+f(3.938) = 23.379
+f(4.063) = 24.629
+f(4.188) = 25.910
+f(4.313) = 27.223
+f(4.438) = 28.566
+f(4.563) = 29.941
+f(4.688) = 31.348
+f(4.813) = 32.785
+f(4.938) = 34.254
+f(5.063) = 35.754
+f(5.188) = 37.285
+f(5.313) = 38.848
+f(5.438) = 40.441
+f(5.563) = 42.066
+f(5.688) = 43.723
+f(5.813) = 45.410
+f(5.938) = 47.129
+f(6.063) = 48.879
+f(6.188) = 50.660
+f(6.313) = 52.473
+f(6.438) = 54.316
+f(6.563) = 56.191
+f(6.688) = 58.098
+f(6.813) = 60.035
+f(6.938) = 62.004
+f(7.063) = 64.004
+f(7.188) = 66.035
+f(7.313) = 68.098
+f(7.438) = 70.191
+f(7.563) = 72.316
+f(7.688) = 74.473
+f(7.813) = 76.660
+f(7.938) = 78.879
+f(8.063) = 81.129
+f(8.188) = 83.410
+f(8.313) = 85.723
+f(8.438) = 88.066
+f(8.563) = 90.441
+f(8.688) = 92.848
+f(8.813) = 95.285
+f(8.938) = 97.754
+area(1.000:1.125) = 0.407
+area(1.125:1.250) = 0.473
+area(1.250:1.375) = 0.544
+area(1.375:1.500) = 0.618
+area(1.500:1.625) = 0.696
+area(1.625:1.750) = 0.778
+area(1.750:1.875) = 0.864
+area(1.875:2.000) = 0.954
+area(2.000:2.125) = 1.048
+area(2.125:2.250) = 1.145
+area(2.250:2.375) = 1.247
+area(2.375:2.500) = 1.352
+area(2.500:2.625) = 1.462
+area(2.625:2.750) = 1.575
+area(2.750:2.875) = 1.692
+area(2.875:3.000) = 1.813
+area(3.000:3.125) = 1.938
+area(3.125:3.250) = 2.067
+area(3.250:3.375) = 2.200
+area(3.375:3.500) = 2.337
+area(3.500:3.625) = 2.477
+area(3.625:3.750) = 2.622
+area(3.750:3.875) = 2.770
+area(3.875:4.000) = 2.923
+area(4.000:4.125) = 3.079
+area(4.125:4.250) = 3.239
+area(4.250:4.375) = 3.403
+area(4.375:4.500) = 3.571
+area(4.500:4.625) = 3.743
+area(4.625:4.750) = 3.919
+area(4.750:4.875) = 4.098
+area(4.875:5.000) = 4.282
+area(5.000:5.125) = 4.469
+area(5.125:5.250) = 4.661
+area(5.250:5.375) = 4.856
+area(5.375:5.500) = 5.055
+area(5.500:5.625) = 5.259
+area(5.625:5.750) = 5.466
+area(5.750:5.875) = 5.677
+area(5.875:6.000) = 5.891
+area(6.000:6.125) = 6.110
+area(6.125:6.250) = 6.333
+area(6.250:6.375) = 6.559
+area(6.375:6.500) = 6.790
+area(6.500:6.625) = 7.024
+area(6.625:6.750) = 7.262
+area(6.750:6.875) = 7.505
+area(6.875:7.000) = 7.751
+area(7.000:7.125) = 8.001
+area(7.125:7.250) = 8.255
+area(7.250:7.375) = 8.512
+area(7.375:7.500) = 8.774
+area(7.500:7.625) = 9.040
+area(7.625:7.750) = 9.309
+area(7.750:7.875) = 9.583
+area(7.875:8.000) = 9.860
+area(8.000:8.125) = 10.141
+area(8.125:8.250) = 10.427
+area(8.250:8.375) = 10.716
+area(8.375:8.500) = 11.009
+area(8.500:8.625) = 11.305
+area(8.625:8.750) = 11.606
+area(8.750:8.875) = 11.911
+area(8.875:9.000) = 12.219
+total area is: 322.672
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.worker : file quadrature.mpd, line 29
+RTS warning: blocked process: main.administrator : file quadrature.mpd, line 18

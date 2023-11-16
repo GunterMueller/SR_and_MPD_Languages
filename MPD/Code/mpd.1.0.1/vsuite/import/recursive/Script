@@ -1,0 +1,18 @@
+#  gmt  Mar 6 1990
+0 rm -rf MPDinter core *.out
+
+# test makefile facility
+0 mpd -M recursive.mpd
+0 cmp -s Compiler.std Compiler.out
+0 rm -rf MPDinter core *.out
+
+# test separate compilation
+0 mpd -s recursive.mpd
+0 mpd -b recursive.mpd
+0 mpdl A B C D
+0 run
+
+# test single-command compile
+0 mpd recursive.mpd
+0 run
+0 rm -rf MPDinter core *.out

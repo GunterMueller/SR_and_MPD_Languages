@@ -1,0 +1,79 @@
+global Arguments
+  var n, w: int, fname: string[20]
+body Arguments
+  getarg(1, n); getarg(2, w); getarg(3, fname)
+end
+
+global Shared
+  import Arguments
+  op bag(path[1:*], hops, length: int)  # partial tours
+  var dist[1:n,1:n]: int                # distances
+  var shortest: int := 2**30            # best so far
+  op update(path[1:*], length: int)     # update shortest
+body Shared
+  var fd: file; fd := open(fname, READ)
+  fa i := 1 to n, j := 1 to n -> read(fd, dist[i,j]) af
+  var shortest_path[1:n]: int
+  sem mutex := 1
+
+  proc update(path, length)
+    P(mutex)
+      if length < shortest ->
+        shortest := length; shortest_path := path
+      fi
+    V(mutex)
+  end
+
+  final
+    write("the shortest path has length", shortest)
+    write("the cities on the shortest path are:")
+    writes("  ")
+    fa i := 1 to n -> writes(shortest_path[i], " ") af
+    write()
+  end
+end
+
+resource Worker()
+  import Arguments, Shared
+
+  # extend path to include city if city has not yet been visited
+  procedure extend_path(city: int; var path[1:*]: int; hops: int;
+                        length: int) returns newlength: int
+    fa i := 2 to hops st path[i] = city -> newlength := 0; return af
+    newlength := length + dist[path[hops], city]; path[hops+1] := city
+  end
+
+  process worker
+    var path[1:n], hops, length, newlength: int
+    do true ->
+      receive bag(path, hops, length)
+      fa city := 2 to n ->
+        newlength := extend_path(city, path, hops, length)
+        if newlength = 0 -> next fi    # city has been visited
+        if hops+1 < n and newlength < shortest ->
+            # put partial tour back into bag for further processing
+            send bag(path, hops+1, newlength)
+        [] hops+1 = n ->
+            # add distance back to city 1
+            newlength := newlength + dist[path[n],1]
+            if newlength < shortest ->
+              # this tour is possibly the best
+              update(path, newlength)
+            fi
+        fi
+      af
+    od
+  end
+end Worker
+
+resource Main()
+  import Arguments, Shared, Worker
+  # generate first set of partial tours and put them into bag
+  var path[1:n]: int := (1, [n-1] 0)
+  fa i := 2 to n ->
+    path[2] := i
+    send bag(path, 2, dist[1,i])
+  af
+  # create worker processes
+  fa i := 1 to w -> create Worker() af
+end Main

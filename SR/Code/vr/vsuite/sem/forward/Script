@@ -1,0 +1,4 @@
+#  ron  Wed Sep 29 17:21:49 MST 1999
+0 sr fwdsem.sr
+0 run
+0 rm -rf Interfaces core *.out

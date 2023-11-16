@@ -1,0 +1,12 @@
+#  vin  Mon Apr 15 22:37:31 MST 1991
+0 sr args.sr
+0 a.out true    j    12q    ==null==   12.3	 > args.out 2>&1
+0 a.out TrUe    K   -12x    803344ff   +3e-03	>> args.out 2>&1
+0 a.out FALSE  "G"  -12     abcdefgh   -4.5e+7	>> args.out 2>&1
+0 a.out ' f  ' kLm   12Q    deadbeef   "4.5 e7"	>> args.out 2>&1
+0 a.out fal    "gg" +12X   "==null=="  178	>> args.out 2>&1
+0 a.out t      1   "12afx" "80456789"  .005	>> args.out 2>&1
+0 a.out g     "!" 12AFG  ABCDEF 13456789.13456789 >> args.out 2>&1
+0 a.out TruE  "  xy" 0 1 0                      >> args.out 2>&1
+0 cmp -s args.std args.out
+0 rm -rf Interfaces core *.out

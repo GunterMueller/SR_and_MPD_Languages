@@ -1,0 +1,20 @@
+resource printer
+  op print(int node, int topology[1:*, 1:*])
+body printer(int n )
+
+  process mutex  {
+    int  node, top[1:n,1:n] 
+
+    while (true) {
+	receive print(node,top)
+	write("    Topology Computed by Node",node)
+	for [ i= 1 to n ] {
+	    writes(i,":  ")
+	    for [ j= 1 to n ] { writes(top[i,j]," ") }
+	    write("")
+	}
+	write("")
+    }
+  }
+
+end printer

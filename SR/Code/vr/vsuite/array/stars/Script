@@ -1,0 +1,4 @@
+0 sr -c stars.sr
+0 srl stars
+0 run
+0 rm -rf Interfaces core *.out

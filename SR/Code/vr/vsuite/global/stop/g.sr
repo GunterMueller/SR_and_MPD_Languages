@@ -1,0 +1,17 @@
+#  check that stop works from a global
+#  (it used to fail: the finalization process interrupted the stop!)
+
+global g
+body g
+    write ("g here")
+    reply
+    write ("stopping")
+    stop
+end
+
+resource main ()
+    import g
+    nap (10000)
+    write ("main was not stopped")
+    stop (1)
+end

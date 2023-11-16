@@ -1,0 +1,5 @@
+#  vin  Mon Apr 15 22:35:23 MST 1991
+0 mpd read.mpd
+0 a.out Read1 >Read1.out
+0 cmp -s Read1.std Read1.out
+0 rm -rf MPDinter core *.out *.[chos]

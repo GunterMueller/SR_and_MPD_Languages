@@ -1,0 +1,4 @@
+0 mpd -c bool2.mpd
+0 mpdl bool2
+0 run
+0 rm -rf MPDinter core *.out

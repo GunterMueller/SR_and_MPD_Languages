@@ -1,0 +1,4 @@
+#  gmt  Mon May 24 16:42:22 MST 1993
+0 mpd armcap.mpd
+0 run
+0 rm -rf MPDinter core *.out

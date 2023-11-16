@@ -1,0 +1,55 @@
+# formerly: in/easy/{1,2,5}, plus new test of local ops
+
+resource insimple ()
+
+    op p(int x)
+    send p(111)
+    in p(x) ->
+	    write(x)
+    ni
+
+    op q(int x)
+    op r()
+    send q(222)
+    in q(x) -> write(x)
+    [] r() -> write(84448)
+    ni
+
+    op f(int x)
+    for [ i = 1 to 10 ] {
+	    send f(350+i)
+    }
+    for [ i = 1 to 10 ] {
+	    writes (330+i, " ")
+	    in f(x) -> writes(x) ni
+	    write (" ", 370+i)
+    }
+
+    procedure a()  {
+	op w()          # two *local* ops in a class
+	op x()
+	op y()
+	op z()
+
+	send w ()
+	send x ()
+	for [ i = 1 to 2 ] {
+	    in w() -> write (" got w()")
+	    [] x() -> write (" got x()")
+	    ni
+	}
+
+	# now the same thing in opposite order (used to gen bad code in sr 2.2)
+	send y ()
+	send z ()
+	for [ i = 1 to 2 ] {
+	    in z() -> write (" got z()")
+	    [] y() -> write (" got y()")
+	    ni
+	}
+    }
+
+    write ("calling a")
+    a()
+    write ("done")
+end

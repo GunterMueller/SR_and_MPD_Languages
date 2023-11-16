@@ -1,0 +1,35 @@
+##  terminal I/O example -- copies input to output
+#
+#   usage:  a.out ttyname  (default is /dev/tty)
+#
+#   This program shows how to read and write from a terminal that is not
+#   conveniently connected to stdin/stdout.  You should ensure that nobody
+#   else is reading the tty, e.g. by running "sleep 10000" if it is running
+#   a shell.
+
+resource main()
+	var fname : string(100)
+	var line  : string(200)
+	var ifile : file
+	var ofile : file
+
+	fname := "/dev/tty"		# set default name of "/dev/tty"
+	getarg(1,fname)			# override this if arg1 is supplied
+	if length(fname) <= 2 ->	# change "xy" form into "/dev/ttyxy"
+	    fname := "/dev/tty" || fname fi
+
+	write("opening",fname)
+	ifile := open(fname,READ)	# open one file for input
+	if ifile = null ->
+	    write("can't open input"); stop fi
+	ofile := open(fname,WRITE)	# open second file for output
+	if ofile = null ->
+	    write("can't open output"); stop fi
+
+	write(ofile,"hello....")
+	flush(ofile)
+	do read(ifile,line) ~= EOF ->	# copy input to output
+	    write(ofile,line)
+	    flush(ofile)
+	    od
+end main

@@ -1,0 +1,59 @@
+#  distributed topology computation -- heartbeat method
+#
+#  usage: a.out datafile [startnode]
+#
+#  datafile lists number of nodes, then pairs of neighbors, as integers
+
+resource main
+  import node, printer
+body main()
+
+  process compute_topology
+
+    # get file name and start node
+    var pn : string[40]
+    if getarg(1,pn) = EOF ->
+	write(stderr,"usage: a.out datafile [startnode]"); stop (1) fi
+    var sn : int := 1
+    getarg(2,sn)	# if unsuccessful, use initialized value of 1
+
+    # read number of nodes and initial topology
+    var f : file := open(pn,READ)
+    if f = null ->
+	write("Error:  cannot open file", pn); stop (1) fi
+    var n : int
+    read(f,n)
+    var initial_top[1:n,1:n] : int := ([n] ([n] 0))
+
+    var i,j : int
+    do true ->
+	if read(f,i) = EOF -> exit fi
+        if read(f,j) = EOF ->
+           write("Error:  there must be an even number of nodes"); stop (1) fi
+        if i<1 or i>n or j<1 or j>n ->
+	   write("Error:  each node must be between 1 and n"); stop (1) fi
+	initial_top[i,j] := j; initial_top[j,i] := i
+    od
+
+    # output initial topology
+    write("    Initial Topology read from", pn)
+    fa i := 1 to n ->
+	writes(i,":  ")
+	fa j := 1 to n -> writes(initial_top[i,j]," ") af
+	write("")
+    af
+    write("")
+
+    # create printer and n nodes
+    var pr : cap printer
+    var nc[1:n] : cap node
+    pr := create printer(n)
+    fa i := 1 to n -> nc[i] := create node(n,i,pr) af
+    fa i := 1 to n -> nc[i].neighbors(nc,initial_top[i,1:n]) af
+
+    # start all nodes
+    co (i := 1 to n) nc[i].start() oc
+
+  end compute_topology
+
+end main

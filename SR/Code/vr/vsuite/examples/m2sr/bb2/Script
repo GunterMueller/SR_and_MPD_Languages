@@ -1,0 +1,14 @@
+
+0 m2sr -sc a.m
+0 sr -C a.sr test.sr
+
+0 m2sr -sw a.m
+0 sr -C a.sr test.sr
+
+0 m2sr -su a.m
+0 sr -C a.sr test.sr
+
+0 m2sr -sx a.m
+0 sr -C a.sr test.sr
+
+0 rm -rf Interfaces core *.out a.sr

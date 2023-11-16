@@ -1,0 +1,17 @@
+#  I've come across a bug in SR.  The following program causes a core dump:
+#
+#  The problem appears to be that the return in P causes mpd_kill_liop to
+#  be called to free local ops (presumably Q) but fails because Q does
+#  not exist yet.  Moving the declaration of Q up one line makes the
+#  program work.
+
+
+	resource main ()
+		op p ()
+		call p ()
+		proc p ()  {
+			if (true) {  return  }
+			op q ()
+			receive q ()
+		}
+	end

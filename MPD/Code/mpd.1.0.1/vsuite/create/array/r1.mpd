@@ -1,0 +1,31 @@
+resource r2
+    op print(int x)
+body r2(int i)
+    write("r2 starting:",i)
+
+proc print(x)  {
+    write("printing", x, "from resource", i)
+}
+
+final {
+    write("r2 exiting:",i)
+}
+end
+
+
+resource r1
+    import r2
+body r1()
+    cap r2  a[1:10]
+
+    for [ i = 1 to 10 ] {
+	a[i] = create r2(i)
+    }
+
+    call a[3].print(17)
+    call a[7].print(10005)
+
+    for [ i = 10 downto 1 ] {
+	destroy a[i]
+    }
+end

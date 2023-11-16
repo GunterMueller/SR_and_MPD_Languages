@@ -1,0 +1,11 @@
+resource ChTest
+   import ChServer, Io
+body ChTest()
+
+   process main
+      var cp: cap ChServer
+      cp := create ChServer(10)
+      destroy cp
+   end
+
+end

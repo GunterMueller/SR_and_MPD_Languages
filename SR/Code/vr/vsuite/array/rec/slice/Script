@@ -1,0 +1,4 @@
+#  gmt  Wed Apr  8 08:08:47 MST 1992
+0 sr recslice.sr
+0 run
+0 rm -rf Interfaces core *.out

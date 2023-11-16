@@ -1,0 +1,84 @@
+# checks real literals, abs(), min(), max(), low(), high()
+resource reals
+body reals()
+
+    real  r1
+    real rstd = 0.0
+
+    real REL_ERR = 1e-5 # allowed relative error, implicit decl of a real var
+    procedure fuzrcmp(real r1, real r2)  returns bool   result {
+	# if one wants to get an idea of the relative error print ...
+	# write(r1, r2, abs((r1-r2)/r2))
+	if (abs((r1 - r2)/r1) < REL_ERR) { result = true ;
+	} else { result = false;
+	}
+    }
+
+    int cnt = 0
+    procedure errdetect(real r1, real r2)  {
+	++cnt
+	if (not fuzrcmp(r1, r2) ) { write("error in #", cnt, " write") }
+    }
+
+
+    r1 = .23456;      read(rstd); errdetect(r1, rstd)
+    r1 = 1.23456;     read(rstd); errdetect(r1, rstd)
+    r1 = 2.23456e-10; read(rstd); errdetect(r1, rstd)
+    r1 = 3.23456e+10; read(rstd); errdetect(r1, rstd)
+    r1 = 4.23456e10;  read(rstd); errdetect(r1, rstd)
+    r1 = 5e10;        read(rstd); errdetect(r1, rstd)
+    r1 = 6e-10;       read(rstd); errdetect(r1, rstd)
+    r1 = 7. ;         read(rstd); errdetect(r1, rstd)
+    r1 = 8.e-10 ;     read(rstd); errdetect(r1, rstd)
+    r1 = 8.e+10 ;     read(rstd); errdetect(r1, rstd)
+
+
+    # automatic int to real conversion
+    int i = 123
+    r1 = i;           read(rstd); errdetect(r1, rstd)
+
+    r1 = i * 2;       read(rstd); errdetect(r1, rstd)
+    r1 = i / 2;       read(rstd); errdetect(r1, rstd)
+    r1 = i + 2;       read(rstd); errdetect(r1, rstd)
+    r1 = i - 2;       read(rstd); errdetect(r1, rstd);
+
+    r1 = i * 2.34567e2;       read(rstd); errdetect(r1, rstd)
+    r1 = i / 2.34567e2;       read(rstd); errdetect(r1, rstd)
+    r1 = i + 2.34567e2;       read(rstd); errdetect(r1, rstd)
+    r1 = i - 2.34567e2;       read(rstd); errdetect(r1, rstd)
+
+    # testing abs(), min(), max()
+    read(rstd); errdetect(rstd, abs(-3.14159265))
+    read(rstd); errdetect(rstd, abs(+3.14159265))
+    read(rstd); errdetect(rstd,
+			min(-3.14159265, 9, 2*-3.14159265, 3*- - -3.14159265))
+    read(rstd); errdetect(rstd,
+			min(9, +3.14159265, 2*+3.14159265, 3*+ +3.14159265))
+    read(rstd); errdetect(rstd,
+			max(-9e99, -3.14159265, 2*-3.14159265, 3*-3.14159265))
+    read(rstd); errdetect(rstd, max(+3.14159265, 2*+3.14159265, 3*+3.14159265))
+
+    # testing low(), high() for int, char, bool
+    # assumes that we know what these values should be
+    if (high(int) ~= 7FFFFFFFx) { write("Error in high(int)") }
+    if ( low(int) ~= 80000000x) { write("Error in  low(int)") }
+
+    char ch = low(char); if (int(ch) != 0) { write("Error in  low(char)") }
+    ch = high(char); if (int(ch) != 255) { write("Error in  low(char)") }
+
+    if (high(bool) != true) { write("Error in high(bool)") }
+    if ( low(bool) != false) { write("Error in low(bool)") }
+
+
+    # test that low(real) is plausibly small
+    real x = low(real)
+    real y = 1.0 + x
+    if (y != 1.0) { write ("low(real) too big? ", x, y) }
+
+    # test that high(real) is plausibly large
+    x = high(real)
+    y = x - 1.0
+    if ((x != y)) { write ("high(real) too small? ", x, y) }
+
+    write ("done")
+end reals

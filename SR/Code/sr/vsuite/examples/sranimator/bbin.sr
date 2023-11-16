@@ -1,0 +1,44 @@
+resource bounded_buffer
+  import SRanimator
+  op deposit(pid: int; item : real), fetch(cid: int) returns item : real
+body bounded_buffer(size : int)
+  var buf[0:size-1] : real, count := 0, take_out := 0, put_in := 0
+  write("bounded buffer resource with", size, "slots is alive")
+  reply
+
+  do true ->
+    in deposit(pid, item) st count < size ->
+
+# Move the producer to the slot.
+      call A_stepjumpto(2000+pid, 7000+put_in, 5, 100)
+# Change a full buffer slot's symbol to be solid black.
+      call A_fill(put_in, "solid")
+
+      buf[put_in] := item; reply; put_in := (put_in + 1) % size; count++
+      write("                               count++ =", count)
+
+# Move the producer back to its original position.
+      call A_stepjumpto(2000+pid, 4000+pid, 5, 100)
+# Change producer's symbol to an outline black circle.
+      call A_fill(2000+pid, "outline")
+      call A_color(2000+pid, "black")
+
+    [] fetch(cid) returns item st count > 0 ->
+
+# Move the consumer to the slot.
+      call A_stepjumpto(3000+cid, 7000+take_out, 5, 100)
+# Change an empty buffer slot's symbol to an outline black circle.
+      call A_fill(take_out, "outline")
+
+      item := buf[take_out]; reply; take_out := (take_out + 1) % size; count--
+      write("                               count-- =", count)
+
+# Move the consumer back to its original position.
+      call A_stepjumpto(3000+cid, 5000+cid, 5, 100)
+# Change consumers's symbol to an outline black circle.
+      call A_fill(3000+cid, "outline")
+      call A_color(3000+cid, "black")
+
+    ni
+  od
+end bounded_buffer

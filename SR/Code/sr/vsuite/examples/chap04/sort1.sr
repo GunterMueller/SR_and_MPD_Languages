@@ -1,0 +1,13 @@
+resource main()
+  procedure sort(var a[1:*]: int)
+      fa i := lb(a) to ub(a)-1,
+         j := i+1 to ub(a) st a[i] > a[j] ->
+             a[i] :=: a[j]
+      af
+  end
+
+  var x[1:20], y[2:30], z['a':'z']: int
+  call sort(x)
+  call sort(y)
+  call sort(z)
+end

@@ -1,0 +1,16 @@
+# arrays of operations
+resource array3()
+	op a[1:10](x:int)
+	process starter
+		write(-2222)
+		co (i := 10 downto 1) a[i](i*100) oc
+	end
+	process worker
+		# receive them in reverse order
+		fa i := 10 downto 1 ->
+			in a[i](x) ->
+				write(i,x)
+			ni
+		af
+	end
+end

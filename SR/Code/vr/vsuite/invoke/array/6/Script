@@ -1,0 +1,4 @@
+0 sr -c array6.sr
+0 srl array6
+0 run
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,71 @@
+# sorting in a ``distributed'' fashion (actually more a pipeline).
+resource dsort()
+
+	op print(a[1:*]:int)
+	op sort(var a[1:*]:int)
+	op worker( rep: cap (pos,value:int); x:int )
+		returns y:cap (x:int) {send} {call}
+
+	var n: int
+	write("number of numbers?")
+	read(n)
+	var nums[1:n] : int
+	# read in numbers
+		fa i := lb(nums) to ub(nums) ->
+			write("?"); read(nums[i])
+		af
+	write("before sorting\n")
+	print(nums)
+	sort(nums)
+	write("after sorting\n")
+	print(nums)
+
+
+	proc print(a)
+		fa i := lb(a) to ub(a) ->
+			write(a[i])
+		af
+	end
+
+	proc sort(a)
+		if ub(a) > 0 ->
+			op rep(pos,value:int)
+			var c : cap (x:int) {send}
+			c := worker(rep, ub(a))
+			# start the pipeline.
+				fa i := lb(a) to ub(a) ->
+					send c(a[i])
+				af
+			# gather the replies
+				fa i := lb(a) to ub(a) ->
+					in rep(pos,value) ->
+						a[ub(a)+lb(a)-pos] := value
+					ni
+				af
+		fi
+	end
+
+	# worker receives n ints.
+	# keeps smallest, sends n-1 ints to worker n-1.
+	# sends back its id (n) and smallest int after seeing all n ints.
+	proc worker(rep,n) returns c
+		var v : int # the smallest seen so far.
+		op filter(x:int) {send}
+		c := filter
+		reply
+		receive filter(v)
+		if n > 1 ->
+			var x : cap (x:int) {send}
+			x := worker(rep,n-1)
+			fa i := n-1 downto 1 ->
+				in filter(y) ->
+					if y < v ->
+						y :=: v
+					fi
+					send x(y)
+				ni
+			af
+		fi
+		send rep(n,v)
+	end
+end

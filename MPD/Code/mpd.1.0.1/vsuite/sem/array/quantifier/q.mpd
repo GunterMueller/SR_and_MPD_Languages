@@ -1,0 +1,8 @@
+# quantifier should prevent f from being optimized to a semaphore
+resource q()
+   sem f[10] = (0,0,1,0,0,1,0,0,0,0)
+   P(f[3])
+
+   in [k=1 to 10] f[k]() -> write(k) ni
+
+end

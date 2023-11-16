@@ -1,0 +1,26 @@
+start p
+initial 5
+final start 5
+initial 4
+final start 4
+initial 3
+final start 3
+initial 2
+final start 2
+initial 1
+final start 1
+initial 0
+final start 0
+final end 0
+ok 10000
+final end 1
+ok 10001
+final end 2
+ok 10002
+final end 3
+ok 10003
+final end 4
+ok 10004
+final end 5
+ok 10005
+end p

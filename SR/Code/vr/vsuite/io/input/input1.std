@@ -1,0 +1,6 @@
+1:  # whitespace skipping; bad boolean; no newlines in read/get
+2:  47163 'c' false 'zzzzzzzzzz' "--"
+1:  'four five '
+1:  "six seven "
+10:  'eight nine'
+10:  " ten eleve"

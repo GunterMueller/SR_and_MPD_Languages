@@ -1,0 +1,73 @@
+ok:  incompatible bounds
+ok:  location is not a vm cap
+ok:  non-string concatenation
+ok:  invalid co-invocation
+ok:  destroy object is not a capability
+ok:  illegal parameter type for external
+ok:  illegal parameter type for external
+ok:  no restrictions allowed on external
+ok:  illegal return type for external
+ok:  duplicate .final. code
+ok:  forward to incompatible op
+ok:  forward: not allowed outside a proc
+ok:  forward: op is restricted {call}
+ok:  low/high: not an ordered type
+ok:  a proc cannot implement an array op
+ok:  incorrect subscripting of p
+ok:  receive: argument 1 is incompatible
+ok:  non-constant array bounds in spec or record
+ok:  non-constant string length in spec or record
+ok:  cannot swap into or out of a slice
+ok:  incompatible slice indices
+ok:  wrong subscript type
+ok:  both sides of swap operator must be variables
+ok:  sync expr must be boolean expression
+ok:  no arguments allowed in .create vm().
+ok:  non-string concatenation
+ok:  not an op: x
+ok:  ambigous: don.t know what kind of null/noop
+ok:  non-integer shift operand
+ok:  incompatible swap
+ok:  increment/decrement: not an ordered type
+ok:  non-integer shift operand
+ok:  maxlength is not an integer
+ok:  single bound is not integer
+ok:  non-numeric exponentiation operand
+ok:  NOT operand is not bool or int
+ok:  incompatible pointer subtraction
+ok:  illegal or mismatched and/or/xor operands
+ok:  dereference object is not a pointer
+ok:  unary +/- operand is not simple numeric
+ok:  subscripted object is not an array
+ok:  vm location is neither integer nor string
+ok:  element 3 of constructor is incompatible
+ok:  too many subscripts
+ok:  non-numeric operand or incompatible assignm
+ok:  illegal or mismatched and/or/xor operands
+ok:  too many subscripts
+ok:  comment terminator outside comment
+ok:  illegal character .$.
+ok:  circle: type never defined
+ok:  exp(): too many arguments
+ok:  exp(): too few arguments
+ok:  unterminated string
+ok:  empty character literal
+ok:  illegal context for .*. as array bound
+ok:  cannot pass slice expression to ref parameter
+ok:  both bounds are .*.
+ok:  character literal contains multiple characters
+ok:  newline in character literal
+ok:  too few arguments
+ok:  unknown field: c
+ok:  no enclosing loop
+ok:  invalid type
+ok:  repetition count is not an integer
+ok:  can.t use .noop. in pointer context
+ok:  duplicate implementation of p
+ok:  undefined identifier: f
+ok:  undefined identifier: y
+ok:  invalid type
+ok:  illegal type for conversion
+ok:  seektype argument is wrong type
+ok:  unterminated comment at EOF
+ok:  recursively defined record

@@ -1,0 +1,23 @@
+#  test two things that dereference a member of a struct that's an rvalue:
+#     destroy of an SR expresson
+#     member of an SR expression that produces a record
+
+resource x ()
+    write ("x here")
+    final
+       write ("x gone")
+    end
+end
+
+resource r ()
+    import x
+
+    type pt = rec (x, y: int)
+    procedure p() returns something : pt
+	something := pt(11,22)
+	return
+    end
+
+    destroy create x()
+    write (p().x, p().y)
+end

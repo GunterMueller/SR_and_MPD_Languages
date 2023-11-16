@@ -1,0 +1,16 @@
+resource CS()
+  const N := 20      # number of processes
+  op mutex() {send}  # mutual exclusion for x
+  send mutex()       # initialize mutex
+  var x := 0         # shared variable
+  process p(i := 1 to N)
+    # non-critical section
+      ...
+    # critical section
+    receive mutex()  # enter critical section
+    x := x+1
+    send mutex()     # exit critical section
+    # non-critical section
+      ...
+  end
+end

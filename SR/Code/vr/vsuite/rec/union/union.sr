@@ -1,0 +1,225 @@
+#  simplified test of unions
+
+#  does not intentionally do anything illegal
+#  does not assume that the members really share storage
+
+
+global g
+    type tg = union (i:int; f:bool; c[4]:char)
+end g
+
+
+
+resource u ()
+    import g
+
+# testing routines
+    op tanon ()		# simple anonymous unions
+    op tlocal ()	# locally defined unions
+    op tresource ()	# resource-level unions
+    op tglobal ()	# globally defined unions
+
+# named types
+    type t0 = union (i:int)			# degenerate case
+    type t1 = union (i,j,k:int)			# simple case
+    type t2 = union (i:int; f:bool; c:char)	# mixed types
+    type t3 = union (i:int; f:bool; c[4]:char)	# similar but with array
+    type t4 = union (r:rec(i,j,k:int); c[20]:char; s:string[7])	# complex
+
+# resource-level variables
+    var rt0 : t0
+    var rt1 : t1
+    var rt2 : t2
+    var rt3 : t3
+    var rt4 : t4
+    var rv3 : union (a : int; b : bool; c[4]: char)
+
+# actual testing
+    tanon()
+    tlocal()
+    tresource()
+    tglobal()
+
+
+proc tanon()	# test local, anonymous unions
+
+    var v0 : union (i:int)
+    var v1 : union (i,j,k:int)
+    var v2 : union (i:int; f:bool; c:char)
+    var v3 : union (i:int; f:bool; c[4]:char)
+    var v4 : union (r:rec(i,j,k:int); c[20]:char; s:string[7])
+
+    write("\ntanon:")
+    v0.i := 47
+    write("v0:",v0.i)
+
+    v1.i := 31
+    writes("v1: ",v1.i," ")
+    v1.j := 32
+    writes(v1.j," ")
+    v1.k := 33
+    write(v1.k)
+
+    v2.i := 29
+    writes("v2: ",v2.i," ")
+    v2.f := true
+    writes(v2.f," ")
+    v2.c := '!'
+    write(v2.c)
+
+    v3.i := 53
+    writes("v3: ",v3.i," ")
+    v3.f := false
+    writes(v3.f," ")
+    v3.c := chars("abcd")
+    write(v3.c)
+
+    v4.r.i := 59
+    writes("v4: ",v4.r.i," ")
+    v4.r.j := 61
+    writes(v4.r.j," ")
+    v4.r.k := 67
+    writes(v4.r.k," ")
+    v4.s := "#==#567"
+    writes(v4.s," ")
+    v4.c := chars("abcdefghijklmnopqrst")
+    write(v4.c)
+
+end tanon
+
+
+
+proc tlocal ()
+    write("\ntlocal:")
+
+# simple int union
+    var u0: union (i, j, k: int)
+    u0.i := 11;
+    writes ("u0: ", u0.i, " ")
+    u0.j := 222;
+    writes (u0.j, " ")
+    u0.k := 3333;
+    write (u0.k)
+
+# array of unions
+
+    var ua[5] : t3
+    rt3.c := chars("ijkl")
+    ua := ([5] rt3)
+    write("ua:",ua[1].c,ua[2].c,ua[3].c,ua[4].c,ua[5].c)
+    rv3 := ua[3]
+    write ("r3:", rv3.c)
+
+# a more complex union
+
+    var u4 : union (
+	s : string[12]
+	r : rec (n : int; c[5] : char)
+    )
+    u4.s := "abcdefghij"
+    writes ("u4: ", u4.s, " ")
+    u4.r.n := 8;
+    writes (u4.r.n," ")
+    u4.r.c := chars("pqrst")
+    write (u4.r.c)
+
+# runtime-sized array of unions
+
+    var na := 12
+    const nn := 5
+    const nc := 29
+    const ns := 23
+    var va[na]: union (
+	ff[7]:int
+	vi[nn]:int
+	fc[24]:char
+	vc[nc]:char
+	fs:string[21]
+	vs:string[ns]
+    )
+    fa i := 1 to na ->
+	fa j := 1 to nn ->
+	    va[i].vi[j] := 100 * i + j
+	af
+    af
+    write("va:",va[1].vi[1],va[7].vi[4],va[na].vi[nn]);
+    va[2].vc := chars("zyxwvutsrqponmlkjihgfedcba+++")
+    write("va:",va[2].vc)
+    va[2].vi[1] := 17
+    va[na-1].vs := "0+1+2+3+4+5+6+7+8+9+0"
+    write("va:",va[na-1].vs)
+
+end tlocal
+
+
+
+proc tresource ()
+    write("\ntresource:")
+    rt0.i := 57
+    write("rt0:",rt0.i)
+
+    rt1.i := 41
+    writes("rt1: ",rt1.i," ")
+    rt1.j := 42
+    writes(rt1.j," ")
+    rt1.k := 43
+    write(rt1.k)
+
+    rt2.i := 39
+    writes("rt2: ",rt2.i," ")
+    rt2.f := false
+    writes(rt2.f," ")
+    rt2.c := '?'
+    write(rt2.c)
+
+    rt3.i := 63
+    writes("rt3: ",rt3.i," ")
+    rt3.f := true
+    writes(rt3.f," ")
+    rt3.c := chars("efgh")
+    write(rt3.c)
+
+    # compatible unnamed union
+    rv3 := rt3
+    write ("rv3:", rv3.c)
+
+    rt4.r.i := 69
+    writes("rt4: ",rt4.r.i," ")
+    rt4.r.j := 71
+    writes(rt4.r.j," ")
+    rt4.r.k := 77
+    writes(rt4.r.k," ")
+    rt4.s := "?!#%123"
+    writes(rt4.s," ")
+    rt4.c := chars("ghijklmnopqrstuvwxyz")
+    write(rt4.c)
+
+end tresource
+
+
+
+proc tglobal ()			# globally defined unions
+    var a: tg
+    var b: t3
+    var c: union (n:int; b:bool; s[4]:char)
+
+    write("\ntglobal:")
+    a.i := 12457
+    writes("a: ",a.i," ")
+    a.c := chars ("mnop")
+    write(a.c)
+    b := a
+    write("b:",b.c)
+    c := a
+    write("c:",c.s)
+    c.s := chars("qrst")
+    write("c:",c.s)
+    b := c
+    write("b:",b.c)
+    a := b
+    write("a:",a.c)
+end tglobal
+
+
+
+end u

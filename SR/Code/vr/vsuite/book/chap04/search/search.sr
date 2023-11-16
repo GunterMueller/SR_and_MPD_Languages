@@ -1,0 +1,53 @@
+# return true if x is on list pointed at by head
+# type node is rec(value: int; ...; nxt: ptr node)
+resource main()
+
+  type node = rec(value: int; nxt: ptr node)
+
+  var head, q : ptr node
+
+  procedure search(x: int) returns found: bool
+    var p: ptr node
+    p := head
+    do p != null ->
+        if p^.value = x -> found := true; return fi
+        p := p^.nxt
+    od
+    found := false
+  end
+
+  # initialize the nodes
+  procedure init()
+    head := new(node)
+    q := head 
+    fa i := 1 to 10 ->
+      q^.value := i
+      q^.nxt := new(node)
+      q := q^.nxt
+    af
+    q^.nxt := null
+    q^.value := 0  
+  end
+
+  var y:int
+
+  init()
+  read(y)
+  do y != 0 ->
+    if search(y) -> write ("found")
+    [] else -> write("not found")
+    fi
+    read(y)
+  od
+
+  final
+    # free memory
+    q := head
+    do q != null ->
+      head := head^.nxt
+      free(q) 
+      q := head
+    od
+  end
+
+end

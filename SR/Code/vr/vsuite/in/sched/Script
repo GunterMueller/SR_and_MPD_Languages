@@ -1,0 +1,6 @@
+#  gmt  Tue Dec  3 14:49:47 MST 1991
+0 sr -c sched.sr
+0 srl Jacobi
+0 a.out >No_input.out 2>&1
+0 scmp No_input.std No_input.out
+0 rm -rf Interfaces core *.out

@@ -1,0 +1,13 @@
+
+===============  jacobi  ===============
+
+ops:
+  xRp  SYM2 jacobi.worker: K_OP T_OP(T_INT):T_VOID
+   Rs  SYM2 arrive: K_OP T_OP(){send}:T_VOID
+   Rs  SYM2 continue: K_OP T_OP(){send}:T_VOID
+   Rp  SYM2 coord: K_OP T_OP(){send}:T_VOID
+
+===============  main  ===============
+
+ops:
+   Iu  SYM3 jacobi.worker: K_OP T_OP(T_INT):T_VOID

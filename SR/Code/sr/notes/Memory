@@ -1,0 +1,61 @@
+Memory Allocation by Generated Code
+15-Nov-89 gmt
+
+
+SR-generated code needs to allocate and/or free blocks of memory in certain
+situations.  The v1.1 compiler exhibits several problems in this area.
+
+This note describes an approach to memory management for v2.  Some cases can
+be optimized by using fixed-size automatic variables; the discussion below
+considers the cases that are not optimized.
+
+Problems in v1.1 come mostly from freeing memory that was never allocated.
+Failure to free memory also occurs but is less noticeable.  Two situations
+currently mishandled involve allocations within short-circuited "if"
+statements and early exits from loops.
+
+
+SR-generated code requires two kinds of dynamic memory allocation:
+
+    Transient blocks -- for intermediate results in expressions
+			and for procedure call blocks.
+
+    Persistent blocks -- for declared variables whose size
+			 is not known at compilation time.
+
+The compiler will generate memory allocation calls as needed; the address
+of each block will be saved in a variable reserved for that purpose.
+There will be two pools of such variables, for transient and persistent
+blocks, and the variables will be reused when possible.
+
+All blocks will also be associated with the owning resource, so that
+they will disappear if the resource is destroyed.
+
+
+Persistent blocks will be freed when exiting from the block in which they
+are declared.  v1.1 did this only on normal (fall-through) exit, but v2
+will now also generate deallocation calls for "exit" and "next" statements.
+
+
+Transient blocks will be freed immediately after the statement where they
+are allocated.  "if" statements are a special case; transient variables
+will be freed after each short-circuit part of the test.
+
+For example, "if e1 | e2 & e3 -> write(e4) fi" could generate code something
+like this (suppressing the details of what e1 etc. actually generate):
+
+	Bool btmp;		/* temp for remembering bool result */
+	Pointer tb1, tb2;	/* transient block pointers */
+		...
+	btmp=e1;		/* e1 needs no transient blocks */
+	if (btmp) goto L1;	
+	btmp=e2;
+	sr_gen_free(tb1);	/* free 2 transient blocks used in e2 */
+	sr_gen_free(tb2);
+	if (!btmp) goto L2;
+	btmp=e3;
+	sr_gen_free(tb1);	/* free 1 transient block used in e3 */
+	if (!btmp) goto L2;
+    L1: write(e4);
+	sr_gen_free(tb1);	/* free 1 transient block used in e4 */
+    L2:

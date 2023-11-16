@@ -1,0 +1,24 @@
+resource x1
+	op f(x:char)
+body x1(a[1:3,2:4]:int;c:char)
+	write(c); f('a')
+
+	proc f(x)
+		write(c,x)
+		fa i:= 1 to 3, j := 2 to 4 ->
+			write(a[i,j])
+		af
+	end
+end
+
+resource x2
+	import x1
+body x2()
+	var a[1:3,2:4]:int
+	fa i:= 1 to 3, j := 2 to 4 ->
+		a[i,j] := 100*i+j
+	af
+	var c:cap x1
+	c := create x1(a,'C'); c.f('A')
+	c := create x1(a,'D'); c.f('B')
+end

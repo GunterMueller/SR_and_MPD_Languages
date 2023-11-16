@@ -1,0 +1,113 @@
+.uh "Acknowledgements"
+.lp
+This work was supported in part by National Science Foundation grant
+CCR-8810617 at the University of California, Davis, and by
+NSF grants CDA-8822652, CCR-8811423, and CCR-9108412
+at the University of Arizona.
+.uh "References"
+.de NP
+.ip \\$1 10n
+..
+.ls 1
+.NP [Andr81]
+Andrews, G.R.
+Synchronizing resources.
+\fIACM Trans. on Prog. Languages and Systems 3\fP, 4 (Oct. 1981), 405-430.
+.NP [Andr82]
+Andrews, G.R.
+The distributed programming language SR\(emmechanisms,
+design and implementation.
+\fISoftware\(emPractice and Experience 12\fP, 8 (Aug. 1982), 719-754.
+.NP [Andr86]
+Andrews, G.R., and Olsson, R.A.
+The evolution of the SR language.
+\fIDistributed Computing 1\fP, 3 (July 1986), 133-149.
+.NP [Andr88]
+Andrews, G.R., Olsson, R.A., Coffin, M., Elshoff, I., Nilsen, K.,
+Purdin, T., and Townsend, G.
+An overview of the SR language and implementation.
+\fIACM Trans. on Prog. Lang. and Systems 10\fP, 1 (Jan. 1988), 51-86.
+.NP [Andr91]
+Andrews, G.R.
+\fIConcurrent Programming:  Principles and Practice\fP.
+Benjamin/Cummings Publishing Company,
+1991.
+.NP [AnOl92]
+Andrews, G.R., and Olsson, R.A.
+\fIThe SR Programming Language: Concurrency in Practice\fP.
+Benjamin/Cummings Publishing Company,
+to appear 1992.
+.NP [Atki88]
+Atkins, M.S., and Olsson, R.A.
+Performance of multitasking and synchronization mechanisms
+in the programming language SR.
+\fISoftware\(emPractice and Experience 18\fP, 9 (Sept. 1988),
+879-895.
+.NP [Burn88]
+Burns, A.
+\fIProgramming in occam 2\fP.
+Addison-Wesley,
+1988.
+.NP [Geha89]
+Gehani, N.
+\fIThe Concurrent C Programming Language\fP.
+Silicon Press,
+Summit, New Jersey,
+1989.
+.NP [HiLa90]
+Hill, M.D., and Larus, J.R.
+Cache considerations for multiprocessor programmers.
+\fIComm. ACM 33\fP, 8 (Aug. 1990), 97-102.
+.NP [Lisk83]
+Liskov, B., and Scheifler, R.
+Guardians and actions:
+linguistic support for robust, distributed programs.
+\fIACM Trans. on Prog. Lang. and Systems 5\fP, 3 (July 1983), 381-404.
+.NP [Manb89]
+Manber, U.
+\fIIntroduction to Algorithms:  A Creative Approach.\fR
+Addison-Wesley, Reading, MA,
+1990.
+.NP [McOl90a]
+McNamee, C.M., and Olsson, R.A.
+Transformations for optimizing interprocess communication and
+synchronization mechanisms.
+#International #Journal #of #Parallel #Programming
+\fI19\fP, 5 (Oct. 1990)
+pages 357-387.
+.NP [McOl90b]
+McNamee, C.M., and Olsson, R.A.
+An attribute grammar approach to compiler optimization of
+intra-module interprocess communication.
+Submitted for publication.
+(An earlier version appears as CSE-89-11,
+Div. of Computer Science,
+The University of California, Davis,
+1989.)
+.NP [MCS91]
+Mellor-Crummey, J.M., and Scott, M.L.
+Algorithms for scalable synchronization on shared-memory multiprocessors.
+\fIACM Trans. on Computer Systems 9\fR, 1 (Feb. 1991), 21-65.
+.NP [OlMc91]
+Olsson, R.A., and McNamee, C.M.
+An overview of compiler optimization of interprocess communication
+and synchronization mechanisms.
+Proceedings of the 1991 #International #Conference #on #Parallel #Processing,
+St. Charles, IL,
+II-31 to II-35,
+August 12-17, 1991.
+.NP [Olss86]
+Olsson, R.A.
+\fIIssues in Distributed Programming Languages: The Evolution of SR\fP.
+TR 86-21 (Ph.D. Dissertation), Dept. of Computer Science,
+The University of Arizona, August 1986.
+.NP [US83]
+U.S. Department of Defense.
+\fIReference Manual for the Ada Programming Language\fP.
+ANSI/MIL-STD-1815A, 1983.
+.NP [Wirt82]
+Wirth, N.
+\fIProgramming in Modula-2\fP.
+Springer-Verlag,
+New York,
+1982.

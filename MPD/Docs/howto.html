@@ -1,0 +1,213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+ "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+<HEAD>
+<link rel="StyleSheet" type="text/css" href="/style/simple.css">
+<TITLE> The MPD Programming Language -- Compilation and Execution </TITLE>
+</HEAD>
+<BODY BGCOLOR="#F7FFFF">
+
+
+<!-- /style/csbanner.ssi: included to render CS header with links -->
+<!-- compatible with /style/simple.css, but does not require it -->
+
+<img src="/style/elements/genheader.gif" width="760" height="148"
+ alt="The University of Arizona / Computer Science / UAScience"
+ style="position:absolute; top:0px; left:10px;">
+
+<div style="position:absolute; top:0px; left:10px; width:493px; height:42px;">
+<a title="The University of Arizona" href="http://www.arizona.edu/">
+<img border="0" alt="The University of Arizona"
+ src="/style/elements/42blu493.gif"></a></div>
+
+<div style="position:absolute; top:56px; left:516px; width:150px; height:43px;">
+<a title="Computer Science" href="http://www.cs.arizona.edu/">
+<img border="0" alt="ComputerScience"
+ src="/style/elements/tplDept.gif" width="150" height="43"></a></div>
+
+<div style="position:absolute; top:99px; left:516px; width:150px; height:23px;">
+<a title="UAScience" href="http://cos.arizona.edu/">
+<img border="0" alt="UAScience"
+ src="/style/elements/tplCollg.gif" width="150" height="23"></a></div>
+
+<div style="position:absolute; top:0px; left:760px; width:10px; height:42px;">
+<a title="Validate" href="http://validator.w3.org/check?uri=referer&amp;ss=1">
+<img border="0" alt=""
+ src="/style/elements/42blu10.gif" width="10" height="42"></a></div>
+
+<div style="padding: 150px 0 0 0;"></div>
+<div class="up150"></div>
+
+<!-- /style/csbanner.ssi: end inclusion -->
+
+
+
+
+<IMG SRC="cairn.jpg" ALT="" ALIGN=right WIDTH=120 HEIGHT=120>
+<H1> How to Compile and Execute MPD Programs </H1>
+
+<P> This page summarizes how MPD programs are compiled and executed.
+See the manual pages for the mentioned commands for more information.
+As a quick reference, the main steps are:
+
+<ol>
+<li> Create program in files ending with <tt>.mpd</tt> suffix,
+such as <tt>foo.mpd</tt>.
+
+<p> <li> Compile program using <tt>mpd</tt> compiler, as in
+<tt>mpd foo.mpd</tt>.
+
+<p> <li> Set MPD_PARALLEL environment variable if running on a shared-memory
+multiprocessor.
+
+<p> <li> Execute program with command-line arguments.  The default name
+for the executable is <tt>a.out</tt>.
+
+</ol>
+
+<h3> Compilation and Linking </h3>
+
+<p> An MPD program is contained in one or more source files.
+Each source file can contain any number of components (resources
+or globals).
+However, the spec of a component has to be compiled before its body
+and before the component is imported by another component.
+If two components import each other, their specs can be compiled
+in either order but they must be compiled before either body.
+
+<p> The <tt>mpd</tt> compiler makes two passes over the source files
+given as arguments to the <tt>mpd</tt> commmand.
+First it processes the information in the spec parts of resources
+and globals.
+Assuming no errors are encountered, the compiler then processes
+component bodies, translates the MPD code into a C program, and
+calls the C compiler to create separate <tt>.o</tt> files for
+each global and resource in the program.
+
+<p> An MPD program is linked by means of the MPD linker <tt>mpdl</tt>.
+The linker is called by default by the MPD compiler, and it can be
+called explicitly.
+The linker combines <tt>.o</tt> files together with the MPD and C
+run-time libraries to produced an executable program.
+The last resource on the command line to <tt>mpdl</tt> is taken
+to be the main resource of the program.
+The MPD run-time system has many default values that can be changed by
+the programmer.
+Execute <tt>mpdl -l</tt> to see the run-time values and their defaults.
+
+<p> During compilation, the MPD compiler creates a directory
+<tt>MPDinter</tt> (unless one already exists).
+The compiler uses this directory to store files that describe
+the resources and globals in a program.
+The MPD linker uses the interfaces directory to store <tt>.o</tt> files.
+
+<h3> Single Processor Programs </h3>
+
+<p> If an MPD program does not create virtual machines, then it
+contains a single virtual machine and hence a single address space.
+(On a Unix system, a virtual machine corresponds to a Unix process.)
+Each process in an MPD program is implemented as a thread, with its
+own stack and execution state.
+
+<p> An MPD program executes on a single processor if
+(1) the host machine contains only a single processor,
+(2) MPD is configured for a uniprocessor, or
+(3) the <tt>MPD_PARALLEL</tt> environment variable is unset or is
+set to a value of 1.
+In all of these cases, the processes in the MPD program are
+executed one at a time.
+In particular, once a process starts executing it continues to
+execute until either (1) it calls the MPD run-time system
+(e.g., uses synchronization or does I/O),
+or (2) it executes a loop more than the maximum number
+of loops before a forced context switch.
+(See the default values for run-time limits.)
+
+<h3> Multiprocessor Programs </h3>
+
+<p> The multiprocessor implementation of MPD is called MultiMPD.
+If MultiMPD has been configured, the MPD programmer asks for
+some number <tt>N</tt> of processors by setting the <tt>MPD_PARALLEL</tt>
+environment variable to <tt>N</tt>.
+For example, with the C shell <tt>csh</tt>, this variable could
+be set as follows:
+
+<pre>
+    setenv MPD_PARALLEL 4
+</pre>
+
+<p> The next time an MPD program is executed, MultiMPD will request
+the use of four processors from the underlying system.
+Thus, up to four processes in the MPD program could execute
+at the same time.
+Stated differently, the processes in the MPD program will take
+turns executing on up to four physical processors.
+
+<p> The processes in a multiprocessor program can share variables
+and should be able to share the same open files.
+There are, however, a few subtle synchronization problems in the
+implementation.
+(See the <a href="release.html">release notes</a> for details.)
+In addition, some programming errors may be exposed by MultiMPD that
+do not appear when a program is executed on a single processor.
+
+<h3> Distributed Programs </h3>
+
+<p> An MPD program is treated as a distributed program if it
+makes explicit use of virtual machines.
+In this case, the MPD implementation creates an execution manager,
+<tt>mpdx</tt>.
+The execution manager is started automatically the first time
+an MPD program creates an instance of the <tt>vm</tt> resource
+or calls the predefined <tt>locate</tt> function.
+The <tt>mpdx</tt> process creates sockets so that virtual machines
+can talk to each other (the MPD programmer does not have to worry
+about this) and it detects when a distributed MPD program has terminated.
+
+<p> The MPD programmer creates a new virtual machine on physical
+machine <tt>X</tt> by executing
+
+<pre>
+    create vm() on X
+</pre>
+
+The simplest way to specify the value of <tt>X</tt> is to use a string
+for the symbolic name of a machine, as in
+
+<pre>
+    create vm() on "lectura"
+</pre>
+
+<p> Machine names can also be specified using integers, and
+the MPD programmer can also use the <tt>locate()</tt> function to
+establish associations between integers and hostnames.
+The symbolic and integer names of machines are, of course,
+installation dependent.
+See the MPD <a href="install.html">installation instructions</a>
+and <a href="release.html">release notes</a> for information
+on configuring and using virtual machines.
+
+<h3> Additional Tools </h3>
+
+<p> Most programmers will only need to use the MPD compiler <tt>mpd</tt>
+and linker <tt>mpdl</tt>.
+However, there are three additional tools that might be useful:
+
+<ul>
+<li> <tt>mpdm</tt>, an MPD program makefile generator
+
+<p> <li> <tt>mpdtrace</tt>, a mechanism for tracing run-time events
+
+<p> <li> <tt>mpdprof</tt>, a trace file profiler
+</ul>
+
+<br>
+<SMALL>
+Last updated January 11, 2001
+</SMALL>
+
+<p>
+<a href="./">MPD home page</a>
+
+</BODY>
+</HTML>

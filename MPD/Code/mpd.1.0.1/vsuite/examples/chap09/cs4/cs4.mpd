@@ -1,0 +1,15 @@
+resource cs4()
+  optype results_type = ()
+  op request(cap results_type results_cap)
+  const int N = 20  # number of cleint processes
+  process client [ i = 1 to N ] {
+    op results_type results
+    send request(results)
+    # possibly perform some other work
+    receive results()
+  }
+  proc request(results_cap)  {
+    # handle request
+    send results_cap()
+  }
+end

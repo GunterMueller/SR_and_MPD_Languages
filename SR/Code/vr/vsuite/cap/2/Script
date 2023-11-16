@@ -1,0 +1,4 @@
+0 sr -c iop.sr
+0 srl iop1 iop2
+0 run
+0 rm -rf Interfaces core *.out

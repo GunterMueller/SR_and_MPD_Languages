@@ -1,0 +1,14 @@
+global a
+	const X := 10
+	const Y := -5
+end
+resource b
+	import a
+body b()
+
+	write(a.X)
+	write(Y)
+	write(a.Y)
+	write(X)
+
+end

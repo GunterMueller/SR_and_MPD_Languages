@@ -1,0 +1,41 @@
+resource bounded_buffer
+  op deposit(int item)
+  op fetch() returns int  item
+body bounded_buffer(int size)
+  int buf[0:size-1]
+  int count = 0
+  int front = 0
+  int rear = 0
+
+  process manager  {
+    while (true) {
+      in deposit(item) st count < size ->
+	  buf[rear] = item
+	  rear = (rear+1) % size
+	  count++
+      [] fetch() returns item st count > 0 ->
+	  item = buf[front]
+	  front = (front+1) % size
+	  count--
+      ni
+    }
+  }
+
+end
+
+resource main()
+  import bounded_buffer
+
+  cap bounded_buffer  buf 
+  int  i
+  int x = 0
+  buf = create bounded_buffer(10)
+
+  process worker  {
+      for [ i = 1 to 10 ] {
+	 buf.deposit(i)
+	 x += buf.fetch()
+      }
+    write("x = ",x) 
+  }
+end

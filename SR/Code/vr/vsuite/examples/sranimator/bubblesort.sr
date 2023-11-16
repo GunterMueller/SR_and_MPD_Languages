@@ -1,0 +1,37 @@
+#  a simple animation of a bubble sort
+#
+#  usage:  bubblesort [n_items]
+
+resource bubblesort
+    import SRanimator
+body bubblesort ()
+
+    # initialize problem size and scaling
+    const MAX := 1000
+    var N := 25
+    getarg (1, N)
+    var xscale := 0.9 / MAX
+    var yscale := 1.0 / (N + 1)
+
+    # initialize array of random integers
+    var nums[1:N] : int
+    var id[1:N] : int
+    fa i := 1 to N ->
+	id[i] := i
+	nums[i] := int (random (MAX))
+	A_line (id[i], 0.5 - nums[i] * xscale / 2, yscale * i,
+	    nums[i] * xscale, 0, "black", "thick", "solid", "none")
+    af
+
+    # sort the array
+    fa i := N downto 2 ->
+	fa j := 2 to i ->
+	    if nums[j-1] < nums[j] ->
+	       nums[j-1] :=: nums[j]
+	       A_exchangepos (id[j-1], id[j])
+	       id[j-1] :=: id[j]
+	    fi
+	af
+    af
+
+end bubblesort

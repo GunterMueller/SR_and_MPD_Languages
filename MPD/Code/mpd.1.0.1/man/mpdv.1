@@ -1,0 +1,93 @@
+.TH MPDV 1 "13 March 2001" "University of Arizona"
+.SH NAME
+mpdv \- verify correct functioning of MPD system
+.SH SYNOPSIS
+\fBmpdv [ \-\fRoption ...\fB ] [ \fRdir ...\fB ]\fP
+.SH DESCRIPTION
+.I Mpdv
+executes verification scripts in subdirectories of
+the MPD verification suite.
+It is part of the MPD installation process and is not used by MPD programmers.
+.LP
+If one or more
+.I dir
+arguments are given, testing is restricted to those directories
+and descendents;
+otherwise the entire suite is searched.
+Within each subdirectory, a
+.B Script
+file directs the verification process.
+Each line contains an expected status code followed by a command.
+If the command returns an unexpected status, the test fails and
+(except for a
+.B run
+command) the script is abandoned.
+Empty lines, and lines beginning with
+.BR # ,
+are ignored.
+.LP
+For
+.BR mpd ,
+.BR mpdl ,
+.BR mpdm ,
+and 
+.BR mpdprof ,
+commands,
+production or experimental versions are selected according to
+.I mpdv
+options, and output is redirected to reserved file names.
+A
+.B run
+command executes
+.BR a.out ,
+redirecting standard input if a file is named;
+output is directed to a related file and the results are compared with
+what was expected.
+Differences report a failure and disable
+.B rm
+commands but do not abandon the script.
+Other commands are simply executed by the shell with no special handling.
+.LP
+.I Mpdv
+normally finds binaries in the source hierarchy.
+The
+.B \-p
+option selects instead the production (installed) version of the system.
+The options
+.BR \-c ,
+.BR \-l ,
+.BR \-r ,
+and
+.B \-t
+individually select the production versions of the
+compiler, linker, runtime system, and other tools
+respectively.
+.LP
+The
+.B \-v
+option echoes each Script line as it is read.
+.SH FILES
+.nf
+.ta 16n
+Script	verification script
+Compiler.out	compiler output
+Linker.out	linker output
+Maker.out	makefile maker output
+Profiler.out	profiler output
+xxxxx.std	expected output from input file `xxxxx'
+xxxxx.out	actual output from input file `xxxxx'
+.fi
+.SH SEE ALSO
+mpdvi(1), mpd(1), mpdl(1), mpdm(1), mpdprof(1).
+.SH DIAGNOSTICS
+.I Mpdv
+lists the MPD system files to be used, and aborts if any are inaccessible.
+Each directory is listed as testing begins.
+Any additional messages indicate a test failure.
+.SH CAVEATS
+.I Mpdv
+does not detect infinite loops.
+.LP
+A full run starts slowly due to pipeline delays.
+.LP
+Quoted arguments don't work with the specially recognized commands.

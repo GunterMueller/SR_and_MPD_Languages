@@ -1,0 +1,66 @@
+#  basic test of virtual machines
+#
+#  this is included in the vsuite "quick" tests to verify that mpdx is
+#  properly installed and that the mpdmap file is readable.
+
+
+resource rsc
+    op num () returns int n
+body rsc ()
+    proc num () returns n {
+	n = mymachine()
+    }
+end rsc
+
+
+resource main
+	import rsc
+	external gethostname (res string[*] s, int namelen)
+body main()
+	cap vm mm, lm, zm, rm
+	cap rsc mr, lr, zr, rr
+	string[100] h
+
+	write ("begin execution")
+	write ("asking hostname")
+	gethostname (h, maxlength(h))
+	getarg(1, h)	# override if specified as arg
+
+	write ("checking myvm()")
+	mm = myvm()
+	if (mm == null)
+	    { write ("myvm() is null"); stop(1) }
+
+	write ("creating local vm")
+	lm = create vm()
+	if (lm == null)
+	    { write ("local create failed"); stop(2) }
+
+	write ("creating vm on 0")
+	zm = create vm() on 0
+	if (zm == null)
+	    { write ("create on 0 failed"); stop(3) }
+
+	write ("locating 47 to current host")
+	locate (47, h)
+
+	write ("creating vm on 47")
+	rm = create vm() on 47
+	if (rm == null)
+	    { write ("create on 47 failed"); stop(4) }
+
+	writes("creating resources: "); flush(stdout);
+	writes(" mr");  flush(stdout);  mr = create rsc() on mm
+	writes(" lr");  flush(stdout);  lr = create rsc() on lm
+	writes(" zr");  flush(stdout);  zr = create rsc() on zm
+	writes(" rr");  flush(stdout);  rr = create rsc() on rm
+	write(" done")
+
+	write("parent machine: ", mymachine())
+	write("myvm() machine: ", mr.num())
+	write("local machine:  ", lr.num())
+	write("zero machine:   ", zr.num())
+	write("remote machine: ", rr.num())
+
+	write("done!")
+end main

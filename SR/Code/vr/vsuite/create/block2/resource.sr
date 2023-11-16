@@ -1,0 +1,55 @@
+# 1. "create" call blocks until a "reply"
+# 2. The implicitly created initialisation process can return prematurely
+# and if it returns rest of the initialisation that are after the point
+# of return are not executed
+
+global global_sem
+	sem global_s1 := 0
+	sem global_s2 := 0
+	sem block_initA_ps := 0
+	op no_server_op(source: string[*])
+end global_sem
+
+resource A(n:int)
+
+    import global_sem
+    write("A : before `reply; P(global_s1)'")
+    reply; P(global_s1)
+    write("A : after `reply; P(global_s1)'")
+    write("A : doing V(global_s2)")
+
+    V(global_s2)
+
+    return
+
+    # initialisation won't proceed beyond this
+
+    process server
+	write("server : This shouldn't have been printed")
+	in no_server_op(s) ->  # but we'll never reach here as process server
+		write(s)       # will never be started by the initlsn code
+	ni
+    end server
+end A
+
+resource callee()
+    import A
+    var capA : cap A
+
+    write("callee : before create A")
+    capA := create A(10)
+    write("callee : after create A ... about to V(global_s1) and then P(global_s2)")
+
+    import global_sem
+    V(global_s1)
+
+    P(global_s2); write("callee : after P(global_s2)")
+
+    write("callee : before sending to no_server_op")
+    send no_server_op("This shouldn't have been printed")
+    write("callee : after sending to no_server_op")
+
+    stop
+
+end callee
+

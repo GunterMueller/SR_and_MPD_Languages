@@ -1,0 +1,21 @@
+# does inc statement handle side effects ok?
+# correct output is 8888, 10, 8889
+#               not 8888, 10, 11, 8889
+# i.e., a[f()]++ is not the same as a[f()] := a[f()]+1;
+# in a[f()]++, f() should be invoked just once.
+resource inc1()
+	op f() returns int  fx
+	int x =10
+
+	int  a[1:10]
+	a[3] = 8888
+	write(a[3])
+	a[f()]++
+	write(a[3])
+
+	proc f() returns fx  {
+		write(x)
+		x++
+		fx = 3
+	}
+end

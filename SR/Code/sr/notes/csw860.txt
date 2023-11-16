@@ -1,0 +1,149 @@
+From dancil@SSD.intel.com  Tue Jun  7 07:11:56 1994
+Date: Tue, 7 Jun 94 07:11:33 PDT
+From: Dancil Strickland <dancil@SSD.intel.com>
+To: dkl@cs.arizona.edu
+Subject: Re:  context switching code.....
+
+Here is the response form one of the engineers I asked about context
+switching code.  As you can see it may not be as easy as originally
+thought....
+
+--dcs
+
+
+You have to be a lot more specific about "context switching" code:
+
+	- is it for switching between, for example, stacks, within the
+	  same address space (what is more correctly called "coroutine
+	  switching")?  If so, then only the non-volatile registers as
+	  defined by the i860 Programmer's Reference Manual need be
+	  saved and restored; you might ask them to say "man 3 _setjmp"
+	  and let them know that is the most portable thing to use...
+
+	- is it for switching between address spaces (ie, do they want
+	  to do it in supervisor mode)?  If so, it far more complicated
+	  because cache invalidations may need to be performed...
+
+	- is it for switching between threads?  If so, cthreads() and
+	  pthreads() already do that and know about Mach kernel threads...
+
+	- is it for general purpose save/restore of everything in the chip?
+	  (memory load pipelines, multiplier pipelines, adder pipelines,
+	  graphics pipelines, special KR/KI/T registers, etc.)  If
+	  so, then there are several hundred lines of trap-handler code
+	  deep insided the microkernel that do that...and are insanely
+	  difficult to get correct...
+
+Sorry I'm not more help, but without more information I can't contribute
+much more.  I certainly hope for their sake that they are interested
+in only the first kind I listed above...
+
+Awhile ago I composed the following email as a reply to Denise Ecklund
+containing an example of _setjmp()-style assembler code to save/restore
+registers to help out a customer:
+
+
+Subject: Re:  Sample i860 asm code for context switching
+
+In general, they need to save only the following registers when switching
+between threads (where they save them is they're problem):
+
+	r1-r15
+	f2-f7
+
+	r0,f0,f1 are all zero and need not be saved or restored
+
+All of the other registers (including the load, add, multiply, and graphics
+pipelines) are considered volatile (caller preserves) by the calling
+conventions.
+
+Assuming that they wanted to dump state into a buffer pointed to by r16
+(used to pass the first argument to a function) that looks like:
+
+	struct i860_nonvolatile_state {
+		unsigned int    iregs[16];
+		unsigned int    fregs[8];
+	};
+
+                .text
+        _i860_register_save::
+                // st.l    r0, 0(r16)	// no need to save
+                st.l    r1, 4(r16)
+                st.l    sp, 8(r16)
+                st.l    fp,12(r16)
+                st.l    r4,16(r16)
+                st.l    r5,20(r16)
+                st.l    r6,24(r16)
+                st.l    r7,28(r16)
+                st.l    r8,32(r16)
+                st.l    r9,36(r16)
+                st.l   r10,40(r16)
+                st.l   r11,44(r16)
+                st.l   r12,48(r16)
+                st.l   r13,52(r16)
+                st.l   r14,56(r16)
+                st.l   r15,60(r16)
+		//fst.l   f0,64(r16)	// no need to save
+		//fst.l   f1,68(r16)	// no need to save
+		fst.l   f2,72(r16)
+		fst.l   f3,76(r16)
+		fst.l   f4,80(r16)
+		fst.l   f5,84(r16)
+		fst.l   f6,88(r16)
+		fst.l   f7,92(r16)
+		bri	r1
+		 mov	r0,r16		// return 0
+
+	_i860_register_load::
+                // ld.l     0(r16), r0	// no need to load
+                ld.l	 4(r16), r1
+                ld.l	 8(r16), sp
+                ld.l	12(r16), fp
+                ld.l	16(r16), r4
+                ld.l	20(r16), r5
+                ld.l	24(r16), r6
+                ld.l	28(r16), r7
+                ld.l	32(r16), r8
+                ld.l	36(r16), r9
+                ld.l	40(r16), r10
+                ld.l	44(r16), r11
+                ld.l	48(r16), r12
+                ld.l	52(r16), r13
+                ld.l	56(r16), r14
+                ld.l	60(r16), r15
+		//fld.l	64(r16), f0	// no need to load
+		//fld.l	68(r16), f1	// no need to load
+		fld.l	72(r16), f2
+		fld.l	76(r16), f3
+		fld.l	80(r16), f4
+		fld.l	84(r16), f5
+		fld.l	88(r16), f6
+		fld.l	92(r16), f7
+		bri	r1
+		 or	1,r0,r16	// return 1
+
+
+The above examples might be used like:
+
+	void strange_switch_function(old, new)
+	struct i860_nonvolatile_state *old, *new;
+	{
+		if (i860_register_save(old) == 0)
+			i860_register_load(new);
+	}
+
+for simple "coroutine-style" switching that can jump between stack frames.
+
+Important note: if they're allocating their own stacks, make sure they
+follow the rules and initialize the stack pointer to 16-byte alignment
+like the Programmer's Reference Manual says...
+
+Of course, if you can be sure about alignment (say 16-byte aligned) of the
+save/restore buffer, there are faster ways of accomplishing the above
+(by using fst.q/pfld.q/ixfr/fxfr etc.).
+
+Hope this is instructive and sufficient,
+Andy
+
+PS: I just typed this in...it's not from any piece of code we use nor have
+    I tried it out.

@@ -1,0 +1,11 @@
+# test by
+# (1) compiling in order c.sr, b.sr, a.sr.
+# (2) recompile c.sr.
+# (3) recompile a.sr.
+# compiler should complain (warn) about b needing to be recompiled.
+# note:  if compiler is ever made to do smart recompilation,
+# then it will not complain.
+resource a
+	import b
+body a()
+end
